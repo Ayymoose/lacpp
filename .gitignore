@@ -1,4 +1,7 @@
 *.exe
 *.dll
-/Debug/*
-/Release/*
+*.obj
+*.sarif
+Debug/*
+Release/*
+lacpp/.vs/*

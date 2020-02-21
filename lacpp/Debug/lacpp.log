@@ -1,0 +1,3 @@
+﻿  Resource.cpp
+D:\Users\Ayman\Desktop\lacpp\lacpp\Renderer.h(46,39): warning C4100: 'renderable': unreferenced formal parameter
+  lacpp.vcxproj -> D:\Users\Ayman\Desktop\lacpp\lacpp\Debug\lacpp.exe
