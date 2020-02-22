@@ -14,8 +14,6 @@ int main(int argc, char* argv[])
     // Create main renderer on the main Window
     Renderer::getInstance().createRenderer(mainWindow.getWindowHandle());
 
- 
-
     mainWindow.beginEventLoop();
 
     SDL_Quit();

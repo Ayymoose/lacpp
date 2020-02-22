@@ -130,18 +130,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Controllable.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="InputControl.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resource.h" />

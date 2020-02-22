@@ -5,6 +5,10 @@
 #include "Controller.h"
 #include "Renderable.h"
 
+// The "viewing region" dimensions
+#define CAMERA_WIDTH 160
+#define CAMERA_HEIGHT 128
+
 enum SCROLL_DIRECTION
 {
     SCROLL_UP = 0,
@@ -23,11 +27,19 @@ public:
     void render(SDL_Renderer* pRenderer);
     void setCurrentBackground(SDL_Texture* currentBackground);
     void control(const SDL_Event& event);
+    int getX() const
+    {
+        return m_x;
+    }
+    int getY() const
+    {
+        return m_y;
+    }
 private:
+    int m_scrollX;
+    int m_scrollY;
     int m_x;
     int m_y;
-    int m_cameraWidth;
-    int m_cameraHeight;
     int m_scrollSpeed;
 };
 

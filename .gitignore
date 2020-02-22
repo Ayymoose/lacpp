@@ -5,3 +5,8 @@
 Debug/*
 Release/*
 lacpp/.vs/*
+*.ilk
+*.log
+*.tlog
+*.idb
+*.pdb

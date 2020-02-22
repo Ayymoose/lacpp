@@ -3,6 +3,9 @@
 #include "InputControl.h"
 #include "Controller.h"
 
+#include "Timer.h"
+#include <string>
+#include "HUD.h"
 
 Window::Window()
 {
@@ -24,20 +27,30 @@ void Window::createWindow(const char* title, const int width, const int height)
 void Window::beginEventLoop()
 {
   
-    // Handle window events
-    // Handle input events
+   // Handle window events
+   // Handle input events
    // Handle game logic
 
-       // Load all resources
-    ResourceManager resourceManager;
-    resourceManager.loadGraphics();
+    ResourceManager::getInstance().loadGraphics();
 
     Camera camera;
     camera.setScrollSpeed(4);
-    camera.setPosition(0, 0);
-    camera.setCurrentBackground(resourceManager[RSC_BACKGROUND_OVERWORLD_MAIN]);
+    camera.setPosition(480, 640);
+    camera.setCurrentBackground(ResourceManager::getInstance()[RSC_DUNGEON_1_TAIL_CAVE]);
+
+    HUD hud;
+
     Renderer::getInstance().addRenderable(&camera);
-   // Controller::getInstance().setController(&camera);
+    Renderer::getInstance().addRenderable(&hud);
+
+
+    Controller::getInstance().setController(&camera);
+    SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + hud.height()));
+   
+    std::string windowTitle;
+
+    Timer fpsTimer;
+    int framesRendered = 0;
 
     while (!m_quitApplication)
     {
@@ -46,7 +59,16 @@ void Window::beginEventLoop()
             handleWindowEvents();
             handleInput();
         }
+
+        std::vector<Renderable*> renderList = Renderer::getInstance().renderableObjects();
+
+        float fps = framesRendered / (fpsTimer.getTicks() / 1000.f);
+        windowTitle = "X: " + std::to_string(camera.getX()) + " Y: " + std::to_string(camera.getY()) + " FPS: " + std::to_string((int)fps) + " Renderables: " + std::to_string(renderList.size());
         renderObjects();
+        framesRendered++;
+
+        SDL_SetWindowTitle(m_mainWindow, windowTitle.c_str());
+
     }
 
 }
@@ -85,6 +107,9 @@ void Window::renderObjects()
             (*iterator)->render(mainRenderer);
         }
     }
+    //SDL_Rect renderViewPort = {0,0, MAIN_WINDOW_WIDTH,MAIN_WINDOW_HEIGHT };
+   
+
     // Represent to the screen
     SDL_RenderPresent(mainRenderer);
 }

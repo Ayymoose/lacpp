@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <SDL_image.h>
 #include <map>
+#include "Singleton.h"
 
 #ifndef RESOURCE_H
 #define RESOURCE_H
@@ -78,6 +79,8 @@ enum RESOURCE
     RSC_INTERIOR_HOUSE_22,
     //Misc
     RSC_INTERIOR_TELEPHONE_HOUSE,
+    RSC_HUD,
+
     
     RSC_RESOURCE_COUNT
 };
@@ -86,8 +89,9 @@ enum RESOURCE
 // a list of Resource objects but I'm just lazy so
 // Resource is the object which manages all resources
 
-class ResourceManager
+class ResourceManager : public Singleton<ResourceManager>
 {
+    friend class Singleton<ResourceManager>;
 
 public:
 
@@ -99,9 +103,12 @@ public:
 
     void loadGraphics();
 
-    ~ResourceManager();
+    virtual ~ResourceManager();
     
 private:
+
+    ResourceManager() = default;
+
     // Load a texture
     SDL_Texture* loadTexture(std::string path);
 

@@ -6,8 +6,8 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#define MAIN_WINDOW_WIDTH 640
-#define MAIN_WINDOW_HEIGHT 480
+#define MAIN_WINDOW_WIDTH 160*4
+#define MAIN_WINDOW_HEIGHT 144*4
 
 #define MAIN_WINDOW_TITLE "Link's Awakening"
 

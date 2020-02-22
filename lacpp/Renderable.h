@@ -17,6 +17,7 @@ public:
     }
     virtual ~Renderable()
     {
+
     }
 
     virtual void render(SDL_Renderer* pRenderer) = 0;

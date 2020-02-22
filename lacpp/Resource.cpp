@@ -6,7 +6,7 @@ void ResourceManager::loadGraphics()
 {
     // Attempt to load all the graphic resources
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_BACKGROUND_OVERWORLD_MAIN, loadTexture("Resources\\Background\\Overworld\\bck-overworld_main.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_2_BOTTLE_GROTTO, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_3_KEY_CAVERN, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_4_ANGLER_TUNNEL, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
@@ -65,6 +65,8 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_21, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_22, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_TELEPHONE_HOUSE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_HUD, loadTexture("Resources\\Background\\Misc\\hud.png")));
+
 }
 
 ResourceManager::~ResourceManager()
