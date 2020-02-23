@@ -14,6 +14,8 @@ public:
     Renderable()
     {
         m_Texture = nullptr;
+        m_width = 0;
+        m_height = 0;
     }
     virtual ~Renderable()
     {
@@ -24,6 +26,8 @@ public:
 
 protected:
     SDL_Texture* m_Texture;
+    int m_width;
+    int m_height;
 };
 
 

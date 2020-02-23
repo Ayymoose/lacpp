@@ -5,6 +5,8 @@
 HUD::HUD()
 {
     m_Texture = ResourceManager::getInstance()[RSC_HUD];
+    m_height = 16;
+    m_width = 160;
 }
 
 HUD::~HUD()
@@ -14,6 +16,6 @@ HUD::~HUD()
 
 void HUD::render(SDL_Renderer* pRenderer)
 {
-    SDL_Rect rect = { 0,CAMERA_HEIGHT,160,16 };
-    SDL_RenderCopyEx(pRenderer, m_Texture, nullptr, &rect, 0, nullptr, SDL_FLIP_NONE);
+    SDL_Rect dstRect = { 0,CAMERA_HEIGHT,m_width,m_height };
+    SDL_RenderCopy(pRenderer, m_Texture, nullptr, &dstRect);
 }

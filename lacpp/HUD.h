@@ -14,8 +14,6 @@ public:
     }
     void render(SDL_Renderer* pRenderer);
 
-private:
-    const int m_height = 16;
 };
 
 

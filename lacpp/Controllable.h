@@ -1,6 +1,7 @@
 #ifndef CONTROLLABLE_H
 #define CONTROLLABLE_H
 
+#include <SDL_image.h>
 #include <iostream>
 
 // Allows an object to receive control depending on whether it is the controller or not

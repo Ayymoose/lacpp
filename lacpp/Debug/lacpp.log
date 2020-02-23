@@ -1,3 +1,4 @@
-﻿  Resource.cpp
-D:\Users\Ayman\Desktop\lacpp\lacpp\Renderer.h(46,39): warning C4100: 'renderable': unreferenced formal parameter
+﻿  Camera.cpp
+D:\Users\Ayman\Desktop\lacpp\lacpp\Controllable.h(16,43): warning C4100: 'event': unreferenced formal parameter
+D:\Users\Ayman\Desktop\lacpp\lacpp\Camera.cpp(151,39): warning C4100: 'event': unreferenced formal parameter
   lacpp.vcxproj -> D:\Users\Ayman\Desktop\lacpp\lacpp\Debug\lacpp.exe
