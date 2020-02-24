@@ -15,7 +15,7 @@ public:
     Player();
     ~Player();
     void render(SDL_Renderer* pRenderer);
-    void control(const SDL_Event& event);
+    void control();
 
     void attack();
     void die();

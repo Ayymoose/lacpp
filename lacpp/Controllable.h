@@ -1,8 +1,8 @@
 #ifndef CONTROLLABLE_H
 #define CONTROLLABLE_H
 
-#include <SDL_image.h>
 #include <iostream>
+#include <cassert>
 
 // Allows an object to receive control depending on whether it is the controller or not
 
@@ -13,14 +13,17 @@ public:
     {
         std::cout << "Controllable deconstructor called" << std::endl;
     }
-    virtual void control(const SDL_Event& event)
+    virtual void control()
     {
-        std::cout << "Controllable control() called" << std::endl;
+        assert(false && "Controllable control() called");
     }
     Controllable()
     {
         std::cout << "Controllable constructor called" << std::endl;
+        m_keyboardState = nullptr;
     }
+protected:
+    const uint8_t* m_keyboardState;
 };
 
 #endif

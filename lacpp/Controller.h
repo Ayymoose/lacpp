@@ -17,6 +17,7 @@ public:
     {
         return m_pController;
     }
+
 private:
     Controller()
     {

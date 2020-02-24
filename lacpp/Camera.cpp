@@ -50,7 +50,7 @@ void Camera::trackCharacter()
         m_scrollLeft = true;
         Controller::getInstance().setController(nullptr);
     }
-    else if (x > m_scrollX + CAMERA_WIDTH)
+    else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_X_RIGHT_EDGE)
     {
         // Scroll right
         m_scrollRight = true;
@@ -62,7 +62,7 @@ void Camera::trackCharacter()
         m_scrollUp = true;
         Controller::getInstance().setController(nullptr);
     }
-    else if (y > m_scrollY + CAMERA_HEIGHT - 16)
+    else if (y > m_scrollY + CAMERA_HEIGHT - 16 /* HUD height because its on the bottom*/)
     {
         // Scroll down
         m_scrollDown = true;
@@ -75,8 +75,11 @@ void Camera::trackCharacter()
         if (m_scrolled != CAMERA_WIDTH)
         {
             m_scrollX -= m_scrollSpeed;
-            player->add(-1, 0);
             m_scrolled += m_scrollSpeed;
+            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            {
+                player->add(-PLAYER_SCROLL, 0);
+            }
         }
         else
         {
@@ -91,7 +94,10 @@ void Camera::trackCharacter()
         {
             m_scrollX += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            player->add(1, 0);
+            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            {
+                player->add(PLAYER_SCROLL, 0);
+            }
         }
         else
         {
@@ -106,7 +112,10 @@ void Camera::trackCharacter()
         {
             m_scrollY += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            player->add(0, 1);
+            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            {
+                player->add(0, PLAYER_SCROLL);
+            }
         }
         else
         {
@@ -121,7 +130,10 @@ void Camera::trackCharacter()
         {
             m_scrollY -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            player->add(0, -1);
+            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            {
+                player->add(0, -PLAYER_SCROLL);
+            }
         }
         else
         {
@@ -148,20 +160,10 @@ void Camera::setCurrentBackground(SDL_Texture* currentBackground)
 }
 
 // Just for testing as the camera is not controllable
-void Camera::control(const SDL_Event& event)
+void Camera::control()
 {
-   /* switch (event.type)
-    {
-    case SDL_KEYDOWN:
-        switch (event.key.keysym.sym)
-        {
-        case BUTTON_RIGHT: scroll(SCROLL_RIGHT); break;
-        case BUTTON_LEFT: scroll(SCROLL_LEFT); break;
-        case BUTTON_DOWN: scroll(SCROLL_DOWN); break;
-        case BUTTON_UP: scroll(SCROLL_UP); break;
-        }
-    break;
-    } */
+
+
 }
 
 void Camera::setScrollSpeed(int scrollSpeed)

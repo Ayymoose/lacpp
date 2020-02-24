@@ -63,11 +63,9 @@ void Window::beginEventLoop()
 
     while (!m_quitApplication)
     {
-        if (SDL_PollEvent(&m_eventHandler))
-        {
-            handleWindowEvents();
-            handleInput();
-        }
+
+        handleWindowEvents();
+        handleInput();
 
         std::vector<Renderable*> renderList = Renderer::getInstance().renderableObjects();
 
@@ -89,21 +87,26 @@ void Window::beginEventLoop()
 
 void Window::handleInput()
 {
-    Controllable* controller = Controller::getInstance().getController();
-    if (controller && (m_eventHandler.type == SDL_KEYDOWN || m_eventHandler.type == SDL_KEYUP))
+    Controllable* pController = Controller::getInstance().getController();
+    const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
+
+    if (pController && IS_GAMEPAD_PRESSED(pKeyboardState))
     {
-        controller->control(m_eventHandler);
+        pController->control();
     }
 }
 
 void Window::handleWindowEvents()
 {
-    switch (m_eventHandler.type)
+    if (SDL_PollEvent(&m_eventHandler))
     {
-    case SDL_QUIT:
-        m_quitApplication = true;
-        break;
-    } 
+        switch (m_eventHandler.type)
+        {
+        case SDL_QUIT:
+            m_quitApplication = true;
+            break;
+        }
+    }
 }
 
 void Window::renderObjects()

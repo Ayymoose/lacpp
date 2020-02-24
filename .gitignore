@@ -10,3 +10,4 @@ lacpp/.vs/*
 *.tlog
 *.idb
 *.pdb
+*.xml
