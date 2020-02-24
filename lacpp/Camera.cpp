@@ -10,7 +10,7 @@ Camera::Camera()
     m_scrollX = 0;
     m_scrollY = 0;
     m_scrollSpeed = 0;
-    m_Texture = nullptr;
+    m_texture = nullptr;
     m_width = CAMERA_WIDTH;
     m_height = CAMERA_HEIGHT;
     m_scrollCamera = false;
@@ -149,14 +149,14 @@ void Camera::render(SDL_Renderer* pRenderer)
 {
     SDL_Rect srcRect = { m_x + m_scrollX, m_y + m_scrollY,m_width ,m_height };
     SDL_Rect dstRect = {0,0,m_width,m_height };
-    SDL_RenderCopy(pRenderer, m_Texture, &srcRect, &dstRect);
+    SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect);
     
     trackCharacter();
 }
 
 void Camera::setCurrentBackground(SDL_Texture* currentBackground)
 {
-    m_Texture = currentBackground;
+    m_texture = currentBackground;
 }
 
 // Just for testing as the camera is not controllable

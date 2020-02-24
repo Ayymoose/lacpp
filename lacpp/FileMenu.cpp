@@ -3,7 +3,7 @@
 
 FileMenu::FileMenu()
 {
-    m_Texture = ResourceManager::getInstance()[RSC_FILE_MENU_1];
+    m_texture = ResourceManager::getInstance()[RSC_FILE_MENU_1];
 }
 
 FileMenu::~FileMenu()

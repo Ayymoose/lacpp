@@ -13,7 +13,7 @@ class Renderable
 public:
     Renderable()
     {
-        m_Texture = nullptr;
+        m_texture = nullptr;
         m_width = 0;
         m_height = 0;
     }
@@ -25,7 +25,7 @@ public:
     virtual void render(SDL_Renderer* pRenderer) = 0;
 
 protected:
-    SDL_Texture* m_Texture;
+    SDL_Texture* m_texture;
     int m_width;
     int m_height;
 };

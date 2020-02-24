@@ -5,7 +5,7 @@
 
 Player::Player()
 {
-    m_Texture = ResourceManager::getInstance()[RSC_LINK];
+    m_texture = ResourceManager::getInstance()[RSC_LINK];
     m_position.set(64, 64);
     m_jumpVector.set(0, 0);
     m_width = 16;
@@ -31,7 +31,7 @@ void Player::render(SDL_Renderer* pRenderer)
                          m_position.y() + m_jumpVector.y() - m_camera->getY(),
                          m_width,m_height 
                        };
-    SDL_RenderCopy(pRenderer, m_Texture, &srcRect, &dstRect);
+    SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect);
 }
 
 void Player::control()
