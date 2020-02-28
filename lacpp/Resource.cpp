@@ -66,7 +66,7 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_22, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_TELEPHONE_HOUSE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_HUD, loadTexture("Resources\\Background\\Misc\\hud.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link_test.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Background\\Misc\\inventory.png")));
 
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_1, loadTexture("Resources\\Background\\Misc\\file_menu_1.png")));

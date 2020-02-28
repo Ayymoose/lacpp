@@ -19,6 +19,8 @@ Camera::Camera()
     m_scrollRight = false;
     m_scrollDown = false;
     m_scrollUp = false;
+    m_tracker = nullptr;
+
 }
 
 void Camera::setPosition(int x, int y)
@@ -41,8 +43,7 @@ void Camera::trackCharacter()
     assert(player != nullptr);
 
     Vec2 position = player->position();
-    int x = position.x();
-    int y = position.y();
+    int x = position.x; int y = position.y;
 
     if (x < m_scrollX)
     {
@@ -50,7 +51,7 @@ void Camera::trackCharacter()
         m_scrollLeft = true;
         Controller::getInstance().setController(nullptr);
     }
-    else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_X_RIGHT_EDGE)
+    else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE)
     {
         // Scroll right
         m_scrollRight = true;
@@ -74,29 +75,37 @@ void Camera::trackCharacter()
     {
         if (m_scrolled != CAMERA_WIDTH)
         {
-            m_scrollX -= m_scrollSpeed;
-            m_scrolled += m_scrollSpeed;
-            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            if (m_timerCameraScroll.update(FPS_66))
             {
-                player->add(-PLAYER_SCROLL, 0);
+                m_scrollX -= m_scrollSpeed;
+                m_scrolled += m_scrollSpeed;
+                if (m_timerPlayerScroll.update(FPS_33))
+                {
+                    player->addPosition(-PLAYER_SCROLL_SPEED, 0);
+                }
             }
+
         }
         else
         {
             m_scrollLeft = false;
             m_scrolled = 0;
             Controller::getInstance().setController(player);
+            player->resetAnimation();
         }
     }
     else if (m_scrollRight)
     {
         if (m_scrolled != CAMERA_WIDTH)
         {
-            m_scrollX += m_scrollSpeed;
-            m_scrolled += m_scrollSpeed;
-            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            if (m_timerCameraScroll.update(FPS_66))
             {
-                player->add(PLAYER_SCROLL, 0);
+                m_scrollX += m_scrollSpeed;
+                m_scrolled += m_scrollSpeed;
+                if (m_timerPlayerScroll.update(FPS_33))
+                {
+                    player->addPosition(PLAYER_SCROLL_SPEED, 0);
+                }
             }
         }
         else
@@ -104,17 +113,21 @@ void Camera::trackCharacter()
             m_scrollRight = false;
             m_scrolled = 0;
             Controller::getInstance().setController(player);
+            player->resetAnimation();
         }
     }
     else if (m_scrollDown)
     {
         if (m_scrolled != CAMERA_HEIGHT)
         {
-            m_scrollY += m_scrollSpeed;
-            m_scrolled += m_scrollSpeed;
-            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            if (m_timerCameraScroll.update(FPS_66))
             {
-                player->add(0, PLAYER_SCROLL);
+                m_scrollY += m_scrollSpeed;
+                m_scrolled += m_scrollSpeed;
+                if (m_timerPlayerScroll.update(FPS_33))
+                {
+                    player->addPosition(0, PLAYER_SCROLL_SPEED);
+                }
             }
         }
         else
@@ -122,17 +135,21 @@ void Camera::trackCharacter()
             m_scrollDown = false;
             m_scrolled = 0;
             Controller::getInstance().setController(player);
+            player->resetAnimation();
         }
     }
     else if (m_scrollUp)
     {
         if (m_scrolled != CAMERA_HEIGHT)
         {
-            m_scrollY -= m_scrollSpeed;
-            m_scrolled += m_scrollSpeed;
-            if (m_scrolled % PLAYER_SCROLL_FACTOR == 0)
+            if (m_timerCameraScroll.update(FPS_66))
             {
-                player->add(0, -PLAYER_SCROLL);
+                m_scrollY -= m_scrollSpeed;
+                m_scrolled += m_scrollSpeed;
+                if (m_timerPlayerScroll.update(FPS_33))
+                {
+                    player->addPosition(0, -PLAYER_SCROLL_SPEED);
+                }
             }
         }
         else
@@ -140,6 +157,7 @@ void Camera::trackCharacter()
             m_scrollUp = false;
             m_scrolled = 0;
             Controller::getInstance().setController(player);
+            player->resetAnimation();
         }
     }
 
@@ -157,13 +175,6 @@ void Camera::render(SDL_Renderer* pRenderer)
 void Camera::setCurrentBackground(SDL_Texture* currentBackground)
 {
     m_texture = currentBackground;
-}
-
-// Just for testing as the camera is not controllable
-void Camera::control()
-{
-
-
 }
 
 void Camera::setScrollSpeed(int scrollSpeed)

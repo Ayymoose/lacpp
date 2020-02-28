@@ -8,8 +8,11 @@
 class Character
 {
 public:
-    Character() {};
-    ~Character() {};
+    Character() 
+    {
+        m_health = 0;
+    };
+    ~Character() = default;
 
 protected:
     int m_health;

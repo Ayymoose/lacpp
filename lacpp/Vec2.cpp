@@ -1,48 +1,43 @@
 #include "Vec2.h"
 #include <cmath>
+#include <cassert>
 
 Vec2::Vec2()
 {
-    m_v_x = 0;
-    m_v_y = 0;
-    m_length = 0;
+    x = 0;
+    y = 0;
 }
 
 Vec2::Vec2(int x, int y)
 {
-    m_v_x = x;
-    m_v_y = y;
-    m_length = sqrt(x*x + y*y);
+    this->x = x;
+    this->y = y;
 }
 
-Vec2::~Vec2()
-{
-
-}
-
-int Vec2::cross(Vec2 a, Vec2 b)
+int Vec2::cross(const Vec2& v1, const Vec2& v2)
 {
     return 0;
 }
 
-int Vec2::dot(Vec2 a, Vec2 b)
+int Vec2::dot(const Vec2& v1, const Vec2& v2)
 {
     return 0;
+}
+
+void Vec2::normalise()
+{
+    assert(length() != 0);
+    x /= length();
+    y /= length();
 }
 
 double Vec2::length() const
 {
-    return sqrt(m_v_x * m_v_x + m_v_y * m_v_y);
+    return sqrt(x * x + y * y);
 }
 
 void Vec2::set(int x, int y)
 {
-    m_v_x = x;
-    m_v_y = y;
-}
-
-void Vec2::add(int x, int y)
-{
-    m_v_x += x;
-    m_v_y += y;
+    this->x = x;
+    this->y = y;
 }

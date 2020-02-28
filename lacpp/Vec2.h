@@ -3,40 +3,32 @@
 
 // 2D vector class
 
+// int, float, double
+
 class Vec2
 {
 public:
     Vec2();
     Vec2(int x, int y);
-    ~Vec2();
+    ~Vec2() = default;
 
     // Cross product of 2 2D vectors
-    static int cross(Vec2 a, Vec2 b);
+    static int cross(const Vec2& v1, const Vec2& v2);
 
     // Dot product of 2 2D vectors
-    static int dot(Vec2 a, Vec2 b);
+    static int dot(const Vec2& v1, const Vec2& v2);
+
+    // Normalise a vector
+    void normalise();
 
     // Vector length
     double length() const;
 
-    void add(int x, int y);
-
     void set(int x, int y);
 
-    int x() const
-    {
-        return m_v_x;
-    }
-
-    int y() const
-    {
-        return m_v_y;
-    }
-
-private:
-    int m_v_x;
-    int m_v_y;
-    double m_length;
+    // Just easier to have it public
+    int x;
+    int y;
 };
 
 #endif // !VEC2_H

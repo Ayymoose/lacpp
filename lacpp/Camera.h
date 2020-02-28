@@ -5,12 +5,23 @@
 #include "Controller.h"
 #include "Renderable.h"
 #include "Character.h"
+#include "UpdateTimer.h"
 
 // The "viewing region" dimensions
 #define CAMERA_WIDTH 160
 #define CAMERA_HEIGHT 128
 
-class Camera : public Controllable, public Renderable
+// Player related definitions
+// How much we add to the position vector of the player to scroll
+#define PLAYER_SCROLL_SPEED 1
+
+// How much edge pixels to add to the width/height of the character before it triggers a scroll
+#define SCROLL_RIGHT_EDGE 10
+#define SCROLL_LEFT_EDGE 0
+#define SCROLL_UP_EDGE 0
+#define SCROLL_DOWN_EDGE 0
+
+class Camera :  public Renderable
 {
 public:
     Camera();
@@ -18,7 +29,6 @@ public:
     void setScrollSpeed(int scrollSpeed);
     void render(SDL_Renderer* pRenderer);
     void setCurrentBackground(SDL_Texture* currentBackground);
-    void control();
    
     // The camera will track a Character
     void track(Character* character);
@@ -52,14 +62,9 @@ private:
     int m_scrolled;
     bool m_scrollCamera;
 
-    // How much we add to the position vector of the player to scroll
-    const int PLAYER_SCROLL = 1;
+    UpdateTimer m_timerCameraScroll;
+    UpdateTimer m_timerPlayerScroll;
 
-    // How "fast" we slide the player over
-    const int PLAYER_SCROLL_FACTOR = 8;
-
-    // How much edge pixels to add to the width/height of the character before it triggers a scroll
-    const int SCROLL_X_RIGHT_EDGE = 10;
 };
 
 #endif

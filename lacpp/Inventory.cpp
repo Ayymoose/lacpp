@@ -4,8 +4,8 @@
 
 Inventory::Inventory()
 {
-    m_Texture = ResourceManager::getInstance()[RSC_INVENTORY];
-    SDL_QueryTexture(m_Texture, nullptr, nullptr, &m_width, &m_height);
+    m_texture = ResourceManager::getInstance()[RSC_INVENTORY];
+    SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height);
 }
 
 Inventory::~Inventory()
@@ -37,15 +37,15 @@ void Inventory::control(const SDL_Event& event)
 
 void Inventory::render(SDL_Renderer* pRenderer)
 {
-    SDL_RenderCopy(pRenderer, m_Texture, nullptr, nullptr);
+    SDL_RenderCopy(pRenderer, m_texture, nullptr, nullptr);
 }
 
 void Inventory::open()
 {
-    m_Texture = ResourceManager::getInstance()[RSC_INVENTORY];
+    m_texture = ResourceManager::getInstance()[RSC_INVENTORY];
 }
 
 void Inventory::close()
 {
-    m_Texture = nullptr;
+    m_texture = nullptr;
 }

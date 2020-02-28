@@ -64,15 +64,15 @@ void Window::beginEventLoop()
     while (!m_quitApplication)
     {
 
-        handleWindowEvents();
         handleInput();
+        handleWindowEvents();
 
         std::vector<Renderable*> renderList = Renderer::getInstance().renderableObjects();
 
-        float fps = framesRendered / (fpsTimer.getTicks() / 1000.f);
+        float fps = framesRendered / (fpsTimer.getTicks() / 1000.0f);
         windowTitle = 
             "CX: " + std::to_string(camera.getX()) + " CY: " + std::to_string(camera.getY()) +
-            " PX: " + std::to_string(player.position().x()) + " PY: " + std::to_string(player.position().y()) +
+            " PX: " + std::to_string(player.position().x) + " PY: " + std::to_string(player.position().y) +
             " FPS: " + std::to_string((int)fps) + 
             " Renderables: " + std::to_string(renderList.size())
             ;

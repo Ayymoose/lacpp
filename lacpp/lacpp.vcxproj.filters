@@ -45,6 +45,9 @@
     <ClCompile Include="FileMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UpdateTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -92,13 +95,13 @@
     <ClInclude Include="Character.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Inventory.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="FileMenu.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateTimer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

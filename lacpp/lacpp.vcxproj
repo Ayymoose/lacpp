@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Users\Ayman\Desktop\lacpp\lacpp\SDL2_image-2.0.5\include;D:\Users\Ayman\Desktop\lacpp\lacpp\SDL2-2.0.10\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,6 +138,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UpdateTimer.cpp" />
     <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -146,7 +148,6 @@
     <ClInclude Include="Controllable.h" />
     <ClInclude Include="FileMenu.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Header.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputControl.h" />
     <ClInclude Include="Controller.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="UpdateTimer.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Renderer.h" />
