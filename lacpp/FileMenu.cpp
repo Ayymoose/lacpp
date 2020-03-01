@@ -11,7 +11,7 @@ FileMenu::~FileMenu()
 
 }
 
-void FileMenu::control(const SDL_Event& event)
+void FileMenu::control()
 {
 
 }

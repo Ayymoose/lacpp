@@ -7,6 +7,7 @@
 #define FPS_66 (1.0 / 66.0)    // We need some extra delay between frame rendering maybe
 #define FPS_33 (1.0 / 31.0)    // To be adjusted!
 #define PLAYER_ANIMATION_FPS (1.0 / 10.0)
+#define BACKGROUND_OBJECT_FPS (1.0 / 6.0)
 
 class UpdateTimer
 {

@@ -8,6 +8,7 @@
 #include <string>
 #include "HUD.h"
 #include "Player.h"
+#include "BackgroundObject.h"
 
 Window::Window()
 {
@@ -34,24 +35,30 @@ void Window::beginEventLoop()
    // Handle game logic
 
 
-    Camera camera;
+   // Camera camera;
     HUD hud;
     Player player;
-    Inventory inventory;
+    //Inventory inventory;
 
-    inventory.close();
+    //inventory.close();
 
-    camera.track(&player);
-    player.trackedBy(&camera);
-    camera.setScrollSpeed(4);
-    camera.setPosition(480, 640);
-    camera.setCurrentBackground(ResourceManager::getInstance()[RSC_DUNGEON_1_TAIL_CAVE]);
+    Camera::getInstance().track(&player);
+    Camera::getInstance().setScrollSpeed(4);
+    Camera::getInstance().setPosition(480, 640);
+    Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[RSC_DUNGEON_1_TAIL_CAVE]);
 
-    Renderer::getInstance().addRenderable(&camera);
+    BackgroundObject candle1(RSC_CANDLE, 16, 16, 0);
+    BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
+
+
+    Renderer::getInstance().addRenderable(&Camera::getInstance());
+    Renderer::getInstance().addRenderable(&candle1);
+    Renderer::getInstance().addRenderable(&torch1);
+
+
     Renderer::getInstance().addRenderable(&player);
     Renderer::getInstance().addRenderable(&hud);
-    Renderer::getInstance().addRenderable(&inventory);
-
+    //Renderer::getInstance().addRenderable(&inventory);
 
     Controller::getInstance().setController(&player);
     SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + hud.height()));
@@ -59,7 +66,7 @@ void Window::beginEventLoop()
     std::string windowTitle;
 
     Timer fpsTimer;
-    int framesRendered = 0;
+    uint64_t framesRendered = 0;
 
     while (!m_quitApplication)
     {
@@ -69,9 +76,9 @@ void Window::beginEventLoop()
 
         std::vector<Renderable*> renderList = Renderer::getInstance().renderableObjects();
 
-        float fps = framesRendered / (fpsTimer.getTicks() / 1000.0f);
+        double fps = framesRendered / (fpsTimer.getTicks() / 1000.0);
         windowTitle = 
-            "CX: " + std::to_string(camera.getX()) + " CY: " + std::to_string(camera.getY()) +
+            "CX: " + std::to_string(Camera::getInstance().getX()) + " CY: " + std::to_string(Camera::getInstance().getY()) +
             " PX: " + std::to_string(player.position().x) + " PY: " + std::to_string(player.position().y) +
             " FPS: " + std::to_string((int)fps) + 
             " Renderables: " + std::to_string(renderList.size())
@@ -112,8 +119,8 @@ void Window::handleWindowEvents()
 void Window::renderObjects()
 {
     // Clear the screen
-    SDL_Renderer* mainRenderer = Renderer::getInstance().getRenderer();
-    SDL_RenderClear(mainRenderer);
+    SDL_Renderer* pRenderer = Renderer::getInstance().getRenderer();
+    SDL_RenderClear(pRenderer);
 
     // Draw any objects
     std::vector<Renderable*> renderables = Renderer::getInstance().renderableObjects();
@@ -121,12 +128,12 @@ void Window::renderObjects()
     {
         for (auto iterator = renderables.begin(); iterator != renderables.end(); iterator++)
         {
-            (*iterator)->render(mainRenderer);
+            (*iterator)->render(pRenderer);
         }
     }   
 
     // Represent to the screen
-    SDL_RenderPresent(mainRenderer);
+    SDL_RenderPresent(pRenderer);
 }
 
 

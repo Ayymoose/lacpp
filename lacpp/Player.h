@@ -6,7 +6,6 @@
 #include "Vec2.h"
 #include "Character.h"
 
-#include "Camera.h"
 #include "UpdateTimer.h"
 
 enum PlayerState
@@ -88,7 +87,7 @@ class Player : public Controllable, public Renderable, public Character
 public:
     Player();
     ~Player();
-    void render(SDL_Renderer* pRenderer);
+    void render(SDL_Renderer* pRenderer) override;
     void control();
 
     void attack();
@@ -107,27 +106,12 @@ public:
         m_position.y += y;
     }
 
-    void trackedBy(Camera* camera)
-    {
-        m_camera = camera;
-    }
 
 private:
     Vec2 m_jumpVector;
     int m_speed;
-    Camera* m_camera;
-
-
-    // Needs common class
-    double m_animationFPS;
-    int m_animateXPos;
-    int m_animateYPos;
-    int m_currentFrame;
-    int m_maxFrame;
-    int m_spacing;
 
     UpdateTimer m_movementTimer;
-    UpdateTimer m_animationTimer;
 
     bool m_dirLockRight;
     bool m_dirLockUp;
@@ -137,21 +121,12 @@ private:
     // Player animation state
     PlayerState m_state;
 
-    struct Animation
-    {
-        int x;             // Initial X-position in sprite sheet for this animation
-        int y;             // Initial Y-position in sprite sheet for this animation
-        int currentFrame;  // Initial frame in this animation
-        int maxFrame;      // Maximum frame number for this animation
-        double animationFPS;  // Animation rate in FPS
-    };
-
     const Animation m_animations[LINK_ANIMATIONS] =
     {
-        {0,0,0,1,PLAYER_ANIMATION_FPS},    // LINK_WALK_LEFT 
-        {103,0,0,1,PLAYER_ANIMATION_FPS},  // LINK_WALK_RIGHT
-        {35,0,0,1,PLAYER_ANIMATION_FPS},   // LINK_WALK_DOWN
-        {69,0,0,1,PLAYER_ANIMATION_FPS}    // LINK_WALK_UP
+        {0,0,0,1,PLAYER_ANIMATION_FPS,0},    // LINK_WALK_LEFT 
+        {103,0,0,1,PLAYER_ANIMATION_FPS,0},  // LINK_WALK_RIGHT
+        {35,0,0,1,PLAYER_ANIMATION_FPS,0},   // LINK_WALK_DOWN
+        {69,0,0,1,PLAYER_ANIMATION_FPS,0}    // LINK_WALK_UP
        /* {0,0,0,1,12},
         {0,0,0,1,12},
         {0,0,0,1,12},

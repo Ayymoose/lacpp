@@ -6,6 +6,7 @@
 #include "Renderable.h"
 #include "Character.h"
 #include "UpdateTimer.h"
+#include "Singleton.h"
 
 // The "viewing region" dimensions
 #define CAMERA_WIDTH 160
@@ -21,15 +22,18 @@
 #define SCROLL_UP_EDGE 0
 #define SCROLL_DOWN_EDGE 0
 
-class Camera :  public Renderable
+class Camera :  public Renderable, public Singleton<Camera>, public Controllable
 {
+    friend class Singleton<Camera>;
 public:
-    Camera();
     void setPosition(int x, int y);
     void setScrollSpeed(int scrollSpeed);
     void render(SDL_Renderer* pRenderer);
     void setCurrentBackground(SDL_Texture* currentBackground);
    
+
+    void control();
+
     // The camera will track a Character
     void track(Character* character);
 
@@ -41,7 +45,9 @@ public:
     {
         return m_scrollY;
     }
+
 private:
+    Camera();
     // Called in the render function
     void trackCharacter();
 

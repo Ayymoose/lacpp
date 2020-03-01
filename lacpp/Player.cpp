@@ -2,6 +2,7 @@
 #include "Resource.h"
 #include "InputControl.h"
 #include "Vec2.h"
+#include "Camera.h"
 
 Player::Player()
 {
@@ -25,8 +26,6 @@ Player::Player()
    
     m_spacing = 1; // Spacing between each sprite
 
-    m_camera = nullptr;
-
     m_dirLockRight = false;
     m_dirLockUp = false;
     m_dirLockDown = false;
@@ -43,8 +42,8 @@ void Player::render(SDL_Renderer* pRenderer)
 
     // Get clock, if elapsed, increase frame counter
     SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width) + m_spacing, m_animateYPos, m_width ,m_height };
-    SDL_Rect dstRect = { m_position.x /*+ m_jumpVector.x*/ - m_camera->getX(),
-                         m_position.y /*+ m_jumpVector.y*/ - m_camera->getY(),
+    SDL_Rect dstRect = { m_position.x /*+ m_jumpVector.x*/ - Camera::getInstance().getX(),
+                         m_position.y /*+ m_jumpVector.y*/ - Camera::getInstance().getY(),
                          m_width,m_height 
                        };
     SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect);

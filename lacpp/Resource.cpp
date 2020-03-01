@@ -72,6 +72,10 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_1, loadTexture("Resources\\Background\\Misc\\file_menu_1.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_2, loadTexture("Resources\\Background\\Misc\\file_menu_2.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_3, loadTexture("Resources\\Background\\Misc\\file_menu_3.png")));
+
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png")));
+
 }
 
 ResourceManager::~ResourceManager()

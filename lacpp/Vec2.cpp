@@ -21,7 +21,7 @@ int Vec2::cross(const Vec2& v1, const Vec2& v2)
 
 int Vec2::dot(const Vec2& v1, const Vec2& v2)
 {
-    return 0;
+    return v1.x* v2.x + v1.y * v2.y;
 }
 
 void Vec2::normalise()

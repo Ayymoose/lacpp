@@ -8,7 +8,7 @@ UpdateTimer::UpdateTimer()
 
 bool UpdateTimer::update(double dt)
 {
-    if ((SDL_GetTicks() - m_previousUpdateTime) / 1000.0f >= dt)
+    if ((SDL_GetTicks() - m_previousUpdateTime) / 1000.0 >= dt)
     {
         m_previousUpdateTime = SDL_GetTicks();
         return true;

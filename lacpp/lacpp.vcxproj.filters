@@ -104,5 +104,8 @@
     <ClInclude Include="UpdateTimer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="BackgroundObject.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

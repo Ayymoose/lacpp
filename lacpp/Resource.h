@@ -86,6 +86,20 @@ enum RESOURCE
     RSC_FILE_MENU_2,
     RSC_FILE_MENU_3,
 
+    // Background Objects
+    RSC_CANDLE,
+    RSC_TORCH_1,
+    RSC_TORCH_2,
+    RSC_SPIKE,
+    RSC_WATER_1,
+    RSC_WATER_2,
+    RSC_WATER_3,
+    RSC_WATER_4,
+    RSC_RAPID,
+    RSC_FLOWER_1,
+    RSC_FLOWER_2,
+    
+
     // Sprites
     RSC_LINK,
     

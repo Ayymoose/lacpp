@@ -9,7 +9,7 @@ class FileMenu : public Controllable, public Renderable
 public:
     FileMenu();
     ~FileMenu();
-    void control(const SDL_Event& event);
+    void control();
     void render(SDL_Renderer* pRenderer);
 
 private:

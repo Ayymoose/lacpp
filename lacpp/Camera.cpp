@@ -20,7 +20,6 @@ Camera::Camera()
     m_scrollDown = false;
     m_scrollUp = false;
     m_tracker = nullptr;
-
 }
 
 void Camera::setPosition(int x, int y)
@@ -165,16 +164,55 @@ void Camera::trackCharacter()
 
 void Camera::render(SDL_Renderer* pRenderer)
 {
+    if (m_tracker)
+    {
+        trackCharacter();
+    }
+
     SDL_Rect srcRect = { m_x + m_scrollX, m_y + m_scrollY,m_width ,m_height };
-    SDL_Rect dstRect = {0,0,m_width,m_height };
+    SDL_Rect dstRect = { 0, 0, m_width, m_height };
     SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect);
     
-    trackCharacter();
+
 }
 
 void Camera::setCurrentBackground(SDL_Texture* currentBackground)
 {
     m_texture = currentBackground;
+}
+
+void Camera::control()
+{
+    m_keyboardState = SDL_GetKeyboardState(nullptr);
+    if (m_keyboardState[BUTTON_RIGHT])
+    {
+        if (m_timerCameraScroll.update(FPS_66))
+        {
+            m_scrollX += m_scrollSpeed;
+        }
+    }
+    if (m_keyboardState[BUTTON_LEFT])
+    {
+        if (m_timerCameraScroll.update(FPS_66))
+        {
+            m_scrollX -= m_scrollSpeed;
+        }
+    }
+    if (m_keyboardState[BUTTON_UP])
+    {
+        if (m_timerCameraScroll.update(FPS_66))
+        {
+            m_scrollY -= m_scrollSpeed;
+        }
+    }
+    if (m_keyboardState[BUTTON_DOWN])
+    {
+        if (m_timerCameraScroll.update(FPS_66))
+        {
+            m_scrollY += m_scrollSpeed;
+        }
+    }
+
 }
 
 void Camera::setScrollSpeed(int scrollSpeed)
