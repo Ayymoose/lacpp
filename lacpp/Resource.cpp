@@ -7,7 +7,7 @@ void ResourceManager::loadGraphics()
     // Attempt to load all the graphic resources
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_BACKGROUND_OVERWORLD_MAIN, loadTexture("Resources\\Background\\Overworld\\bck-overworld_main.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_2_BOTTLE_GROTTO, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
+    /*m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_2_BOTTLE_GROTTO, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_3_KEY_CAVERN, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_4_ANGLER_TUNNEL, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_5_CATFISH_MAW, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
@@ -65,8 +65,9 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_21, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_22, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_TELEPHONE_HOUSE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
+   */
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_HUD, loadTexture("Resources\\Background\\Misc\\hud.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link_test.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Background\\Misc\\inventory.png")));
 
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_1, loadTexture("Resources\\Background\\Misc\\file_menu_1.png")));
@@ -101,8 +102,9 @@ SDL_Texture* ResourceManager::loadTexture(std::string path)
     }
     else
     {
+        // Transparency (right now it's white)
+        SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 255, 255, 255));
         //  texture from surface pixels
-
         newTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().getRenderer(), loadedSurface);
         if (newTexture == nullptr)
         {

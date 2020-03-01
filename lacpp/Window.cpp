@@ -120,6 +120,7 @@ void Window::renderObjects()
 {
     // Clear the screen
     SDL_Renderer* pRenderer = Renderer::getInstance().getRenderer();
+
     SDL_RenderClear(pRenderer);
 
     // Draw any objects

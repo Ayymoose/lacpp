@@ -9,6 +9,9 @@
 #define PLAYER_ANIMATION_FPS (1.0 / 10.0)
 #define BACKGROUND_OBJECT_FPS (1.0 / 6.0)
 
+#define LINK_FALL_FPS (1.0 / 3.0)
+#define LINK_DROWN_FPS (1.0 / 3.0)
+
 class UpdateTimer
 {
 public:

@@ -12,13 +12,13 @@
 
 struct Animation
 {
-    int x;                // Initial X-position in sprite sheet for this animation
-    int y;                // Initial Y-position in sprite sheet for this animation
-    int currentFrame;     // Initial frame in this animation
-    int maxFrame;         // Maximum frame number for this animation
-    double animationFPS;  // Animation rate in FPS
-    double orientation;   // Rotation
-    int m_spacing;        // Spacing between each frame
+    int x;                 // Initial X-position in sprite sheet for this animation
+    int y;                 // Initial Y-position in sprite sheet for this animation
+    int currentFrame;      // Initial frame in this animation
+    int maxFrame;          // Maximum frame number for this animation
+    double animationFPS;   // Animation rate in FPS
+    double orientation;    // Rotation
+    SDL_RendererFlip flip; // Flip sprite (horizontal or vertical)
 };
 
 class Renderable
@@ -35,7 +35,6 @@ public:
         m_animateYPos = 0;
         m_currentFrame = 0;
         m_maxFrame = 0;
-        m_spacing = 0;
         m_orientation = 0.0;
     }
     virtual ~Renderable()
@@ -62,7 +61,6 @@ protected:
     int m_animateYPos;
     int m_currentFrame;
     int m_maxFrame;
-    int m_spacing;
     double m_orientation;
 };
 

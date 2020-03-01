@@ -23,9 +23,6 @@ Player::Player()
     m_maxFrame = 0;      // Maximum frame number for this animation
     m_animationFPS = 0; // Animation rate in FPS
 
-   
-    m_spacing = 1; // Spacing between each sprite
-
     m_dirLockRight = false;
     m_dirLockUp = false;
     m_dirLockDown = false;
@@ -39,14 +36,13 @@ Player::~Player()
 
 void Player::render(SDL_Renderer* pRenderer)
 {
-
     // Get clock, if elapsed, increase frame counter
-    SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width) + m_spacing, m_animateYPos, m_width ,m_height };
+    SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width) , m_animateYPos, m_width ,m_height };
     SDL_Rect dstRect = { m_position.x /*+ m_jumpVector.x*/ - Camera::getInstance().getX(),
                          m_position.y /*+ m_jumpVector.y*/ - Camera::getInstance().getY(),
                          m_width,m_height 
                        };
-    SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect);
+    SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip);
 }
 
 void Player::control()
@@ -57,18 +53,21 @@ void Player::control()
 
     /*
 
-    1. Render texture with transparent colour
-    2. Array for sprite indices
+    1. Render texture with transparent colour (DONE)
+    2. Array for sprite indices (DONE)
     3. Correct diagonal movement
-    4. Reset current frame to 0 when no key pressed or finished scrolling
+    4. Reset current frame to 0 when no key pressed or finished scrolling (DONE)
     5. Single animation timer for player (DONE)
-    6. Pressing oposing keys to not stop movement
+    6. Pressing oposing keys to not stop movement (DONE)
     7. Holding combination of left/right and up or left/right and down keeps current sprite effect (DONE)
 
     */
 
     // Max frame controlled by the state
     m_maxFrame = m_animations[m_state].maxFrame;
+
+    // Sprite orientation
+    m_orientation = m_animations[m_state].orientation;
 
     if (IS_MOVING(m_keyboardState))
     {
