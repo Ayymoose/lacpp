@@ -17,10 +17,7 @@ public:
     Window();
     ~Window();
     void createWindow(const char* title, const int width, const int height);
-    SDL_Window* getWindowHandle() const
-    {
-        return m_mainWindow;
-    }
+    SDL_Window* getWindowHandle();
     void beginEventLoop();
 
 private:

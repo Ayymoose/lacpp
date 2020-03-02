@@ -9,8 +9,8 @@ class Inventory : public Controllable, public Renderable
 public:
     Inventory();
     ~Inventory();
-    void control(const SDL_Event& event);
-    void render(SDL_Renderer* pRenderer);
+    void control() override;
+    void render(SDL_Renderer* pRenderer) override;
     void open();
     void close();
 private:

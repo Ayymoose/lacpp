@@ -104,24 +104,16 @@ public:
     Player();
     ~Player();
     void render(SDL_Renderer* pRenderer) override;
-    void control();
+    void control() override;
 
-    void attack();
-    void die();
+    void attack() override;
+    void die()  override;
 
     void resetAnimation();
 
-    Vec2 position() const
-    {
-        return m_position;
-    }
+    Vec2 position() const override;
 
-    void addPosition(int x, int y)
-    {
-        m_position.x += x;
-        m_position.y += y;
-    }
-
+    void addPosition(int x, int y);
 
 private:
     Vec2 m_jumpVector;

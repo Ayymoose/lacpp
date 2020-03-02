@@ -22,29 +22,23 @@
 #define SCROLL_UP_EDGE 0
 #define SCROLL_DOWN_EDGE 0
 
-class Camera :  public Renderable, public Singleton<Camera>, public Controllable
+class Camera : public Renderable, public Singleton<Camera>, public Controllable
 {
     friend class Singleton<Camera>;
 public:
     void setPosition(int x, int y);
     void setScrollSpeed(int scrollSpeed);
-    void render(SDL_Renderer* pRenderer);
+    void render(SDL_Renderer* pRenderer) override;
     void setCurrentBackground(SDL_Texture* currentBackground);
    
 
-    void control();
+    void control() override;
 
     // The camera will track a Character
     void track(Character* character);
 
-    int getX() const
-    {
-        return m_scrollX;
-    }
-    int getY() const
-    {
-        return m_scrollY;
-    }
+    int getX() const;
+    int getY() const;
 
 private:
     Camera();

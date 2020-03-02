@@ -190,3 +190,14 @@ void Player::resetAnimation()
 {
     m_currentFrame = m_animations[m_state].currentFrame;
 }
+
+Vec2 Player::position() const
+{
+    return m_position;
+}
+
+void Player::addPosition(int x, int y)
+{
+    m_position.x += x;
+    m_position.y += y;
+}

@@ -12,7 +12,7 @@ public:
     {
         return m_height;
     }
-    void render(SDL_Renderer* pRenderer);
+    void render(SDL_Renderer* pRenderer) override;
 
 };
 

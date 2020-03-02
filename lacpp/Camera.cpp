@@ -219,3 +219,12 @@ void Camera::setScrollSpeed(int scrollSpeed)
 {
     m_scrollSpeed = scrollSpeed;
 }
+
+int Camera::getX() const
+{
+    return m_scrollX;
+}
+int Camera::getY() const
+{
+    return m_scrollY;
+}

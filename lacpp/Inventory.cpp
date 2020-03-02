@@ -13,26 +13,13 @@ Inventory::~Inventory()
 
 }
 
-void Inventory::control(const SDL_Event& event)
+void Inventory::control()
 {
-    switch (event.type)
-    {
-    case SDL_KEYDOWN:
-        switch (event.key.keysym.sym)
-        {
-        case BUTTON_RIGHT:
-            break;
-        case BUTTON_LEFT: 
-            break;
-        case BUTTON_DOWN: 
-            open();
-            break;
-        case BUTTON_UP: 
-            close();
-            break;
-        }
-        break;
-    }
+
+    m_keyboardState = SDL_GetKeyboardState(nullptr);
+
+
+
 }
 
 void Inventory::render(SDL_Renderer* pRenderer)

@@ -29,18 +29,12 @@ void Window::createWindow(const char* title, const int width, const int height)
 
 void Window::beginEventLoop()
 {
-  
-   // Handle window events
-   // Handle input events
-   // Handle game logic
 
-
-   // Camera camera;
     HUD hud;
     Player player;
-    //Inventory inventory;
+    Inventory inventory;
 
-    //inventory.close();
+    inventory.close();
 
     Camera::getInstance().track(&player);
     Camera::getInstance().setScrollSpeed(4);
@@ -58,9 +52,11 @@ void Window::beginEventLoop()
 
     Renderer::getInstance().addRenderable(&player);
     Renderer::getInstance().addRenderable(&hud);
-    //Renderer::getInstance().addRenderable(&inventory);
+    Renderer::getInstance().addRenderable(&inventory);
 
     Controller::getInstance().setController(&player);
+
+    // Stretch the textures to the window
     SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + hud.height()));
    
     std::string windowTitle;
@@ -138,3 +134,7 @@ void Window::renderObjects()
 }
 
 
+SDL_Window* Window::getWindowHandle() const
+{
+    return m_mainWindow;
+}
