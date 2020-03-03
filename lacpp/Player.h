@@ -5,7 +5,7 @@
 #include "Controllable.h"
 #include "Vec2.h"
 #include "Character.h"
-
+#include "Inventory.h"
 #include "UpdateTimer.h"
 
 enum PlayerState
@@ -118,6 +118,8 @@ public:
 private:
     Vec2 m_jumpVector;
     int m_speed;
+
+    Inventory m_inventory;
 
     UpdateTimer m_movementTimer;
 

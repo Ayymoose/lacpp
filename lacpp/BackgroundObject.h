@@ -4,6 +4,7 @@
 #include "Renderable.h"
 #include "Resource.h"
 #include <iostream>
+#include "Depth.h"
 
 class BackgroundObject : public Renderable
 {
@@ -21,6 +22,9 @@ private:
 
 BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orientation)
 {
+
+    m_depth = BACKGROUND_OBJECT_DEPTH;
+
     m_texture = ResourceManager::getInstance()[resource];
     m_width = 16;
     m_height = 16;
@@ -64,6 +68,9 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
     default:
         break;
 	}
+
+    Renderer::getInstance().addRenderable(this);
+
 }
 
 void BackgroundObject::render(SDL_Renderer* pRenderer)

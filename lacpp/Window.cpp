@@ -6,7 +6,6 @@
 #include "Inventory.h"
 #include "Timer.h"
 #include <string>
-#include "HUD.h"
 #include "Player.h"
 #include "BackgroundObject.h"
 
@@ -30,34 +29,19 @@ void Window::createWindow(const char* title, const int width, const int height)
 void Window::beginEventLoop()
 {
 
-    HUD hud;
     Player player;
-    Inventory inventory;
-
-    inventory.close();
-
     Camera::getInstance().track(&player);
     Camera::getInstance().setScrollSpeed(4);
     Camera::getInstance().setPosition(480, 640);
     Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[RSC_DUNGEON_1_TAIL_CAVE]);
-
     BackgroundObject candle1(RSC_CANDLE, 16, 16, 0);
     BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
-
-
-    Renderer::getInstance().addRenderable(&Camera::getInstance());
-    Renderer::getInstance().addRenderable(&candle1);
-    Renderer::getInstance().addRenderable(&torch1);
-
-
-    Renderer::getInstance().addRenderable(&player);
-    Renderer::getInstance().addRenderable(&hud);
-    Renderer::getInstance().addRenderable(&inventory);
-
     Controller::getInstance().setController(&player);
+    
+
 
     // Stretch the textures to the window
-    SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + hud.height()));
+    SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16));
    
     std::string windowTitle;
 
@@ -70,14 +54,14 @@ void Window::beginEventLoop()
         handleInput();
         handleWindowEvents();
 
-        std::vector<Renderable*> renderList = Renderer::getInstance().renderableObjects();
+        auto renderSet = Renderer::getInstance().getRenderSet();
 
         double fps = framesRendered / (fpsTimer.getTicks() / 1000.0);
         windowTitle = 
             "CX: " + std::to_string(Camera::getInstance().getX()) + " CY: " + std::to_string(Camera::getInstance().getY()) +
             " PX: " + std::to_string(player.position().x) + " PY: " + std::to_string(player.position().y) +
             " FPS: " + std::to_string((int)fps) + 
-            " Renderables: " + std::to_string(renderList.size())
+            " Renderables: " + std::to_string(renderSet.size())
             ;
         renderObjects();
         framesRendered++;
@@ -93,6 +77,7 @@ void Window::handleInput()
     Controllable* pController = Controller::getInstance().getController();
     const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
 
+    // control() is only fired if the gamepad is pressed
     if (pController && IS_GAMEPAD_PRESSED(pKeyboardState))
     {
         pController->control();
@@ -120,14 +105,12 @@ void Window::renderObjects()
     SDL_RenderClear(pRenderer);
 
     // Draw any objects
-    std::vector<Renderable*> renderables = Renderer::getInstance().renderableObjects();
-    if (renderables.size() > 0)
+    auto renderSet = Renderer::getInstance().getRenderSet();
+
+    for (auto iterator = renderSet.begin(); iterator != renderSet.end(); iterator++)
     {
-        for (auto iterator = renderables.begin(); iterator != renderables.end(); iterator++)
-        {
-            (*iterator)->render(pRenderer);
-        }
-    }   
+        (*iterator)->render(pRenderer);
+    }  
 
     // Represent to the screen
     SDL_RenderPresent(pRenderer);

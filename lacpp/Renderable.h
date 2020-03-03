@@ -3,7 +3,7 @@
 
 #include <SDL_image.h>
 #include "UpdateTimer.h"
-
+#include <iostream>
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
 // A texture is provided to use for the object
@@ -29,7 +29,7 @@ public:
         m_texture = nullptr;
         m_width = 0;
         m_height = 0;
-
+        m_depth = 0;
         m_animationFPS = 0.0;
         m_animateXPos = 0;
         m_animateYPos = 0;
@@ -48,11 +48,21 @@ public:
         SDL_RenderCopy(pRenderer, m_texture, nullptr, nullptr);
     }
 
+    int getDepth() const
+    {
+        std::cout << "m_depth = " << m_depth << std::endl;
+        return m_depth;
+    }
+
+
 protected:
     // Default rendering
     SDL_Texture* m_texture;
     int m_width;
     int m_height;
+
+    // Z-ordering
+    int m_depth;
 
     // Animation
     UpdateTimer m_animationTimer;
@@ -63,6 +73,7 @@ protected:
     int m_maxFrame;
     double m_orientation;
 };
+
 
 
 #endif // !RENDERABLE_H

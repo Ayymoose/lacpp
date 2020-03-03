@@ -2,6 +2,8 @@
 #include "InputControl.h"
 #include <assert.h>
 #include "Player.h"
+#include "Renderer.h"
+#include "Depth.h"
 
 Camera::Camera()
 {
@@ -20,6 +22,10 @@ Camera::Camera()
     m_scrollDown = false;
     m_scrollUp = false;
     m_tracker = nullptr;
+
+    m_depth = BACKGROUND_DEPTH;
+
+    Renderer::getInstance().addRenderable(this);
 }
 
 void Camera::setPosition(int x, int y)

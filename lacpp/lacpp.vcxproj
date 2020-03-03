@@ -82,6 +82,7 @@
       <AdditionalIncludeDirectories>D:\Users\Ayman\Desktop\lacpp\lacpp\SDL2_image-2.0.5\include;D:\Users\Ayman\Desktop\lacpp\lacpp\SDL2-2.0.10\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,7 +137,6 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FileMenu.cpp" />
-    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -151,9 +151,9 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Controllable.h" />
+    <ClInclude Include="Depth.h" />
     <ClInclude Include="FileMenu.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="HUD.h" />
     <ClInclude Include="InputControl.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Inventory.h" />

@@ -3,6 +3,9 @@
 #include "InputControl.h"
 #include "Vec2.h"
 #include "Camera.h"
+#include "Renderer.h"
+#include <set>
+#include "Depth.h"
 
 Player::Player()
 {
@@ -14,6 +17,7 @@ Player::Player()
     m_speed = 1;
     m_health = 3;
 
+    m_depth = PLAYER_DEPTH;
 
     m_state = LINK_WALK_DOWN;
 
@@ -28,6 +32,8 @@ Player::Player()
     m_dirLockDown = false;
     m_dirLockLeft = false;
     
+    Renderer::getInstance().addRenderable(this);
+
 }
 
 Player::~Player()
@@ -49,7 +55,12 @@ void Player::control()
 {
     m_keyboardState = SDL_GetKeyboardState(nullptr);
 
-
+    // Open the inventory
+    if (m_keyboardState[BUTTON_SELECT])
+    {
+        m_inventory.open();
+     //   Controller::getInstance().setController(&m_inventory);
+    }
 
     /*
 
@@ -149,6 +160,7 @@ void Player::control()
     SDL_PumpEvents();
     if (!IS_GAMEPAD_PRESSED(m_keyboardState))
     {
+        // TODO: Current frame has to be reset to intial frame
         m_currentFrame = 0;
         m_dirLockRight = false;
         m_dirLockUp = false;
@@ -180,6 +192,7 @@ void Player::control()
 
 void Player::attack()
 {
+
 }
 
 void Player::die()

@@ -4,6 +4,8 @@
 #include "Singleton.h"
 #include "Renderable.h"
 #include <vector>
+#include <set>
+#include <functional>
 #include <SDL_image.h>
 
 // Singleton instance of the renderer for the main window
@@ -33,14 +35,14 @@ public:
         SDL_DestroyRenderer(m_pRenderer);
     }
 
-    std::vector<Renderable*> renderableObjects() const
+    auto getRenderSet() const
     {
-        return m_RenderableObjects;
+        return m_Renderables;
     }
 
     void addRenderable(Renderable* renderable)
     {
-        m_RenderableObjects.emplace_back(renderable);
+        m_Renderables.insert(renderable);
     }
 
     void removeRenderable(Renderable* renderable)
@@ -55,8 +57,17 @@ private:
     }
     // Global renderer
     SDL_Renderer* m_pRenderer;
-    // List of Renderable objects that will be drawn
-    std::vector<Renderable*> m_RenderableObjects;
+
+    struct rendererComparator
+    {
+        bool operator ()(const Renderable* r1, const Renderable* r2) const
+        {
+            return r1->getDepth() < r2->getDepth();
+        }
+    };
+  
+    // Multiset of Renderable objects that will be drawn
+    std::multiset<Renderable*, rendererComparator> m_Renderables;
 };
 
 #endif
