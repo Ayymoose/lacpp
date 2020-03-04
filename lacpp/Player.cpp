@@ -33,6 +33,9 @@ Player::Player()
     m_dirLockLeft = false;
     
     Renderer::getInstance().addRenderable(this);
+ 
+    m_inventory.open();
+    Controller::getInstance().setController(&m_inventory);
 
 }
 

@@ -12,13 +12,15 @@
 #define LINK_FALL_FPS (1.0 / 3.0)
 #define LINK_DROWN_FPS (1.0 / 3.0)
 
+#define INVENTORY_SELECTOR_FPS (1.0 / 4.0)
+
 class UpdateTimer
 {
 public:
     UpdateTimer();
     ~UpdateTimer() = default;
     bool update(double dt);
-
+    void reset();
 private:
     uint32_t m_previousUpdateTime;
 };

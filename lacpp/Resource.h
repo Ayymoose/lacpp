@@ -84,6 +84,7 @@ enum RESOURCE
     RSC_FILE_MENU_1,
     RSC_FILE_MENU_2,
     RSC_FILE_MENU_3,
+    RSC_INVENTORY_SELECTOR,
 
     // Background Objects
     RSC_CANDLE,

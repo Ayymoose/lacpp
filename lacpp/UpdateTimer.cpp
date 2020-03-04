@@ -6,6 +6,11 @@ UpdateTimer::UpdateTimer()
     m_previousUpdateTime = SDL_GetTicks();
 }
 
+void UpdateTimer::reset()
+{
+    m_previousUpdateTime = SDL_GetTicks();
+}
+
 bool UpdateTimer::update(double dt)
 {
     if ((SDL_GetTicks() - m_previousUpdateTime) / 1000.0 >= dt)

@@ -36,7 +36,7 @@ void Window::beginEventLoop()
     Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[RSC_DUNGEON_1_TAIL_CAVE]);
     BackgroundObject candle1(RSC_CANDLE, 16, 16, 0);
     BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
-    Controller::getInstance().setController(&player);
+   // Controller::getInstance().setController(&player);
     
 
 

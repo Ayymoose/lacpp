@@ -50,7 +50,7 @@ public:
 
     int getDepth() const
     {
-        std::cout << "m_depth = " << m_depth << std::endl;
+        //std::cout << "m_depth = " << m_depth << std::endl;
         return m_depth;
     }
 

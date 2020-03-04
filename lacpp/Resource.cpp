@@ -76,6 +76,8 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png")));
 
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY_SELECTOR, loadTexture("Resources\\Sprite\\Object\\inventory_selector.png")));
+
 }
 
 ResourceManager::~ResourceManager()
