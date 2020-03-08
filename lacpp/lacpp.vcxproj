@@ -136,7 +136,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="FileMenu.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -152,8 +151,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Controllable.h" />
     <ClInclude Include="Depth.h" />
-    <ClInclude Include="FileMenu.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="Drawing.h" />
     <ClInclude Include="InputControl.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Inventory.h" />

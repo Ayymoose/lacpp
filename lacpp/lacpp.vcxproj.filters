@@ -39,9 +39,6 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UpdateTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="InputControl.h">
@@ -92,9 +86,6 @@
     <ClInclude Include="Inventory.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileMenu.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="UpdateTimer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -102,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Depth.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

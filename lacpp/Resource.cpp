@@ -5,7 +5,7 @@
 void ResourceManager::loadGraphics()
 {
     // Attempt to load all the graphic resources
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_BACKGROUND_OVERWORLD_MAIN, loadTexture("Resources\\Background\\Overworld\\bck-overworld_main.png")));
+    // m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_BACKGROUND_OVERWORLD_MAIN, loadTexture("Resources\\Background\\Overworld\\bck-overworld_main.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png")));
     /*m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_2_BOTTLE_GROTTO, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_3_KEY_CAVERN, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
@@ -67,7 +67,6 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_TELEPHONE_HOUSE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
    */
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Background\\Misc\\inventory.png")));
 
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_1, loadTexture("Resources\\Background\\Misc\\file_menu_1.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_2, loadTexture("Resources\\Background\\Misc\\file_menu_2.png")));
@@ -76,7 +75,7 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png")));
 
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY_SELECTOR, loadTexture("Resources\\Sprite\\Object\\inventory_selector.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Sprite\\Object\\inventory.png")));
 
 }
 
