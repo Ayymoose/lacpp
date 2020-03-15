@@ -14,8 +14,18 @@ public:
     };
     ~Character() = default;
 
+    virtual float health() const
+    {
+        return m_health;
+    }
+
+    virtual void damage(float damage)
+    {
+        m_health -= damage;
+    }
+
 protected:
-    int m_health;
+    float m_health;
     Vec2 m_position;
     virtual void attack() {};
     virtual void die() {};

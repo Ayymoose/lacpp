@@ -5,8 +5,8 @@
 #include "Controllable.h"
 #include "Vec2.h"
 #include "Character.h"
-#include "Inventory.h"
 #include "UpdateTimer.h"
+#include "Inventory.h"
 
 enum PlayerState
 {
@@ -98,6 +98,8 @@ enum PlayerState
     LINK_ANIMATIONS
 };
 
+#define PLAYER_MAX_HEALTH 14.0
+
 class Player : public Controllable, public Renderable, public Character
 {
 public:
@@ -112,13 +114,15 @@ public:
     void resetAnimation();
 
     Vec2 position() const override;
-
+    void damage(float damage) override;
+    void replenish(float hearts);
     void addPosition(int x, int y);
-
+    float health() const override;
+    float maxHealth() const;
 private:
     Vec2 m_jumpVector;
     int m_speed;
-
+    float m_healthMax;
     Inventory m_inventory;
 
     UpdateTimer m_movementTimer;

@@ -15,10 +15,11 @@ Player::Player()
     m_width = 16;
     m_height = 16;
     m_speed = 1;
-    m_health = 3;
+
+    m_health = 3.0;
+    m_healthMax = 3;
 
     m_depth = PLAYER_DEPTH;
-
     m_state = LINK_WALK_DOWN;
 
     m_animateXPos = 0;   // Initial X-position in sprite sheet for this animation
@@ -39,8 +40,19 @@ Player::Player()
 
 }
 
+float Player::health() const
+{
+    return m_health;
+}
+
+float Player::maxHealth() const
+{
+    return m_healthMax;
+}
+
 Player::~Player()
 {
+
 }
 
 void Player::render(SDL_Renderer* pRenderer)
@@ -216,4 +228,20 @@ void Player::addPosition(int x, int y)
 {
     m_position.x += x;
     m_position.y += y;
+}
+
+void Player::damage(float damage)
+{
+    if (m_health - damage >= 0)
+    {
+        m_health -= damage;
+    }
+}
+
+void Player::replenish(float hearts)
+{
+    if (m_health + hearts <= m_healthMax)
+    {
+        m_health += hearts;
+    }
 }

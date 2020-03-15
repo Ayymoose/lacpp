@@ -59,6 +59,8 @@
 #define WPN_LEVEL_WIDTH 8
 #define WPN_LEVEL_HEIGHT 8
 
+#define HEARTS_PER_ROW 7
+
 enum WEAPON
 {
     WPN_NONE = -1,
@@ -104,7 +106,8 @@ enum INVENTORY_SPRITES
     INVENTORY_LEVEL,
     INVENTORY_DIGIT_B,
     INVENTORY_DIGIT_W,
-    INVENTORY_COUNT = 10
+    INVENTORY_HEART_WHOLE,
+    INVENTORY_COUNT = 12
 };
 
 class Inventory : public Controllable, public Renderable
@@ -116,6 +119,7 @@ public:
     void render(SDL_Renderer* pRenderer) override;
     void open();
     void close();
+  
 private:
     bool m_open;
     SDL_Texture* m_inventorySelector;   // Selector sprite
@@ -141,7 +145,6 @@ private:
 
     WEAPON m_weaponA;
     WEAPON m_weaponB;
-
 
     // Selector position 
     int m_selector_x; 
@@ -186,6 +189,7 @@ private:
         {0,0,8,8},      // INVENTORY_LEVEL
         {10,10,8,8},    // INVENTORY_DIGIT_B
         {10,0,8,8},     // INVENTORY_DIGIT_W
+        {0,38,8,8},     // INVENTORY_HEART_WHOLE
     };
 
     SDL_Rect m_inventorySpritesDst[sizeof(m_inventorySpritesSrc)] =
@@ -211,6 +215,10 @@ private:
         {6,1,28,14},   // Inventory selector (next to B)
         {46,1,28,14},  // Inventory selector (next to A)
         {81,1,7,7},    // Ruppee icon on HUD
+        {0,0,0,0},
+        {0,0,0,0},
+        {0,0,0,0},
+        {104,0,8,8},   // INVENTORY_HEART_WHOLE
     };
 };
 
