@@ -16,7 +16,7 @@ Player::Player()
     m_height = 16;
     m_speed = 1;
 
-    m_health = 3.0;
+    m_health = 3;
     m_healthMax = 3;
 
     m_depth = PLAYER_DEPTH;

@@ -49,6 +49,20 @@ Inventory::Inventory()
         m_items[i] = WPN_NONE;
     }
 
+    for (int i = 0; i < INSTRUMENT_COUNT; i++)
+    {
+        m_instruments[i] = INSTRUMENT_NONE;
+    }
+
+    m_instruments[0] = FULL_MOON_CELLO;
+    m_instruments[1] = CONCH_HORN;
+    m_instruments[2] = SEA_LILY_BELL;
+    m_instruments[3] = SURF_HARP;
+    m_instruments[4] = WIND_MARIMBA;
+    m_instruments[5] = CORAL_TRIANGLE;
+    m_instruments[6] = ORGAN_OF_EVENING_CALM;
+    m_instruments[7] = THUNDER_DRUM;
+
     m_singlePressA = true;
     m_singlePressB = true;
     m_weaponA = WPN_FLAME_ROD;
@@ -79,15 +93,15 @@ void Inventory::control()
 
     if (m_keyboardState[BUTTON_A] && m_singlePressA)
     {
-       // m_Player->damage(0.25);
-        //std::swap(m_weaponA, m_items[m_selector_index]);
-        m_singlePressA = false;
+       Player::getInstance().damage(0.25);
+       //std::swap(m_weaponA, m_items[m_selector_index]);
+       m_singlePressA = false;
     }
     if (m_keyboardState[BUTTON_B] && m_singlePressB)
     {
-       // m_Player->replenish(0.25);
-        //std::swap(m_weaponB, m_items[m_selector_index]);
-        m_singlePressB = false;
+        Player::getInstance().replenish(0.25);
+       //std::swap(m_weaponB, m_items[m_selector_index]);
+       m_singlePressB = false;
     }
 
     // How we index the inventory
@@ -244,7 +258,7 @@ void Inventory::render(SDL_Renderer* pRenderer)
         drawTopHUD(pRenderer);
         drawInventoryItems(pRenderer);
         drawSelector(pRenderer);
-
+        drawInstruments(pRenderer);
     }
     
 }
@@ -257,6 +271,182 @@ void Inventory::open()
 void Inventory::close()
 {
     m_open = false;
+}
+
+void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
+{
+}
+
+void Inventory::drawInstruments(SDL_Renderer* pRenderer)
+{
+    SDL_Rect srcRect, dstRect;
+
+    // Instrument positions
+    // 1st 120,60
+    // 2nd 136,80
+    // 3rd 136,104
+    // 4th 120,120
+    // 5th 96,120
+    // 6th 80,104
+    // 7th 80,80
+    // 8th 96,64
+
+    for (int i = 1; i <= INSTRUMENT_COUNT; i++)
+    {
+        switch (m_instruments[i - 1])
+        {
+        case FULL_MOON_CELLO:
+        case CONCH_HORN: 
+        case SEA_LILY_BELL: 
+        case SURF_HARP: 
+        case WIND_MARIMBA: 
+        case CORAL_TRIANGLE: 
+        case ORGAN_OF_EVENING_CALM: 
+        case THUNDER_DRUM: 
+            srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_0 + (i-1)];
+            dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK + i - 1];
+            srcRect.x = srcRect.x + (srcRect.w * m_instrumentTimer.m_counter);
+            if (m_instrumentTimer.update(INSTRUMENT_FPS))
+            {
+                if (m_instrumentTimer.m_counter > 12)
+                {
+                    m_instrumentTimer.m_counter = 0;
+                }
+            }
+            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            break;
+        default:
+            // If we don't have the instrument yet
+            srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_BACK];
+            dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK + i - 1];
+            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            dstRect.x += 8; dstRect.y += 8; dstRect.w = 8; dstRect.h = 8;
+            drawNumber(pRenderer, m_texture, false, true, 0, i, &dstRect);
+            break;
+        }
+    }
+}
+
+void Inventory::drawHealth(SDL_Renderer* pRenderer)
+{
+    float currentHealth = Player::getInstance().health();;
+    float healthMax = Player::getInstance().maxHealth();
+
+    int wholeHearts = (int)currentHealth;
+    float quarterHearts = currentHealth - (int)currentHealth;
+    int emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
+
+#ifdef TEST
+    assert(wholeHearts == 1);
+    assert(quarterHearts == 0.75);
+    assert(emptyHearts == 1);
+
+    healthMax = 3;
+    currentHealth = 0;
+
+    wholeHearts = (int)currentHealth;
+    quarterHearts = currentHealth - (int)currentHealth;
+    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
+
+    assert(wholeHearts == 0);
+    assert(quarterHearts == 0);
+    assert(emptyHearts == 3);
+
+    healthMax = 3;
+    currentHealth = 3;
+
+    wholeHearts = (int)currentHealth;
+    quarterHearts = currentHealth - (int)currentHealth;
+    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
+
+    assert(wholeHearts == 3);
+    assert(quarterHearts == 0);
+    assert(emptyHearts == 0);
+
+    healthMax = 3;
+    currentHealth = 0.25;
+
+    wholeHearts = (int)currentHealth;
+    quarterHearts = currentHealth - (int)currentHealth;
+    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
+
+    assert(wholeHearts == 0);
+    assert(quarterHearts == 0.25);
+    assert(emptyHearts == 2);
+#endif // TEST
+
+    // draw whole hearts
+    // draw quarter hear
+    /// draw empty hearts
+
+    SDL_Rect srcRect = m_inventorySpritesSrc[INVENTORY_HEART_WHOLE];
+    SDL_Rect dstRect = m_inventorySpritesDst[INVENTORY_HEART_WHOLE];
+    int drawnHearts = 0;
+
+    // Draw whole hearts
+    for (int i = 0; i < wholeHearts; i++)
+    {
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        dstRect.x += srcRect.w;
+        drawnHearts++;
+        if (drawnHearts == HEARTS_PER_ROW)
+        {
+            dstRect.y += srcRect.h;
+            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+        }
+    }
+
+    // Draw any quarter hearts
+    if (quarterHearts == 0.25)
+    {
+        srcRect.x = (srcRect.w + 2) * 3;
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        dstRect.x += srcRect.w;
+        drawnHearts++;
+        if (drawnHearts == HEARTS_PER_ROW)
+        {
+            dstRect.y += srcRect.h;
+            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+        }
+    }
+    else if (quarterHearts == 0.5)
+    {
+        srcRect.x = (srcRect.w + 2) * 2;
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        dstRect.x += srcRect.w;
+        drawnHearts++;
+        if (drawnHearts == HEARTS_PER_ROW)
+        {
+            dstRect.y += srcRect.h;
+            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+        }
+    }
+    else if (quarterHearts == 0.75)
+    {
+        srcRect.x = (srcRect.w + 2) * 1;
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        dstRect.x += srcRect.w;
+        drawnHearts++;
+        if (drawnHearts == HEARTS_PER_ROW)
+        {
+            dstRect.y += srcRect.h;
+            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+        }
+    }
+
+    // Draw empty hearts
+    srcRect.x = (srcRect.w + 2) * 4;
+    for (int i = 0; i < emptyHearts; i++)
+    {
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        dstRect.x += srcRect.w;
+        drawnHearts++;
+        if (drawnHearts == HEARTS_PER_ROW)
+        {
+            dstRect.y += srcRect.h;
+            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+        }
+    }
 }
 
 void Inventory::drawInventoryItems(SDL_Renderer* pRenderer)
@@ -410,218 +600,7 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
     drawNumber(pRenderer, m_texture, false, true, 2, 10, &dstRect);
 
     // Draw health
-
-    // 1. Draw the max health we have
-    srcRect = m_inventorySpritesSrc[INVENTORY_HEART_WHOLE];
-    dstRect = m_inventorySpritesDst[INVENTORY_HEART_WHOLE]; 
-  
-    float healthMax = 0;
-    float currentHealth = 0;
-
-    int wholeHearts;
-    float quarterHearts;
-    int emptyHearts;
-
-    currentHealth = 0;//m_Player->health();;
-    healthMax = 3;//m_Player->maxHealth();
-
-
-    wholeHearts = (int)currentHealth;
-    quarterHearts = currentHealth - (int)currentHealth;
-    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-#ifdef TEST
-    assert(wholeHearts == 1);
-    assert(quarterHearts == 0.75);
-    assert(emptyHearts == 1);
-
-    healthMax = 3;
-    currentHealth = 0;
-
-    wholeHearts = (int)currentHealth;
-    quarterHearts = currentHealth - (int)currentHealth;
-    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-    assert(wholeHearts == 0);
-    assert(quarterHearts == 0);
-    assert(emptyHearts == 3);
-
-    healthMax = 3;
-    currentHealth = 3;
-
-    wholeHearts = (int)currentHealth;
-    quarterHearts = currentHealth - (int)currentHealth;
-    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-    assert(wholeHearts == 3);
-    assert(quarterHearts == 0);
-    assert(emptyHearts == 0);
-
-    healthMax = 3;
-    currentHealth = 0.25;
-
-    wholeHearts = (int)currentHealth;
-    quarterHearts = currentHealth - (int)currentHealth;
-    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-    assert(wholeHearts == 0);
-    assert(quarterHearts == 0.25);
-    assert(emptyHearts == 2);
-#endif // TEST
-
-    // draw whole hearts
-    // draw quarter hear
-    /// draw empty hearts
-
-    srcRect = m_inventorySpritesSrc[INVENTORY_HEART_WHOLE];
-    dstRect = m_inventorySpritesDst[INVENTORY_HEART_WHOLE];
-    int drawnHearts = 0;
-
-    // Draw whole hearts
-    for (int i = 0; i < wholeHearts; i++)
-    {
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-        if (drawnHearts == HEARTS_PER_ROW)
-        {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
-        }
-    }
-
-
-    // Draw any quarter hearts
-    if (quarterHearts == 0.25)
-    {
-        srcRect.x = (srcRect.w + 2) * 3;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-    }
-    else if (quarterHearts == 0.5)
-    {
-        srcRect.x = (srcRect.w + 2) * 2;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-    }
-    else if (quarterHearts == 0.75)
-    {
-        srcRect.x = (srcRect.w + 2) * 1;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-    }
-
-    // Draw empty hearts
-    srcRect.x = (srcRect.w + 2) * 4;
-    for (int i = 0; i < emptyHearts; i++)
-    {
-        if (drawnHearts == HEARTS_PER_ROW)
-        {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
-        }
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-    }
-
-    /*
-
-    for i=0 to maxHealth
-
-    currentHealth--;
-    if (currentHealth < 1)
-    {
-      if (currentHealth < 0)
-      {
-        break;
-      }
-      else
-      {
-        // Get the fraction
-
-      }
-    }
-    else
-    {
-
-    }
-
-    */
-
-    /*for (int i = 1; i <= healthMax+1; i++)
-    {
-
-        while (currentHealth != 0)
-        {
-
-            // Draw the last heart
-            if (currentHealth < 1)
-            {
-                // 10 3/4
-                // 20 1/2
-                // 30 1/4
-                if (currentHealth == 0.75)
-                {
-                    srcRect.x = (srcRect.w + 2) * 1;
-                }
-                else if (currentHealth == 0.50)
-                {
-                    srcRect.x = (srcRect.w + 2) * 2;
-                }
-                else if (currentHealth == 0.25)
-                {
-                    srcRect.x = (srcRect.w + 2) * 3;
-                }
-
-                SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-                srcRect = m_inventorySpritesSrc[INVENTORY_HEART_WHOLE];
-                srcRect.x += (srcRect.w + 2) * 4;
-                currentHealth = 0;
-                remainingHearts++;
-                i = remainingHearts;
-                break;
-            }
-
-            // Draw a whole heart
-           if (i == HEARTS_PER_ROW)
-            {
-                dstRect.y += srcRect.h;
-                dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
-                SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-            }
-            else
-            {
-                SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-                dstRect.x += srcRect.w;
-            }
-
-           currentHealth--;
-           remainingHearts++;
-        }
-        // Copy the back hearts
-        if (i == HEARTS_PER_ROW)
-        {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
-            srcRect = m_inventorySpritesSrc[INVENTORY_HEART_WHOLE];
-            srcRect.x += (srcRect.w + 2) * 4;
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-        }
-        else
-        {
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-            dstRect.x += srcRect.w;
-        }
-    }*/
-
-
-    // TODO: Draw instruments
-    // TODO: Draw push select segment
-    // TODO: Draw dungeon layout
+    drawHealth(pRenderer);
 
     // Draw weapon A
     if (m_weaponA != WPN_NONE)

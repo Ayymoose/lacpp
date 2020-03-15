@@ -107,7 +107,23 @@ enum INVENTORY_SPRITES
     INVENTORY_DIGIT_B,
     INVENTORY_DIGIT_W,
     INVENTORY_HEART_WHOLE,
-    INVENTORY_COUNT = 12
+    INVENTORY_INSTRUMENT_BACK,
+    INVENTORY_INSTRUMENT_0,
+    INVENTORY_COUNT
+};
+
+enum INSTRUMENT
+{
+    INSTRUMENT_NONE = -1,
+    FULL_MOON_CELLO,
+    CONCH_HORN,
+    SEA_LILY_BELL,
+    SURF_HARP,
+    WIND_MARIMBA,
+    CORAL_TRIANGLE,
+    ORGAN_OF_EVENING_CALM,
+    THUNDER_DRUM,
+    INSTRUMENT_COUNT
 };
 
 class Inventory : public Controllable, public Renderable
@@ -126,7 +142,9 @@ private:
     SDL_Texture* m_inventoryDividerH;   // Horizontal divider
     SDL_Texture* m_inventoryDividerV;   // Vertical divider
 
-
+    void drawDungeonMap(SDL_Renderer* pRenderer);
+    void drawInstruments(SDL_Renderer* pRenderer);
+    void drawHealth(SDL_Renderer* pRenderer);
     void drawInventoryItems(SDL_Renderer* pRenderer);
     void drawSelector(SDL_Renderer* pRenderer);
     void drawInventoryDividers(SDL_Renderer* pRenderer);
@@ -149,12 +167,21 @@ private:
     // Selector position 
     int m_selector_x; 
     int m_selector_y;
+
     // Index into inventory array
     uint8_t m_selector_index;
+
     // Timer for flashing the selector
     UpdateTimer m_selectorTimer;
+
     // Weapons
     WEAPON m_items[INVENTORY_MAX_WEAPONS];
+
+    // Instruments
+    INSTRUMENT m_instruments[INSTRUMENT_COUNT];
+
+    UpdateTimer m_instrumentTimer;
+
     // Key press related stuff
     bool m_singleLeftRight;
     bool m_singleUpDown;
@@ -190,6 +217,15 @@ private:
         {10,10,8,8},    // INVENTORY_DIGIT_B
         {10,0,8,8},     // INVENTORY_DIGIT_W
         {0,38,8,8},     // INVENTORY_HEART_WHOLE
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK
+        {140,0,16,16},  // INVENTORY_INSTRUMENT_0 1
+        {140,16,16,16},  // INVENTORY_INSTRUMENT_0 2
+        {140,32,16,16},  // INVENTORY_INSTRUMENT_0 3
+        {140,48,16,16},  // INVENTORY_INSTRUMENT_0 4
+        {140,64,16,16},  // INVENTORY_INSTRUMENT_0 5
+        {140,80,16,16},  // INVENTORY_INSTRUMENT_0 6
+        {140,96,16,16},  // INVENTORY_INSTRUMENT_0 7
+        {140,112,16,16},  // INVENTORY_INSTRUMENT_0 8
     };
 
     SDL_Rect m_inventorySpritesDst[sizeof(m_inventorySpritesSrc)] =
@@ -218,10 +254,17 @@ private:
         {0,0,0,0},
         {0,0,0,0},
         {0,0,0,0},
-        {104,0,8,8},   // INVENTORY_HEART_WHOLE
+        {104,0,8,8},     // INVENTORY_HEART_WHOLE
+        {120,64,16,16},  // INVENTORY_INSTRUMENT_BACK 1
+        {136,80,16,16},  // INVENTORY_INSTRUMENT_BACK 2
+        {136,104,16,16}, // INVENTORY_INSTRUMENT_BACK 3
+        {120,120,16,16}, // INVENTORY_INSTRUMENT_BACK 4
+        {96,120,16,16},  // INVENTORY_INSTRUMENT_BACK 5
+        {80,104,16,16},  // INVENTORY_INSTRUMENT_BACK 6
+        {80,80,16,16},   // INVENTORY_INSTRUMENT_BACK 7
+        {96,64,16,16},   // INVENTORY_INSTRUMENT_BACK 8
+        {120,64,16,16},  // INVENTORY_INSTRUMENT_0
     };
 };
-
-
 
 #endif // !INVENTORY_H

@@ -11,9 +11,15 @@ public:
         return m_instance;
     }
 protected:
-    Singleton() = default;
+    // No Copying
     Singleton(const Singleton&) = delete;
+    // No assigning
     Singleton& operator=(const Singleton&) = delete;
+    // No moving
+
+    // No move assigning
+
+    Singleton() = default;
     virtual ~Singleton() = default;
 };
 

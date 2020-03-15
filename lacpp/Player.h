@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "UpdateTimer.h"
 #include "Inventory.h"
+#include "Singleton.h"
 
 enum PlayerState
 {
@@ -100,7 +101,7 @@ enum PlayerState
 
 #define PLAYER_MAX_HEALTH 14.0
 
-class Player : public Controllable, public Renderable, public Character
+class Player : public Controllable, public Renderable, public Character, public Singleton<Player>
 {
 public:
     Player();
