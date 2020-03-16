@@ -10,6 +10,14 @@
 
 Inventory::Inventory()
 {
+    if (sizeof(m_inventorySpritesSrc) != sizeof(m_inventorySpritesDst))
+    {
+        //std::cout << sizeof(m_inventorySpritesSrc)/sizeof(SDL_Rect) << std::endl;
+        //std::cout << sizeof(m_inventorySpritesDst)/ sizeof(SDL_Rect) << std::endl;
+        assert(sizeof(m_inventorySpritesSrc) == sizeof(m_inventorySpritesDst));
+    }
+
+
     // m_texture is the main texture we draw ontoas
     m_texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, INVENTORY_WIDTH, INVENTORY_HEIGHT);
 
@@ -24,8 +32,16 @@ Inventory::Inventory()
 
     SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height);
     m_open = false;
+    m_inDungeon = true;
     Renderer::getInstance().addRenderable(this);
     m_depth = INVENTORY_DEPTH;
+    m_tradeItem = ITEM_NONE;
+    m_seashells = 0;
+    m_flippers = false;
+    m_potion = false;
+    m_tunic = TUNIC_GREEN;
+    m_heartPieces = 0;
+    m_selectPressed = false;
 
     // Initial top left position
     m_selector_x = SELECTOR_INITIAL_X;
@@ -84,6 +100,23 @@ Inventory::Inventory()
     m_items[7] = WPN_ROC_FEATHER;
     m_items[8] = WPN_HOOKSHOT;
     m_items[9] = WPN_OCARINA;
+
+    m_dungeonKeys = 1;
+    m_compass = true;
+    m_dungeonMap = true;
+    m_nightmareKey = true;
+    m_owlBeak = true;
+    m_flippers = true;
+    m_potion = true;
+    m_tradeItem = ITEM_STICK;
+
+    m_goldleaf = 0;
+
+    m_tailKey = true;
+    m_slimeKey = true;
+    m_anglerKey = true;
+    m_faceKey = true;
+    m_birdKey = true;
 }
 
 void Inventory::control()
@@ -93,15 +126,19 @@ void Inventory::control()
 
     if (m_keyboardState[BUTTON_A] && m_singlePressA)
     {
-       Player::getInstance().damage(0.25);
-       //std::swap(m_weaponA, m_items[m_selector_index]);
+       std::swap(m_weaponA, m_items[m_selector_index]);
        m_singlePressA = false;
     }
     if (m_keyboardState[BUTTON_B] && m_singlePressB)
     {
-        Player::getInstance().replenish(0.25);
-       //std::swap(m_weaponB, m_items[m_selector_index]);
+       std::swap(m_weaponB, m_items[m_selector_index]);
        m_singlePressB = false;
+    }
+
+    if (m_keyboardState[BUTTON_SELECT])
+    {
+        //m_pushSelectTimer.reset();
+        //m_selectPressed = true;
     }
 
     // How we index the inventory
@@ -211,6 +248,11 @@ void Inventory::control()
         m_selectorTimer.reset();
     }
 
+    /*if (IS_SELECT_RELEASED(m_keyboardState))
+    {
+        m_selectPressed = true;
+    }*/
+
     if (IS_MOVING_KEY_RELEASED(m_keyboardState))
     {
         m_singleUpDown = true;
@@ -251,14 +293,28 @@ void Inventory::render(SDL_Renderer* pRenderer)
 
     // If the inventory is open
 
+    drawTopHUD(pRenderer);
+
+
     if (m_open)
     {
         ColourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
         drawInventoryDividers(pRenderer);
-        drawTopHUD(pRenderer);
-        drawInventoryItems(pRenderer);
+        //drawInventoryWeapons(pRenderer);
         drawSelector(pRenderer);
-        drawInstruments(pRenderer);
+       /* if (m_inDungeon)
+        {
+            drawDungeonItems(pRenderer);
+        }
+        else
+        {
+            drawInventoryItems(pRenderer);
+        }
+        drawMiscItems(pRenderer);
+        if (!m_selectPressed)
+        {
+            drawSelectStatus(pRenderer);
+        }*/
     }
     
 }
@@ -273,8 +329,146 @@ void Inventory::close()
     m_open = false;
 }
 
-void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
+void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
 {
+    SDL_Rect srcRect, dstRect;
+
+    // Draw two red arrows
+    srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
+    dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
+    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    
+    dstRect.x += 73;
+    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    
+    srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
+    dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
+
+    // Draw "PUSH SELECT"
+    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+}
+
+void Inventory::drawMiscItems(SDL_Renderer* pRenderer)
+{
+    SDL_Rect srcRect, dstRect;
+
+    if (m_flippers)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_FLIPPERS];
+        dstRect = m_inventorySpritesDst[INVENTORY_FLIPPERS];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    if (m_potion)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_POTION];
+        dstRect = m_inventorySpritesDst[INVENTORY_POTION];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    // Draw number of seashells
+    srcRect = m_inventorySpritesSrc[INVENTORY_SEASHELLS];
+    dstRect = m_inventorySpritesDst[INVENTORY_SEASHELLS];
+    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    dstRect.w = 8; dstRect.h = 8;
+    dstRect.x += dstRect.w; dstRect.y += dstRect.h;
+    drawNumber(pRenderer, m_texture, false, true, 1, m_seashells, &dstRect);
+
+    // Draw currently traded item (if any)
+    if (m_tradeItem != ITEM_NONE)
+    {
+        srcRect = m_inventorySpritesSrc[TRADE_ITEM_SPRITE(m_tradeItem)];
+        dstRect = m_inventorySpritesDst[TRADE_ITEM_SPRITE(m_tradeItem)];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+}
+
+void Inventory::drawInventoryItems(SDL_Renderer* pRenderer)
+{
+    // Depending on whether we are in a dungeon or not,
+    // draws the inventory items or the dungeon items
+
+    SDL_Rect srcRect, dstRect;
+
+    // Draw any keys we have
+    if (m_tailKey)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_TAIL_KEY];
+        dstRect = m_inventorySpritesDst[INVENTORY_TAIL_KEY];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    if (m_slimeKey)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_SLIME_KEY];
+        dstRect = m_inventorySpritesDst[INVENTORY_SLIME_KEY];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    if (m_anglerKey)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_ANGLER_KEY];
+        dstRect = m_inventorySpritesDst[INVENTORY_ANGLER_KEY];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+    
+    if (m_faceKey)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_FACE_KEY];
+        dstRect = m_inventorySpritesDst[INVENTORY_FACE_KEY];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    if (m_birdKey)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_BIRD_KEY];
+        dstRect = m_inventorySpritesDst[INVENTORY_BIRD_KEY];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    drawInstruments(pRenderer);
+}
+
+void Inventory::drawDungeonItems(SDL_Renderer* pRenderer)
+{
+    SDL_Rect srcRect, dstRect;
+
+    if (m_compass)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
+        dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    if (m_nightmareKey)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
+        dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    if (m_owlBeak)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
+        dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    if (m_dungeonMap)
+    {
+        srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
+        dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    }
+
+    // Draw dungeon keys
+    srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_KEY];
+    dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_KEY];
+    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    dstRect.w = 8; dstRect.h = 8;
+    dstRect.x += dstRect.w; dstRect.y += dstRect.h;
+    drawNumber(pRenderer, m_texture, false, true, 0, m_dungeonKeys, &dstRect);
 }
 
 void Inventory::drawInstruments(SDL_Renderer* pRenderer)
@@ -304,11 +498,11 @@ void Inventory::drawInstruments(SDL_Renderer* pRenderer)
         case ORGAN_OF_EVENING_CALM: 
         case THUNDER_DRUM: 
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_0 + (i-1)];
-            dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK + i - 1];
+            dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_0 + (i-1)];
             srcRect.x = srcRect.x + (srcRect.w * m_instrumentTimer.m_counter);
             if (m_instrumentTimer.update(INSTRUMENT_FPS))
             {
-                if (m_instrumentTimer.m_counter > 12)
+                if (m_instrumentTimer.m_counter > INSTRUMENTS_FRAME)
                 {
                     m_instrumentTimer.m_counter = 0;
                 }
@@ -317,8 +511,8 @@ void Inventory::drawInstruments(SDL_Renderer* pRenderer)
             break;
         default:
             // If we don't have the instrument yet
-            srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_BACK];
-            dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK + i - 1];
+            srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_BACK_0];
+            dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK_0 + i - 1];
             SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
             dstRect.x += 8; dstRect.y += 8; dstRect.w = 8; dstRect.h = 8;
             drawNumber(pRenderer, m_texture, false, true, 0, i, &dstRect);
@@ -449,7 +643,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer)
     }
 }
 
-void Inventory::drawInventoryItems(SDL_Renderer* pRenderer)
+void Inventory::drawInventoryWeapons(SDL_Renderer* pRenderer)
 {
     SDL_Rect srcRect, dstRect;
 
@@ -520,6 +714,7 @@ void Inventory::drawSelector(SDL_Renderer* pRenderer)
             m_flashSelector = false;
         }
     }
+    std::cout << m_selector_x << "," << m_selector_y << std::endl;
 
     if (m_flashSelector)
     {
@@ -527,7 +722,6 @@ void Inventory::drawSelector(SDL_Renderer* pRenderer)
         dstRect = { m_selector_x, m_selector_y, srcRect.w , srcRect.h };
         SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
     }
-
     SDL_SetRenderTarget(pRenderer, nullptr);
 
 }
