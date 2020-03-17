@@ -290,17 +290,16 @@ void Inventory::render(SDL_Renderer* pRenderer)
     // Render the inventory background
     SDL_Rect dstRect = { 0, renderY, m_width , m_height };
     SDL_RenderCopy(pRenderer, m_texture, nullptr, &dstRect);
+    ColourTexture(pRenderer, m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+
+    drawTopHUD(pRenderer);
 
     // If the inventory is open
-
-
     if (m_open)
     {
-        ColourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
         drawInventoryDividers(pRenderer);
         drawInventoryWeapons(pRenderer);
         drawSelector(pRenderer);
-        drawTopHUD(pRenderer);
         if (m_inDungeon)
         {
             drawDungeonItems(pRenderer);
@@ -315,7 +314,7 @@ void Inventory::render(SDL_Renderer* pRenderer)
             drawSelectStatus(pRenderer);
         }
     }
-    
+
 }
 
 void Inventory::open()
@@ -788,22 +787,20 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
     dstRect = m_inventorySpritesDst[INVENTORY_RUPPEE];
     SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
 
-    // Draw current ruppees
-    dstRect = {80,9,8,8};
-    drawNumber(pRenderer, m_texture, false, true, 2, 10, &dstRect);
-
     // Draw health
     drawHealth(pRenderer);
 
     // Draw weapon A
     if (m_weaponA != WPN_NONE)
     {
+        // Draw the actual weapon
         srcRect = m_inventorySpritesSrc[m_weaponA];
         dstRect = {48,0, srcRect.w, srcRect.h };
         SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+        // Draw the weapon level
         dstRect = { 56,8, 8, 8 };
         drawWeaponLevel(pRenderer, m_texture, m_weaponA, &dstRect);
-
     }
 
     // Draw weapon B
@@ -815,6 +812,10 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
         dstRect = { 16,8, 8, 8 };
         drawWeaponLevel(pRenderer, m_texture, m_weaponB, &dstRect);
     }
+
+    // Draw current ruppees
+    dstRect = { 80,8,8,8 };
+    drawNumber(pRenderer, m_texture, false, true, 2, 10, &dstRect);
 
     SDL_SetRenderTarget(pRenderer, nullptr);
 }
