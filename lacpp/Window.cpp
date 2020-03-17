@@ -28,17 +28,12 @@ void Window::createWindow(const char* title, const int width, const int height)
 
 void Window::beginEventLoop()
 {
-
-    Player player;
-    Camera::getInstance().track(&player);
+    Camera::getInstance().track(&Player::getInstance());
     Camera::getInstance().setScrollSpeed(4);
     Camera::getInstance().setPosition(480, 640);
     Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[RSC_DUNGEON_1_TAIL_CAVE]);
     BackgroundObject candle1(RSC_CANDLE, 16, 16, 0);
     BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
-   // Controller::getInstance().setController(&player);
-    
-
 
     // Stretch the textures to the window
     SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16));
@@ -59,7 +54,7 @@ void Window::beginEventLoop()
         double fps = framesRendered / (fpsTimer.getTicks() / 1000.0);
         windowTitle = 
             "CX: " + std::to_string(Camera::getInstance().getX()) + " CY: " + std::to_string(Camera::getInstance().getY()) +
-            " PX: " + std::to_string(player.position().x) + " PY: " + std::to_string(player.position().y) +
+            " PX: " + std::to_string(Player::getInstance().position().x) + " PY: " + std::to_string(Player::getInstance().position().y) +
             " FPS: " + std::to_string((int)fps) + 
             " Renderables: " + std::to_string(renderSet.size())
             ;

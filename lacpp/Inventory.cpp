@@ -137,8 +137,8 @@ void Inventory::control()
 
     if (m_keyboardState[BUTTON_SELECT])
     {
-        //m_pushSelectTimer.reset();
-        //m_selectPressed = true;
+        m_pushSelectTimer.reset();
+        m_selectPressed = true;
     }
 
     // How we index the inventory
@@ -248,10 +248,10 @@ void Inventory::control()
         m_selectorTimer.reset();
     }
 
-    /*if (IS_SELECT_RELEASED(m_keyboardState))
+    if (IS_SELECT_RELEASED(m_keyboardState))
     {
         m_selectPressed = true;
-    }*/
+    }
 
     if (IS_MOVING_KEY_RELEASED(m_keyboardState))
     {
@@ -293,16 +293,15 @@ void Inventory::render(SDL_Renderer* pRenderer)
 
     // If the inventory is open
 
-    drawTopHUD(pRenderer);
-
 
     if (m_open)
     {
         ColourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
         drawInventoryDividers(pRenderer);
-        //drawInventoryWeapons(pRenderer);
+        drawInventoryWeapons(pRenderer);
         drawSelector(pRenderer);
-       /* if (m_inDungeon)
+        drawTopHUD(pRenderer);
+        if (m_inDungeon)
         {
             drawDungeonItems(pRenderer);
         }
@@ -314,7 +313,7 @@ void Inventory::render(SDL_Renderer* pRenderer)
         if (!m_selectPressed)
         {
             drawSelectStatus(pRenderer);
-        }*/
+        }
     }
     
 }
@@ -523,8 +522,8 @@ void Inventory::drawInstruments(SDL_Renderer* pRenderer)
 
 void Inventory::drawHealth(SDL_Renderer* pRenderer)
 {
-    float currentHealth = Player::getInstance().health();;
-    float healthMax = Player::getInstance().maxHealth();
+    float currentHealth = Player::getInstance().health();
+    float healthMax =  Player::getInstance().maxHealth();
 
     int wholeHearts = (int)currentHealth;
     float quarterHearts = currentHealth - (int)currentHealth;

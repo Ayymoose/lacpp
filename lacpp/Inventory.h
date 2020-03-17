@@ -323,7 +323,7 @@ private:
         {10,10,8,8},    // INVENTORY_DIGIT_B
         {10,0,8,8},     // INVENTORY_DIGIT_W
         {0,38,8,8},     // INVENTORY_HEART_WHOLE
-        /*{110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_0
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_0
         {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_1
         {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_2
         {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_3
@@ -369,11 +369,7 @@ private:
         {30,134,8,16}, // INVENTORY_BIRD_KEY
 
         {90,162,8,8}, // INVENTORY_RED_ARROW
-        {50,38,58,8}, // INVENTORY_PUSH_SELECT,*/
-
-
-
- 
+        {50,38,58,8}, // INVENTORY_PUSH_SELECT,
 
     };
 
