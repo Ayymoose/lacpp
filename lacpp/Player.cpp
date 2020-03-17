@@ -35,7 +35,7 @@ Player::Player()
     
     Renderer::getInstance().addRenderable(this);
  
-//    m_inventory.open();
+    m_inventory.open();
     Controller::getInstance().setController(&m_inventory);
 
 }

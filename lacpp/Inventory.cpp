@@ -17,16 +17,25 @@ Inventory::Inventory()
         assert(sizeof(m_inventorySpritesSrc) == sizeof(m_inventorySpritesDst));
     }
 
+    SDL_Rect srcRect;
 
+    // Select sub screen
+    m_subscreen = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SELECT_SUBSCREEN_WIDTH, SELECT_SUBSCREEN_HEIGHT);
+    ColourTexture(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, SDL_RGB(0, 0, 0));
+    assert(m_subscreen != nullptr);
+    
     // m_texture is the main texture we draw ontoas
     m_texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, INVENTORY_WIDTH, INVENTORY_HEIGHT);
+    assert(m_texture != nullptr);
 
     // Inventory divider
-    SDL_Rect srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
+    srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
     m_inventoryDividerH = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, INVENTORY_DIVIDER_WIDTH_H, INVENTORY_DIVIDER_HEIGHT_H);
+    assert(m_inventoryDividerH != nullptr);
     CopyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[RSC_INVENTORY], m_inventoryDividerH, &srcRect, nullptr);
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
     m_inventoryDividerV = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, INVENTORY_DIVIDER_WIDTH_V, INVENTORY_DIVIDER_HEIGHT_V);
+    assert(m_inventoryDividerV != nullptr);
     CopyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[RSC_INVENTORY], m_inventoryDividerV, &srcRect, nullptr);
     //
 
@@ -39,8 +48,8 @@ Inventory::Inventory()
     m_seashells = 0;
     m_flippers = false;
     m_potion = false;
-    m_tunic = TUNIC_GREEN;
-    m_heartPieces = 0;
+    m_tunic = TUNIC_BLUE;
+    m_heartPieces = HEART_HALF;
     m_selectPressed = false;
 
     // Initial top left position
@@ -59,7 +68,7 @@ Inventory::Inventory()
     m_singleLeftRight = true;
 
     m_flashSelector = false;
-
+    m_flashSelect = false;
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
         m_items[i] = WPN_NONE;
@@ -309,10 +318,7 @@ void Inventory::render(SDL_Renderer* pRenderer)
             drawInventoryItems(pRenderer);
         }
         drawMiscItems(pRenderer);
-        if (!m_selectPressed)
-        {
-            drawSelectStatus(pRenderer);
-        }
+        drawSelectStatus(pRenderer);
     }
 
 }
@@ -331,19 +337,115 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
 {
     SDL_Rect srcRect, dstRect;
 
-    // Draw two red arrows
-    srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
-    dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-    
-    dstRect.x += 73;
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
-    
-    srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
-    dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
+    if (!m_selectPressed)
+    {
+        // Draw two red arrows
+        srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
+        dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
 
-    // Draw "PUSH SELECT"
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        dstRect.x += 73;
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+        srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
+        dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
+
+        if (!m_flashSelect && m_pushSelectTimer.update(PUSH_SELECTOR_FPS))
+        {
+            m_flashSelect = true;
+        }
+        else
+        {
+            if (m_pushSelectTimer.update(PUSH_SELECTOR_FPS))
+            {
+                m_flashSelect = false;
+            }
+        }
+
+        // Draw "PUSH SELECT"
+        if (m_flashSelect)
+        {
+            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        }
+    }
+    else
+    {
+        // Transition the subscreen
+        dstRect = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
+        SDL_RenderCopy(pRenderer, m_subscreen, nullptr, &dstRect);
+
+        SDL_SetRenderTarget(pRenderer, m_subscreen);
+
+
+        // Tunic
+        srcRect = m_inventorySpritesSrc[INVENTORY_TUNIC];
+        switch (m_tunic)
+        {
+        case TUNIC_GREEN:
+            break;
+        case TUNIC_BLUE:
+            srcRect.x += srcRect.w + 2;
+        break;
+        case TUNIC_RED:
+            srcRect.x = 2 * (srcRect.w + 2);
+        break;
+
+        }
+        dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+        // Heart pieces
+        srcRect = m_inventorySpritesSrc[INVENTORY_HEART_PIECES];
+        dstRect = m_inventorySpritesDst[INVENTORY_HEART_PIECES];
+
+        switch (m_heartPieces)
+        {
+        case HEART_ZERO:
+            break;
+        case HEART_ONE_QUARTER:
+            srcRect.x += srcRect.w + 2;
+            break;
+        case HEART_HALF:
+            srcRect.x += 2 * (srcRect.w + 2);
+            break;
+        case HEART_THREE_QUARTER:
+            srcRect.x += 3 * (srcRect.w + 2);
+            break;
+        case HEART_FULL:
+            // Will this ever be used?
+            srcRect.x += 4 * (srcRect.w + 2);
+            break;
+        }
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+        // Photographs
+        srcRect = m_inventorySpritesSrc[INVENTORY_PHOTOGRAPHS];
+        dstRect = m_inventorySpritesDst[INVENTORY_PHOTOGRAPHS];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+        // Inventory "/"
+        srcRect = m_inventorySpritesSrc[INVENTORY_SLASH];
+        dstRect = m_inventorySpritesDst[INVENTORY_SLASH];
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        dstRect.x = 64; dstRect.y = 8;
+        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        
+        // Draw how many heart pieces we have (out of 4)
+        dstRect = {56,7,8,8};
+        drawNumber(pRenderer, m_subscreen, false, false, 0, m_heartPieces, &dstRect);
+        dstRect = { 72,7,8,8 };
+        drawNumber(pRenderer, m_subscreen, false, false, 0, HEART_PIECES_MAX, &dstRect);
+
+        // Draw number of photographs
+        dstRect = { 24,23,8,8 };
+        drawNumber(pRenderer, m_subscreen, false, false, 1, m_photographs, &dstRect);
+        dstRect = { 48,23,8,8 };
+        drawNumber(pRenderer, m_subscreen, false, false, 1, MAX_PHOTOGRAPHS, &dstRect);
+
+        // Remember! This resets the drawing target to the screen
+        SDL_SetRenderTarget(pRenderer, nullptr);
+
+    }
 
 }
 
@@ -712,7 +814,6 @@ void Inventory::drawSelector(SDL_Renderer* pRenderer)
             m_flashSelector = false;
         }
     }
-    std::cout << m_selector_x << "," << m_selector_y << std::endl;
 
     if (m_flashSelector)
     {

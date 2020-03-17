@@ -59,8 +59,17 @@
 #define WPN_LEVEL_WIDTH 8
 #define WPN_LEVEL_HEIGHT 8
 
+#define SELECT_SUBSCREEN_WIDTH 80
+#define SELECT_SUBSCREEN_HEIGHT 32
+
+// Hearts per row
 #define HEARTS_PER_ROW 7
+#define HEART_PIECES_MAX 4
+
+// Maximum photographs we are allowed
 #define MAX_PHOTOGRAPHS 12
+
+// Animation stuff
 #define INSTRUMENTS_FRAME 12
 
 enum WEAPON
@@ -154,6 +163,11 @@ enum INVENTORY_SPRITES
     INVENTORY_BIRD_KEY,
     INVENTORY_RED_ARROW,
     INVENTORY_PUSH_SELECT,
+    INVENTORY_SUBSCREEN,
+    INVENTORY_TUNIC,
+    INVENTORY_HEART_PIECES,
+    INVENTORY_PHOTOGRAPHS,
+    INVENTORY_SLASH,
     INVENTORY_COUNT
 };
 
@@ -199,6 +213,17 @@ enum TUNIC
     TUNIC_COUNT
 };
 
+enum HEART_PIECES
+{
+    HEART_NONE = -1,
+    HEART_ZERO = 0,
+    HEART_ONE_QUARTER,
+    HEART_HALF,
+    HEART_THREE_QUARTER,
+    HEART_FULL,
+    HEART_COUNT
+};
+
 #define TRADE_ITEM_SPRITE(ITEM) (INVENTORY_DOLL + ITEM)
 
 class Inventory : public Controllable, public Renderable
@@ -212,10 +237,10 @@ public:
     void close();
   
 private:
-    bool m_open;
     SDL_Texture* m_inventorySelector;   // Selector sprite
     SDL_Texture* m_inventoryDividerH;   // Horizontal divider
     SDL_Texture* m_inventoryDividerV;   // Vertical divider
+    SDL_Texture* m_subscreen;        // The select status at the bottom of the screen
 
     void drawSelectStatus(SDL_Renderer* pRenderer);
     void drawMiscItems(SDL_Renderer* pRenderer);
@@ -232,6 +257,8 @@ private:
     void drawWeaponLevel(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect);
 
     TRADE_ITEM m_tradeItem; // Current trade item
+
+    bool m_open;
 
     // Dungeon related items
     bool m_inDungeon;    // Are we in a dungeon?
@@ -262,8 +289,8 @@ private:
     TUNIC m_tunic;            // Tunic
     uint8_t m_heartPieces;    // Heart pieces (0 to 4)
     uint8_t m_goldleaf;       // Golden leaves
-
     uint8_t m_photographs;
+
     // Weapon A and B
     WEAPON m_weaponA;
     WEAPON m_weaponB;
@@ -293,6 +320,7 @@ private:
     bool m_singlePressA;
     bool m_singlePressB;
     bool m_flashSelector;
+    bool m_flashSelect;
     bool m_selectPressed;
 
     // Inventory sprite positions (source Rect from the sprite sheet)
@@ -371,6 +399,13 @@ private:
         {90,162,8,8}, // INVENTORY_RED_ARROW
         {50,38,58,8}, // INVENTORY_PUSH_SELECT,
 
+        {0,0,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, // INVENTORY_SUBSCREEN
+        {0,100,31,14}, // INVENTORY_TUNIC (Green)
+        {0,84,16,14}, // INVENTORY_HEART_PIECES
+        {90,84,14,12}, // INVENTORY_PHOTOGRAPHS
+
+        {126,116,8,8}, // INVENTORY_SLASH
+
     };
 
     SDL_Rect m_inventorySpritesDst[sizeof(m_inventorySpritesSrc) / sizeof(m_inventorySpritesSrc[0])] =
@@ -448,6 +483,13 @@ private:
 
         {75,136,8,8}, // INVENTORY_RED_ARROW
         {86,136,58,8}, // INVENTORY_PUSH_SELECT,
+
+        {75,104,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, //INVENTORY_SUBSCREEN
+        {1,1,31,14}, // INVENTORY_TUNIC (Green)
+        {41,1,16,14}, // INVENTORY_HEART_PIECES
+        {9,18,14,12}, // INVENTORY_PHOTOGRAPHS
+
+        {40,24,8,8}, // INVENTORY_SLASH
 
     };
 

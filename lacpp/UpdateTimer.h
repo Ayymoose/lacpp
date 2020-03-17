@@ -14,6 +14,7 @@
 #define LINK_DROWN_FPS (1.0 / 3.0)
 
 #define INVENTORY_SELECTOR_FPS (1.0 / 4.0)
+#define PUSH_SELECTOR_FPS (1.0 / 2.0)
 
 class UpdateTimer
 {
