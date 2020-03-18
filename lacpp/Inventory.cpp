@@ -126,6 +126,8 @@ Inventory::Inventory()
     m_anglerKey = true;
     m_faceKey = true;
     m_birdKey = true;
+
+    m_dungeon = DUNGEON_TAIL_CAVE;
 }
 
 void Inventory::control()
@@ -331,6 +333,129 @@ void Inventory::open()
 void Inventory::close()
 {
     m_open = false;
+}
+
+void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
+{
+    assert(m_dungeon > DUNGEON_NONE && m_dungeon < DUNGEON_COUNT);
+
+    /*
+        0 - Empty (navy square)
+        1 - Blank (white inventory coloured block)
+        2 - Unvisited navy square
+        3 - Treasure chest
+        4 - Nightmare location
+        5 - INVENTORY_AREA_EXIT_RIGHT
+        6 - Area LEFT exit only
+        7 - Area RIGHT and DOWN exit only
+        8 - Area LEFT and DOWN exit only
+        9 - Area no exit
+        10 - Area LEFT UP and RIGHT exit only
+        11 - Area LEFT RIGHT DOWN exit only
+        12 - Area DOWN exit only
+        13 - Area UP exit only
+        14 - Area UP and RIGHT exit only
+        15 - Area UP and LEFT exit only
+        16 - Area all exits
+        17 - Area UP RIGHT and DOWN exit only
+        18 - Area UP LEFT and DOWN exit only
+        19 - Area UP and DOWN exit only
+
+    */
+    SDL_Rect srcRect = {0,0,0,0}, dstRect = { 0,0,0,0 };
+
+    for (int x = 0; x < DUNGEON_MAX_BLOCK_X; x++)
+    {
+        for (int y = 0; y < DUNGEON_MAX_BLOCK_Y; y++)
+        {
+            switch (m_dungeonMaps[m_dungeon][y][x])
+            {
+            case 0: // INVENTORY_AREA_EMPTY
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
+                break;
+            case 1: // Inventory space
+                continue;
+            case 2: // INVENTORY_AREA_UNVISITED
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_UNVISITED];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_UNVISITED];
+                break;
+            case 3: // INVENTORY_AREA_TREASURE
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_TREASURE];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_TREASURE];
+                break;
+            case 4: // INVENTORY_AREA_NIGHTMARE
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
+                break;
+            case 5: // INVENTORY_AREA_EXIT_RIGHT
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT];
+                break;
+            case 6: // INVENTORY_AREA_EXIT_LEFT
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT];
+                break;
+            case 7: // INVENTORY_AREA_EXIT_RIGHT_DOWN
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT_DOWN];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT_DOWN];
+                break;
+            case 8: // INVENTORY_AREA_EXIT_LEFT_DOWN
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN];
+                break;
+            case 9: // INVENTORY_AREA_EXIT_NONE
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_NONE];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_NONE];
+                break;
+            case 10: // INVENTORY_AREA_EXIT_LEFT_UP_RIGHT
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
+                break;
+            case 11: // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
+                break;
+            case 12: // INVENTORY_AREA_EXIT_DOWN
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_DOWN];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_DOWN];
+                break;
+            case 13: // INVENTORY_AREA_EXIT_UP
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP];
+                break;
+            case 14: // INVENTORY_AREA_EXIT_UP_RIGHT
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT];
+                break;
+            case 15: // INVENTORY_AREA_EXIT_LEFT_UP
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP];
+                break;
+            case 16: // INVENTORY_AREA_EXIT_ALL
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_ALL];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_ALL];
+                break;
+            case 17: // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
+                break;
+            case 18: // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
+                break;
+            case 19: // INVENTORY_AREA_EXIT_UP_DOWN
+                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_DOWN];
+                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_DOWN];
+                break;
+            default:
+                assert(false);
+            }
+            dstRect.x += x * srcRect.w;
+            dstRect.y += y * srcRect.w;
+            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        }
+    }
 }
 
 void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
@@ -562,6 +687,10 @@ void Inventory::drawDungeonItems(SDL_Renderer* pRenderer)
         SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
     }
 
+
+    // Draw the dungeon map
+    drawDungeonMap(pRenderer);
+
     // Draw dungeon keys
     srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_KEY];
     dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_KEY];
@@ -569,6 +698,9 @@ void Inventory::drawDungeonItems(SDL_Renderer* pRenderer)
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
     drawNumber(pRenderer, m_texture, false, true, 0, m_dungeonKeys, &dstRect);
+
+
+
 }
 
 void Inventory::drawInstruments(SDL_Renderer* pRenderer)

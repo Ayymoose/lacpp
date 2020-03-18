@@ -72,6 +72,10 @@
 // Animation stuff
 #define INSTRUMENTS_FRAME 12
 
+#define MAX_DUNGEONS 9
+#define DUNGEON_MAX_BLOCK_X 9
+#define DUNGEON_MAX_BLOCK_Y 9
+
 enum WEAPON
 {
     WPN_NONE = -1,
@@ -168,6 +172,28 @@ enum INVENTORY_SPRITES
     INVENTORY_HEART_PIECES,
     INVENTORY_PHOTOGRAPHS,
     INVENTORY_SLASH,
+
+    INVENTORY_AREA_EXIT_RIGHT,
+    INVENTORY_AREA_EXIT_LEFT,
+    INVENTORY_AREA_EXIT_RIGHT_DOWN,
+    INVENTORY_AREA_EXIT_LEFT_DOWN,
+    INVENTORY_AREA_EXIT_NONE,
+    INVENTORY_AREA_EXIT_LEFT_UP_RIGHT,
+    INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT,
+    INVENTORY_AREA_UNVISITED,
+    INVENTORY_AREA_EXIT_LEFT_RIGHT,
+    INVENTORY_AREA_TREASURE,
+    INVENTORY_AREA_NIGHTMARE,
+    INVENTORY_AREA_EXIT_DOWN,
+    INVENTORY_AREA_EXIT_UP,
+    INVENTORY_AREA_EXIT_UP_RIGHT,
+    INVENTORY_AREA_EXIT_LEFT_UP,
+    INVENTORY_AREA_EXIT_ALL,
+    INVENTORY_AREA_EXIT_UP_RIGHT_DOWN,
+    INVENTORY_AREA_EXIT_UP_LEFT_DOWN,
+    INVENTORY_AREA_EMPTY,
+    INVENTORY_AREA_EXIT_UP_DOWN,
+
     INVENTORY_COUNT
 };
 
@@ -224,6 +250,21 @@ enum HEART_PIECES
     HEART_COUNT
 };
 
+enum DUNGEON
+{
+    DUNGEON_NONE = -1,
+    DUNGEON_COLOUR_DUNGEON,
+    DUNGEON_TAIL_CAVE,
+    DUNGEON_BOTTLE_GROTTO,
+    DUNGEON_KEY_CAVERN,
+    DUNGEON_ANGLER_TUNNEL,
+    DUNGEON_CATFISH_MAW,
+    DUNGEON_FACE_SHRINE,
+    DUNGEON_EAGLE_TOWER,
+    DUNGEON_TURTLE_ROCK,
+    DUNGEON_COUNT
+};
+
 #define TRADE_ITEM_SPRITE(ITEM) (INVENTORY_DOLL + ITEM)
 
 class Inventory : public Controllable, public Renderable
@@ -242,6 +283,7 @@ private:
     SDL_Texture* m_inventoryDividerV;   // Vertical divider
     SDL_Texture* m_subscreen;        // The select status at the bottom of the screen
 
+    void drawDungeonMap(SDL_Renderer* pRenderer);
     void drawSelectStatus(SDL_Renderer* pRenderer);
     void drawMiscItems(SDL_Renderer* pRenderer);
     void drawInventoryItems(SDL_Renderer* pRenderer);
@@ -322,6 +364,156 @@ private:
     bool m_flashSelector;
     bool m_flashSelect;
     bool m_selectPressed;
+
+
+    // Array of dungeon maps
+    /*
+
+    [X][][] Dungeon select
+
+        0 - Colour Dungeon
+        1 - Tail Cave
+        2 - Bottle Grotto
+        3 - Key Cavern
+        4 - Anglers Tunnel
+        5 - Catfishs Maw
+        6 - Face Shrine
+        7 - Eagle Tower
+        8 - Turtle Rock
+
+    [][X][X] Area state
+
+        0 - Empty (navy square)
+        1 - Blank (white inventory coloured block)
+        2 - Unvisited navy square
+        3 - Treasure chest
+        4 - Nightmare location
+        5 - Area RIGHT exit only
+        6 - Area LEFT exit only
+        7 - Area RIGHT and DOWN exit only
+        8 - Area LEFT and DOWN exit only
+        9 - Area no exit
+        10 - Area LEFT UP and RIGHT exit only
+        11 - Area LEFT RIGHT DOWN exit only
+        12 - Area DOWN exit only
+        13 - Area UP exit only
+        14 - Area UP and RIGHT exit only
+        15 - Area UP and LEFT exit only
+        16 - Area all exits
+        17 - Area UP RIGHT and DOWN exit only
+        18 - Area UP LEFT and DOWN exit only
+        19 - Area UP and DOWN exit only
+
+        No dungeon map                 -> Empty map
+        Dungeon map (no visietd areas) -> Unvisited block on each area
+        Visited map                    -> Reveal area block on map
+
+    */
+
+    DUNGEON m_dungeon;
+
+    uint8_t m_dungeonMaps[MAX_DUNGEONS][DUNGEON_MAX_BLOCK_X][DUNGEON_MAX_BLOCK_Y] =
+    {
+        {
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,1},
+        },
+        {
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            { 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            { 0, 0, 0, 0, 0, 0,12, 0, 1},
+            { 0, 5,11, 6, 0, 0, 4, 0, 1},
+            {12, 0,17, 3, 8,12,19, 0, 1},
+            {19, 5,17,10,10,18,15, 0, 1},
+            {13, 0,14,11,15, 0, 0, 0, 1},
+            { 0, 5,11,18, 0, 0, 0, 0, 1},
+        },
+        {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        },
+        {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        },
+        {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        },
+        {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        },
+        {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        },
+        {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        },
+        {
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0},
+        }
+    };
 
     // Inventory sprite positions (source Rect from the sprite sheet)
     SDL_Rect m_inventorySpritesSrc[WPN_COUNT + INVENTORY_COUNT] =
@@ -405,6 +597,28 @@ private:
         {90,84,14,12}, // INVENTORY_PHOTOGRAPHS
 
         {126,116,8,8}, // INVENTORY_SLASH
+
+        {0,152,8,8}, // INVENTORY_AREA_EXIT_RIGHT
+        {10,152,8,8}, // INVENTORY_AREA_EXIT_LEFT
+        {20,152,8,8}, // INVENTORY_AREA_EXIT_RIGHT_DOWN
+        {30,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN
+        {40,152,8,8}, // INVENTORY_AREA_EXIT_NONE
+        {50,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP_DOWN
+        {60,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
+        {70,152,8,8}, // INVENTORY_AREA_UNVISITED
+        {80,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_RIGHT
+        {90,152,8,8}, // INVENTORY_AREA_TREASURE
+        {100,152,8,8}, // INVENTORY_AREA_NIGHTMARE
+        {0,162,8,8}, // INVENTORY_AREA_EXIT_DOWN
+        {10,162,8,8}, // INVENTORY_AREA_EXIT_UP
+        {20,162,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT
+        {30,162,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP
+        {40,162,8,8}, // INVENTORY_AREA_EXIT_ALL
+        {50,162,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
+        {60,162,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
+        {70,162,8,8}, // INVENTORY_AREA_EMPTY
+        {80,162,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
+
 
     };
 
@@ -491,6 +705,26 @@ private:
 
         {40,24,8,8}, // INVENTORY_SLASH
 
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_RIGHT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_NONE
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_UNVISITED
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_TREASURE
+        {88,56,8,8}, // INVENTORY_AREA_NIGHTMARE
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_ALL
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EMPTY
+        {88,56,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
     };
 
 };
