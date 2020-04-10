@@ -26,10 +26,10 @@ public:
 
 protected:
     float m_health;
-    Vec2 m_position;
+    Vec2<float> m_position;
     virtual void attack() {};
     virtual void die() {};
-    virtual Vec2 position() const = 0;
+    virtual Vec2<float> position() const = 0;
 };
 
 

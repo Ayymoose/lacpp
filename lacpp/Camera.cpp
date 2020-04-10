@@ -47,8 +47,8 @@ void Camera::trackCharacter()
     Player* player = dynamic_cast<Player*>(m_tracker);
     assert(player != nullptr);
 
-    Vec2 position = player->position();
-    int x = position.x; int y = position.y;
+    Vec2<float> position = player->position();
+    float x = position.x; float y = position.y;
 
     if (x < m_scrollX)
     {

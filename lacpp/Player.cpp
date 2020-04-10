@@ -10,8 +10,8 @@
 Player::Player()
 {
     m_texture = ResourceManager::getInstance()[RSC_LINK];
-    m_position.set(64, 64);
-    m_jumpVector.set(0, 0);
+    //m_position.set(64, 64);
+    //m_jumpVector.set(0, 0);
     m_width = 16;
     m_height = 16;
     m_speed = 1;
@@ -219,7 +219,7 @@ void Player::resetAnimation()
     m_currentFrame = m_animations[m_state].currentFrame;
 }
 
-Vec2 Player::position() const
+Vec2<float> Player::position() const
 {
     return m_position;
 }

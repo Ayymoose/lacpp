@@ -114,14 +114,14 @@ public:
 
     void resetAnimation();
 
-    Vec2 position() const override;
+    Vec2<float> position() const override;
     void damage(float damage) override;
     void replenish(float hearts);
     void addPosition(int x, int y);
     float health() const override;
     float maxHealth() const;
 private:
-    Vec2 m_jumpVector;
+    Vec2<float> m_jumpVector;
     int m_speed;
     float m_healthMax;
     Inventory m_inventory;

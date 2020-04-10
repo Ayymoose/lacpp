@@ -142,7 +142,6 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UpdateTimer.cpp" />
-    <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
