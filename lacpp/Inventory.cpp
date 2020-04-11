@@ -362,8 +362,41 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
         19 - Area UP and DOWN exit only
 
     */
-    SDL_Rect srcRect = {0,0,0,0}, dstRect = { 0,0,0,0 };
 
+
+    // Draw current location grid arrow
+    SDL_Rect srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW];
+    SDL_Rect dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW];
+
+    switch (m_dungeon)
+    {
+    case DUNGEON_COLOUR_DUNGEON: break;
+    case DUNGEON_TAIL_CAVE: dstRect.x = 112;  break;
+    case DUNGEON_BOTTLE_GROTTO: break;
+    case DUNGEON_KEY_CAVERN: break;
+    case DUNGEON_ANGLER_TUNNEL: break;
+    case DUNGEON_CATFISH_MAW: break;
+    case DUNGEON_FACE_SHRINE: break;
+    case DUNGEON_EAGLE_TOWER: break;
+    case DUNGEON_TURTLE_ROCK: break;
+    }
+
+    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+    // Draw dungeon map level
+    dstRect = {72,64,8,8};
+    drawNumber(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], true, true, 0, m_dungeon, &dstRect);
+
+    // Draw the dungeon map
+
+
+    // Tail cave start position
+    // Player position in dungeon map
+    m_dungeonPosition.x = 3;
+    m_dungeonPosition.y = 8;
+
+    // Without a map, all the paths are not drawn
+    // Unvisited areas are marked with a grey block
     for (int x = 0; x < DUNGEON_MAX_BLOCK_X; x++)
     {
         for (int y = 0; y < DUNGEON_MAX_BLOCK_Y; y++)
@@ -454,8 +487,28 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
             dstRect.x += x * srcRect.w;
             dstRect.y += y * srcRect.w;
             SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+
+            // Draw current location flashing
+            if (m_dungeonPosition.x == x && m_dungeonPosition.y == y)
+            {
+                srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_CURRENT_LOCATION];
+                srcRect.x = srcRect.x + ((2 + srcRect.w) * m_dungeonMapPositionTimer.m_counter);
+                if (m_dungeonMapPositionTimer.update(INSTRUMENT_FPS))
+                {
+                    if (m_dungeonMapPositionTimer.m_counter > 1)
+                    {
+                        m_dungeonMapPositionTimer.m_counter = 0;
+                    }
+                }
+                SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            }
+
         }
     }
+
+
+
+
 }
 
 void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)

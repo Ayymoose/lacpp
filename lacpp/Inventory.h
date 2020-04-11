@@ -3,6 +3,7 @@
 
 #include "Controllable.h"
 #include "Renderable.h"
+#include "Vec2.h"
 
 // Initial selector position and increases
 #define SELECTOR_INITIAL_X 6
@@ -98,15 +99,19 @@ enum WEAPON
 
 enum WEAPON_LEVEL
 {
+    WPN_LEVEL_NONE = -1,
     WPN_LEVEL_1 = 1,
     WPN_LEVEL_2,
+    WPN_LEVEL_COUNT
 };
 
 enum OCARINA_SONG
 {
+    SNG_NONE = -1,
     SNG_MARIN = 1,
     SNG_FROG,
-    SNG_FISH
+    SNG_FISH,
+    SNG_COUNT
 };
 
 enum INVENTORY_SPRITES
@@ -193,6 +198,8 @@ enum INVENTORY_SPRITES
     INVENTORY_AREA_EXIT_UP_LEFT_DOWN,
     INVENTORY_AREA_EMPTY,
     INVENTORY_AREA_EXIT_UP_DOWN,
+    INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW,
+    INVENTORY_DUNGEON_MAP_CURRENT_LOCATION,
 
     INVENTORY_COUNT
 };
@@ -233,7 +240,8 @@ enum TRADE_ITEM
 
 enum TUNIC
 {
-    TUNIC_GREEN = 0,
+    TUNIC_NONE = -1,
+    TUNIC_GREEN,
     TUNIC_RED,
     TUNIC_BLUE,
     TUNIC_COUNT
@@ -365,6 +373,10 @@ private:
     bool m_flashSelect;
     bool m_selectPressed;
 
+    // Player position in dungeon map as a vector
+    Vec2<uint8_t> m_dungeonPosition;
+
+    UpdateTimer m_dungeonMapPositionTimer;
 
     // Array of dungeon maps
     /*
@@ -618,7 +630,8 @@ private:
         {60,162,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
         {70,162,8,8}, // INVENTORY_AREA_EMPTY
         {80,162,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
-
+        {130,152,8,8},   // INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW
+        {110,152,8,8,}  // INVENTORY_DUNGEON_MAP_CURRENT_LOCATION
 
     };
 
@@ -725,6 +738,8 @@ private:
         {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
         {88,56,8,8}, // INVENTORY_AREA_EMPTY
         {88,56,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
+        {88,128,8,8},   // INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW
+        {0, 0, 8, 8}  // INVENTORY_DUNGEON_MAP_CURRENT_LOCATION
     };
 
 };

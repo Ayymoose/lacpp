@@ -21,6 +21,7 @@ public:
     // Cross product of 2 2D vectors
     static T cross(const Vec2& v1, const Vec2& v2)
     {
+        assert(false);
         return 0;
     }
 
