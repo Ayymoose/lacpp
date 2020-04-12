@@ -506,9 +506,6 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
         }
     }
 
-
-
-
 }
 
 void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)

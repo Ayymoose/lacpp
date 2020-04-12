@@ -8,9 +8,12 @@
 #include "UpdateTimer.h"
 #include "Inventory.h"
 #include "Singleton.h"
+#include "BoundingBox.h"
+#include "CollisionMap.h"
 
 enum PlayerState
 {
+    LINK_WALK_NONE = -1,
     LINK_WALK_LEFT = 0,
     LINK_WALK_RIGHT,
     LINK_WALK_UP,
@@ -96,10 +99,12 @@ enum PlayerState
     LINK_FISH_LEFT,
 
     */
-    LINK_ANIMATIONS
+    LINK_COUNT
 };
 
 #define PLAYER_MAX_HEALTH 14.0
+#define PLAYER_BOUNDING_BOX_WIDTH 16
+#define PLAYER_BOUNDING_BOX_HEIGHT 8
 
 class Player : public Controllable, public Renderable, public Character, public Singleton<Player>
 {
@@ -115,16 +120,38 @@ public:
     void resetAnimation();
 
     Vec2<float> position() const override;
+
+    Vec2<float> displayPosition()
+    {
+        return m_displayPosition;
+    }
+    void addDisplayPosition(int x, int y)
+    {
+        m_displayPosition.x += x;
+        m_displayPosition.y += y;
+    }
+
     void damage(float damage) override;
     void replenish(float hearts);
     void addPosition(int x, int y);
     float health() const override;
     float maxHealth() const;
 private:
-    Vec2<float> m_jumpVector;
     int m_speed;
     float m_healthMax;
     Inventory m_inventory;
+    Vec2<float> m_displayPosition;
+    int m_speed_x;
+    int m_speed_y;
+
+
+
+    bool m_moveableRightLeft;
+    bool m_moveableUpDown;
+    BoundingBox m_boundingBox;
+    BoundingBox m_testBlock;
+
+    CollisionMap m_collisionMap;
 
     UpdateTimer m_movementTimer;
 
@@ -136,7 +163,7 @@ private:
     // Player animation state
     PlayerState m_state;
 
-    const Animation m_animations[LINK_ANIMATIONS] =
+    const Animation m_animations[LINK_COUNT] =
     {
 
        // x   y currentFrame maxFrame,    animationFPS,     orientation,  flip

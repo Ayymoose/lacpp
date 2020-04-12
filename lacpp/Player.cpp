@@ -10,11 +10,12 @@
 Player::Player()
 {
     m_texture = ResourceManager::getInstance()[RSC_LINK];
-    //m_position.set(64, 64);
-    //m_jumpVector.set(0, 0);
     m_width = 16;
     m_height = 16;
     m_speed = 1;
+
+
+    m_position.x = 72; m_position.y = 88;
 
     m_health = 3;
     m_healthMax = 3;
@@ -32,11 +33,28 @@ Player::Player()
     m_dirLockUp = false;
     m_dirLockDown = false;
     m_dirLockLeft = false;
+
+
+    // Collision related stuff
+    m_moveableRightLeft = true;
+    m_moveableUpDown = true;
+    m_speed_x = 0;
+    m_speed_y = 0;
+
+    m_testBlock.m_x = 32;
+    m_testBlock.m_y = 32;
+    m_testBlock.m_w = 16;
+    m_testBlock.m_h = 48;
+
+
+    m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
+    m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
+
     
     Renderer::getInstance().addRenderable(this);
  
-    m_inventory.open();
-    Controller::getInstance().setController(&m_inventory);
+    //m_inventory.open();
+    Controller::getInstance().setController(this);
 
 }
 
@@ -57,13 +75,34 @@ Player::~Player()
 
 void Player::render(SDL_Renderer* pRenderer)
 {
+
+
+
+
     // Get clock, if elapsed, increase frame counter
     SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width) , m_animateYPos, m_width ,m_height };
-    SDL_Rect dstRect = { m_position.x /*+ m_jumpVector.x*/ - Camera::getInstance().getX(),
-                         m_position.y /*+ m_jumpVector.y*/ - Camera::getInstance().getY(),
+    SDL_Rect dstRect = { m_position.x - Camera::getInstance().getX(),
+                         m_position.y - Camera::getInstance().getY(),
                          m_width,m_height 
                        };
     SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip);
+
+
+    SDL_Rect playerRect = { m_boundingBox.m_x, m_boundingBox.m_y, m_boundingBox.m_w, m_boundingBox.m_h };
+    SDL_RenderDrawRect(pRenderer, &playerRect);
+
+    std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(COLLISION_AREA_TEST);
+    for (const BoundingBox& box : bbs)
+    {
+        // Drawing bounding boxes for testing
+        SDL_Rect bbRect = { box.m_x , box.m_y, box.m_w, box.m_h };
+
+        SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0);
+        SDL_RenderDrawRect(pRenderer, &bbRect);
+    }
+
+
+
 }
 
 void Player::control()
@@ -89,6 +128,7 @@ void Player::control()
 
     */
 
+
     // Max frame controlled by the state
     m_maxFrame = m_animations[m_state].maxFrame;
 
@@ -98,39 +138,61 @@ void Player::control()
     if (IS_MOVING(m_keyboardState))
     {
 
-        int m_speed_x = 0;
-        int m_speed_y = 0;
-
-
         // If we are holding left and we press up or down, we don't want to change the state whatever it is...
         // Same applies to other directions 
 
         if (m_keyboardState[BUTTON_RIGHT])
         {
+            m_speed_x = m_speed;
+            m_speed_y = -m_keyboardState[BUTTON_UP] + m_keyboardState[BUTTON_DOWN];
+
             if (!m_dirLockUp && !m_dirLockDown)
             {
                 m_dirLockRight = true;
-                m_state = LINK_WALK_RIGHT;
+                if (m_moveableRightLeft)
+                {
+                    m_state = LINK_WALK_RIGHT;
+                }
+                else
+                {
+                    m_state = LINK_PUSH_RIGHT;
+                }
             }
-            m_speed_x = m_speed;
-            m_speed_y = -m_keyboardState[BUTTON_UP] + m_keyboardState[BUTTON_DOWN];
+
         }
         if (m_keyboardState[BUTTON_LEFT])
         {
+
+            m_speed_x = -m_speed;
+            m_speed_y = -m_keyboardState[BUTTON_UP] + m_keyboardState[BUTTON_DOWN];
+
             if (!m_dirLockUp && !m_dirLockDown)
             {
                 m_dirLockLeft = true;
-                m_state = LINK_WALK_LEFT;
+                if (m_moveableRightLeft)
+                {
+                    m_state = LINK_WALK_LEFT;
+                }
+                else
+                {
+                    m_state = LINK_PUSH_LEFT;
+                }
             }
-            m_speed_x = -m_speed;
-            m_speed_y = - m_keyboardState[BUTTON_UP] + m_keyboardState[BUTTON_DOWN];
+
         }
         if (m_keyboardState[BUTTON_UP])
         {
             if (!m_dirLockRight && !m_dirLockLeft)
             {
                 m_dirLockUp = true;
-                m_state = LINK_WALK_UP;
+                if (m_moveableUpDown)
+                {
+                    m_state = LINK_WALK_UP;
+                }
+                else
+                {
+                    m_state = LINK_PUSH_UP;
+                }
             }
             m_speed_x = - m_keyboardState[BUTTON_LEFT] + m_keyboardState[BUTTON_RIGHT];
             m_speed_y = -m_speed;
@@ -140,7 +202,14 @@ void Player::control()
             if (!m_dirLockRight && !m_dirLockLeft)
             {
                 m_dirLockDown = true;
-                m_state = LINK_WALK_DOWN;
+                if (m_moveableUpDown)
+                {
+                    m_state = LINK_WALK_DOWN;
+                }
+                else
+                {
+                    m_state = LINK_PUSH_DOWN;
+                }
             }
             m_speed_x = - m_keyboardState[BUTTON_LEFT] + m_keyboardState[BUTTON_RIGHT];
             m_speed_y = m_speed;
@@ -153,8 +222,64 @@ void Player::control()
         /// Move player
         if (m_movementTimer.update(FPS_66))
         {
-            m_position.x += m_speed_x;
-            m_position.y += m_speed_y;
+
+            m_boundingBox.m_x = m_position.x;
+            m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
+            m_boundingBox.m_y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT + m_speed_y;
+            m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
+
+            // Collisions
+            bool collision = false;
+            std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(COLLISION_AREA_TEST);
+            for (const BoundingBox& box : bbs)
+            {
+                if (BoundingBox::intersects(m_boundingBox, box))
+                {
+                    collision = true;
+                    break;
+                }
+            }
+
+
+            if (!collision)
+            {
+                m_position.y += m_speed_y;
+                m_moveableUpDown = true;
+            }
+            else
+            {
+                m_moveableUpDown = false;
+            }
+
+            m_boundingBox.m_x = m_position.x + m_speed_x;
+            m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
+            m_boundingBox.m_y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
+            m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
+
+            collision = false;
+            bbs = m_collisionMap.collisionMap(COLLISION_AREA_TEST);
+            for (const BoundingBox& box : bbs)
+            {
+                if (BoundingBox::intersects(m_boundingBox, box))
+                {
+                    collision = true;
+                    break;
+                }
+            }
+
+
+            if (!collision)
+            {
+                m_position.x += m_speed_x;
+
+                m_moveableRightLeft = true;
+            }
+            else
+            {
+                m_moveableRightLeft = false;
+            }
+       
+
         }
 
         // Animation

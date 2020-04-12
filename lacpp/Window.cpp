@@ -32,11 +32,14 @@ void Window::beginEventLoop()
     Camera::getInstance().setScrollSpeed(4);
     Camera::getInstance().setPosition(480, 640);
     Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[RSC_DUNGEON_1_TAIL_CAVE]);
+
     BackgroundObject candle1(RSC_CANDLE, 16, 16, 0);
     BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
 
     // Stretch the textures to the window
-    SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16));
+    SDL_RenderSetScale(Renderer::getInstance().getRenderer(),
+        MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH,
+        MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16));
    
     std::string windowTitle;
 
