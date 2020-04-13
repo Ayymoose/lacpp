@@ -121,26 +121,20 @@ public:
 
     Vec2<float> position() const override;
 
-    Vec2<float> displayPosition()
-    {
-        return m_displayPosition;
-    }
-    void addDisplayPosition(int x, int y)
-    {
-        m_displayPosition.x += x;
-        m_displayPosition.y += y;
-    }
-
     void damage(float damage) override;
     void replenish(float hearts);
     void addPosition(int x, int y);
     float health() const override;
     float maxHealth() const;
+
+    int m_currentCollisionMapX;
+    int m_currentCollisionMapY;
+    COLLISION_AREA m_collisionArea;
+
 private:
     int m_speed;
     float m_healthMax;
     Inventory m_inventory;
-    Vec2<float> m_displayPosition;
     int m_speed_x;
     int m_speed_y;
 
@@ -149,10 +143,9 @@ private:
     bool m_moveableRightLeft;
     bool m_moveableUpDown;
     BoundingBox m_boundingBox;
-    BoundingBox m_testBlock;
 
     CollisionMap m_collisionMap;
-
+    bool handleStaticCollisions();
     UpdateTimer m_movementTimer;
 
     bool m_dirLockRight;

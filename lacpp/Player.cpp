@@ -16,6 +16,8 @@ Player::Player()
 
 
     m_position.x = 72; m_position.y = 88;
+    m_boundingBox.m_x = m_position.x; m_boundingBox.m_y = m_position.y;
+
 
     m_health = 3;
     m_healthMax = 3;
@@ -23,11 +25,11 @@ Player::Player()
     m_depth = PLAYER_DEPTH;
     m_state = LINK_WALK_DOWN;
 
-    m_animateXPos = 0;   // Initial X-position in sprite sheet for this animation
-    m_animateYPos = 0;   // Initial Y-position in sprite sheet for this animation
-    m_currentFrame = 0;  // Initial frame in this animation
-    m_maxFrame = 0;      // Maximum frame number for this animation
-    m_animationFPS = 0; // Animation rate in FPS
+    m_animateXPos = 0;      // Initial X-position in sprite sheet for this animation
+    m_animateYPos = 0;      // Initial Y-position in sprite sheet for this animation
+    m_currentFrame = 0;     // Initial frame in this animation
+    m_maxFrame = 0;         // Maximum frame number for this animation
+    m_animationFPS = 0;     // Animation rate in FPS
 
     m_dirLockRight = false;
     m_dirLockUp = false;
@@ -41,21 +43,18 @@ Player::Player()
     m_speed_x = 0;
     m_speed_y = 0;
 
-    m_testBlock.m_x = 32;
-    m_testBlock.m_y = 32;
-    m_testBlock.m_w = 16;
-    m_testBlock.m_h = 48;
+    // Set to Tail cave entrace
+    m_currentCollisionMapX = 3;
+    m_currentCollisionMapY = 5;
+    m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
 
 
     m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
     m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
 
-    
     Renderer::getInstance().addRenderable(this);
  
-    //m_inventory.open();
     Controller::getInstance().setController(this);
-
 }
 
 float Player::health() const
@@ -68,6 +67,27 @@ float Player::maxHealth() const
     return m_healthMax;
 }
 
+bool Player::handleStaticCollisions()
+{
+    // Handle static collisions
+    bool collision = false;
+    std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
+    for (BoundingBox& box : bbs)
+    {
+        // Transform the bounding box co-ordinates as we offset from the count
+        // Why does this have to be negative?
+        box.m_x -= -Camera::getInstance().getX();
+        box.m_y -= -Camera::getInstance().getY();
+
+        if (BoundingBox::intersects(m_boundingBox, box))
+        {
+            collision = true;
+            break;
+        }
+    }
+    return collision;
+}
+
 Player::~Player()
 {
 
@@ -76,32 +96,37 @@ Player::~Player()
 void Player::render(SDL_Renderer* pRenderer)
 {
 
-
-
-
     // Get clock, if elapsed, increase frame counter
     SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width) , m_animateYPos, m_width ,m_height };
-    SDL_Rect dstRect = { m_position.x - Camera::getInstance().getX(),
-                         m_position.y - Camera::getInstance().getY(),
-                         m_width,m_height 
+    SDL_Rect dstRect = {
+        m_position.x - Camera::getInstance().getX(),
+        m_position.y - Camera::getInstance().getY(),
+        m_width, m_height 
                        };
     SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip);
 
 
-    SDL_Rect playerRect = { m_boundingBox.m_x, m_boundingBox.m_y, m_boundingBox.m_w, m_boundingBox.m_h };
+    // Drawing bounding boxes for testing
+    m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
+
+    SDL_Rect playerRect =
+    {
+        m_boundingBox.m_x - Camera::getInstance().getX(),
+        m_boundingBox.m_y - Camera::getInstance().getY(),
+        m_boundingBox.m_w, m_boundingBox.m_h
+    };
     SDL_RenderDrawRect(pRenderer, &playerRect);
 
-    std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(COLLISION_AREA_TEST);
+    std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (const BoundingBox& box : bbs)
     {
-        // Drawing bounding boxes for testing
+
         SDL_Rect bbRect = { box.m_x , box.m_y, box.m_w, box.m_h };
 
         SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0);
         SDL_RenderDrawRect(pRenderer, &bbRect);
     }
-
-
+    
 
 }
 
@@ -223,25 +248,13 @@ void Player::control()
         if (m_movementTimer.update(FPS_66))
         {
 
+            // Handle static collisions
             m_boundingBox.m_x = m_position.x;
             m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
             m_boundingBox.m_y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT + m_speed_y;
             m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
 
-            // Collisions
-            bool collision = false;
-            std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(COLLISION_AREA_TEST);
-            for (const BoundingBox& box : bbs)
-            {
-                if (BoundingBox::intersects(m_boundingBox, box))
-                {
-                    collision = true;
-                    break;
-                }
-            }
-
-
-            if (!collision)
+            if (!handleStaticCollisions())
             {
                 m_position.y += m_speed_y;
                 m_moveableUpDown = true;
@@ -256,22 +269,9 @@ void Player::control()
             m_boundingBox.m_y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
             m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
 
-            collision = false;
-            bbs = m_collisionMap.collisionMap(COLLISION_AREA_TEST);
-            for (const BoundingBox& box : bbs)
-            {
-                if (BoundingBox::intersects(m_boundingBox, box))
-                {
-                    collision = true;
-                    break;
-                }
-            }
-
-
-            if (!collision)
+            if (!handleStaticCollisions())
             {
                 m_position.x += m_speed_x;
-
                 m_moveableRightLeft = true;
             }
             else

@@ -54,24 +54,28 @@ void Camera::trackCharacter()
     {
         // Scroll left
         m_scrollLeft = true;
+        player->m_currentCollisionMapX--;
         Controller::getInstance().setController(nullptr);
     }
     else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE)
     {
         // Scroll right
         m_scrollRight = true;
+        player->m_currentCollisionMapX++;
         Controller::getInstance().setController(nullptr);
     }
     else if (y < m_scrollY)
     {
         // Scroll up
         m_scrollUp = true;
+        player->m_currentCollisionMapY--;
         Controller::getInstance().setController(nullptr);
     }
     else if (y > m_scrollY + CAMERA_HEIGHT - 16 /* HUD height because its on the bottom*/)
     {
         // Scroll down
         m_scrollDown = true;
+        player->m_currentCollisionMapY++;
         Controller::getInstance().setController(nullptr);
     }
 
