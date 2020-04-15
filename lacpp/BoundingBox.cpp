@@ -1,22 +1,23 @@
 #include "BoundingBox.h"
+#include <stdlib.h>
 
 BoundingBox::BoundingBox()
 {
-    m_x = 0;
-    m_y = 0;
-    m_w = 0;
-    m_h = 0;
+    x = 0;
+    y = 0;
+    w = 0;
+    h = 0;
 }
 
 BoundingBox::BoundingBox(int x, int y, int w, int h)
 {
-    m_x = x;
-    m_y = y;
-    m_w = w;
-    m_h = h;
+    this->x = x;
+    this->y = y;
+    this->w = w;
+    this->h = h;
 }
 
 bool BoundingBox::intersects(const BoundingBox& A, const BoundingBox& B)
 {
-    return (A.m_x < B.m_x + B.m_w) && (A.m_y < B.m_y + B.m_h) && (A.m_x + A.m_w > B.m_x) && (A.m_y + A.m_h > B.m_y);
+    return (A.x < B.x + B.w) && (A.y < B.y + B.h) && (A.x + A.w > B.x) && (A.y + A.h > B.y);
 }

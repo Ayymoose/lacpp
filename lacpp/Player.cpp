@@ -16,8 +16,10 @@ Player::Player()
 
 
     m_position.x = 72; m_position.y = 88;
-    m_boundingBox.m_x = m_position.x; m_boundingBox.m_y = m_position.y;
+    m_boundingBox.x = m_position.x; m_boundingBox.y = m_position.y;
 
+    m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
+    m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
 
     m_health = 3;
     m_healthMax = 3;
@@ -49,8 +51,8 @@ Player::Player()
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
 
 
-    m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
-    m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
+    m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
+    m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
 
     Renderer::getInstance().addRenderable(this);
  
@@ -67,23 +69,48 @@ float Player::maxHealth() const
     return m_healthMax;
 }
 
-bool Player::handleStaticCollisions()
+bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
 {
+
+    // When moving in a direction
+    // If our position + speed encounters a wall, stop
+    // else keep moving in that direction
+    bool upCutRight = false;
+
+    m_boundingBox.x = m_position.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
+    m_boundingBox.y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
+
+    // Copy box
+    BoundingBox testBox = m_boundingBox;
+    testBox.x += horizontalSpeed;
+    testBox.y += verticalSpeed;
+
     // Handle static collisions
     bool collision = false;
+    int y2 = 0;
     std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (BoundingBox& box : bbs)
     {
         // Transform the bounding box co-ordinates as we offset from the count
         // Why does this have to be negative?
-        box.m_x -= -Camera::getInstance().getX();
-        box.m_y -= -Camera::getInstance().getY();
+        box.x -= -Camera::getInstance().getX();
+        box.y -= -Camera::getInstance().getY();
 
-        if (BoundingBox::intersects(m_boundingBox, box))
+        if (BoundingBox::intersects(testBox, box))
         {
+
+            int yp = (m_boundingBox.y + m_boundingBox.h) - box.y;
+            upCutRight = (yp >= 0 && yp <= 4) && (m_boundingBox.x + m_boundingBox.w <= box.x);      // Push player UP when going right
+            y2 = box.y;
             collision = true;
             break;
         }
+    }
+
+    if (upCutRight)
+    {
+        m_position.y--;
+        std::cout << "(" << m_boundingBox.y << " + " << m_boundingBox.h << ") - " << y2 << std::endl;
     }
     return collision;
 }
@@ -111,9 +138,9 @@ void Player::render(SDL_Renderer* pRenderer)
 
     SDL_Rect playerRect =
     {
-        m_boundingBox.m_x - Camera::getInstance().getX(),
-        m_boundingBox.m_y - Camera::getInstance().getY(),
-        m_boundingBox.m_w, m_boundingBox.m_h
+        m_boundingBox.x - Camera::getInstance().getX(),
+        m_boundingBox.y - Camera::getInstance().getY(),
+        m_boundingBox.w, m_boundingBox.h
     };
     SDL_RenderDrawRect(pRenderer, &playerRect);
 
@@ -121,7 +148,7 @@ void Player::render(SDL_Renderer* pRenderer)
     for (const BoundingBox& box : bbs)
     {
 
-        SDL_Rect bbRect = { box.m_x , box.m_y, box.m_w, box.m_h };
+        SDL_Rect bbRect = { box.x , box.y, box.w, box.h };
 
         SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0);
         SDL_RenderDrawRect(pRenderer, &bbRect);
@@ -169,19 +196,12 @@ void Player::control()
         if (m_keyboardState[BUTTON_RIGHT])
         {
             m_speed_x = m_speed;
-            m_speed_y = -m_keyboardState[BUTTON_UP] + m_keyboardState[BUTTON_DOWN];
+            m_speed_y = m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP];
 
             if (!m_dirLockUp && !m_dirLockDown)
             {
                 m_dirLockRight = true;
-                if (m_moveableRightLeft)
-                {
-                    m_state = LINK_WALK_RIGHT;
-                }
-                else
-                {
-                    m_state = LINK_PUSH_RIGHT;
-                }
+                m_state = LINK_WALK_RIGHT;
             }
 
         }
@@ -189,19 +209,12 @@ void Player::control()
         {
 
             m_speed_x = -m_speed;
-            m_speed_y = -m_keyboardState[BUTTON_UP] + m_keyboardState[BUTTON_DOWN];
+            m_speed_y = m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP];
 
             if (!m_dirLockUp && !m_dirLockDown)
             {
                 m_dirLockLeft = true;
-                if (m_moveableRightLeft)
-                {
-                    m_state = LINK_WALK_LEFT;
-                }
-                else
-                {
-                    m_state = LINK_PUSH_LEFT;
-                }
+                m_state = LINK_WALK_LEFT;
             }
 
         }
@@ -210,16 +223,9 @@ void Player::control()
             if (!m_dirLockRight && !m_dirLockLeft)
             {
                 m_dirLockUp = true;
-                if (m_moveableUpDown)
-                {
-                    m_state = LINK_WALK_UP;
-                }
-                else
-                {
-                    m_state = LINK_PUSH_UP;
-                }
+                m_state = LINK_WALK_UP;
             }
-            m_speed_x = - m_keyboardState[BUTTON_LEFT] + m_keyboardState[BUTTON_RIGHT];
+            m_speed_x = m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT];
             m_speed_y = -m_speed;
         }
         if (m_keyboardState[BUTTON_DOWN])
@@ -227,16 +233,9 @@ void Player::control()
             if (!m_dirLockRight && !m_dirLockLeft)
             {
                 m_dirLockDown = true;
-                if (m_moveableUpDown)
-                {
-                    m_state = LINK_WALK_DOWN;
-                }
-                else
-                {
-                    m_state = LINK_PUSH_DOWN;
-                }
+                m_state = LINK_WALK_DOWN;
             }
-            m_speed_x = - m_keyboardState[BUTTON_LEFT] + m_keyboardState[BUTTON_RIGHT];
+            m_speed_x = m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT];
             m_speed_y = m_speed;
         }
 
@@ -249,36 +248,33 @@ void Player::control()
         {
 
             // Handle static collisions
-            m_boundingBox.m_x = m_position.x;
-            m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
-            m_boundingBox.m_y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT + m_speed_y;
-            m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
-
+         /*   m_boundingBox.x = m_position.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
+            m_boundingBox.y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT + m_speed_y;
+            */
+/*
             if (!handleStaticCollisions())
-            {
-                m_position.y += m_speed_y;
-                m_moveableUpDown = true;
+            {*/
+
+           /*     m_moveableUpDown = true;
             }
             else
             {
                 m_moveableUpDown = false;
-            }
+            }*/
 
-            m_boundingBox.m_x = m_position.x + m_speed_x;
-            m_boundingBox.m_w = PLAYER_BOUNDING_BOX_WIDTH;
-            m_boundingBox.m_y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
-            m_boundingBox.m_h = PLAYER_BOUNDING_BOX_HEIGHT;
+            //m_boundingBox.x = m_position.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
+            //m_boundingBox.y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
 
-            if (!handleStaticCollisions())
+            if (!handleStaticCollisions(m_speed_x,0))
             {
                 m_position.x += m_speed_x;
-                m_moveableRightLeft = true;
             }
-            else
+            if (!handleStaticCollisions(0, m_speed_y))
             {
-                m_moveableRightLeft = false;
+                m_position.y += m_speed_y;
             }
-       
+
+
 
         }
 

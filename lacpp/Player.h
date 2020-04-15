@@ -103,7 +103,8 @@ enum PlayerState
 };
 
 #define PLAYER_MAX_HEALTH 14.0
-#define PLAYER_BOUNDING_BOX_WIDTH 16
+#define PLAYER_BOUNDING_BOX_WIDTH_OFFSET 2
+#define PLAYER_BOUNDING_BOX_WIDTH 12
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
 
 class Player : public Controllable, public Renderable, public Character, public Singleton<Player>
@@ -145,7 +146,7 @@ private:
     BoundingBox m_boundingBox;
 
     CollisionMap m_collisionMap;
-    bool handleStaticCollisions();
+    bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed);
     UpdateTimer m_movementTimer;
 
     bool m_dirLockRight;
