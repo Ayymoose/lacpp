@@ -87,7 +87,6 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
 
     // Handle static collisions
     bool collision = false;
-    int y2 = 0;
     std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (BoundingBox& box : bbs)
     {
@@ -98,19 +97,19 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
 
         if (BoundingBox::intersects(testBox, box))
         {
-
-            int yp = (m_boundingBox.y + m_boundingBox.h) - box.y;
-            upCutRight = (yp >= 0 && yp <= 4) && (m_boundingBox.x + m_boundingBox.w <= box.x);      // Push player UP when going right
-            y2 = box.y;
+            // Either horizontal or vertical speed will be non-zero, never both
+            int yp = (m_boundingBox.y + m_boundingBox.h) - box.y;                               
+            upCutRight = (yp >= 0 && yp <= 4) && (m_boundingBox.x + m_boundingBox.w <= box.x);  // Push player UP when going right
             collision = true;
             break;
         }
     }
 
-    if (upCutRight)
+    // Don't get stuck on a corner or increase speed when gliding along the wall
+    if (upCutRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
     {
         m_position.y--;
-        std::cout << "(" << m_boundingBox.y << " + " << m_boundingBox.h << ") - " << y2 << std::endl;
+        std::cout << "h " << m_speed_x << " v " << m_speed_y << "\n";
     }
     return collision;
 }
@@ -248,31 +247,15 @@ void Player::control()
         {
 
             // Handle static collisions
-         /*   m_boundingBox.x = m_position.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
-            m_boundingBox.y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT + m_speed_y;
-            */
-/*
-            if (!handleStaticCollisions())
-            {*/
-
-           /*     m_moveableUpDown = true;
-            }
-            else
-            {
-                m_moveableUpDown = false;
-            }*/
-
-            //m_boundingBox.x = m_position.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
-            //m_boundingBox.y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
-
-            if (!handleStaticCollisions(m_speed_x,0))
-            {
-                m_position.x += m_speed_x;
-            }
             if (!handleStaticCollisions(0, m_speed_y))
             {
                 m_position.y += m_speed_y;
             }
+            if (!handleStaticCollisions(m_speed_x,0))
+            {
+                m_position.x += m_speed_x;
+            }
+
 
 
 
