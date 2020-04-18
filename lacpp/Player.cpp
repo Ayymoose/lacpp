@@ -75,7 +75,14 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
     // When moving in a direction
     // If our position + speed encounters a wall, stop
     // else keep moving in that direction
-    bool upCutRight = false;
+    bool topLeftLeftToRight = false;
+    bool bottomLeftLeftToRight = false;
+    bool topRightRightToLeft = false;
+    bool bottomRightRightToLeft = false;
+    bool bottomLeftBottomToTop = false;
+    bool bottomRightBottomToTop = false;
+    bool topLeftTopToBottom = false;
+    bool topRightTopToBottom = false;
 
     m_boundingBox.x = m_position.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
     m_boundingBox.y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
@@ -98,19 +105,54 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
         if (BoundingBox::intersects(testBox, box))
         {
             // Either horizontal or vertical speed will be non-zero, never both
-            int yp = (m_boundingBox.y + m_boundingBox.h) - box.y;                               
-            upCutRight = (yp >= 0 && yp <= 4) && (m_boundingBox.x + m_boundingBox.w <= box.x);  // Push player UP when going right
+            // Do corner cutting
+            topLeftLeftToRight = (((m_boundingBox.y + m_boundingBox.h) - box.y) >= 0 && ((m_boundingBox.y + m_boundingBox.h) - box.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.x + m_boundingBox.w <= box.x);  // Push player UP when going right
+            topLeftTopToBottom = (((m_boundingBox.x + m_boundingBox.w) - box.x) >= 0 && ((m_boundingBox.x + m_boundingBox.w) - box.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.y + m_boundingBox.h <= box.y);  // push player DOWN when going down
+            topRightTopToBottom = (((box.x + box.w) - m_boundingBox.x) >= 0 && ((box.x + box.w) - m_boundingBox.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.y + m_boundingBox.h <= box.y);
+            topRightRightToLeft = (((m_boundingBox.y + m_boundingBox.h) - box.y) >= 0 && ((m_boundingBox.y + m_boundingBox.h) - box.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.x + box.w <= m_boundingBox.x);
+            bottomRightRightToLeft = (((box.y + box.h) - m_boundingBox.y) >= 0 && ((box.y + box.h) - m_boundingBox.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.x + box.w <= m_boundingBox.x);
+            bottomRightBottomToTop = (((box.x + box.w) - m_boundingBox.x) >= 0 && ((box.x + box.w) - m_boundingBox.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.y + box.h <= m_boundingBox.y);
+            bottomLeftBottomToTop = (((m_boundingBox.x + m_boundingBox.w) - box.x) >= 0 && ((m_boundingBox.x + m_boundingBox.w) - box.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.y + box.h <= m_boundingBox.y);
+            bottomLeftLeftToRight = (((box.y + box.h) - m_boundingBox.y) >= 0 && ((box.y + box.h) - m_boundingBox.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.x + m_boundingBox.w <= box.x);
             collision = true;
             break;
         }
     }
 
     // Don't get stuck on a corner or increase speed when gliding along the wall
-    if (upCutRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    if (topLeftLeftToRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
     {
         m_position.y--;
-        std::cout << "h " << m_speed_x << " v " << m_speed_y << "\n";
     }
+    if (topLeftTopToBottom && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
+    {
+        m_position.x--;
+    }
+    if (topRightTopToBottom && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
+    {
+        m_position.x++;
+    }
+    if (topRightRightToLeft && !(m_speed_x == -m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == -m_speed))
+    {
+        m_position.y--;
+    }
+    if (bottomRightRightToLeft && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
+    {
+        m_position.y++;
+    }
+    if (bottomRightBottomToTop && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    {
+        m_position.x++;
+    }
+    if (bottomLeftBottomToTop && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    {
+        m_position.x--;
+    }
+    if (bottomLeftLeftToRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    {
+        m_position.y++;
+    }
+
     return collision;
 }
 

@@ -103,10 +103,10 @@ enum PlayerState
 };
 
 #define PLAYER_MAX_HEALTH 14.0
-#define PLAYER_BOUNDING_BOX_WIDTH_OFFSET 2
-#define PLAYER_BOUNDING_BOX_WIDTH 12
+#define PLAYER_BOUNDING_BOX_WIDTH_OFFSET 3
+#define PLAYER_BOUNDING_BOX_WIDTH 10
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
-
+#define PLAYER_CORNER_CUTTING_BOUNDARY 5
 class Player : public Controllable, public Renderable, public Character, public Singleton<Player>
 {
 public:
