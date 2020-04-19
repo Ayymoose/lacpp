@@ -203,7 +203,7 @@ void Player::control()
     // Open the inventory
     if (m_keyboardState[BUTTON_SELECT])
     {
-     //   m_inventory.open();
+        m_inventory.open();
      //   Controller::getInstance().setController(&m_inventory);
     }
 

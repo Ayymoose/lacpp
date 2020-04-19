@@ -14,18 +14,18 @@
 // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
 void CopyToTexture(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, SDL_Texture* dstTexture, SDL_Rect* srcRect, SDL_Rect* dstRect)
 {
-    SDL_SetRenderTarget(pRenderer, dstTexture);
-    SDL_RenderCopy(pRenderer, srcTexture, srcRect, dstRect);
-    SDL_SetRenderTarget(pRenderer, nullptr);
+    assert(SDL_SetRenderTarget(pRenderer, dstTexture) == 0);
+    assert(SDL_RenderCopy(pRenderer, srcTexture, srcRect, dstRect) == 0);
+    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 }
 
 // Colours a part of a texture (or whole use nullptr with a given colour 
 void ColourTexture(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, SDL_Rect* srcRect, uint32_t colour)
 {
-    SDL_SetRenderTarget(pRenderer, srcTexture);
-    SDL_SetRenderDrawColor(pRenderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0);
-    SDL_RenderFillRect(pRenderer, srcRect);
-    SDL_SetRenderTarget(pRenderer, nullptr);
+    assert(SDL_SetRenderTarget(pRenderer, srcTexture) == 0);
+    assert(SDL_SetRenderDrawColor(pRenderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0) == 0);
+    assert(SDL_RenderFillRect(pRenderer, srcRect) == 0);
+    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 }
 
 

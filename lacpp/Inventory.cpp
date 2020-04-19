@@ -39,7 +39,7 @@ Inventory::Inventory()
     CopyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[RSC_INVENTORY], m_inventoryDividerV, &srcRect, nullptr);
     //
 
-    SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height);
+    assert(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0);
     m_open = false;
     m_inDungeon = true;
     Renderer::getInstance().addRenderable(this);
@@ -300,7 +300,7 @@ void Inventory::render(SDL_Renderer* pRenderer)
 
     // Render the inventory background
     SDL_Rect dstRect = { 0, renderY, m_width , m_height };
-    SDL_RenderCopy(pRenderer, m_texture, nullptr, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, m_texture, nullptr, &dstRect) == 0);
     ColourTexture(pRenderer, m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
     drawTopHUD(pRenderer);
@@ -381,7 +381,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
     case DUNGEON_TURTLE_ROCK: break;
     }
 
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
     // Draw dungeon map level
     dstRect = {72,64,8,8};
@@ -486,7 +486,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
             }
             dstRect.x += x * srcRect.w;
             dstRect.y += y * srcRect.w;
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
             // Draw current location flashing
             if (m_dungeonPosition.x == x && m_dungeonPosition.y == y)
@@ -500,7 +500,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
                         m_dungeonMapPositionTimer.m_counter = 0;
                     }
                 }
-                SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+                assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
             }
 
         }
@@ -517,10 +517,10 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
         // Draw two red arrows
         srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
         dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
         dstRect.x += 73;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
         srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
         dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
@@ -540,16 +540,16 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
         // Draw "PUSH SELECT"
         if (m_flashSelect)
         {
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         }
     }
     else
     {
         // Transition the subscreen
         dstRect = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
-        SDL_RenderCopy(pRenderer, m_subscreen, nullptr, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, m_subscreen, nullptr, &dstRect) == 0);
 
-        SDL_SetRenderTarget(pRenderer, m_subscreen);
+        assert(SDL_SetRenderTarget(pRenderer, m_subscreen) == 0);
 
 
         // Tunic
@@ -567,7 +567,7 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
 
         }
         dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
         // Heart pieces
         srcRect = m_inventorySpritesSrc[INVENTORY_HEART_PIECES];
@@ -591,19 +591,19 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
             srcRect.x += 4 * (srcRect.w + 2);
             break;
         }
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
         // Photographs
         srcRect = m_inventorySpritesSrc[INVENTORY_PHOTOGRAPHS];
         dstRect = m_inventorySpritesDst[INVENTORY_PHOTOGRAPHS];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
         // Inventory "/"
         srcRect = m_inventorySpritesSrc[INVENTORY_SLASH];
         dstRect = m_inventorySpritesDst[INVENTORY_SLASH];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         dstRect.x = 64; dstRect.y = 8;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         
         // Draw how many heart pieces we have (out of 4)
         dstRect = {56,7,8,8};
@@ -618,7 +618,7 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
         drawNumber(pRenderer, m_subscreen, false, false, 1, MAX_PHOTOGRAPHS, &dstRect);
 
         // Remember! This resets the drawing target to the screen
-        SDL_SetRenderTarget(pRenderer, nullptr);
+        assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 
     }
 
@@ -632,20 +632,20 @@ void Inventory::drawMiscItems(SDL_Renderer* pRenderer)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_FLIPPERS];
         dstRect = m_inventorySpritesDst[INVENTORY_FLIPPERS];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     if (m_potion)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_POTION];
         dstRect = m_inventorySpritesDst[INVENTORY_POTION];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     // Draw number of seashells
     srcRect = m_inventorySpritesSrc[INVENTORY_SEASHELLS];
     dstRect = m_inventorySpritesDst[INVENTORY_SEASHELLS];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
     drawNumber(pRenderer, m_texture, false, true, 1, m_seashells, &dstRect);
@@ -655,7 +655,7 @@ void Inventory::drawMiscItems(SDL_Renderer* pRenderer)
     {
         srcRect = m_inventorySpritesSrc[TRADE_ITEM_SPRITE(m_tradeItem)];
         dstRect = m_inventorySpritesDst[TRADE_ITEM_SPRITE(m_tradeItem)];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 }
 
@@ -671,35 +671,35 @@ void Inventory::drawInventoryItems(SDL_Renderer* pRenderer)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_TAIL_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_TAIL_KEY];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     if (m_slimeKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_SLIME_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_SLIME_KEY];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     if (m_anglerKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_ANGLER_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_ANGLER_KEY];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
     
     if (m_faceKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_FACE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_FACE_KEY];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     if (m_birdKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_BIRD_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_BIRD_KEY];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     drawInstruments(pRenderer);
@@ -713,28 +713,28 @@ void Inventory::drawDungeonItems(SDL_Renderer* pRenderer)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
         dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     if (m_nightmareKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     if (m_owlBeak)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
         dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
     if (m_dungeonMap)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
         dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
 
 
@@ -744,7 +744,7 @@ void Inventory::drawDungeonItems(SDL_Renderer* pRenderer)
     // Draw dungeon keys
     srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_KEY];
     dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_KEY];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
     drawNumber(pRenderer, m_texture, false, true, 0, m_dungeonKeys, &dstRect);
@@ -789,13 +789,13 @@ void Inventory::drawInstruments(SDL_Renderer* pRenderer)
                     m_instrumentTimer.m_counter = 0;
                 }
             }
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
             break;
         default:
             // If we don't have the instrument yet
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_BACK_0];
             dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK_0 + i - 1];
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
             dstRect.x += 8; dstRect.y += 8; dstRect.w = 8; dstRect.h = 8;
             drawNumber(pRenderer, m_texture, false, true, 0, i, &dstRect);
             break;
@@ -862,7 +862,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer)
     // Draw whole hearts
     for (int i = 0; i < wholeHearts; i++)
     {
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HEARTS_PER_ROW)
@@ -876,7 +876,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer)
     if (quarterHearts == 0.25)
     {
         srcRect.x = (srcRect.w + 2) * 3;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HEARTS_PER_ROW)
@@ -888,7 +888,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer)
     else if (quarterHearts == 0.5)
     {
         srcRect.x = (srcRect.w + 2) * 2;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HEARTS_PER_ROW)
@@ -900,7 +900,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer)
     else if (quarterHearts == 0.75)
     {
         srcRect.x = (srcRect.w + 2) * 1;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HEARTS_PER_ROW)
@@ -914,7 +914,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer)
     srcRect.x = (srcRect.w + 2) * 4;
     for (int i = 0; i < emptyHearts; i++)
     {
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HEARTS_PER_ROW)
@@ -933,7 +933,7 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* pRenderer)
     // We just render the items we have to a single texture
     // and render that instead
 
-    SDL_SetRenderTarget(pRenderer, m_texture);
+    assert(SDL_SetRenderTarget(pRenderer, m_texture) == 0);
 
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
@@ -953,11 +953,11 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* pRenderer)
                 INVENTORY_SPRITE_HEIGHT
             };
             // Draw the inventory items onto the internal inventory
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         }
     }
 
-    SDL_SetRenderTarget(pRenderer, nullptr);
+    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
@@ -980,7 +980,7 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* pRenderer)
 
 void Inventory::drawSelector(SDL_Renderer* pRenderer)
 {
-    SDL_SetRenderTarget(pRenderer, m_texture);
+    assert(SDL_SetRenderTarget(pRenderer, m_texture) == 0);
 
     SDL_Rect srcRect, dstRect;
     // Render the selector
@@ -1001,16 +1001,16 @@ void Inventory::drawSelector(SDL_Renderer* pRenderer)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
         dstRect = { m_selector_x, m_selector_y, srcRect.w , srcRect.h };
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
     }
-    SDL_SetRenderTarget(pRenderer, nullptr);
+    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 
 }
 
 void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer)
 {
     SDL_Rect dstRect;
-    SDL_SetRenderTarget(pRenderer, m_texture);
+    assert(SDL_SetRenderTarget(pRenderer, m_texture) == 0);
 
     // Draw horizontal divider
     for (int i = 0; i < (INVENTORY_WIDTH / INVENTORY_DIVIDER_WIDTH_H)-2; i++)
@@ -1022,7 +1022,7 @@ void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer)
             INVENTORY_DIVIDER_WIDTH_H,
             INVENTORY_DIVIDER_HEIGHT_H
         };
-        SDL_RenderCopy(pRenderer, m_inventoryDividerH, nullptr, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, m_inventoryDividerH, nullptr, &dstRect) == 0);
     }
 
     // Draw vertical divider
@@ -1035,40 +1035,40 @@ void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer)
             INVENTORY_DIVIDER_WIDTH_V,
             INVENTORY_DIVIDER_HEIGHT_V
         };
-        SDL_RenderCopy(pRenderer, m_inventoryDividerV, nullptr, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, m_inventoryDividerV, nullptr, &dstRect) == 0);
     }
-    SDL_SetRenderTarget(pRenderer, nullptr);
+    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 }
 
 void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
 {
-    SDL_SetRenderTarget(pRenderer, m_texture);
+    assert(SDL_SetRenderTarget(pRenderer, m_texture) == 0);
 
     SDL_Rect srcRect, dstRect;
 
     // Copy "B" 
     srcRect = m_inventorySpritesSrc[INVENTORY_B_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_B_BUTTON];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
     // Copy "A"
     srcRect = m_inventorySpritesSrc[INVENTORY_A_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_A_BUTTON];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
     // Copy selector
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_1];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_2];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_2];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
     // Ruppee icon
     srcRect = m_inventorySpritesSrc[INVENTORY_RUPPEE];
     dstRect = m_inventorySpritesDst[INVENTORY_RUPPEE];
-    SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
     // Draw health
     drawHealth(pRenderer);
@@ -1079,7 +1079,7 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
         // Draw the actual weapon
         srcRect = m_inventorySpritesSrc[m_weaponA];
         dstRect = {48,0, srcRect.w, srcRect.h };
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
 
         // Draw the weapon level
         dstRect = { 56,8, 8, 8 };
@@ -1091,7 +1091,7 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
     {
         srcRect = m_inventorySpritesSrc[m_weaponB];
         dstRect = { 8,0, srcRect.w, srcRect.h };
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
         dstRect = { 16,8, 8, 8 };
         drawWeaponLevel(pRenderer, m_texture, m_weaponB, &dstRect);
     }
@@ -1100,7 +1100,7 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
     dstRect = { 80,8,8,8 };
     drawNumber(pRenderer, m_texture, false, true, 2, 10, &dstRect);
 
-    SDL_SetRenderTarget(pRenderer, nullptr);
+    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 }
 
 // Draw a number or level onto a texture
@@ -1116,7 +1116,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
     // useNormalFont  = Use the normal digit text or text with black background
     // trailingDigits = Number of trailing digits to append to the LHS of the number (e.g 1 01 001)
 
-    SDL_SetRenderTarget(pRenderer, srcTexture);
+    assert(SDL_SetRenderTarget(pRenderer, srcTexture) == 0);
 
     SDL_Rect srcRect;
 
@@ -1125,7 +1125,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
     {
         // Draw the "L-"
         srcRect = m_inventorySpritesSrc[INVENTORY_LEVEL];
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect) == 0);
 
         if (useNormalFont)
         {
@@ -1138,7 +1138,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
 
         srcRect.x += 2 * number + srcRect.w * number;
         dstRect->x += srcRect.w;
-        SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect);
+        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect) == 0);
     }
     else
     {
@@ -1186,7 +1186,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
         // Add any trailing digits if needed in front of the number
         for (int i = 0; i < (number == 0 ? trailingDigits : trailingDigits+1 - numberLength); i++)
         {
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect) == 0);
             dstRect->x += srcRect.w;
         }
 
@@ -1204,7 +1204,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
             }
 
             srcRect.x += 2 * (number % 10) + srcRect.w * (number % 10);
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect) == 0);
             dstRect->x += srcRect.w;
             number /= 10;
         } while (number != 0);
@@ -1221,11 +1221,11 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
         // Draw any reversed number whose 0 was lost
         for (int i = 0; i < trailingZeros; i++)
         {
-            SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect);
+            assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, dstRect) == 0);
             dstRect->x += srcRect.w;
         }
     }
-    SDL_SetRenderTarget(pRenderer, nullptr);
+    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
 }
 
 void Inventory::drawWeaponLevel(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect)

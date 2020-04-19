@@ -181,7 +181,7 @@ void Camera::render(SDL_Renderer* pRenderer)
 
     SDL_Rect srcRect = { m_x + m_scrollX, m_y + m_scrollY,m_width ,m_height };
     SDL_Rect dstRect = { 0, 0, m_width, m_height };
-    SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect);
+    assert(SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect) == 0);
     
 
 }

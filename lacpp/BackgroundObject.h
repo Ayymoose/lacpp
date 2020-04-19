@@ -79,7 +79,7 @@ void BackgroundObject::render(SDL_Renderer* pRenderer)
     SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width), m_animateYPos, m_width , m_height };
     // dstRect is the screen
     SDL_Rect dstRect = { m_render_x - Camera::getInstance().getX() , m_render_y - Camera::getInstance().getY() , m_width, m_height};
-    SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE);
+    assert(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0);
 
     // Animation
     if (m_currentFrame <= m_maxFrame)

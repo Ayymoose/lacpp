@@ -37,9 +37,9 @@ void Window::beginEventLoop()
     BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
 
     // Stretch the textures to the window
-    SDL_RenderSetScale(Renderer::getInstance().getRenderer(),
+    assert(SDL_RenderSetScale(Renderer::getInstance().getRenderer(),
         MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH,
-        MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16));
+        MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16)) == 0);
    
     std::string windowTitle;
 
@@ -98,7 +98,7 @@ void Window::renderObjects()
     // Clear the screen
     SDL_Renderer* pRenderer = Renderer::getInstance().getRenderer();
 
-    SDL_RenderClear(pRenderer);
+    assert(SDL_RenderClear(pRenderer) == 0);
 
     // Draw any objects
     auto renderSet = Renderer::getInstance().getRenderSet();
