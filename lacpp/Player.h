@@ -147,6 +147,8 @@ private:
 
     CHARACTER_DIRECTION m_direction;
 
+    void useWeapon(WEAPON weapon);
+
     bool m_dirLockRight;
     bool m_dirLockUp;
     bool m_dirLockDown;

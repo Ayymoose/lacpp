@@ -359,6 +359,11 @@ bool Inventory::shieldEquipped() const
     return (m_weaponA == WPN_SHIELD || m_weaponB == WPN_SHIELD);
 }
 
+WEAPON_LEVEL Inventory::shieldLevel() const
+{
+    return m_shieldLevel;
+}
+
 void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
 {
     assert(m_dungeon > DUNGEON_NONE && m_dungeon < DUNGEON_COUNT);

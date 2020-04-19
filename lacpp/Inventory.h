@@ -286,6 +286,7 @@ public:
     void close();
 
     bool shieldEquipped() const;
+    WEAPON_LEVEL shieldLevel() const;
 
     WEAPON weaponA() const;
     WEAPON weaponB() const;
@@ -317,7 +318,7 @@ private:
 
     // Dungeon related items
     bool m_inDungeon;    // Are we in a dungeon?
-    uint8_t m_dungeonKeys;  // Number of dungeon keys
+    int m_dungeonKeys;  // Number of dungeon keys
     bool m_compass;      // Dungeon compass
     bool m_dungeonMap;   // Dungeon map
     bool m_nightmareKey; // Nightmare boss key
@@ -331,20 +332,20 @@ private:
     bool m_birdKey;
 
     // Inventory related variables
-    uint8_t m_arrows;         // Number of arrows
-    uint8_t m_bombs;          // Number of bombs
-    uint8_t m_magicPowder;    // Number of magic powder
-    uint8_t m_swordLevel;     // Sword Level 1 or 2
-    uint8_t m_shieldLevel;    // Shield Level 1 or 2
-    uint8_t m_braceletLevel;  // Bracelet Level 1 or 2
-    uint8_t m_ocarinaSong;    // Ocarina song level
-    uint8_t m_seashells;      // Number of Seashells
+    int m_arrows;         // Number of arrows
+    int m_bombs;          // Number of bombs
+    int m_magicPowder;    // Number of magic powder
+    WEAPON_LEVEL m_swordLevel;     // Sword Level 1 or 2
+    WEAPON_LEVEL m_shieldLevel;    // Shield Level 1 or 2
+    WEAPON_LEVEL m_braceletLevel;  // Bracelet Level 1 or 2
+    int m_ocarinaSong;    // Ocarina song level
+    int m_seashells;      // Number of Seashells
     bool m_flippers;          // Flippers
     bool m_potion;            // Red potion bottle
     TUNIC m_tunic;            // Tunic
-    uint8_t m_heartPieces;    // Heart pieces (0 to 4)
-    uint8_t m_goldleaf;       // Golden leaves
-    uint8_t m_photographs;
+    int m_heartPieces;    // Heart pieces (0 to 4)
+    int m_goldleaf;       // Golden leaves
+    int m_photographs;
 
     // Weapon A and B
     WEAPON m_weaponA;
@@ -355,7 +356,7 @@ private:
     int m_selector_y;
 
     // Index into inventory array
-    uint8_t m_selector_index;
+    int m_selector_index;
 
     // Timer for flashing the selector
     UpdateTimer m_selectorTimer;

@@ -236,7 +236,15 @@ void Player::control()
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                }
             }
             else
             {
@@ -261,7 +269,15 @@ void Player::control()
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                }
             }
             else
             {
@@ -280,7 +296,15 @@ void Player::control()
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                }
             }
             else
             {
@@ -304,7 +328,15 @@ void Player::control()
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                }
             }
             else
             {
@@ -323,7 +355,15 @@ void Player::control()
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_UP_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_UP_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_UP_BIG_SHIELD;
+                }
             }
             else
             {
@@ -348,7 +388,15 @@ void Player::control()
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_UP_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_UP_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_UP_BIG_SHIELD;
+                }
             }
             else
             {
@@ -367,7 +415,15 @@ void Player::control()
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                }
             }
             else
             {
@@ -391,7 +447,15 @@ void Player::control()
         {
             if (m_inventory.shieldEquipped())
             {
-                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                }
             }
             else
             {
@@ -463,51 +527,19 @@ void Player::attack()
 {
     if (m_keyboardState[BUTTON_A])
     {
-        WEAPON weaponA = m_inventory.weaponA();
-        std::string wpnA;
-        switch (weaponA)
-        {
-        case WPN_NONE: wpnA = "None"; break;
-        case WPN_SWORD: wpnA = "Sword"; break;
-        case WPN_SHIELD: wpnA = "Shield"; break;
-        case WPN_BOW: wpnA = "Bow"; break;
-        case WPN_BOOMERANG: wpnA = "Boomerang"; break;
-        case WPN_MAGIC_POWDER: wpnA = "Magic Powder"; break;
-        case WPN_BOMBS: wpnA = "Bombs"; break;
-        case WPN_POWER_BRACELET_1: wpnA = "Power Bracelet 1"; break;
-        case WPN_POWER_BRACELET_2: wpnA = "Power Bracelet 2"; break;
-        case WPN_ROC_FEATHER: wpnA = "Roc Feather"; break;
-        case WPN_HOOKSHOT: wpnA = "Hookshot"; break;
-        case WPN_OCARINA: wpnA = "Ocarina"; break;
-        case WPN_PEGASUS_BOOT: wpnA = "Pegasus Boot"; break;
-        case WPN_SHOVEL: wpnA = "Shovel"; break;
-        case WPN_FLAME_ROD: wpnA = "Flame rod"; break;
-        }
-        std::cout << "Using weapon A: " << wpnA << std::endl;
+        useWeapon(m_inventory.weaponA());
+    }
+    else if (!m_keyboardState[BUTTON_B])
+    {
+        updateState();
     }
     if (m_keyboardState[BUTTON_B])
     {
-        WEAPON weaponB = m_inventory.weaponB();
-        std::string wpnB;
-        switch (weaponB)
-        {
-        case WPN_NONE: wpnB = "None"; break;
-        case WPN_SWORD: wpnB = "Sword"; break;
-        case WPN_SHIELD: wpnB = "Shield"; break;
-        case WPN_BOW: wpnB = "Bow"; break;
-        case WPN_BOOMERANG: wpnB = "Boomerang"; break;
-        case WPN_MAGIC_POWDER: wpnB = "Magic Powder"; break;
-        case WPN_BOMBS: wpnB = "Bombs"; break;
-        case WPN_POWER_BRACELET_1: wpnB = "Power Bracelet 1"; break;
-        case WPN_POWER_BRACELET_2: wpnB = "Power Bracelet 2"; break;
-        case WPN_ROC_FEATHER: wpnB = "Roc Feather"; break;
-        case WPN_HOOKSHOT: wpnB = "Hookshot"; break;
-        case WPN_OCARINA: wpnB = "Ocarina"; break;
-        case WPN_PEGASUS_BOOT: wpnB = "Pegasus Boot"; break;
-        case WPN_SHOVEL: wpnB = "Shovel"; break;
-        case WPN_FLAME_ROD: wpnB = "Flame rod"; break;
-        }
-        std::cout << "Using weapon B: " << wpnB << std::endl;
+        useWeapon(m_inventory.weaponB());
+    }
+    else if (!m_keyboardState[BUTTON_A])
+    {
+        updateState();
     }
 }
 
@@ -556,55 +588,197 @@ void Player::replenish(float hearts)
 void Player::updateState()
 {
     bool shieldEquipped = m_inventory.shieldEquipped();
+    WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+
     switch (m_state)
     {
     case LINK_WALK_DOWN:
         if (shieldEquipped)
         {
-            m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_WALK_DOWN_BIG_SHIELD;
+            }
         }
     break;
     case LINK_WALK_UP:
         if (shieldEquipped)
         {
-            m_state = LINK_WALK_UP_SMALL_SHIELD;
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_WALK_UP_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_WALK_UP_BIG_SHIELD;
+            }
         }
     break;
     case LINK_WALK_LEFT:
         if (shieldEquipped)
         {
-            m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_WALK_LEFT_BIG_SHIELD;
+            }
         }
     break;
     case LINK_WALK_RIGHT:
         if (shieldEquipped)
         {
-            m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+            }
         }
     break;
+    case LINK_WALK_DOWN_BIG_SHIELD:
     case LINK_WALK_DOWN_SMALL_SHIELD:
         if (!shieldEquipped)
         {
             m_state = LINK_WALK_DOWN;
         }
     break;
+    case LINK_WALK_UP_BIG_SHIELD:
     case LINK_WALK_UP_SMALL_SHIELD:
         if (!shieldEquipped)
         {
             m_state = LINK_WALK_UP;
         }
     break;
+    case LINK_WALK_LEFT_BIG_SHIELD:
     case LINK_WALK_LEFT_SMALL_SHIELD:
         if (!shieldEquipped)
         {
             m_state = LINK_WALK_LEFT;
         }
     break;
+    case LINK_WALK_RIGHT_BIG_SHIELD:
     case LINK_WALK_RIGHT_SMALL_SHIELD:
         if (!shieldEquipped)
         {
             m_state = LINK_WALK_RIGHT;
         }
     break;
+
+    case LINK_BLOCK_LEFT_SMALL_SHIELD:
+        m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+        break;
+    case LINK_BLOCK_RIGHT_SMALL_SHIELD:
+        m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+        break;
+    case LINK_BLOCK_UP_SMALL_SHIELD:
+        m_state = LINK_WALK_UP_SMALL_SHIELD;
+        break;
+    case LINK_BLOCK_DOWN_SMALL_SHIELD:
+        m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+        break;
+
+    case LINK_BLOCK_LEFT_BIG_SHIELD:
+        m_state = LINK_WALK_LEFT_BIG_SHIELD;
+        break;
+    case LINK_BLOCK_RIGHT_BIG_SHIELD:
+        m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+        break;
+    case LINK_BLOCK_UP_BIG_SHIELD:
+        m_state = LINK_WALK_UP_BIG_SHIELD;
+        break;
+    case LINK_BLOCK_DOWN_BIG_SHIELD:
+        m_state = LINK_WALK_DOWN_BIG_SHIELD;
+        break;
     }
+}
+
+void Player::useWeapon(WEAPON weapon)
+{
+    std::string wpn;
+    WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+
+    switch (weapon)
+    {
+    case WPN_NONE: wpn = "None"; break;
+    case WPN_SWORD: wpn = "Sword"; break;
+    case WPN_SHIELD:
+        wpn = "Shield";
+        switch (m_state)
+        {
+        case LINK_WALK_LEFT_BIG_SHIELD:
+        case LINK_WALK_LEFT_SMALL_SHIELD:
+        case LINK_WALK_LEFT:
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_BLOCK_LEFT_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_BLOCK_LEFT_BIG_SHIELD;
+            }
+            break;
+        case LINK_WALK_RIGHT_BIG_SHIELD:
+        case LINK_WALK_RIGHT_SMALL_SHIELD:
+        case LINK_WALK_RIGHT:
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_BLOCK_RIGHT_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_BLOCK_RIGHT_BIG_SHIELD;
+            }
+            break;
+        case LINK_WALK_UP_BIG_SHIELD:
+        case LINK_WALK_UP_SMALL_SHIELD:
+        case LINK_WALK_UP:
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_BLOCK_UP_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_BLOCK_UP_BIG_SHIELD;
+            }
+            break;
+        case LINK_WALK_DOWN_BIG_SHIELD:
+        case LINK_WALK_DOWN_SMALL_SHIELD:
+        case LINK_WALK_DOWN:
+            if (shieldLevel == WPN_LEVEL_1)
+            {
+                m_state = LINK_BLOCK_DOWN_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WPN_LEVEL_2)
+            {
+                m_state = LINK_BLOCK_DOWN_BIG_SHIELD;
+            }
+            break;
+        }
+        
+        break;
+    case WPN_BOW: wpn = "Bow"; break;
+    case WPN_BOOMERANG: wpn = "Boomerang"; break;
+    case WPN_MAGIC_POWDER: wpn = "Magic Powder"; break;
+    case WPN_BOMBS: wpn = "Bombs"; break;
+    case WPN_POWER_BRACELET_1: wpn = "Power Bracelet 1"; break;
+    case WPN_POWER_BRACELET_2: wpn = "Power Bracelet 2"; break;
+    case WPN_ROC_FEATHER: wpn = "Roc Feather"; break;
+    case WPN_HOOKSHOT: wpn = "Hookshot"; break;
+    case WPN_OCARINA: wpn = "Ocarina"; break;
+    case WPN_PEGASUS_BOOT: wpn = "Pegasus Boot"; break;
+    case WPN_SHOVEL: wpn = "Shovel"; break;
+    case WPN_FLAME_ROD: wpn = "Flame rod"; break;
+    }
+    std::cout << "Using weapon: " << wpn << std::endl;
+
+
 }
