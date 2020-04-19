@@ -284,7 +284,12 @@ public:
     void render(SDL_Renderer* pRenderer) override;
     void open();
     void close();
-  
+
+    bool shieldEquipped() const;
+
+    WEAPON weaponA() const;
+    WEAPON weaponB() const;
+
 private:
     SDL_Texture* m_inventorySelector;   // Selector sprite
     SDL_Texture* m_inventoryDividerH;   // Horizontal divider

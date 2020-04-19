@@ -38,6 +38,7 @@ Player::Player()
     m_dirLockDown = false;
     m_dirLockLeft = false;
 
+    m_direction = DIRECTION_DOWN;
 
     // Collision related stuff
     m_speed_x = 0;
@@ -232,7 +233,15 @@ void Player::control()
         if (!m_dirLockUp && !m_dirLockDown)
         {
             m_dirLockRight = true;
-            m_state = LINK_WALK_RIGHT;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_RIGHT;
+            }
         }
 
         if (!handleStaticCollisions(m_speed_x, 0))
@@ -249,7 +258,15 @@ void Player::control()
     {
         if (m_state == LINK_PUSH_RIGHT && handleStaticCollisions(m_speed_x, 0))
         {
-            m_state = LINK_WALK_RIGHT;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_RIGHT;
+            }
         }
     }
     if (m_keyboardState[BUTTON_LEFT])
@@ -260,7 +277,15 @@ void Player::control()
         if (!m_dirLockUp && !m_dirLockDown)
         {
             m_dirLockLeft = true;
-            m_state = LINK_WALK_LEFT;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_LEFT;
+            }
         }
         if (!handleStaticCollisions(m_speed_x, 0))
         {
@@ -276,7 +301,15 @@ void Player::control()
     {
         if (m_state == LINK_PUSH_LEFT && handleStaticCollisions(m_speed_x, 0))
         {
-            m_state = LINK_WALK_LEFT;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_LEFT;
+            }
         }
     }
     if (m_keyboardState[BUTTON_UP])
@@ -287,7 +320,15 @@ void Player::control()
         if (!m_dirLockRight && !m_dirLockLeft)
         {
             m_dirLockUp = true;
-            m_state = LINK_WALK_UP;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_UP_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_UP;
+            }
         }
 
         if (!handleStaticCollisions(0, m_speed_y))
@@ -304,7 +345,15 @@ void Player::control()
     {
         if (m_state == LINK_PUSH_UP && handleStaticCollisions(0, m_speed_y))
         {
-            m_state = LINK_WALK_UP;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_UP_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_UP;
+            }
         }
     }
     if (m_keyboardState[BUTTON_DOWN])
@@ -315,7 +364,15 @@ void Player::control()
         if (!m_dirLockRight && !m_dirLockLeft)
         {
             m_dirLockDown = true;
-            m_state = LINK_WALK_DOWN;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_DOWN;
+            }
         }
 
         if (!handleStaticCollisions(0, m_speed_y))
@@ -332,7 +389,14 @@ void Player::control()
     {
         if (m_state == LINK_PUSH_DOWN && handleStaticCollisions(0, m_speed_y))
         {
-            m_state = LINK_WALK_DOWN;
+            if (m_inventory.shieldEquipped())
+            {
+                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+            }
+            else
+            {
+                m_state = LINK_WALK_DOWN;
+            }
         }
     }
 
@@ -390,15 +454,66 @@ void Player::control()
         m_dirLockDown = false;
     }
 
+    // Player attack
+    attack();
+
 }
 
 void Player::attack()
 {
-
+    if (m_keyboardState[BUTTON_A])
+    {
+        WEAPON weaponA = m_inventory.weaponA();
+        std::string wpnA;
+        switch (weaponA)
+        {
+        case WPN_NONE: wpnA = "None"; break;
+        case WPN_SWORD: wpnA = "Sword"; break;
+        case WPN_SHIELD: wpnA = "Shield"; break;
+        case WPN_BOW: wpnA = "Bow"; break;
+        case WPN_BOOMERANG: wpnA = "Boomerang"; break;
+        case WPN_MAGIC_POWDER: wpnA = "Magic Powder"; break;
+        case WPN_BOMBS: wpnA = "Bombs"; break;
+        case WPN_POWER_BRACELET_1: wpnA = "Power Bracelet 1"; break;
+        case WPN_POWER_BRACELET_2: wpnA = "Power Bracelet 2"; break;
+        case WPN_ROC_FEATHER: wpnA = "Roc Feather"; break;
+        case WPN_HOOKSHOT: wpnA = "Hookshot"; break;
+        case WPN_OCARINA: wpnA = "Ocarina"; break;
+        case WPN_PEGASUS_BOOT: wpnA = "Pegasus Boot"; break;
+        case WPN_SHOVEL: wpnA = "Shovel"; break;
+        case WPN_FLAME_ROD: wpnA = "Flame rod"; break;
+        }
+        std::cout << "Using weapon A: " << wpnA << std::endl;
+    }
+    if (m_keyboardState[BUTTON_B])
+    {
+        WEAPON weaponB = m_inventory.weaponB();
+        std::string wpnB;
+        switch (weaponB)
+        {
+        case WPN_NONE: wpnB = "None"; break;
+        case WPN_SWORD: wpnB = "Sword"; break;
+        case WPN_SHIELD: wpnB = "Shield"; break;
+        case WPN_BOW: wpnB = "Bow"; break;
+        case WPN_BOOMERANG: wpnB = "Boomerang"; break;
+        case WPN_MAGIC_POWDER: wpnB = "Magic Powder"; break;
+        case WPN_BOMBS: wpnB = "Bombs"; break;
+        case WPN_POWER_BRACELET_1: wpnB = "Power Bracelet 1"; break;
+        case WPN_POWER_BRACELET_2: wpnB = "Power Bracelet 2"; break;
+        case WPN_ROC_FEATHER: wpnB = "Roc Feather"; break;
+        case WPN_HOOKSHOT: wpnB = "Hookshot"; break;
+        case WPN_OCARINA: wpnB = "Ocarina"; break;
+        case WPN_PEGASUS_BOOT: wpnB = "Pegasus Boot"; break;
+        case WPN_SHOVEL: wpnB = "Shovel"; break;
+        case WPN_FLAME_ROD: wpnB = "Flame rod"; break;
+        }
+        std::cout << "Using weapon B: " << wpnB << std::endl;
+    }
 }
 
 void Player::die()
 {
+    std::cout << "Player died" << std::endl;
 }
 
 void Player::resetAnimation()
@@ -423,6 +538,10 @@ void Player::damage(float damage)
     {
         m_health -= damage;
     }
+    else
+    {
+        die();
+    }
 }
 
 void Player::replenish(float hearts)
@@ -430,5 +549,62 @@ void Player::replenish(float hearts)
     if (m_health + hearts <= m_healthMax)
     {
         m_health += hearts;
+    }
+}
+
+// Update the player (visible state)
+void Player::updateState()
+{
+    bool shieldEquipped = m_inventory.shieldEquipped();
+    switch (m_state)
+    {
+    case LINK_WALK_DOWN:
+        if (shieldEquipped)
+        {
+            m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+        }
+    break;
+    case LINK_WALK_UP:
+        if (shieldEquipped)
+        {
+            m_state = LINK_WALK_UP_SMALL_SHIELD;
+        }
+    break;
+    case LINK_WALK_LEFT:
+        if (shieldEquipped)
+        {
+            m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+        }
+    break;
+    case LINK_WALK_RIGHT:
+        if (shieldEquipped)
+        {
+            m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+        }
+    break;
+    case LINK_WALK_DOWN_SMALL_SHIELD:
+        if (!shieldEquipped)
+        {
+            m_state = LINK_WALK_DOWN;
+        }
+    break;
+    case LINK_WALK_UP_SMALL_SHIELD:
+        if (!shieldEquipped)
+        {
+            m_state = LINK_WALK_UP;
+        }
+    break;
+    case LINK_WALK_LEFT_SMALL_SHIELD:
+        if (!shieldEquipped)
+        {
+            m_state = LINK_WALK_LEFT;
+        }
+    break;
+    case LINK_WALK_RIGHT_SMALL_SHIELD:
+        if (!shieldEquipped)
+        {
+            m_state = LINK_WALK_RIGHT;
+        }
+    break;
     }
 }

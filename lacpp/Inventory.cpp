@@ -156,6 +156,7 @@ void Inventory::control()
     {
         close();
         Controller::getInstance().popController();
+        Player::getInstance().updateState();
     }
 
 
@@ -341,6 +342,21 @@ void Inventory::open()
 void Inventory::close()
 {
     m_open = false;
+}
+
+WEAPON Inventory::weaponA() const
+{
+    return m_weaponA;
+}
+
+WEAPON Inventory::weaponB() const
+{
+    return m_weaponB;
+}
+
+bool Inventory::shieldEquipped() const
+{
+    return (m_weaponA == WPN_SHIELD || m_weaponB == WPN_SHIELD);
 }
 
 void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)

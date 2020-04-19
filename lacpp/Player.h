@@ -128,6 +128,8 @@ public:
     float health() const override;
     float maxHealth() const;
 
+    void updateState();
+
     int m_currentCollisionMapX;
     int m_currentCollisionMapY;
     COLLISION_AREA m_collisionArea;
@@ -142,6 +144,8 @@ private:
     CollisionMap m_collisionMap;
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed);
     UpdateTimer m_movementTimer;
+
+    CHARACTER_DIRECTION m_direction;
 
     bool m_dirLockRight;
     bool m_dirLockUp;
