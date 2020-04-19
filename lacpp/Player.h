@@ -138,13 +138,7 @@ private:
     Inventory m_inventory;
     int m_speed_x;
     int m_speed_y;
-
-
-
-    bool m_moveableRightLeft;
-    bool m_moveableUpDown;
     BoundingBox m_boundingBox;
-
     CollisionMap m_collisionMap;
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed);
     UpdateTimer m_movementTimer;

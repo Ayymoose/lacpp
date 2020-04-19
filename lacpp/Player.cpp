@@ -40,8 +40,6 @@ Player::Player()
 
 
     // Collision related stuff
-    m_moveableRightLeft = true;
-    m_moveableUpDown = true;
     m_speed_x = 0;
     m_speed_y = 0;
 
@@ -106,6 +104,7 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
         {
             // Either horizontal or vertical speed will be non-zero, never both
             // Do corner cutting
+            collision = true;
             topLeftLeftToRight = (((m_boundingBox.y + m_boundingBox.h) - box.y) >= 0 && ((m_boundingBox.y + m_boundingBox.h) - box.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.x + m_boundingBox.w <= box.x);  // Push player UP when going right
             topLeftTopToBottom = (((m_boundingBox.x + m_boundingBox.w) - box.x) >= 0 && ((m_boundingBox.x + m_boundingBox.w) - box.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.y + m_boundingBox.h <= box.y);  // push player DOWN when going down
             topRightTopToBottom = (((box.x + box.w) - m_boundingBox.x) >= 0 && ((box.x + box.w) - m_boundingBox.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.y + m_boundingBox.h <= box.y);
@@ -114,7 +113,6 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
             bottomRightBottomToTop = (((box.x + box.w) - m_boundingBox.x) >= 0 && ((box.x + box.w) - m_boundingBox.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.y + box.h <= m_boundingBox.y);
             bottomLeftBottomToTop = (((m_boundingBox.x + m_boundingBox.w) - box.x) >= 0 && ((m_boundingBox.x + m_boundingBox.w) - box.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.y + box.h <= m_boundingBox.y);
             bottomLeftLeftToRight = (((box.y + box.h) - m_boundingBox.y) >= 0 && ((box.y + box.h) - m_boundingBox.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.x + m_boundingBox.w <= box.x);
-            collision = true;
             break;
         }
     }
@@ -122,35 +120,35 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
     // Don't get stuck on a corner or increase speed when gliding along the wall
     if (topLeftLeftToRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
     {
-        m_position.y--;
+        m_position.y-= m_speed;
     }
     if (topLeftTopToBottom && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
     {
-        m_position.x--;
+        m_position.x-= m_speed;
     }
     if (topRightTopToBottom && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
     {
-        m_position.x++;
+        m_position.x+= m_speed;
     }
     if (topRightRightToLeft && !(m_speed_x == -m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == -m_speed))
     {
-        m_position.y--;
+        m_position.y-= m_speed;
     }
     if (bottomRightRightToLeft && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
     {
-        m_position.y++;
+        m_position.y+= m_speed;
     }
     if (bottomRightBottomToTop && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
     {
-        m_position.x++;
+        m_position.x+= m_speed;
     }
     if (bottomLeftBottomToTop && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
     {
-        m_position.x--;
+        m_position.x-= m_speed;
     }
     if (bottomLeftLeftToRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
     {
-        m_position.y++;
+        m_position.y+= m_speed;
     }
 
     return collision;
@@ -228,81 +226,128 @@ void Player::control()
     // Sprite orientation
     m_orientation = m_animations[m_state].orientation;
 
+    // If we are holding left and we press up or down, we don't want to change the state whatever it is...
+    // Same applies to other directions 
+
+    if (m_keyboardState[BUTTON_RIGHT])
+    {
+        m_speed_x = m_speed;
+        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
+
+        if (!m_dirLockUp && !m_dirLockDown)
+        {
+            m_dirLockRight = true;
+            m_state = LINK_WALK_RIGHT;
+        }
+
+        if (!handleStaticCollisions(m_speed_x, 0))
+        {
+            m_position.x += m_speed_x;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_RIGHT;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_RIGHT && handleStaticCollisions(m_speed_x, 0))
+        {
+            m_state = LINK_WALK_RIGHT;
+        }
+    }
+    if (m_keyboardState[BUTTON_LEFT])
+    {
+        m_speed_x = -m_speed;
+        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
+
+        if (!m_dirLockUp && !m_dirLockDown)
+        {
+            m_dirLockLeft = true;
+            m_state = LINK_WALK_LEFT;
+        }
+        if (!handleStaticCollisions(m_speed_x, 0))
+        {
+            m_position.x += m_speed_x;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_LEFT;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_LEFT && handleStaticCollisions(m_speed_x, 0))
+        {
+            m_state = LINK_WALK_LEFT;
+        }
+    }
+    if (m_keyboardState[BUTTON_UP])
+    {
+        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
+        m_speed_y = -m_speed;
+
+        if (!m_dirLockRight && !m_dirLockLeft)
+        {
+            m_dirLockUp = true;
+            m_state = LINK_WALK_UP;
+        }
+
+        if (!handleStaticCollisions(0, m_speed_y))
+        {
+            m_position.y += m_speed_y;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_UP;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_UP && handleStaticCollisions(0, m_speed_y))
+        {
+            m_state = LINK_WALK_UP;
+        }
+    }
+    if (m_keyboardState[BUTTON_DOWN])
+    {
+        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
+        m_speed_y = m_speed;
+
+        if (!m_dirLockRight && !m_dirLockLeft)
+        {
+            m_dirLockDown = true;
+            m_state = LINK_WALK_DOWN;
+        }
+
+        if (!handleStaticCollisions(0, m_speed_y))
+        {
+            m_position.y += m_speed_y;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_DOWN;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_DOWN && handleStaticCollisions(0, m_speed_y))
+        {
+            m_state = LINK_WALK_DOWN;
+        }
+    }
+
+    // Select correct animation
+    m_animateXPos = m_animations[m_state].x;
+    m_animateYPos = m_animations[m_state].y;
+
+    // Only animate if moving
     if (IS_MOVING(m_keyboardState))
     {
-
-        // If we are holding left and we press up or down, we don't want to change the state whatever it is...
-        // Same applies to other directions 
-
-        if (m_keyboardState[BUTTON_RIGHT])
-        {
-            m_speed_x = m_speed;
-            m_speed_y = m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP];
-
-            if (!m_dirLockUp && !m_dirLockDown)
-            {
-                m_dirLockRight = true;
-                m_state = LINK_WALK_RIGHT;
-            }
-
-        }
-        if (m_keyboardState[BUTTON_LEFT])
-        {
-
-            m_speed_x = -m_speed;
-            m_speed_y = m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP];
-
-            if (!m_dirLockUp && !m_dirLockDown)
-            {
-                m_dirLockLeft = true;
-                m_state = LINK_WALK_LEFT;
-            }
-
-        }
-        if (m_keyboardState[BUTTON_UP])
-        {
-            if (!m_dirLockRight && !m_dirLockLeft)
-            {
-                m_dirLockUp = true;
-                m_state = LINK_WALK_UP;
-            }
-            m_speed_x = m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT];
-            m_speed_y = -m_speed;
-        }
-        if (m_keyboardState[BUTTON_DOWN])
-        {
-            if (!m_dirLockRight && !m_dirLockLeft)
-            {
-                m_dirLockDown = true;
-                m_state = LINK_WALK_DOWN;
-            }
-            m_speed_x = m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT];
-            m_speed_y = m_speed;
-        }
-
-        // Select correct animation
-        m_animateXPos = m_animations[m_state].x;
-        m_animateYPos = m_animations[m_state].y;
-
-        /// Move player
-        if (m_movementTimer.update(FPS_66))
-        {
-
-            // Handle static collisions
-            if (!handleStaticCollisions(0, m_speed_y))
-            {
-                m_position.y += m_speed_y;
-            }
-            if (!handleStaticCollisions(m_speed_x,0))
-            {
-                m_position.x += m_speed_x;
-            }
-
-
-
-
-        }
-
         // Animation
         if (m_currentFrame <= m_maxFrame)
         {
@@ -315,6 +360,7 @@ void Player::control()
                 }
             }
         }
+
     }
 
     // If no key is pressed (reset the animation)

@@ -73,10 +73,8 @@ void Window::beginEventLoop()
 void Window::handleInput()
 {
     Controllable* pController = Controller::getInstance().getController();
-    const uint8_t* pKeyboardState = SDL_GetKeyboardState(nullptr);
 
-    // control() is only fired if the gamepad is pressed
-    if (pController && IS_GAMEPAD_PRESSED(pKeyboardState))
+    if (pController)
     {
         pController->control();
     }
