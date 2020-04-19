@@ -204,19 +204,14 @@ void Player::control()
     if (m_keyboardState[BUTTON_SELECT])
     {
         m_inventory.open();
-     //   Controller::getInstance().setController(&m_inventory);
+        Controller::getInstance().pushController(this, &m_inventory);
     }
 
     /*
 
-    1. Render texture with transparent colour (DONE)
-    2. Array for sprite indices (DONE)
-    3. Correct diagonal movement
+   3. Correct diagonal movement
     4. Reset current frame to 0 when no key pressed or finished scrolling (DONE)
-    5. Single animation timer for player (DONE)
     6. Pressing oposing keys to not stop movement (DONE)
-    7. Holding combination of left/right and up or left/right and down keeps current sprite effect (DONE)
-
     */
 
 

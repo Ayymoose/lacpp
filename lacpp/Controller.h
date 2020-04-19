@@ -3,6 +3,7 @@
 
 #include "Singleton.h"
 #include "Controllable.h"
+#include <stack>
 
 class Controller : public Singleton<Controller>
 {
@@ -13,6 +14,19 @@ public:
     {
         m_pController = controller;
     }
+
+    void pushController(Controllable *parent, Controllable* child)
+    {
+        m_pController = child;
+        m_stack.push(parent);
+    }
+
+    void popController()
+    {
+        m_pController = m_stack.top();
+        m_stack.pop();
+    }
+
     Controllable* getController() const
     {
         return m_pController;
@@ -24,6 +38,7 @@ private:
         m_pController = nullptr;
     }
     Controllable* m_pController;
+    std::stack<Controllable*> m_stack;
 };
 
 #endif // !MAIN_CONTROLLER_H

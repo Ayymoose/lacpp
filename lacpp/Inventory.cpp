@@ -152,6 +152,14 @@ void Inventory::control()
         m_selectPressed = true;
     }
 
+    if (m_keyboardState[BUTTON_START])
+    {
+        close();
+        Controller::getInstance().popController();
+    }
+
+
+
     // How we index the inventory
     // 0 1
     // 2 3
@@ -545,7 +553,7 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer)
     }
     else
     {
-        // Transition the subscreen
+        // TODO: Transition the subscreen
         dstRect = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
         assert(SDL_RenderCopy(pRenderer, m_subscreen, nullptr, &dstRect) == 0);
 
@@ -1116,7 +1124,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
     // useNormalFont  = Use the normal digit text or text with black background
     // trailingDigits = Number of trailing digits to append to the LHS of the number (e.g 1 01 001)
 
-    assert(SDL_SetRenderTarget(pRenderer, srcTexture) == 0);
+    /*assert(*/SDL_SetRenderTarget(pRenderer, srcTexture)/* == 0)*/;
 
     SDL_Rect srcRect;
 
