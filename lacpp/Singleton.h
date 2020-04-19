@@ -16,8 +16,9 @@ protected:
     // No assigning
     Singleton& operator=(const Singleton&) = delete;
     // No moving
-
+    Singleton(Singleton&&) = delete;
     // No move assigning
+    Singleton& operator=(Singleton&&) = delete;
 
     Singleton() = default;
     virtual ~Singleton() = default;
