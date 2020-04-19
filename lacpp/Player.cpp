@@ -38,7 +38,7 @@ Player::Player()
     m_dirLockDown = false;
     m_dirLockLeft = false;
 
-    m_direction = DIRECTION_DOWN;
+    m_useShield = false;
 
     // Collision related stuff
     m_speed_x = 0;
@@ -170,7 +170,7 @@ void Player::render(SDL_Renderer* pRenderer)
         m_position.y - Camera::getInstance().getY(),
         m_width, m_height 
                        };
-    SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip);
+    assert(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0);
 
 
     // Drawing bounding boxes for testing
@@ -182,7 +182,7 @@ void Player::render(SDL_Renderer* pRenderer)
         m_boundingBox.y - Camera::getInstance().getY(),
         m_boundingBox.w, m_boundingBox.h
     };
-    SDL_RenderDrawRect(pRenderer, &playerRect);
+    assert(SDL_RenderDrawRect(pRenderer, &playerRect) == 0);
 
     std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (const BoundingBox& box : bbs)
@@ -190,8 +190,8 @@ void Player::render(SDL_Renderer* pRenderer)
 
         SDL_Rect bbRect = { box.x , box.y, box.w, box.h };
 
-        SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0);
-        SDL_RenderDrawRect(pRenderer, &bbRect);
+        assert(SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0) == 0);
+        assert(SDL_RenderDrawRect(pRenderer, &bbRect) == 0);
     }
     
 
@@ -239,11 +239,25 @@ void Player::control()
                 WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
                 if (shieldLevel == WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_RIGHT_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                    }
                 }
                 else if (shieldLevel == WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_RIGHT_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                    }
                 }
             }
             else
@@ -299,11 +313,25 @@ void Player::control()
                 WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
                 if (shieldLevel == WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_LEFT_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                    }
                 }
                 else if (shieldLevel == WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_LEFT_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                    }
                 }
             }
             else
@@ -358,11 +386,25 @@ void Player::control()
                 WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
                 if (shieldLevel == WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_UP_SMALL_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_UP_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_UP_SMALL_SHIELD;
+                    }
                 }
                 else if (shieldLevel == WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_UP_BIG_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_UP_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_UP_BIG_SHIELD;
+                    }
                 }
             }
             else
@@ -418,11 +460,25 @@ void Player::control()
                 WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
                 if (shieldLevel == WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_DOWN_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                    }
                 }
                 else if (shieldLevel == WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_DOWN_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                    }
                 }
             }
             else
@@ -531,6 +587,7 @@ void Player::attack()
     }
     else if (!m_keyboardState[BUTTON_B])
     {
+        m_useShield = false;
         updateState();
     }
     if (m_keyboardState[BUTTON_B])
@@ -539,6 +596,7 @@ void Player::attack()
     }
     else if (!m_keyboardState[BUTTON_A])
     {
+        m_useShield = false;
         updateState();
     }
 }
@@ -763,7 +821,8 @@ void Player::useWeapon(WEAPON weapon)
             }
             break;
         }
-        
+        m_useShield = true;
+
         break;
     case WPN_BOW: wpn = "Bow"; break;
     case WPN_BOOMERANG: wpn = "Boomerang"; break;

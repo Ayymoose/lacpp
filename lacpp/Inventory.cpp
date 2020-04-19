@@ -1145,6 +1145,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
     // useNormalFont  = Use the normal digit text or text with black background
     // trailingDigits = Number of trailing digits to append to the LHS of the number (e.g 1 01 001)
 
+    //TODO: Find out why this fails
     /*assert(*/SDL_SetRenderTarget(pRenderer, srcTexture)/* == 0)*/;
 
     SDL_Rect srcRect;

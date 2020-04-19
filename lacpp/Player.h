@@ -145,7 +145,7 @@ private:
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed);
     UpdateTimer m_movementTimer;
 
-    CHARACTER_DIRECTION m_direction;
+    bool m_useShield;
 
     void useWeapon(WEAPON weapon);
 
