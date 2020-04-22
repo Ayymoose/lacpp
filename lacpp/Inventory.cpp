@@ -56,9 +56,9 @@ Inventory::Inventory()
     m_selector_x = SELECTOR_INITIAL_X;
     m_selector_y = SELECTOR_INITIAL_Y;
 
-    m_arrows = 0;
-    m_bombs = 0;
-    m_magicPowder = 0;
+    m_arrows = 10;
+    m_bombs = 10;
+    m_magicPowder = 10;
 
     m_selector_index = 0;
 
@@ -99,12 +99,12 @@ Inventory::Inventory()
     m_shieldLevel = WPN_LEVEL_2;
     m_braceletLevel = WPN_LEVEL_1;
 
-    m_items[0] = WPN_NONE;
+    m_items[0] = WPN_SHOVEL;
     m_items[1] = WPN_BOW;
     m_items[2] = WPN_SHIELD;
     m_items[3] = WPN_BOOMERANG;
     m_items[4] = WPN_MAGIC_POWDER;
-    m_items[5] = WPN_NONE;
+    m_items[5] = WPN_BOMBS;
     m_items[6] = WPN_POWER_BRACELET_2;
     m_items[7] = WPN_ROC_FEATHER;
     m_items[8] = WPN_HOOKSHOT;

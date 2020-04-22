@@ -39,7 +39,7 @@ Player::Player()
     m_dirLockLeft = false;
 
     m_useShield = false;
-
+    m_shootArrow = false;
     // Collision related stuff
     m_speed_x = 0;
     m_speed_y = 0;
@@ -118,6 +118,7 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed)
         }
     }
 
+    // TODO: Check whether there is space or not before pushing the player
     // Don't get stuck on a corner or increase speed when gliding along the wall
     if (topLeftLeftToRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
     {
@@ -175,7 +176,7 @@ void Player::render(SDL_Renderer* pRenderer)
 
     // Drawing bounding boxes for testing
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
-
+    /*
     SDL_Rect playerRect =
     {
         m_boundingBox.x - Camera::getInstance().getX(),
@@ -194,7 +195,7 @@ void Player::render(SDL_Renderer* pRenderer)
         assert(SDL_RenderDrawRect(pRenderer, &bbRect) == 0);
     }
     
-
+    */
 }
 
 void Player::control()
@@ -824,7 +825,13 @@ void Player::useWeapon(WEAPON weapon)
         m_useShield = true;
 
         break;
-    case WPN_BOW: wpn = "Bow"; break;
+    case WPN_BOW:
+        wpn = "Bow";
+
+        //m_shootArrow = true;
+        
+        
+        break;
     case WPN_BOOMERANG: wpn = "Boomerang"; break;
     case WPN_MAGIC_POWDER: wpn = "Magic Powder"; break;
     case WPN_BOMBS: wpn = "Bombs"; break;

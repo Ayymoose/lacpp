@@ -28,6 +28,7 @@ void Window::createWindow(const char* title, const int width, const int height)
 
 void Window::beginEventLoop()
 {
+    // Some testing stuff
     Camera::getInstance().track(&Player::getInstance());
     Camera::getInstance().setScrollSpeed(4);
     Camera::getInstance().setPosition(480, 640);
@@ -35,6 +36,7 @@ void Window::beginEventLoop()
 
     BackgroundObject candle1(RSC_CANDLE, 16, 16, 0);
     BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
+    // 
 
     // Stretch the textures to the window
     assert(SDL_RenderSetScale(Renderer::getInstance().getRenderer(),
@@ -72,8 +74,8 @@ void Window::beginEventLoop()
 
 void Window::handleInput()
 {
+    // Handles input from the user and designates it to the Controller
     Controllable* pController = Controller::getInstance().getController();
-
     if (pController)
     {
         pController->control();
@@ -95,6 +97,8 @@ void Window::handleWindowEvents()
 
 void Window::renderObjects()
 {
+    // Main rendering loop
+
     // Clear the screen
     SDL_Renderer* pRenderer = Renderer::getInstance().getRenderer();
 

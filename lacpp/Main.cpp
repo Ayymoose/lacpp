@@ -4,9 +4,8 @@
 
 int main(int argc, char* argv[])
 {
-    auto SDLSuccess = SDL_Init(SDL_INIT_VIDEO);
-    assert(SDLSuccess == 0);
-
+    assert(SDL_Init(SDL_INIT_VIDEO) == 0);
+    
     // Create main window
     Window mainWindow;
     mainWindow.createWindow(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);

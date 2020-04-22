@@ -146,6 +146,7 @@ private:
     UpdateTimer m_movementTimer;
 
     bool m_useShield;
+    bool m_shootArrow;
 
     void useWeapon(WEAPON weapon);
 

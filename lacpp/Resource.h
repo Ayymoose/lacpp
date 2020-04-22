@@ -9,8 +9,9 @@
 
 enum RESOURCE
 {
+    RSC_RESOURCE_NONE = -1,
     // Main overworld
-    RSC_BACKGROUND_OVERWORLD_MAIN = 0,
+    RSC_BACKGROUND_OVERWORLD_MAIN,
     
     // Dungeons
     RSC_DUNGEON_1_TAIL_CAVE,
@@ -116,10 +117,10 @@ class ResourceManager : public Singleton<ResourceManager>
 
 public:
 
-    SDL_Texture* operator[](RESOURCE res)
+    SDL_Texture* operator[](RESOURCE resource)
     {
-        assert(res <= RSC_RESOURCE_COUNT);
-        return m_Resources[res];
+        assert(resource > RSC_RESOURCE_NONE && resource < RSC_RESOURCE_COUNT);
+        return m_Resources[resource];
     }
 
     void loadGraphics();
@@ -131,7 +132,7 @@ private:
     ResourceManager() = default;
 
     // Load a texture
-    SDL_Texture* loadTexture(std::string path);
+    SDL_Texture* loadTexture(const std::string& path);
 
     // Map between resources and pointer to all textures
     std::map<RESOURCE, SDL_Texture*> m_Resources;

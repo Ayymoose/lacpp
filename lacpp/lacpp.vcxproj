@@ -144,6 +144,7 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UpdateTimer.cpp" />
+    <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UpdateTimer.h" />
     <ClInclude Include="Vec2.h" />
+    <ClInclude Include="Weapon.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resource.h" />
