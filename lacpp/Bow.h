@@ -2,6 +2,7 @@
 #define BOW_H
 
 #include "Weapon.h"
+#include <iostream>
 
 class Bow : public Weapon
 {

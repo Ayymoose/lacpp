@@ -20,7 +20,13 @@ void Bow::render(SDL_Renderer* pRenderer)
         m_width,
         m_height
     };
-    assert(SDL_RenderCopyEx(pRenderer, m_texture, nullptr, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0);
+    auto res = SDL_RenderCopyEx(pRenderer, m_texture, nullptr, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE);
+    if (res != 0)
+    {
+        std::cerr << SDL_GetError() << std::endl;
+        assert(false);
+    }
+    //assert(SDL_RenderCopyEx(pRenderer, m_texture, nullptr, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0);
 
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();
     m_boundingBox.y = m_position.y - Camera::getInstance().getY();

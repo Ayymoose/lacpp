@@ -9,9 +9,6 @@
 
 #include <set>
 
-// TODO: Move this to appropiate place
-long long Renderable::m_renderableUniqueID = 0;
-
 Player::Player()
 {
     m_texture = ResourceManager::getInstance()[RSC_LINK];
@@ -213,24 +210,9 @@ void Player::render(SDL_Renderer* pRenderer)
         auto arrowPos = m_arrow->position();
         if (!Camera::getInstance().visible(arrowPos))
         {
-            auto rs = Renderer::getInstance().getRenderSet();
-            for (auto iterator = rs.begin(); iterator != rs.end(); iterator++)
-            {
-                std::cout << (*iterator)->getDepth() << " " << (*iterator)->friendlyName() << std::endl;
-            }
-            std::cout << std::endl;
             Renderer::getInstance().removeRenderable(m_arrow);
-
+            delete m_arrow;
             m_arrow = nullptr;
-
-
-           /* delete m_arrow;
-             m_arrow = nullptr;
-
-            for (auto iterator = rs.begin(); iterator != rs.end(); iterator++)
-            {
-                std::cout << (*iterator)->getDepth() << " " << (*iterator)->friendlyName() << std::endl;;
-            }*/
         }
     }
 

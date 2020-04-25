@@ -8,6 +8,7 @@
 #include <functional>
 #include <SDL_image.h>
 #include <iostream>
+#include <algorithm>
 
 // Singleton instance of the renderer for the main window
 
@@ -43,13 +44,21 @@ public:
 
     void addRenderable(Renderable* renderable)
     {
-        std::cout << "[Renderer::addRenderable] Adding " << renderable->friendlyName() << " with unique ID: " << renderable->uniqueID() << std::endl;
         m_Renderables.insert(renderable);
     }
 
     void removeRenderable(Renderable* renderable)
     {
-
+        auto iterator = std::find_if(m_Renderables.begin(), m_Renderables.end(), [renderable](const Renderable* r1) { return r1 == renderable; });
+        if (iterator != m_Renderables.end())
+        {
+            std::cout << "[removeRenderable] Removing " << (*iterator)->friendlyName() << std::endl;
+            m_Renderables.erase(iterator);
+        }
+        else
+        {
+            assert(false);
+        }
     }
 
 private:

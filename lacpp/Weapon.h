@@ -26,6 +26,8 @@ public:
         m_perished = false;
     }
 
+    virtual ~Weapon() = default;
+
     virtual Vec2<float> position() const
     {
         return m_position;

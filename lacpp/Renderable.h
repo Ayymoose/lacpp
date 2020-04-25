@@ -37,15 +37,8 @@ public:
         m_currentFrame = 0;
         m_maxFrame = 0;
         m_orientation = 0.0;
-
-        // Unique ID is just for removing elements from the renderable multiset
-        // As it uses depth information for comparison (on a set of pointers)
-        m_uniqueID = m_renderableUniqueID++;
     }
-    virtual ~Renderable()
-    {
-        SDL_DestroyTexture(m_texture);
-    }
+    virtual ~Renderable() = default;
 
     // Make it render the default texture if none specified
     virtual void render(SDL_Renderer* pRenderer)
@@ -63,11 +56,6 @@ public:
         return m_name;
     }
 
-    long long uniqueID() const
-    {
-        return m_uniqueID;
-    }
-
 protected:
     // Default rendering
     SDL_Texture* m_texture;
@@ -80,7 +68,6 @@ protected:
 
     // Z-ordering
     int m_depth;
-    long long m_uniqueID;
 
     // Animation
     UpdateTimer m_animationTimer;
@@ -90,11 +77,6 @@ protected:
     int m_currentFrame;
     int m_maxFrame;
     double m_orientation;
-
-
-private:
-    // Unique ID generator
-    static long long m_renderableUniqueID;
 };
 
 #endif // !RENDERABLE_H
