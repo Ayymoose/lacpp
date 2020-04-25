@@ -25,6 +25,7 @@ Camera::Camera()
 
     m_depth = BACKGROUND_DEPTH;
 
+    m_name = "Camera";
     Renderer::getInstance().addRenderable(this);
 }
 
@@ -50,6 +51,7 @@ void Camera::trackCharacter()
     Vec2<float> position = player->position();
     float x = position.x; float y = position.y;
 
+    // Transition the player if they move off the screen
     if (x < m_scrollX)
     {
         // Scroll left
@@ -189,6 +191,31 @@ void Camera::render(SDL_Renderer* pRenderer)
 void Camera::setCurrentBackground(SDL_Texture* currentBackground)
 {
     m_texture = currentBackground;
+}
+
+bool Camera::visible(Vec2<float> point) const
+{
+    float x = point.x;
+    float y = point.y;
+
+    if (x < m_scrollX)
+    {
+        return false;
+    }
+    else if (x > m_scrollX + CAMERA_WIDTH)
+    {
+        return false;
+    }
+    else if (y < m_scrollY)
+    {
+        return false;
+    }
+    else if (y > m_scrollY + CAMERA_HEIGHT - 16 /* HUD height because its on the bottom*/)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void Camera::control()

@@ -7,6 +7,7 @@
 #include <set>
 #include <functional>
 #include <SDL_image.h>
+#include <iostream>
 
 // Singleton instance of the renderer for the main window
 
@@ -42,12 +43,13 @@ public:
 
     void addRenderable(Renderable* renderable)
     {
+        std::cout << "[Renderer::addRenderable] Adding " << renderable->friendlyName() << " with unique ID: " << renderable->uniqueID() << std::endl;
         m_Renderables.insert(renderable);
     }
 
     void removeRenderable(Renderable* renderable)
     {
-        //TODO: Implement
+
     }
 
 private:
@@ -68,6 +70,8 @@ private:
   
     // Multiset of Renderable objects that will be drawn
     std::multiset<Renderable*, rendererComparator> m_Renderables;
+
 };
+
 
 #endif

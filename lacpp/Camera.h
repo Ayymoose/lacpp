@@ -30,7 +30,9 @@ public:
     void setScrollSpeed(int scrollSpeed);
     void render(SDL_Renderer* pRenderer) override;
     void setCurrentBackground(SDL_Texture* currentBackground);
-   
+
+    // Returns true whether a point is visible in the camera region
+    bool visible(Vec2<float> point) const;
 
     void control() override;
 

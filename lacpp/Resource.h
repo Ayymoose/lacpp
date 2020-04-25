@@ -99,6 +99,7 @@ enum RESOURCE
     RSC_FLOWER_1,
     RSC_FLOWER_2,
     
+    RSC_ARROW,
     
 
     // Sprites

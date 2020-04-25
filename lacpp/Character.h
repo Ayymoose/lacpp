@@ -5,7 +5,7 @@
 
 // Defines a base class for which NPC, Boss, Enemy and Player inherit from
 
-enum CHARACTER_DIRECTION
+enum DIRECTION
 {
     DIRECTION_NONE = -1,
     DIRECTION_RIGHT,
@@ -18,28 +18,29 @@ enum CHARACTER_DIRECTION
 class Character
 {
 public:
-    Character() 
-    {
-        m_health = 0;
-    };
-    ~Character() = default;
-
-    virtual float health() const
-    {
-        return m_health;
-    }
-
-    virtual void damage(float damage)
-    {
-        m_health -= damage;
-    }
-
-protected:
-    float m_health;
-    Vec2<float> m_position;
-    virtual void attack() = 0;
-    virtual void die() = 0;
+    /*Character() = default;
+    virtual ~Character() = default;*/
+    virtual float health() const = 0;
+    virtual void damage(float damage) = 0;
+    DIRECTION virtual direction() const = 0;
     virtual Vec2<float> position() const = 0;
+protected:
+    // Character direction
+    DIRECTION m_direction;
+    // Character health
+    float m_health;
+
+    // Position vector
+    Vec2<float> m_position;
+
+    // Attack
+    virtual void attack() = 0;
+
+    // Die
+    virtual void die() = 0;
+
+    // Move
+    virtual void move() = 0;
 };
 
 

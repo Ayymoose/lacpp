@@ -15,6 +15,7 @@
 
 #define INVENTORY_SELECTOR_FPS (1.0 / 4.0)
 #define PUSH_SELECTOR_FPS (1.0 / 2.0)
+#define ARROW_SPEED_FPS (1.0 / 66.0)
 
 class UpdateTimer
 {

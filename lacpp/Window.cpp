@@ -109,6 +109,7 @@ void Window::renderObjects()
 
     for (auto iterator = renderSet.begin(); iterator != renderSet.end(); iterator++)
     {
+        assert(*iterator);
         (*iterator)->render(pRenderer);
     }  
 

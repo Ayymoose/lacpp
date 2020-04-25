@@ -39,13 +39,16 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
         m_animateYPos = 0;
         m_currentFrame = 1;
         m_maxFrame = 3;
-        
+        m_name = "Candle";
+
         break;
     case RSC_TORCH_1:
         m_animateXPos = 0;
         m_animateYPos = 0;
         m_currentFrame = 0;
         m_maxFrame = 3;
+        m_name = "Torch";
+
         break;
     case RSC_TORCH_2:
         break;

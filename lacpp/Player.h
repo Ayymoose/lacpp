@@ -10,6 +10,8 @@
 #include "Singleton.h"
 #include "BoundingBox.h"
 #include "CollisionMap.h"
+#include "Bow.h"
+
 
 enum PlayerState
 {
@@ -107,27 +109,35 @@ enum PlayerState
 #define PLAYER_BOUNDING_BOX_WIDTH 10
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
 #define PLAYER_CORNER_CUTTING_BOUNDARY 5
+
 class Player : public Controllable, public Renderable, public Character, public Singleton<Player>
 {
 public:
     Player();
     ~Player();
-    void render(SDL_Renderer* pRenderer) override;
-    void control() override;
 
+    // Renderable overrides
+    void render(SDL_Renderer* pRenderer) override;
+
+    // Character overrides
+    float health() const override;
+    void damage(float damage) override;
+    DIRECTION direction() const override;
+    Vec2<float> position() const override;
     void attack() override;
     void die()  override;
+    void move() override;
 
+    // Controllable overrides
+    void control() override;
+
+
+    
+ 
     void resetAnimation();
-
-    Vec2<float> position() const override;
-
-    void damage(float damage) override;
     void replenish(float hearts);
     void addPosition(int x, int y);
-    float health() const override;
     float maxHealth() const;
-
     void updateState();
 
     int m_currentCollisionMapX;
@@ -154,6 +164,12 @@ private:
     bool m_dirLockUp;
     bool m_dirLockDown;
     bool m_dirLockLeft;
+
+
+    // Weapon test
+    Bow* m_arrow;
+    //Arrow* m_arrowList[3];
+
 
     // Player animation state
     PlayerState m_state;

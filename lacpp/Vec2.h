@@ -18,6 +18,43 @@ public:
     }
     ~Vec2() = default;
 
+    Vec2<T> operator+=(Vec2<T> other)
+    {
+        this->x += other.x;
+        this->y += other.y;
+        return *this;
+    }
+
+    Vec2<T> operator=(Vec2<T> other)
+    {
+        this->x = other.x;
+        this->y = other.y;
+        return *this;
+    }
+
+    Vec2<T> operator-(Vec2<T> other)
+    {
+        this->x -= other.x;
+        this->y -= other.y;
+        return *this;
+    }
+
+    bool operator==(Vec2<T> other)
+    {
+        return (this->x == other.x && this->y == other.y);
+    }
+
+    bool operator!=(Vec2<T> other)
+    {
+        return !operator==(other);
+    }
+
+    // Returns the vector from v1 to v2
+    static Vec2<T> from(const Vec2& v1, const Vec2& v2)
+    {
+        return v1 - v2;
+    }
+
     // Cross product of 2 2D vectors
     static T cross(const Vec2& v1, const Vec2& v2)
     {
@@ -34,6 +71,7 @@ public:
     // Normalise a vector
     void normalise()
     {
+        // TODO: Double/float epsilon
         assert(length() != 0);
         x /= length();
         y /= length();

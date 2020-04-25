@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include "UpdateTimer.h"
 #include <iostream>
+
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
 // A texture is provided to use for the object
@@ -36,6 +37,10 @@ public:
         m_currentFrame = 0;
         m_maxFrame = 0;
         m_orientation = 0.0;
+
+        // Unique ID is just for removing elements from the renderable multiset
+        // As it uses depth information for comparison (on a set of pointers)
+        m_uniqueID = m_renderableUniqueID++;
     }
     virtual ~Renderable()
     {
@@ -53,6 +58,15 @@ public:
         return m_depth;
     }
 
+    std::string friendlyName() const
+    {
+        return m_name;
+    }
+
+    long long uniqueID() const
+    {
+        return m_uniqueID;
+    }
 
 protected:
     // Default rendering
@@ -60,8 +74,13 @@ protected:
     int m_width;
     int m_height;
 
+
+    // Debug name
+    std::string m_name;
+
     // Z-ordering
     int m_depth;
+    long long m_uniqueID;
 
     // Animation
     UpdateTimer m_animationTimer;
@@ -71,8 +90,11 @@ protected:
     int m_currentFrame;
     int m_maxFrame;
     double m_orientation;
+
+
+private:
+    // Unique ID generator
+    static long long m_renderableUniqueID;
 };
-
-
 
 #endif // !RENDERABLE_H

@@ -42,6 +42,7 @@ Inventory::Inventory()
     assert(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0);
     m_open = false;
     m_inDungeon = true;
+    m_name = "Inventory";
     Renderer::getInstance().addRenderable(this);
     m_depth = INVENTORY_DEPTH;
     m_tradeItem = ITEM_NONE;
@@ -91,7 +92,7 @@ Inventory::Inventory()
     m_singlePressA = true;
     m_singlePressB = true;
     m_weaponA = WPN_FLAME_ROD;
-    m_weaponB = WPN_SWORD;
+    m_weaponB = WPN_BOW;
 
     m_ocarinaSong = SNG_FISH;
 
@@ -100,7 +101,7 @@ Inventory::Inventory()
     m_braceletLevel = WPN_LEVEL_1;
 
     m_items[0] = WPN_SHOVEL;
-    m_items[1] = WPN_BOW;
+    m_items[1] = WPN_SWORD;
     m_items[2] = WPN_SHIELD;
     m_items[3] = WPN_BOOMERANG;
     m_items[4] = WPN_MAGIC_POWDER;

@@ -4,8 +4,13 @@
 #include "Vec2.h"
 #include "Camera.h"
 #include "Renderer.h"
-#include <set>
+#include "Bow.h"
 #include "Depth.h"
+
+#include <set>
+
+// TODO: Move this to appropiate place
+long long Renderable::m_renderableUniqueID = 0;
 
 Player::Player()
 {
@@ -26,6 +31,7 @@ Player::Player()
 
     m_depth = PLAYER_DEPTH;
     m_state = LINK_WALK_DOWN;
+    m_direction = DIRECTION_DOWN;
 
     m_animateXPos = 0;      // Initial X-position in sprite sheet for this animation
     m_animateYPos = 0;      // Initial Y-position in sprite sheet for this animation
@@ -44,17 +50,20 @@ Player::Player()
     m_speed_x = 0;
     m_speed_y = 0;
 
+    // Weapon test
     // Set to Tail cave entrace
     m_currentCollisionMapX = 3;
     m_currentCollisionMapY = 5;
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
+    m_arrow = nullptr;
 
 
+    //
     m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
     m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
 
+    m_name = "Player";
     Renderer::getInstance().addRenderable(this);
- 
     Controller::getInstance().setController(this);
 }
 
@@ -196,6 +205,35 @@ void Player::render(SDL_Renderer* pRenderer)
     }
     
     */
+
+    //  Perishable weapons
+
+    if (m_arrow)
+    {
+        auto arrowPos = m_arrow->position();
+        if (!Camera::getInstance().visible(arrowPos))
+        {
+            auto rs = Renderer::getInstance().getRenderSet();
+            for (auto iterator = rs.begin(); iterator != rs.end(); iterator++)
+            {
+                std::cout << (*iterator)->getDepth() << " " << (*iterator)->friendlyName() << std::endl;
+            }
+            std::cout << std::endl;
+            Renderer::getInstance().removeRenderable(m_arrow);
+
+            m_arrow = nullptr;
+
+
+           /* delete m_arrow;
+             m_arrow = nullptr;
+
+            for (auto iterator = rs.begin(); iterator != rs.end(); iterator++)
+            {
+                std::cout << (*iterator)->getDepth() << " " << (*iterator)->friendlyName() << std::endl;;
+            }*/
+        }
+    }
+
 }
 
 void Player::control()
@@ -209,14 +247,6 @@ void Player::control()
         Controller::getInstance().pushController(this, &m_inventory);
     }
 
-    /*
-
-   3. Correct diagonal movement
-    4. Reset current frame to 0 when no key pressed or finished scrolling (DONE)
-    6. Pressing oposing keys to not stop movement (DONE)
-    */
-
-
     // Max frame controlled by the state
     m_maxFrame = m_animations[m_state].maxFrame;
 
@@ -225,301 +255,7 @@ void Player::control()
 
     // If we are holding left and we press up or down, we don't want to change the state whatever it is...
     // Same applies to other directions 
-
-    if (m_keyboardState[BUTTON_RIGHT])
-    {
-        m_speed_x = m_speed;
-        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
-
-        if (!m_dirLockUp && !m_dirLockDown)
-        {
-            m_dirLockRight = true;
-            // Show shield equipped sprite
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_RIGHT_SMALL_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
-                    }
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_RIGHT_BIG_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_RIGHT_BIG_SHIELD;
-                    }
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_RIGHT;
-            }
-        }
-
-        if (!handleStaticCollisions(m_speed_x, 0))
-        {
-            m_position.x += m_speed_x;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_RIGHT;
-        }
-    }
-    else
-    {
-        if (m_state == LINK_PUSH_RIGHT && handleStaticCollisions(m_speed_x, 0))
-        {
-            // Show shield equipped sprite
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    m_state = LINK_WALK_RIGHT_BIG_SHIELD;
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_RIGHT;
-            }
-        }
-    }
-    if (m_keyboardState[BUTTON_LEFT])
-    {
-        m_speed_x = -m_speed;
-        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
-
-        if (!m_dirLockUp && !m_dirLockDown)
-        {
-            m_dirLockLeft = true;
-            // Show shield equipped sprite
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_LEFT_SMALL_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_LEFT_SMALL_SHIELD;
-                    }
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_LEFT_BIG_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_LEFT_BIG_SHIELD;
-                    }
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_LEFT;
-            }
-        }
-        if (!handleStaticCollisions(m_speed_x, 0))
-        {
-            m_position.x += m_speed_x;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_LEFT;
-        }
-    }
-    else
-    {
-        if (m_state == LINK_PUSH_LEFT && handleStaticCollisions(m_speed_x, 0))
-        {
-            // Show shield equipped sprite
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    m_state = LINK_WALK_LEFT_SMALL_SHIELD;
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    m_state = LINK_WALK_LEFT_BIG_SHIELD;
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_LEFT;
-            }
-        }
-    }
-    if (m_keyboardState[BUTTON_UP])
-    {
-        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
-        m_speed_y = -m_speed;
-
-        if (!m_dirLockRight && !m_dirLockLeft)
-        {
-            m_dirLockUp = true;
-            // Show shield equipped sprite
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_UP_SMALL_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_UP_SMALL_SHIELD;
-                    }
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_UP_BIG_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_UP_BIG_SHIELD;
-                    }
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_UP;
-            }
-        }
-
-        if (!handleStaticCollisions(0, m_speed_y))
-        {
-            m_position.y += m_speed_y;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_UP;
-        }
-    }
-    else
-    {
-        if (m_state == LINK_PUSH_UP && handleStaticCollisions(0, m_speed_y))
-        {
-            // Show shield equipped sprite
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    m_state = LINK_WALK_UP_SMALL_SHIELD;
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    m_state = LINK_WALK_UP_BIG_SHIELD;
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_UP;
-            }
-        }
-    }
-    if (m_keyboardState[BUTTON_DOWN])
-    {
-        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
-        m_speed_y = m_speed;
-
-        if (!m_dirLockRight && !m_dirLockLeft)
-        {
-            m_dirLockDown = true;
-            // Show shield equipped sprite
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_DOWN_SMALL_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_DOWN_SMALL_SHIELD;
-                    }
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    if (m_useShield)
-                    {
-                        m_state = LINK_BLOCK_DOWN_BIG_SHIELD;
-                    }
-                    else
-                    {
-                        m_state = LINK_WALK_DOWN_BIG_SHIELD;
-                    }
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_DOWN;
-            }
-        }
-
-        if (!handleStaticCollisions(0, m_speed_y))
-        {
-            m_position.y += m_speed_y;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_DOWN;
-        }
-    }
-    else
-    {
-        if (m_state == LINK_PUSH_DOWN && handleStaticCollisions(0, m_speed_y))
-        {
-            if (m_inventory.shieldEquipped())
-            {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
-                {
-                    m_state = LINK_WALK_DOWN_SMALL_SHIELD;
-                }
-                else if (shieldLevel == WPN_LEVEL_2)
-                {
-                    m_state = LINK_WALK_DOWN_BIG_SHIELD;
-                }
-            }
-            else
-            {
-                m_state = LINK_WALK_DOWN;
-            }
-        }
-    }
+    move();
 
     // Select correct animation
     m_animateXPos = m_animations[m_state].x;
@@ -635,11 +371,328 @@ void Player::damage(float damage)
     }
 }
 
+DIRECTION Player::direction() const
+{
+    return m_direction;
+}
+
 void Player::replenish(float hearts)
 {
     if (m_health + hearts <= m_healthMax)
     {
         m_health += hearts;
+    }
+}
+
+// Player control
+void Player::move()
+{
+    if (m_keyboardState[BUTTON_RIGHT])
+    {
+        m_speed_x = m_speed;
+        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
+
+        if (!m_dirLockUp && !m_dirLockDown)
+        {
+            m_dirLockRight = true;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_RIGHT_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                    }
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_RIGHT_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                    }
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_RIGHT;
+            }
+            m_direction = DIRECTION_RIGHT;
+        }
+
+        if (!handleStaticCollisions(m_speed_x, 0))
+        {
+            m_position.x += m_speed_x;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_RIGHT;
+            m_direction = DIRECTION_RIGHT;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_RIGHT && handleStaticCollisions(m_speed_x, 0))
+        {
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_RIGHT;
+            }
+            m_direction = DIRECTION_RIGHT;
+        }
+    }
+
+    if (m_keyboardState[BUTTON_LEFT])
+    {
+        m_speed_x = -m_speed;
+        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
+
+        if (!m_dirLockUp && !m_dirLockDown)
+        {
+            m_dirLockLeft = true;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_LEFT_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                    }
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_LEFT_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                    }
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_LEFT;
+            }
+            m_direction = DIRECTION_LEFT;
+        }
+        if (!handleStaticCollisions(m_speed_x, 0))
+        {
+            m_position.x += m_speed_x;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_LEFT;
+            m_direction = DIRECTION_LEFT;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_LEFT && handleStaticCollisions(m_speed_x, 0))
+        {
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_LEFT;
+            }
+            m_direction = DIRECTION_LEFT;
+        }
+    }
+    if (m_keyboardState[BUTTON_UP])
+    {
+        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
+        m_speed_y = -m_speed;
+
+        if (!m_dirLockRight && !m_dirLockLeft)
+        {
+            m_dirLockUp = true;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_UP_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_UP_SMALL_SHIELD;
+                    }
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_UP_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_UP_BIG_SHIELD;
+                    }
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_UP;
+            }
+            m_direction = DIRECTION_UP;
+        }
+
+        if (!handleStaticCollisions(0, m_speed_y))
+        {
+            m_position.y += m_speed_y;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_UP;
+            m_direction = DIRECTION_UP;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_UP && handleStaticCollisions(0, m_speed_y))
+        {
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_UP_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_UP_BIG_SHIELD;
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_UP;
+            }
+            m_direction = DIRECTION_UP;
+        }
+    }
+    if (m_keyboardState[BUTTON_DOWN])
+    {
+        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
+        m_speed_y = m_speed;
+
+        if (!m_dirLockRight && !m_dirLockLeft)
+        {
+            m_dirLockDown = true;
+            // Show shield equipped sprite
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_DOWN_SMALL_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                    }
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    if (m_useShield)
+                    {
+                        m_state = LINK_BLOCK_DOWN_BIG_SHIELD;
+                    }
+                    else
+                    {
+                        m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                    }
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_DOWN;
+            }
+            m_direction = DIRECTION_DOWN;
+        }
+
+        if (!handleStaticCollisions(0, m_speed_y))
+        {
+            m_position.y += m_speed_y;
+        }
+        else
+        {
+            // If collision with wall
+            m_state = LINK_PUSH_DOWN;
+            m_direction = DIRECTION_DOWN;
+        }
+    }
+    else
+    {
+        if (m_state == LINK_PUSH_DOWN && handleStaticCollisions(0, m_speed_y))
+        {
+            if (m_inventory.shieldEquipped())
+            {
+                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WPN_LEVEL_1)
+                {
+                    m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                }
+                else if (shieldLevel == WPN_LEVEL_2)
+                {
+                    m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                }
+            }
+            else
+            {
+                m_state = LINK_WALK_DOWN;
+            }
+            m_direction = DIRECTION_DOWN;
+        }
     }
 }
 
@@ -828,8 +881,27 @@ void Player::useWeapon(WEAPON weapon)
     case WPN_BOW:
         wpn = "Bow";
 
+
+        // We can fire multiple arrows
+        // An arrow that hits an enemy disappears
+        // An arrow that goes off screen disappears
+        // An arrow that hits an object deflects and disappears
+
+        if (m_arrow == nullptr)
+        {
+            m_arrow = new Bow();
+            m_arrow->setPosition(m_position);
+            m_arrow->setDirection(m_direction);
+            m_arrow->useWeapon();
+            std::cout << "Direction is " << m_direction << std::endl;
+        }
+
+
+
         //m_shootArrow = true;
         
+        // Create arrow in direction of player with speed
+        // 
         
         break;
     case WPN_BOOMERANG: wpn = "Boomerang"; break;

@@ -19,7 +19,7 @@ public:
     }
     Controllable()
     {
-        std::cout << "Controllable constructor called" << std::endl;
+        //std::cout << "Controllable constructor called" << std::endl;
         m_keyboardState = nullptr;
     }
 protected:
