@@ -19,7 +19,7 @@ public:
 
     void createRenderer(SDL_Window* pWindow)
     {
-        m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
         assert(m_pRenderer != nullptr);
     }
 

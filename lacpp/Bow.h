@@ -12,7 +12,6 @@ public:
 
     void render(SDL_Renderer* pRenderer) override;
     void useWeapon() override;
-    bool perished() override;
 
 private:
     Vec2<float> m_dirVec;

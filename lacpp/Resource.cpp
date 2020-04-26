@@ -1,6 +1,8 @@
 #include "Resource.h"
 #include "Renderer.h"
 #include "Singleton.h"
+#include "MyAssert.h"
+#include "Drawing.h"
 
 void ResourceManager::loadGraphics()
 {
@@ -104,18 +106,28 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path)
     }
     else
     {
+        // TODO: Make transparency argument to function
         // Transparency (right now it's white)
-        SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 255, 255, 255));
-        //  texture from surface pixels
+        DASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 255, 255, 255)) == 0, SDL_GetError());
+
+        // Create texture from surface
         newTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().getRenderer(), loadedSurface);
-        if (newTexture == nullptr)
-        {
-            fprintf(stderr, "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-        }
+        DASSERT(newTexture != nullptr, SDL_GetError());
 
         // Get rid of old loaded surface
         SDL_FreeSurface(loadedSurface);
     }
     assert(newTexture != nullptr);
-    return newTexture;
+
+    // Below sets the SDL_TEXTUREACCESS_TARGET access to our texture as we can't set it on a surface it seems
+    // So we must copy every texture created from surface to a new one.
+    // A limitation of SDL
+    int textureWidth,textureHeight;
+    DASSERT(SDL_QueryTexture(newTexture, nullptr, nullptr, &textureWidth, &textureHeight) == 0, SDL_GetError());
+    auto texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, textureWidth, textureHeight);
+    assert(texture != nullptr);
+    CopyToTexture(Renderer::getInstance().getRenderer(), newTexture, texture, nullptr, nullptr);
+    DASSERT(SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) == 0, SDL_GetError());
+    
+    return texture;
 }

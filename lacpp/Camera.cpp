@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Renderer.h"
 #include "Depth.h"
+#include "MyAssert.h"
 
 Camera::Camera()
 {
@@ -183,7 +184,7 @@ void Camera::render(SDL_Renderer* pRenderer)
 
     SDL_Rect srcRect = { m_x + m_scrollX, m_y + m_scrollY,m_width ,m_height };
     SDL_Rect dstRect = { 0, 0, m_width, m_height };
-    assert(SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect) == 0);
+    DASSERT(SDL_RenderCopy(pRenderer, m_texture, &srcRect, &dstRect) == 0, SDL_GetError());
     
 
 }

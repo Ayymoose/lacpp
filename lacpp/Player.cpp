@@ -203,8 +203,8 @@ void Player::render(SDL_Renderer* pRenderer)
     
     */
 
-    //  Perishable weapons
-
+    // Perishable weapons
+    // Weapons that go offscreen are culled
     if (m_arrow)
     {
         auto arrowPos = m_arrow->position();
@@ -871,19 +871,16 @@ void Player::useWeapon(WEAPON weapon)
 
         if (m_arrow == nullptr)
         {
-            m_arrow = new Bow();
-            m_arrow->setPosition(m_position);
-            m_arrow->setDirection(m_direction);
-            m_arrow->useWeapon();
-            std::cout << "Direction is " << m_direction << std::endl;
+            if (m_inventory.bowAndArrowAvailable())
+            {
+                m_arrow = new Bow();
+                m_arrow->setPosition(m_position);
+                m_arrow->setDirection(m_direction);
+                m_arrow->useWeapon();
+                m_inventory.useBowAndArrow();
+            }
         }
 
-
-
-        //m_shootArrow = true;
-        
-        // Create arrow in direction of player with speed
-        // 
         
         break;
     case WPN_BOOMERANG: wpn = "Boomerang"; break;

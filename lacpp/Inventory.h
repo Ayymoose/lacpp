@@ -287,6 +287,14 @@ public:
     void open();
     void close();
 
+    bool magicPowderAvailabe() const;
+    bool bowAndArrowAvailable() const;
+    bool bombsAvailable() const;
+
+    void useMagicPowder();
+    void useBowAndArrow();
+    void useBombs();
+
     bool shieldEquipped() const;
     WEAPON_LEVEL shieldLevel() const;
 

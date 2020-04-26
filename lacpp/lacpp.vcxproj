@@ -140,6 +140,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CollisionMap.cpp" />
+    <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MyAssert.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="BackgroundObject.h" />
     <ClInclude Include="BoundingBox.h" />
