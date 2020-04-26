@@ -42,17 +42,21 @@ Player::Player()
     m_dirLockLeft = false;
 
     m_useShield = false;
-    m_shootArrow = false;
+
     // Collision related stuff
     m_speed_x = 0;
     m_speed_y = 0;
 
-    // Weapon test
+    // Weapon tests
+    m_arrow = nullptr;
+    m_boomerang = nullptr;
+
+
+    //
     // Set to Tail cave entrace
     m_currentCollisionMapX = 3;
     m_currentCollisionMapY = 5;
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
-    m_arrow = nullptr;
 
 
     //
@@ -182,16 +186,16 @@ void Player::render(SDL_Renderer* pRenderer)
 
     // Drawing bounding boxes for testing
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
-    /*
+    
     SDL_Rect playerRect =
     {
         m_boundingBox.x - Camera::getInstance().getX(),
         m_boundingBox.y - Camera::getInstance().getY(),
         m_boundingBox.w, m_boundingBox.h
     };
-    DASSERT(SDL_RenderDrawRect(pRenderer, &playerRect) == 0);
+    //DASSERT(SDL_RenderDrawRect(pRenderer, &playerRect) == 0, SDL_GetError());
 
-    std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
+    /* std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (const BoundingBox& box : bbs)
     {
 
@@ -213,6 +217,25 @@ void Player::render(SDL_Renderer* pRenderer)
             Renderer::getInstance().removeRenderable(m_arrow);
             delete m_arrow;
             m_arrow = nullptr;
+        }
+    }
+
+    if (m_boomerang)
+    {
+        auto boomerangPos = m_boomerang->position();
+        if (!Camera::getInstance().visible(boomerangPos))
+        {
+            m_boomerang->returnToPlayer();
+        }
+        BoundingBox box;
+        box.x = m_boundingBox.x - Camera::getInstance().getX();
+        box.y = m_boundingBox.y - Camera::getInstance().getY();
+
+        if (BoundingBox::intersects(box, m_boomerang->boundingBox()))
+        {
+            Renderer::getInstance().removeRenderable(m_boomerang);
+            delete m_boomerang;
+            m_boomerang = nullptr;
         }
     }
 
@@ -874,8 +897,8 @@ void Player::useWeapon(WEAPON weapon)
             if (m_inventory.bowAndArrowAvailable())
             {
                 m_arrow = new Bow();
-                m_arrow->setPosition(m_position);
                 m_arrow->setDirection(m_direction);
+                m_arrow->setPosition(m_position);
                 m_arrow->useWeapon();
                 m_inventory.useBowAndArrow();
             }
@@ -883,7 +906,23 @@ void Player::useWeapon(WEAPON weapon)
 
         
         break;
-    case WPN_BOOMERANG: wpn = "Boomerang"; break;
+    case WPN_BOOMERANG:
+        wpn = "Boomerang";
+
+        // A boomerang can only be thrown once
+        // A boomerang that hits an enemy stuns it and returns to the player
+        // A boomerang that goes off screen returns to the player
+        // A boomerang that hits an object deflects and returns
+
+        if (m_boomerang == nullptr)
+        {
+            m_boomerang = new Boomerang();
+            m_boomerang->setDirection(m_direction);
+            m_boomerang->setPosition(m_position);
+            m_boomerang->useWeapon();
+        }
+        
+        break;
     case WPN_MAGIC_POWDER: wpn = "Magic Powder"; break;
     case WPN_BOMBS: wpn = "Bombs"; break;
     case WPN_POWER_BRACELET_1: wpn = "Power Bracelet 1"; break;

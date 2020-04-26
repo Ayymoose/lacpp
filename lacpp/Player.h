@@ -11,7 +11,7 @@
 #include "BoundingBox.h"
 #include "CollisionMap.h"
 #include "Bow.h"
-
+#include "Boomerang.h"
 
 enum PlayerState
 {
@@ -156,7 +156,6 @@ private:
     UpdateTimer m_movementTimer;
 
     bool m_useShield;
-    bool m_shootArrow;
 
     void useWeapon(WEAPON weapon);
 
@@ -166,8 +165,9 @@ private:
     bool m_dirLockLeft;
 
 
-    // Weapon test
+    // Weapon tests
     Bow* m_arrow;
+    Boomerang* m_boomerang;
     //Arrow* m_arrowList[3];
 
 

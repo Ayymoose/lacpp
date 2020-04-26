@@ -21,3 +21,8 @@ bool BoundingBox::intersects(const BoundingBox& A, const BoundingBox& B)
 {
     return (A.x < B.x + B.w) && (A.y < B.y + B.h) && (A.x + A.w > B.x) && (A.y + A.h > B.y);
 }
+/*
+BoundingBox BoundingBox::operator-(int offset)
+{
+    return BoundingBox(this->x - offset, this->y - offset, this->w, this->h);
+}*/

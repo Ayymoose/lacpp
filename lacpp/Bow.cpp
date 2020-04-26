@@ -5,7 +5,7 @@
 
 Bow::Bow()
 {
-    m_texture = ResourceManager::getInstance()[RSC_ARROW];
+    m_texture = ResourceManager::getInstance()[RSC_WEAPON];
     m_speed = 2;
     m_name = "Bow";
     m_width = 8;
@@ -16,6 +16,9 @@ Bow::Bow()
 
 void Bow::render(SDL_Renderer* pRenderer)
 {
+
+    SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOW];
+
     SDL_Rect dstRect =
     {
         m_position.x - Camera::getInstance().getX(),
@@ -24,7 +27,7 @@ void Bow::render(SDL_Renderer* pRenderer)
         m_height
     };
 
-    DASSERT(SDL_RenderCopyEx(pRenderer, m_texture, nullptr, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, SDL_GetError());
+    DASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, SDL_GetError());
 
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();
     m_boundingBox.y = m_position.y - Camera::getInstance().getY();
@@ -47,4 +50,9 @@ void Bow::useWeapon()
     case DIRECTION_DOWN: m_orientation = 180; m_dirVec.y = m_speed; break;
     case DIRECTION_UP: m_orientation = 0; m_dirVec.y = -m_speed; break;
     }
+}
+
+void Bow::setPosition(Vec2<float> position)
+{
+    m_position = position;
 }

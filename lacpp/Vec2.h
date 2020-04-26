@@ -18,6 +18,21 @@ public:
     }
     ~Vec2() = default;
 
+
+    Vec2<T> operator*(int scalar)
+    {
+        this->x *= scalar;
+        this->y *= scalar;
+        return *this;
+    }
+
+  /*  Vec2<T> operator+=(int value)
+    {
+        this->x += value;
+        this->y += value;
+        return *this;
+    }*/
+
     Vec2<T> operator+=(Vec2<T> other)
     {
         this->x += other.x;
@@ -47,12 +62,6 @@ public:
     bool operator!=(Vec2<T> other)
     {
         return !operator==(other);
-    }
-
-    // Returns the vector from v1 to v2
-    static Vec2<T> from(const Vec2& v1, const Vec2& v2)
-    {
-        return v1 - v2;
     }
 
     // Cross product of 2 2D vectors

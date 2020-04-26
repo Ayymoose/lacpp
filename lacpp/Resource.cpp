@@ -79,7 +79,7 @@ void ResourceManager::loadGraphics()
 
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Sprite\\Object\\inventory.png")));
 
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_ARROW, loadTexture("Resources\\Sprite\\Object\\arrow.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_WEAPON, loadTexture("Resources\\Sprite\\Object\\weapons.png")));
 
 }
 

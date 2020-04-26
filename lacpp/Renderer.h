@@ -44,7 +44,7 @@ public:
 
     void addRenderable(Renderable* renderable)
     {
-        m_Renderables.insert(renderable);
+        m_Renderables.emplace(renderable);
     }
 
     void removeRenderable(Renderable* renderable)

@@ -1,23 +1,24 @@
-#ifndef  BOW_H
-#define BOW_H
+#pragma once
 
+#include "UpdateTimer.h"
 #include "Weapon.h"
 #include <iostream>
 
-class Bow : public Weapon
+class Boomerang : public Weapon
 {
 public:
-    Bow();
-    ~Bow() = default;
+    Boomerang();
+    ~Boomerang() = default;
 
     void render(SDL_Renderer* pRenderer) override;
     void useWeapon() override;
+    void returnToPlayer();
     void setPosition(Vec2<float> position) override;
 
 private:
     Vec2<float> m_dirVec;
+    UpdateTimer m_rotationTimer;
+    bool m_return;
     int m_speed;
 
 };
-
-#endif // ! BOW_H

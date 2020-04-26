@@ -90,7 +90,7 @@ Inventory::Inventory()
 
     m_singlePressA = true;
     m_singlePressB = true;
-    m_weaponA = WPN_FLAME_ROD;
+    m_weaponA = WPN_BOOMERANG;
     m_weaponB = WPN_BOW;
 
     m_ocarinaSong = SNG_FISH;
@@ -102,7 +102,7 @@ Inventory::Inventory()
     m_items[0] = WPN_SHOVEL;
     m_items[1] = WPN_SWORD;
     m_items[2] = WPN_SHIELD;
-    m_items[3] = WPN_BOOMERANG;
+    m_items[3] = WPN_FLAME_ROD;
     m_items[4] = WPN_MAGIC_POWDER;
     m_items[5] = WPN_BOMBS;
     m_items[6] = WPN_POWER_BRACELET_2;
@@ -469,6 +469,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer)
     {
         for (int y = 0; y < DUNGEON_MAX_BLOCK_Y; y++)
         {
+            // TODO: enum these magic values
             switch (m_dungeonMaps[m_dungeon][y][x])
             {
             case 0: // INVENTORY_AREA_EMPTY

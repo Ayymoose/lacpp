@@ -26,6 +26,14 @@
 
 */
 
+enum WPN_SPRITES
+{
+    WPN_SPRITE_NONE = -1,
+    WPN_SPRITE_BOW,
+    WPN_SPRITE_BOOMERANG,
+    WPN_SPRITE_COUNT
+};
+
 class Weapon : public Renderable
 {
 public:
@@ -47,17 +55,29 @@ public:
     {
         m_direction = direction;
     }
-    virtual void setPosition(Vec2<float> position)
-    {
-        m_position = position;
-    }
+
+    virtual void setPosition(Vec2<float> position) = 0;
+
     virtual void useWeapon() = 0;
+
+    virtual BoundingBox boundingBox() const
+    {
+        return m_boundingBox;
+    }
 
 protected:
     Vec2<float> m_position;
     DIRECTION m_direction;
     UpdateTimer m_weaponTimer;
     BoundingBox m_boundingBox;
+
+    // Weapon sprite sources
+    SDL_Rect m_weaponSpritesSrc[WPN_SPRITE_COUNT] =
+    {
+        {0,0,8,16},      // WPN_SPRITE_BOW
+        {10,0,8,16},     // WPN_SPRITE_BOOMERANG
+    };
+
 };
 
 #endif
