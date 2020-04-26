@@ -39,9 +39,9 @@ void Window::beginEventLoop()
     // 
 
     // Stretch the textures to the window
-    assert(SDL_RenderSetScale(Renderer::getInstance().getRenderer(),
+    DASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(),
         MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH,
-        MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16)) == 0);
+        MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + 16)) == 0, SDL_GetError());
    
     std::string windowTitle;
 
@@ -102,7 +102,7 @@ void Window::renderObjects()
     // Clear the screen
     SDL_Renderer* pRenderer = Renderer::getInstance().getRenderer();
 
-    assert(SDL_RenderClear(pRenderer) == 0);
+    DASSERT(SDL_RenderClear(pRenderer) == 0, SDL_GetError());
 
     // Draw any objects
     auto renderSet = Renderer::getInstance().getRenderSet();

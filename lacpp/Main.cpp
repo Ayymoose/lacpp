@@ -1,10 +1,11 @@
 #include "SDL.h"
 #include "Window.h"
 #include "Resource.h"
+#include "MyAssert.h"
 
 int main(int argc, char* argv[])
 {
-    assert(SDL_Init(SDL_INIT_VIDEO) == 0);
+    DASSERT(SDL_Init(SDL_INIT_VIDEO) == 0, SDL_GetError());
     
     // Create main window
     Window mainWindow;

@@ -12,8 +12,6 @@ Inventory::Inventory()
 {
     if (sizeof(m_inventorySpritesSrc) != sizeof(m_inventorySpritesDst))
     {
-        //std::cout << sizeof(m_inventorySpritesSrc)/sizeof(SDL_Rect) << std::endl;
-        //std::cout << sizeof(m_inventorySpritesDst)/ sizeof(SDL_Rect) << std::endl;
         assert(sizeof(m_inventorySpritesSrc) == sizeof(m_inventorySpritesDst));
     }
 
@@ -39,7 +37,8 @@ Inventory::Inventory()
     CopyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[RSC_INVENTORY], m_inventoryDividerV, &srcRect, nullptr);
     //
 
-    assert(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0);
+    DASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0, SDL_GetError());
+
     m_open = false;
     m_inDungeon = true;
     m_name = "Inventory";
@@ -310,7 +309,7 @@ void Inventory::render(SDL_Renderer* pRenderer)
 
     // Render the inventory background
     SDL_Rect dstRect = { 0, renderY, m_width , m_height };
-    assert(SDL_RenderCopy(pRenderer, m_texture, nullptr, &dstRect) == 0);
+    DASSERT(SDL_RenderCopy(pRenderer, m_texture, nullptr, &dstRect) == 0, SDL_GetError());
     ColourTexture(pRenderer, m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
     drawTopHUD(pRenderer);
@@ -1078,7 +1077,7 @@ void Inventory::drawSelector(SDL_Renderer* pRenderer)
 void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer)
 {
     SDL_Rect dstRect;
-    assert(SDL_SetRenderTarget(pRenderer, m_texture) == 0);
+    DASSERT(SDL_SetRenderTarget(pRenderer, m_texture) == 0, SDL_GetError());
 
     // Draw horizontal divider
     for (int i = 0; i < (INVENTORY_WIDTH / INVENTORY_DIVIDER_WIDTH_H)-2; i++)
@@ -1090,7 +1089,7 @@ void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer)
             INVENTORY_DIVIDER_WIDTH_H,
             INVENTORY_DIVIDER_HEIGHT_H
         };
-        assert(SDL_RenderCopy(pRenderer, m_inventoryDividerH, nullptr, &dstRect) == 0);
+        DASSERT(SDL_RenderCopy(pRenderer, m_inventoryDividerH, nullptr, &dstRect) == 0, SDL_GetError());
     }
 
     // Draw vertical divider
@@ -1110,33 +1109,33 @@ void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer)
 
 void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
 {
-    assert(SDL_SetRenderTarget(pRenderer, m_texture) == 0);
+    DASSERT(SDL_SetRenderTarget(pRenderer, m_texture) == 0, SDL_GetError());
 
     SDL_Rect srcRect, dstRect;
 
     // Copy "B" 
     srcRect = m_inventorySpritesSrc[INVENTORY_B_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_B_BUTTON];
-    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
+    DASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0, SDL_GetError());
 
     // Copy "A"
     srcRect = m_inventorySpritesSrc[INVENTORY_A_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_A_BUTTON];
-    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
+    DASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0, SDL_GetError());
 
     // Copy selector
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_1];
-    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
+    DASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0, SDL_GetError());
 
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_2];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_2];
-    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
+    DASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0, SDL_GetError());
 
     // Ruppee icon
     srcRect = m_inventorySpritesSrc[INVENTORY_RUPPEE];
     dstRect = m_inventorySpritesDst[INVENTORY_RUPPEE];
-    assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
+    DASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0, SDL_GetError());
 
     // Draw health
     drawHealth(pRenderer);
@@ -1147,7 +1146,7 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
         // Draw the actual weapon
         srcRect = m_inventorySpritesSrc[m_weaponA];
         dstRect = {48,0, srcRect.w, srcRect.h };
-        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
+        DASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0, SDL_GetError());
 
         // Draw the weapon level
         dstRect = { 56,8, 8, 8 };
@@ -1159,7 +1158,7 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
     {
         srcRect = m_inventorySpritesSrc[m_weaponB];
         dstRect = { 8,0, srcRect.w, srcRect.h };
-        assert(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0);
+        DASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[RSC_INVENTORY], &srcRect, &dstRect) == 0, SDL_GetError());
         dstRect = { 16,8, 8, 8 };
         drawWeaponLevel(pRenderer, m_texture, m_weaponB, &dstRect);
     }
@@ -1168,7 +1167,7 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer)
     dstRect = { 80,8,8,8 };
     drawNumber(pRenderer, m_texture, false, true, 2, 10, &dstRect);
 
-    assert(SDL_SetRenderTarget(pRenderer, nullptr) == 0);
+    DASSERT(SDL_SetRenderTarget(pRenderer, nullptr) == 0, SDL_GetError());
 }
 
 // Draw a number or level onto a texture
@@ -1184,7 +1183,6 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
     // useNormalFont  = Use the normal digit text or text with black background
     // trailingDigits = Number of trailing digits to append to the LHS of the number (e.g 1 01 001)
 
-    //TODO: Find out why this fails
     DASSERT(SDL_SetRenderTarget(pRenderer, srcTexture) == 0, SDL_GetError());
 
     SDL_Rect srcRect;

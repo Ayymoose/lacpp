@@ -6,7 +6,7 @@
 #include "Renderer.h"
 #include "Bow.h"
 #include "Depth.h"
-
+#include "MyAssert.h"
 #include <set>
 
 Player::Player()
@@ -177,7 +177,7 @@ void Player::render(SDL_Renderer* pRenderer)
         m_position.y - Camera::getInstance().getY(),
         m_width, m_height 
                        };
-    assert(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0);
+    DASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0, SDL_GetError());
 
 
     // Drawing bounding boxes for testing
@@ -189,7 +189,7 @@ void Player::render(SDL_Renderer* pRenderer)
         m_boundingBox.y - Camera::getInstance().getY(),
         m_boundingBox.w, m_boundingBox.h
     };
-    assert(SDL_RenderDrawRect(pRenderer, &playerRect) == 0);
+    DASSERT(SDL_RenderDrawRect(pRenderer, &playerRect) == 0);
 
     std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (const BoundingBox& box : bbs)
@@ -197,8 +197,8 @@ void Player::render(SDL_Renderer* pRenderer)
 
         SDL_Rect bbRect = { box.x , box.y, box.w, box.h };
 
-        assert(SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0) == 0);
-        assert(SDL_RenderDrawRect(pRenderer, &bbRect) == 0);
+        DASSERT(SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0) == 0);
+        DASSERT(SDL_RenderDrawRect(pRenderer, &bbRect) == 0);
     }
     
     */
