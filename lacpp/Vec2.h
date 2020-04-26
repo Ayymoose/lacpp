@@ -81,9 +81,11 @@ public:
     void normalise()
     {
         // TODO: Double/float epsilon
-        assert(length() != 0);
-        x /= length();
-        y /= length();
+        double len = length();
+        assert(len != 0);
+
+        x /= len;
+        y /= len;
     }
 
     // Vector length

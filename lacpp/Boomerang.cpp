@@ -3,7 +3,6 @@
 #include "Resource.h"
 #include "MyAssert.h"
 #include "Player.h"
-#include <cmath>
 
 Boomerang::Boomerang()
 {
@@ -50,12 +49,11 @@ void Boomerang::render(SDL_Renderer* pRenderer)
         // Get vector from player to here and repeatedly add position till we return to player
         Vec2<float> positionVector = Player::getInstance().position();
         Vec2<float> returnVector = positionVector - m_position;
-
-        // TODO: Find out atan2 vs atan
-        // TODO: Find out why repeatedly adding the normalised return vector gives choppy movement
-        float direction = atan2(returnVector.y, returnVector.x);
-        m_position.x += m_speed * cos(direction);
-        m_position.y += m_speed * sin(direction);
+        if (returnVector.length() > 0.01)
+        {
+            returnVector.normalise();
+        }
+        m_position += returnVector * m_speed;
     }
 
     // Rotate the boomerang
@@ -69,6 +67,8 @@ void Boomerang::render(SDL_Renderer* pRenderer)
     // TODO: Correct the boomerang rotating sprite
     // TODO: Return to player after distance travelled
     // TODO: Collisions with walls
+    // TODO: Correct positioning
+    // TODO: Collision with player after moving screen
 }
 
 void Boomerang::useWeapon()
