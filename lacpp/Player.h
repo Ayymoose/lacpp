@@ -12,6 +12,7 @@
 #include "CollisionMap.h"
 #include "Bomb.h"
 #include "Bow.h"
+#include "FlameRod.h"
 #include "Boomerang.h"
 
 enum PlayerState
@@ -170,6 +171,7 @@ private:
     Bow* m_arrow;
     Boomerang* m_boomerang;
     Bomb* m_bomb;
+    FlameRod* m_flameRod;
     //Arrow* m_arrowList[3];
 
 
@@ -179,7 +181,7 @@ private:
     const Animation m_animations[LINK_COUNT] =
     {
 
-       // x   y currentFrame maxFrame,    animationFPS,     orientation,  flip
+       // x   y startFrame endFrame,    animationFPS,     orientation,  flip
         {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_LEFT 
         {96  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_RIGHT
         {64  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_UP

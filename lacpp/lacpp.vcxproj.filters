@@ -60,6 +60,9 @@
     <ClCompile Include="Bomb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FlameRod.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundingBox.h">
@@ -135,6 +138,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bomb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlameRod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

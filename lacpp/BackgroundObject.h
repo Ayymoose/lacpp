@@ -39,7 +39,7 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
         m_animateXPos = 0;
         m_animateYPos = 0;
         m_currentFrame = 1;
-        m_maxFrame = 3;
+        m_endFrame = 3;
         m_name = "Candle";
 
         break;
@@ -47,7 +47,7 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
         m_animateXPos = 0;
         m_animateYPos = 0;
         m_currentFrame = 0;
-        m_maxFrame = 3;
+        m_endFrame = 3;
         m_name = "Torch";
 
         break;
@@ -86,12 +86,12 @@ void BackgroundObject::render(SDL_Renderer* pRenderer)
     DASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, SDL_GetError());
 
     // Animation
-    if (m_currentFrame <= m_maxFrame)
+    if (m_currentFrame <= m_endFrame)
     {
         if (m_animationTimer.update(m_animationFPS))
         {
             m_currentFrame++;
-            if (m_currentFrame > m_maxFrame)
+            if (m_currentFrame > m_endFrame)
             {
                 m_currentFrame = 1;
             }

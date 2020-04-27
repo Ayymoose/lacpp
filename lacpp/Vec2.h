@@ -81,7 +81,7 @@ public:
     void normalise()
     {
         // TODO: Double/float epsilon
-        double len = length();
+        float len = length();
         assert(len != 0);
 
         x /= len;
@@ -89,7 +89,7 @@ public:
     }
 
     // Vector length
-    double length() const
+    float length() const
     {
         return sqrt(x * x + y * y);
     }

@@ -12,6 +12,7 @@
 
 #define LINK_FALL_FPS (1.0 / 3.0)
 #define LINK_DROWN_FPS (1.0 / 3.0)
+#define LINK_FLAME_ROD_ANIMATION_FPS (1.0 / 31.0)
 
 #define INVENTORY_SELECTOR_FPS (1.0 / 4.0)
 #define PUSH_SELECTOR_FPS (1.0 / 2.0)
@@ -24,13 +25,14 @@
 #define BOMB_START_TIME (1.5)
 #define BOMB_EXPLODE_TIME (0.1)
 #define BOMB_ANIMATION_TIME (1.0 / 12.0)
+#define FLAME_ROD_SPEED (1.0 / 69.0)
 
 class UpdateTimer
 {
 public:
     UpdateTimer();
     ~UpdateTimer() = default;
-    bool update(double dt);
+    bool update(float dt);
     void reset();
     // m_counter is incremented everytime the timer is updated
     // It can be used as a kind of counter

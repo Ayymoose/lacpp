@@ -12,9 +12,9 @@ void UpdateTimer::reset()
     m_previousUpdateTime = SDL_GetTicks();
 }
 
-bool UpdateTimer::update(double dt)
+bool UpdateTimer::update(float dt)
 {
-    if ((SDL_GetTicks() - m_previousUpdateTime) / 1000.0 >= dt)
+    if ((SDL_GetTicks() - m_previousUpdateTime) / 1000.0 > dt)
     {
         m_previousUpdateTime = SDL_GetTicks();
         m_counter++;

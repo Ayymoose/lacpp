@@ -33,7 +33,7 @@ Player::Player()
     m_animateXPos = 0;      // Initial X-position in sprite sheet for this animation
     m_animateYPos = 0;      // Initial Y-position in sprite sheet for this animation
     m_currentFrame = 0;     // Initial frame in this animation
-    m_maxFrame = 0;         // Maximum frame number for this animation
+    m_endFrame = 0;         // Maximum frame number for this animation
     m_animationFPS = 0;     // Animation rate in FPS
 
     m_dirLockRight = false;
@@ -51,7 +51,7 @@ Player::Player()
     m_arrow = nullptr;
     m_boomerang = nullptr;
     m_bomb = nullptr;
-
+    m_flameRod = nullptr;
     //
     // Set to Tail cave entrace
     m_currentCollisionMapX = 3;
@@ -176,11 +176,12 @@ void Player::render(SDL_Renderer* pRenderer)
 
     // Get clock, if elapsed, increase frame counter
     SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width) , m_animateYPos, m_width ,m_height };
-    SDL_Rect dstRect = {
+    SDL_Rect dstRect =
+    {
         m_position.x - Camera::getInstance().getX(),
         m_position.y - Camera::getInstance().getY(),
-        m_width, m_height 
-                       };
+        m_width, m_height
+    };
     DASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0, SDL_GetError());
 
 
@@ -249,6 +250,31 @@ void Player::render(SDL_Renderer* pRenderer)
         }
     }
 
+    if (m_flameRod)
+    {
+        if (!Camera::getInstance().visible(m_flameRod->position()))
+        {
+            Renderer::getInstance().removeRenderable(m_flameRod);
+            delete m_flameRod;
+            m_flameRod = nullptr;
+        }
+
+        // Animate link
+        // LINK_FLAME_ROD_ANIMATION_FPS
+        // Animation
+/*        if (m_currentFrame <= m_maxFrame)
+        {
+            if (m_animationTimer.update(LINK_FLAME_ROD_ANIMATION_FPS))
+            {
+                m_currentFrame++;
+                if (m_currentFrame > m_maxFrame)
+                {
+                    // TODO: Return to start frame
+                    m_currentFrame = m_animations[m_state].currentFrame;
+                }
+            }
+        }*/
+    }
 }
 
 void Player::control()
@@ -262,15 +288,17 @@ void Player::control()
         Controller::getInstance().pushController(this, &m_inventory);
     }
 
-    // Max frame controlled by the state
-    m_maxFrame = m_animations[m_state].maxFrame;
 
-    // Sprite orientation
-    m_orientation = m_animations[m_state].orientation;
 
     // If we are holding left and we press up or down, we don't want to change the state whatever it is...
     // Same applies to other directions 
     move();
+
+    // Max frame controlled by the state
+    m_endFrame = m_animations[m_state].endFrame;
+
+    // Sprite orientation
+    m_orientation = m_animations[m_state].orientation;
 
     // Select correct animation
     m_animateXPos = m_animations[m_state].x;
@@ -280,14 +308,15 @@ void Player::control()
     if (IS_MOVING(m_keyboardState))
     {
         // Animation
-        if (m_currentFrame <= m_maxFrame)
+        if (m_currentFrame <= m_endFrame)
         {
             if (m_animationTimer.update(m_animations[m_state].animationFPS))
             {
                 m_currentFrame++;
-                if (m_currentFrame > m_maxFrame)
+                if (m_currentFrame > m_endFrame)
                 {
-                    m_currentFrame = 0;
+                    // TODO: Return to start frame
+                    m_currentFrame = m_animations[m_state].startFrame;
                 }
             }
         }
@@ -360,7 +389,7 @@ void Player::die()
 
 void Player::resetAnimation()
 {
-    m_currentFrame = m_animations[m_state].currentFrame;
+    m_currentFrame = m_animations[m_state].startFrame;
 }
 
 Vec2<float> Player::position() const
@@ -959,7 +988,42 @@ void Player::useWeapon(WEAPON weapon)
     case WPN_OCARINA: wpn = "Ocarina"; break;
     case WPN_PEGASUS_BOOT: wpn = "Pegasus Boot"; break;
     case WPN_SHOVEL: wpn = "Shovel"; break;
-    case WPN_FLAME_ROD: wpn = "Flame rod"; break;
+    case WPN_FLAME_ROD:
+        wpn = "Flame rod";
+        
+        if (m_flameRod == nullptr)
+        {
+            m_flameRod = new FlameRod();
+            m_flameRod->setDirection(m_direction);
+            m_flameRod->setPosition(m_position);
+            m_flameRod->useWeapon();
+
+            switch (m_state)
+            {
+            case LINK_WALK_LEFT_BIG_SHIELD:
+            case LINK_WALK_LEFT_SMALL_SHIELD:
+            case LINK_WALK_LEFT:
+                m_state = LINK_SWORD_LEFT;
+                break;
+            case LINK_WALK_RIGHT_BIG_SHIELD:
+            case LINK_WALK_RIGHT_SMALL_SHIELD:
+            case LINK_WALK_RIGHT:
+                m_state = LINK_SWORD_RIGHT;
+                break;
+            case LINK_WALK_UP_BIG_SHIELD:
+            case LINK_WALK_UP_SMALL_SHIELD:
+            case LINK_WALK_UP:
+                m_state = LINK_SWORD_UP;
+                break;
+            case LINK_WALK_DOWN_BIG_SHIELD:
+            case LINK_WALK_DOWN_SMALL_SHIELD:
+            case LINK_WALK_DOWN:
+                m_state = LINK_SWORD_DOWN;
+                break;
+            }
+        }
+        
+        break;
     }
     std::cout << "Using weapon: " << wpn << std::endl;
 
