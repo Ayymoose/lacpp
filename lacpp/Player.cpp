@@ -241,7 +241,7 @@ void Player::render(SDL_Renderer* pRenderer)
 
     if (m_bomb)
     {
-        if (m_bomb->exploded())
+        if (m_bomb->exploded() || !Camera::getInstance().visible(m_bomb->position()))
         {
             Renderer::getInstance().removeRenderable(m_bomb);
             delete m_bomb;

@@ -111,6 +111,8 @@ void Window::renderObjects()
     {
         auto renderable = *iterator;
         assert(renderable != nullptr);
+
+        // TODO: Culling
         renderable->render(pRenderer);
     }  
 

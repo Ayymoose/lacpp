@@ -4,7 +4,7 @@
 #include <iostream>
 
 // How many times the bomb "flashes"
-#define BOMB_FLASH_MAX 4
+#define BOMB_FLASH_MAX 6
 
 // Number of frames in the bomb animation
 #define BOMB_FRAMES 5

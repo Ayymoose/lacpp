@@ -90,8 +90,8 @@ Inventory::Inventory()
 
     m_singlePressA = true;
     m_singlePressB = true;
-    m_weaponA = WPN_BOOMERANG;
-    m_weaponB = WPN_BOMBS;
+    m_weaponA = WPN_HOOKSHOT;
+    m_weaponB = WPN_FLAME_ROD ;
 
     m_ocarinaSong = SNG_FISH;
 
@@ -102,12 +102,12 @@ Inventory::Inventory()
     m_items[0] = WPN_SHOVEL;
     m_items[1] = WPN_SWORD;
     m_items[2] = WPN_SHIELD;
-    m_items[3] = WPN_FLAME_ROD;
+    m_items[3] = WPN_BOMBS;
     m_items[4] = WPN_MAGIC_POWDER;
     m_items[5] = WPN_BOW;
     m_items[6] = WPN_POWER_BRACELET_2;
     m_items[7] = WPN_ROC_FEATHER;
-    m_items[8] = WPN_HOOKSHOT;
+    m_items[8] = WPN_BOOMERANG;
     m_items[9] = WPN_OCARINA;
 
     m_dungeonKeys = 1;
