@@ -7,79 +7,12 @@
 void ResourceManager::loadGraphics()
 {
     // Attempt to load all the graphic resources
-    // m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_BACKGROUND_OVERWORLD_MAIN, loadTexture("Resources\\Background\\Overworld\\bck-overworld_main.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png", TRANSPARENCY_COLOUR)));
-    /*m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_2_BOTTLE_GROTTO, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_3_KEY_CAVERN, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_4_ANGLER_TUNNEL, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_5_CATFISH_MAW, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_6_FACE_SHRINE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_7_EAGLE_TOWER, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_8_TURTLE_ROCK, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_9_COLOUR_DUNGEON, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_10_WIND_FISH_EGG, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_KANALET_CASTLE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_DREAM_SHRINE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_ANCIENT_RUINS, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_MOBLIN_CAVE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_0, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_1, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_2, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_3, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_4, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_5, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_6, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_7, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_8, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_9, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_10, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_11, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_12, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_13, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_14, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_15, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_16, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_17, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_18, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_19, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CAVE_20, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_0, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_1, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_2, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_3, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_4, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_5, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_6, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_7, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_8, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_9, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_10, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_11, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_12, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_13, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_14, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_15, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_16, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_17, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_18, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_19, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_20, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_21, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_22, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_TELEPHONE_HOUSE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
-   */
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png", TRANSPARENCY_COLOUR)));
-
-    //m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_1, loadTexture("Resources\\Background\\Misc\\file_menu_1.png")));
-    //m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_2, loadTexture("Resources\\Background\\Misc\\file_menu_2.png")));
-    //m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_3, loadTexture("Resources\\Background\\Misc\\file_menu_3.png")));
-
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png", TRANSPARENCY_COLOUR)));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png", TRANSPARENCY_COLOUR)));
-
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Sprite\\Object\\inventory.png", TRANSPARENCY_COLOUR)));
-
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_WEAPON, loadTexture("Resources\\Sprite\\Object\\weapons.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Sprite\\Object\\inventory.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_WEAPON, loadTexture("Resources\\Sprite\\Object\\weapons.png", TRANSPARENCY_COLOUR)));
 
 }
 
@@ -106,8 +39,7 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t tran
     }
     else
     {
-        // TODO: Make transparency argument to function
-        // Transparency (right now it's white)
+        // Set transparency
         DASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, SDL_RED(transparency), SDL_GREEN(transparency), SDL_BLUE(transparency))) == 0, SDL_GetError());
 
         // Create texture from surface

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <assert.h>
 
+// Custom assert to display message
 
 #ifdef NDEBUG
     #define DASSERT(assertion, message) ((void)0)
