@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="MyAssert.h" />
     <ClInclude Include="Bow.h" />

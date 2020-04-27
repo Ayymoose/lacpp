@@ -31,6 +31,7 @@ enum WPN_SPRITES
     WPN_SPRITE_NONE = -1,
     WPN_SPRITE_BOW,
     WPN_SPRITE_BOOMERANG,
+    WPN_SPRITE_BOMB,
     WPN_SPRITE_COUNT
 };
 
@@ -76,6 +77,7 @@ protected:
     {
         {0,0,8,16},      // WPN_SPRITE_BOW
         {10,0,8,16},     // WPN_SPRITE_BOOMERANG
+        {0,26,8,16},     // WPN_SPRITE_BOOMERANG
     };
 
 };

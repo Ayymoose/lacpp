@@ -7,6 +7,9 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
 
+// A pinkish colour is used for transparency
+#define TRANSPARENCY_COLOUR (SDL_RGB(255,0,128))
+
 enum RESOURCE
 {
     RSC_RESOURCE_NONE = -1,
@@ -132,8 +135,8 @@ private:
 
     ResourceManager() = default;
 
-    // Load a texture
-    SDL_Texture* loadTexture(const std::string& path);
+    // Load a texture and specify the transparent colour
+    SDL_Texture* loadTexture(const std::string& path, uint32_t transparency);
 
     // Map between resources and pointer to all textures
     std::map<RESOURCE, SDL_Texture*> m_Resources;

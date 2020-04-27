@@ -8,8 +8,8 @@ Bow::Bow()
     m_texture = ResourceManager::getInstance()[RSC_WEAPON];
     m_speed = 2;
     m_name = "Bow";
-    m_width = 8;
-    m_height = 16;
+    m_width = m_weaponSpritesSrc[WPN_SPRITE_BOMB].w;
+    m_height = m_weaponSpritesSrc[WPN_SPRITE_BOMB].h;
     m_boundingBox.w = m_width;
     m_boundingBox.h = m_height;
 }

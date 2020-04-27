@@ -9,8 +9,8 @@ Boomerang::Boomerang()
     m_texture = ResourceManager::getInstance()[RSC_WEAPON];
     m_speed = 2;
     m_name = "Boomerang";
-    m_width = 8;
-    m_height = 16;
+    m_width = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG].w;
+    m_height = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG].h;
     m_boundingBox.w = m_width;
     m_boundingBox.h = m_height;
     m_return = false;

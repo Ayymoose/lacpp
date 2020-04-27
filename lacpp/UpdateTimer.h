@@ -21,6 +21,8 @@
 #define ARROW_SPEED_FPS (1.0 / 69.0)
 #define BOOMERANG_SPEED_FPS (1.0 / 69.0)
 #define BOOMERANG_ROTATION_FPS (1.0 / 12.0)
+#define BOMB_START_TIME (2)
+#define BOMB_EXPLODE_TIME (0.25)
 
 class UpdateTimer
 {

@@ -10,6 +10,7 @@
 #include "Singleton.h"
 #include "BoundingBox.h"
 #include "CollisionMap.h"
+#include "Bomb.h"
 #include "Bow.h"
 #include "Boomerang.h"
 
@@ -168,6 +169,7 @@ private:
     // Weapon tests
     Bow* m_arrow;
     Boomerang* m_boomerang;
+    Bomb* m_bomb;
     //Arrow* m_arrowList[3];
 
 

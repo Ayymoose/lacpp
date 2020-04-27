@@ -50,7 +50,7 @@ Player::Player()
     // Weapon tests
     m_arrow = nullptr;
     m_boomerang = nullptr;
-
+    m_bomb = nullptr;
 
     //
     // Set to Tail cave entrace
@@ -236,6 +236,16 @@ void Player::render(SDL_Renderer* pRenderer)
             Renderer::getInstance().removeRenderable(m_boomerang);
             delete m_boomerang;
             m_boomerang = nullptr;
+        }
+    }
+
+    if (m_bomb)
+    {
+        if (m_bomb->exploded())
+        {
+            Renderer::getInstance().removeRenderable(m_bomb);
+            delete m_bomb;
+            m_bomb = nullptr;
         }
     }
 
@@ -924,7 +934,24 @@ void Player::useWeapon(WEAPON weapon)
         
         break;
     case WPN_MAGIC_POWDER: wpn = "Magic Powder"; break;
-    case WPN_BOMBS: wpn = "Bombs"; break;
+    case WPN_BOMBS:
+        wpn = "Bombs";
+        
+        if (m_bomb == nullptr)
+        {
+            if (m_inventory.bombsAvailable())
+            {
+                m_bomb = new Bomb();
+                m_bomb->setDirection(m_direction);
+                m_bomb->setPosition(m_position);
+                m_bomb->useWeapon();
+                m_inventory.useBombs();
+            }
+
+        }
+        
+        
+        break;
     case WPN_POWER_BRACELET_1: wpn = "Power Bracelet 1"; break;
     case WPN_POWER_BRACELET_2: wpn = "Power Bracelet 2"; break;
     case WPN_ROC_FEATHER: wpn = "Roc Feather"; break;

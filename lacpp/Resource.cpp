@@ -8,7 +8,7 @@ void ResourceManager::loadGraphics()
 {
     // Attempt to load all the graphic resources
     // m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_BACKGROUND_OVERWORLD_MAIN, loadTexture("Resources\\Background\\Overworld\\bck-overworld_main.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png", TRANSPARENCY_COLOUR)));
     /*m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_2_BOTTLE_GROTTO, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_3_KEY_CAVERN, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_4_ANGLER_TUNNEL, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
@@ -68,18 +68,18 @@ void ResourceManager::loadGraphics()
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_HOUSE_22, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
     m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INTERIOR_TELEPHONE_HOUSE, loadTexture("Resources\\Background\\Interior\\interior_cave_martha_bay.png")));
    */
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png", TRANSPARENCY_COLOUR)));
 
     //m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_1, loadTexture("Resources\\Background\\Misc\\file_menu_1.png")));
     //m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_2, loadTexture("Resources\\Background\\Misc\\file_menu_2.png")));
     //m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_FILE_MENU_3, loadTexture("Resources\\Background\\Misc\\file_menu_3.png")));
 
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png")));
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png", TRANSPARENCY_COLOUR)));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png", TRANSPARENCY_COLOUR)));
 
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Sprite\\Object\\inventory.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Sprite\\Object\\inventory.png", TRANSPARENCY_COLOUR)));
 
-    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_WEAPON, loadTexture("Resources\\Sprite\\Object\\weapons.png")));
+    m_Resources.insert(std::pair<RESOURCE, SDL_Texture*>(RSC_WEAPON, loadTexture("Resources\\Sprite\\Object\\weapons.png", TRANSPARENCY_COLOUR)));
 
 }
 
@@ -93,7 +93,7 @@ ResourceManager::~ResourceManager()
     }
 }
 
-SDL_Texture* ResourceManager::loadTexture(const std::string& path)
+SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t transparency)
 {
     // The final texture
     SDL_Texture* newTexture = nullptr;
@@ -108,7 +108,7 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path)
     {
         // TODO: Make transparency argument to function
         // Transparency (right now it's white)
-        DASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 255, 255, 255)) == 0, SDL_GetError());
+        DASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, SDL_RED(transparency), SDL_GREEN(transparency), SDL_BLUE(transparency))) == 0, SDL_GetError());
 
         // Create texture from surface
         newTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().getRenderer(), loadedSurface);

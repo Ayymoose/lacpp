@@ -1,23 +1,18 @@
-#ifndef BOW_H
-#define BOW_H
+#pragma once
 
 #include "Weapon.h"
 #include <iostream>
 
-class Bow : public Weapon
+class Bomb : public Weapon
 {
 public:
-    Bow();
-    ~Bow() = default;
+    Bomb();
+    ~Bomb() = default;
 
     void render(SDL_Renderer* pRenderer) override;
     void useWeapon() override;
     void setPosition(Vec2<float> position) override;
-
+    bool exploded() const;
 private:
-    Vec2<float> m_dirVec;
-    int m_speed;
-
+    bool m_exploded;
 };
-
-#endif // ! BOW_H
