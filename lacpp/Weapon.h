@@ -26,6 +26,8 @@
 
 */
 
+#define SPRITE_SPACING 2
+
 enum WPN_SPRITES
 {
     WPN_SPRITE_NONE = -1,
@@ -77,7 +79,7 @@ protected:
     {
         {0,0,8,16},      // WPN_SPRITE_BOW
         {10,0,8,16},     // WPN_SPRITE_BOOMERANG
-        {0,26,8,16},     // WPN_SPRITE_BOOMERANG
+        {40,0,16,16},     // WPN_SPRITE_BOMB
     };
 
 };
