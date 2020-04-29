@@ -1,6 +1,8 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
+#include <iostream>
+
 template <typename T>
 class Singleton
 {
@@ -20,7 +22,10 @@ protected:
     // No move assigning
     Singleton& operator=(Singleton&&) = delete;
 
-    Singleton() = default;
+    Singleton()
+    {
+        std::cout << "Creating singleton: " << typeid(*this).name() << "\n";
+    }
     virtual ~Singleton() = default;
 };
 

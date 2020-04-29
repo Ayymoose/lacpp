@@ -8,8 +8,8 @@ Bow::Bow()
     m_texture = ResourceManager::getInstance()[RSC_WEAPON];
     m_speed = 2;
     m_name = "Bow";
-    m_width = m_weaponSpritesSrc[WPN_SPRITE_BOMB].w;
-    m_height = m_weaponSpritesSrc[WPN_SPRITE_BOMB].h;
+    m_width = m_weaponSpritesSrc[WPN_SPRITE_BOW].w;
+    m_height = m_weaponSpritesSrc[WPN_SPRITE_BOW].h;
     m_boundingBox.w = m_width;
     m_boundingBox.h = m_height;
 }
@@ -32,11 +32,8 @@ void Bow::render(SDL_Renderer* pRenderer)
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();
     m_boundingBox.y = m_position.y - Camera::getInstance().getY();
 
-    // Move the arrow
-    if (m_weaponTimer.update(ARROW_SPEED_FPS))
-    {
-        m_position += m_dirVec;
-    }
+    // Fire the arrow
+    m_position += m_dirVec;
 
 }
 

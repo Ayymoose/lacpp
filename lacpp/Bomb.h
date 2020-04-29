@@ -8,8 +8,6 @@
 
 // Number of frames in the bomb animation
 #define BOMB_FRAMES 5
-
-
 #define BOMB_SPRITE_INERT 0
 #define BOMB_SPRITE_FLASHING 1
 #define BOMB_SPRITE_INITIAL_CLOUD 2

@@ -37,12 +37,6 @@ void Boomerang::render(SDL_Renderer* pRenderer)
     // Bounding Box rect
     // DASSERT(SDL_RenderDrawRect(pRenderer, &dstRect) == 0, SDL_GetError());
 
-    // Move the boomerang
-    if (m_weaponTimer.update(BOOMERANG_SPEED_FPS) && !m_return)
-    {
-        m_position += m_dirVec;
-    }
-
     // Return to the player
     if (m_return)
     {
@@ -55,9 +49,14 @@ void Boomerang::render(SDL_Renderer* pRenderer)
         }
         m_position += returnVector * m_speed;
     }
+    else
+    {
+        // Throw the boomerang
+        m_position += m_dirVec;
+    }
 
     // Rotate the boomerang
-    if (m_rotationTimer.update(BOOMERANG_ROTATION_FPS))
+    if (m_weaponTimer.update(BOOMERANG_ROTATION_FPS))
     {
         m_orientation += 90;
         m_orientation = (int)m_orientation % 360;

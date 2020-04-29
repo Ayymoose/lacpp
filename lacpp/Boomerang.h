@@ -17,7 +17,6 @@ public:
 
 private:
     Vec2<float> m_dirVec;
-    UpdateTimer m_rotationTimer;
     bool m_return;
     int m_speed;
 
