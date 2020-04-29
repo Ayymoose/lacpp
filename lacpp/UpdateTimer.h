@@ -3,16 +3,21 @@
 #ifndef UPDATE_TIMER_H
 #define UPDATE_TIMER_H
 
-// #define FPS_60 (1.0 / 60.0) // I notice that with 16.7ms, the movement is choppy
-#define FPS_66 (1.0 / 66.0)    // We need some extra delay between frame rendering maybe
-#define FPS_33 (1.0 / 31.0)    // To be adjusted!
+// The game is locked to 60 fps because of VSync
+// So everything runs at 60 fps
+// It seems like using timers for scrolling to lock it 60fps was messing with that
+// It's not choppy anymore
+
+// #define FPS_60 (1.0 / 60.0) 
+#define FPS_66 (1.0f / 60.0f)   
+#define FPS_33 (1.0 / 33.0)    // To be adjusted!
 #define PLAYER_ANIMATION_FPS (1.0 / 10.0)
 #define BACKGROUND_OBJECT_FPS (1.0 / 6.0)
 #define INSTRUMENT_FPS (1.0 / 6.0)
 
 #define LINK_FALL_FPS (1.0 / 3.0)
 #define LINK_DROWN_FPS (1.0 / 3.0)
-#define LINK_FLAME_ROD_ANIMATION_FPS (1.0 / 31.0)
+#define LINK_FLAME_ROD_ANIMATION_FPS (1.0 / 10.0)
 
 #define INVENTORY_SELECTOR_FPS (1.0 / 4.0)
 #define PUSH_SELECTOR_FPS (1.0 / 2.0)
@@ -39,6 +44,7 @@ public:
     uint32_t m_counter;
 private:
     uint32_t m_previousUpdateTime;
+    bool m_reset;
 };
 
 

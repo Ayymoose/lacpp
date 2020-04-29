@@ -15,10 +15,10 @@ struct Animation
 {
     int x;                 // Initial X-position in sprite sheet for this animation
     int y;                 // Initial Y-position in sprite sheet for this animation
-    int startFrame;        // Initial frame in this animation
-    int endFrame;          // Maximum frame number for this animation
-    float animationFPS;   // Animation rate in FPS
-    float orientation;    // Rotation
+    int startFrame;        // Start frame in this animation
+    int endFrame;          // End frame number for this animation
+    float animationFPS;    // Animation rate in FPS
+    float orientation;     // Rotation
     SDL_RendererFlip flip; // Flip sprite (horizontal or vertical)
 };
 
@@ -70,7 +70,10 @@ protected:
     int m_depth;
 
     // Animation
+    // TODO: Animating sprites common function
+
     UpdateTimer m_animationTimer;
+    bool m_animationComplete;
     float m_animationFPS;
     int m_animateXPos;
     int m_animateYPos;

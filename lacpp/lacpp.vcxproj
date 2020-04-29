@@ -141,6 +141,7 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CollisionMap.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="FlameRod.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Boomerang.h" />
+    <ClInclude Include="Clock.h" />
     <ClInclude Include="FlameRod.h" />
     <ClInclude Include="MyAssert.h" />
     <ClInclude Include="Bow.h" />

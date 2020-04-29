@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "UpdateTimer.h"
 #include "Singleton.h"
+#include "Clock.h"
 
 // The "viewing region" dimensions
 #define CAMERA_WIDTH 160
@@ -22,7 +23,7 @@
 #define SCROLL_UP_EDGE 0
 #define SCROLL_DOWN_EDGE 0
 
-class Camera : public Renderable, public Singleton<Camera>, public Controllable
+class Camera : public Renderable, public Singleton<Camera>//, public Controllable
 {
     friend class Singleton<Camera>;
 public:
@@ -34,7 +35,7 @@ public:
     // Returns true whether a point is visible in the camera region
     bool visible(Vec2<float> point) const;
 
-    void control() override;
+    //void control() override;
 
     // The camera will track a Character
     void track(Character* character);
@@ -64,7 +65,7 @@ private:
     int m_scrolled;
     bool m_scrollCamera;
 
-    UpdateTimer m_timerCameraScroll;
+    // TODO: Fix player movement during scrolling
     UpdateTimer m_timerPlayerScroll;
 
 };

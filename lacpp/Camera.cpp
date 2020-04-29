@@ -53,50 +53,62 @@ void Camera::trackCharacter()
     float x = position.x; float y = position.y;
 
     // Transition the player if they move off the screen
-    if (x < m_scrollX)
+    if (x < m_scrollX && !m_scrollLeft)
     {
         // Scroll left
         m_scrollLeft = true;
-        player->m_currentCollisionMapX--;
         Controller::getInstance().setController(nullptr);
+
+        // TODO: Globalise
+        player->m_currentCollisionMapX--;
+        std::cout << "Scrolling left" << std::endl;
     }
-    else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE)
+    else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE && !m_scrollRight)
     {
         // Scroll right
         m_scrollRight = true;
-        player->m_currentCollisionMapX++;
         Controller::getInstance().setController(nullptr);
+
+        // TODO: Globalise
+        player->m_currentCollisionMapX++;
+        std::cout << "Scrolling right" << std::endl;
+
+
     }
-    else if (y < m_scrollY)
+    else if (y < m_scrollY && !m_scrollUp)
     {
         // Scroll up
         m_scrollUp = true;
-        player->m_currentCollisionMapY--;
         Controller::getInstance().setController(nullptr);
+
+        // TODO: Globalise
+        player->m_currentCollisionMapY--;
+        std::cout << "Scrolling up" << std::endl;
+
     }
-    else if (y > m_scrollY + CAMERA_HEIGHT - 16 /* HUD height because its on the bottom*/)
+    else if (y > m_scrollY + CAMERA_HEIGHT - 16 /* HUD height because its on the bottom*/ && !m_scrollDown)
     {
         // Scroll down
         m_scrollDown = true;
-        player->m_currentCollisionMapY++;
         Controller::getInstance().setController(nullptr);
-    }
 
+        // TODO: Globalise
+        player->m_currentCollisionMapY++;
+        std::cout << "Scrolling down" << std::endl;
+
+
+    }
  
     if (m_scrollLeft)
     {
         if (m_scrolled != CAMERA_WIDTH)
         {
-            if (m_timerCameraScroll.update(FPS_66))
+            m_scrollX -= m_scrollSpeed;
+            m_scrolled += m_scrollSpeed;
+            if (m_timerPlayerScroll.update(FPS_33))
             {
-                m_scrollX -= m_scrollSpeed;
-                m_scrolled += m_scrollSpeed;
-                if (m_timerPlayerScroll.update(FPS_33))
-                {
-                    player->addPosition(-PLAYER_SCROLL_SPEED, 0);
-                }
+                player->addPosition(-PLAYER_SCROLL_SPEED, 0);
             }
-
         }
         else
         {
@@ -110,14 +122,11 @@ void Camera::trackCharacter()
     {
         if (m_scrolled != CAMERA_WIDTH)
         {
-            if (m_timerCameraScroll.update(FPS_66))
+            m_scrollX += m_scrollSpeed;
+            m_scrolled += m_scrollSpeed;
+            if (m_timerPlayerScroll.update(FPS_33))
             {
-                m_scrollX += m_scrollSpeed;
-                m_scrolled += m_scrollSpeed;
-                if (m_timerPlayerScroll.update(FPS_33))
-                {
-                    player->addPosition(PLAYER_SCROLL_SPEED, 0);
-                }
+                player->addPosition(PLAYER_SCROLL_SPEED, 0);
             }
         }
         else
@@ -132,14 +141,11 @@ void Camera::trackCharacter()
     {
         if (m_scrolled != CAMERA_HEIGHT)
         {
-            if (m_timerCameraScroll.update(FPS_66))
+            m_scrollY += m_scrollSpeed;
+            m_scrolled += m_scrollSpeed;
+            if (m_timerPlayerScroll.update(FPS_33))
             {
-                m_scrollY += m_scrollSpeed;
-                m_scrolled += m_scrollSpeed;
-                if (m_timerPlayerScroll.update(FPS_33))
-                {
-                    player->addPosition(0, PLAYER_SCROLL_SPEED);
-                }
+                player->addPosition(0, PLAYER_SCROLL_SPEED);
             }
         }
         else
@@ -154,14 +160,11 @@ void Camera::trackCharacter()
     {
         if (m_scrolled != CAMERA_HEIGHT)
         {
-            if (m_timerCameraScroll.update(FPS_66))
+            m_scrollY -= m_scrollSpeed;
+            m_scrolled += m_scrollSpeed;
+            if (m_timerPlayerScroll.update(FPS_33))
             {
-                m_scrollY -= m_scrollSpeed;
-                m_scrolled += m_scrollSpeed;
-                if (m_timerPlayerScroll.update(FPS_33))
-                {
-                    player->addPosition(0, -PLAYER_SCROLL_SPEED);
-                }
+                player->addPosition(0, -PLAYER_SCROLL_SPEED);
             }
         }
         else
@@ -177,10 +180,7 @@ void Camera::trackCharacter()
 
 void Camera::render(SDL_Renderer* pRenderer)
 {
-    if (m_tracker)
-    {
-        trackCharacter();
-    }
+    trackCharacter();
 
     SDL_Rect srcRect = { m_x + m_scrollX, m_y + m_scrollY,m_width ,m_height };
     SDL_Rect dstRect = { 0, 0, m_width, m_height };
@@ -219,7 +219,7 @@ bool Camera::visible(Vec2<float> point) const
     return true;
 }
 
-void Camera::control()
+/*void Camera::control()
 {
     m_keyboardState = SDL_GetKeyboardState(nullptr);
     if (m_keyboardState[BUTTON_RIGHT])
@@ -251,10 +251,12 @@ void Camera::control()
         }
     }
 
-}
+}*/
 
 void Camera::setScrollSpeed(int scrollSpeed)
 {
+    DASSERT(CAMERA_WIDTH % scrollSpeed == 0, "scrollSpeed not multiple of CAMERA_WIDTH");
+    DASSERT(CAMERA_HEIGHT % scrollSpeed == 0, "scrollSpeed not multiple of CAMERA_HEIGHT");
     m_scrollSpeed = scrollSpeed;
 }
 

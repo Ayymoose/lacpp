@@ -39,7 +39,7 @@ void FlameRod::render(SDL_Renderer* pRenderer)
     // Move the boomerang
     if (m_weaponTimer.update(FLAME_ROD_SPEED))
     {
-        m_position += m_dirVec;
+     //   m_position += m_dirVec;
     }
 
 }

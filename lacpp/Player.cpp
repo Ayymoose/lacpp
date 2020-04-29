@@ -17,7 +17,7 @@ Player::Player()
     m_speed = 1;
 
 
-    m_position.x = 72; m_position.y = 88;
+    m_position.x = 72; m_position.y = 32;
     m_boundingBox.x = m_position.x; m_boundingBox.y = m_position.y;
 
     m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
@@ -30,11 +30,12 @@ Player::Player()
     m_state = LINK_WALK_DOWN;
     m_direction = DIRECTION_DOWN;
 
-    m_animateXPos = 0;      // Initial X-position in sprite sheet for this animation
-    m_animateYPos = 0;      // Initial Y-position in sprite sheet for this animation
-    m_currentFrame = 0;     // Initial frame in this animation
-    m_endFrame = 0;         // Maximum frame number for this animation
-    m_animationFPS = 0;     // Animation rate in FPS
+    m_animateXPos = 0;              // Initial X-position in sprite sheet for this animation
+    m_animateYPos = 0;              // Initial Y-position in sprite sheet for this animation
+    m_currentFrame = 0;             // Initial frame in this animation
+    m_endFrame = 0;                 // Maximum frame number for this animation
+    m_animationFPS = 0;             // Animation rate in FPS
+    m_animationComplete = false;    // Set to true when animation complete
 
     m_dirLockRight = false;
     m_dirLockUp = false;
@@ -175,13 +176,31 @@ void Player::render(SDL_Renderer* pRenderer)
 {
 
     // Get clock, if elapsed, increase frame counter
-    SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width) , m_animateYPos, m_width ,m_height };
+    SDL_Rect srcRect =
+    {
+        m_animateXPos + (m_currentFrame * m_width),
+        m_animateYPos,
+        m_width,
+        m_height
+    };
+
     SDL_Rect dstRect =
     {
         m_position.x - Camera::getInstance().getX(),
         m_position.y - Camera::getInstance().getY(),
         m_width, m_height
     };
+
+    // Max frame controlled by the state
+    m_endFrame = m_animations[m_state].endFrame;
+
+    // Sprite orientation
+    m_orientation = m_animations[m_state].orientation;
+
+    // Select correct animation
+    m_animateXPos = m_animations[m_state].x;
+    m_animateYPos = m_animations[m_state].y;
+
     DASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0, SDL_GetError());
 
 
@@ -194,6 +213,7 @@ void Player::render(SDL_Renderer* pRenderer)
         m_boundingBox.y - Camera::getInstance().getY(),
         m_boundingBox.w, m_boundingBox.h
     };
+
     //DASSERT(SDL_RenderDrawRect(pRenderer, &playerRect) == 0, SDL_GetError());
 
     /* std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
@@ -261,20 +281,10 @@ void Player::render(SDL_Renderer* pRenderer)
 
         // Animate link
         // LINK_FLAME_ROD_ANIMATION_FPS
-        // Animation
-/*        if (m_currentFrame <= m_maxFrame)
-        {
-            if (m_animationTimer.update(LINK_FLAME_ROD_ANIMATION_FPS))
-            {
-                m_currentFrame++;
-                if (m_currentFrame > m_maxFrame)
-                {
-                    // TODO: Return to start frame
-                    m_currentFrame = m_animations[m_state].currentFrame;
-                }
-            }
-        }*/
+        animate();
+
     }
+
 }
 
 void Player::control()
@@ -288,39 +298,15 @@ void Player::control()
         Controller::getInstance().pushController(this, &m_inventory);
     }
 
-
-
     // If we are holding left and we press up or down, we don't want to change the state whatever it is...
     // Same applies to other directions 
     move();
-
-    // Max frame controlled by the state
-    m_endFrame = m_animations[m_state].endFrame;
-
-    // Sprite orientation
-    m_orientation = m_animations[m_state].orientation;
-
-    // Select correct animation
-    m_animateXPos = m_animations[m_state].x;
-    m_animateYPos = m_animations[m_state].y;
 
     // Only animate if moving
     if (IS_MOVING(m_keyboardState))
     {
         // Animation
-        if (m_currentFrame <= m_endFrame)
-        {
-            if (m_animationTimer.update(m_animations[m_state].animationFPS))
-            {
-                m_currentFrame++;
-                if (m_currentFrame > m_endFrame)
-                {
-                    // TODO: Return to start frame
-                    m_currentFrame = m_animations[m_state].startFrame;
-                }
-            }
-        }
-
+        animate();
     }
 
     // If no key is pressed (reset the animation)
@@ -328,7 +314,12 @@ void Player::control()
     if (!IS_GAMEPAD_PRESSED(m_keyboardState))
     {
         // TODO: Current frame has to be reset to intial frame
-        m_currentFrame = 0;
+        
+        /*if (m_animationComplete)
+        {
+            resetAnimation();
+        }*/
+
         m_dirLockRight = false;
         m_dirLockUp = false;
         m_dirLockLeft = false;
@@ -1021,11 +1012,26 @@ void Player::useWeapon(WEAPON weapon)
                 m_state = LINK_SWORD_DOWN;
                 break;
             }
+            std::cout << "Using weapon: " << wpn << std::endl;
         }
         
         break;
     }
-    std::cout << "Using weapon: " << wpn << std::endl;
 
 
+
+}
+
+void Player::animate()
+{
+   // std::cout << "State: " << m_state << " Current frame: " << m_currentFrame << " Max frame: " << m_endFrame << std::endl;
+    if (m_animationTimer.update(m_animations[m_state].animationFPS))
+    {
+        m_currentFrame++;
+        if (m_currentFrame > m_endFrame)
+        {
+            // Reset to the initial frame
+            m_currentFrame = m_animations[m_state].startFrame;
+        }
+    }
 }

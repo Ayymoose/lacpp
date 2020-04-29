@@ -97,6 +97,9 @@ void Window::handleWindowEvents()
 
 void Window::renderObjects()
 {
+
+    uint32_t startTime = SDL_GetTicks();
+
     // Main rendering loop
 
     // Clear the screen
@@ -118,6 +121,16 @@ void Window::renderObjects()
 
     // Represent to the screen
     SDL_RenderPresent(pRenderer);
+
+    uint32_t endTime = SDL_GetTicks();
+    /*int delay = 17 - (endTime - startTime);
+    if (delay > 0)
+    {
+        SDL_Delay(delay);
+        std::cout << "Delayed " << delay << " ms\n";
+
+    }*/
+    //std::cout << "Rendered 1 frame in " << (endTime - startTime) << "ms\n";
 }
 
 
