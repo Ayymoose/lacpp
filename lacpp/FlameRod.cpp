@@ -37,8 +37,7 @@ void FlameRod::render(SDL_Renderer* pRenderer)
     // DASSERT(SDL_RenderDrawRect(pRenderer, &dstRect) == 0, SDL_GetError());
 
     // Move the boomerang
-    
-     //   m_position += m_dirVec;
+    m_position += m_dirVec;
     
 
 }

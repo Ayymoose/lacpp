@@ -14,6 +14,7 @@
 #include "Bow.h"
 #include "FlameRod.h"
 #include "Boomerang.h"
+#include "Clock.h"
 
 enum PlayerState
 {
@@ -178,9 +179,11 @@ private:
     // Player animation state
     PlayerState m_state;
 
-
     // Temporary test
+    bool m_useWeapon;
+    bool m_usingWeapon;
     void animate();
+    Clock m_clockAnimation;
 
     const Animation m_animations[LINK_COUNT] =
     {

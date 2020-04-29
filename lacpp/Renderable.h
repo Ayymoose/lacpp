@@ -37,6 +37,9 @@ public:
         m_currentFrame = 0;
         m_endFrame = 0;
         m_orientation = 0.0;
+
+        m_animationStart = false;
+        m_animationComplete = false;
     }
     virtual ~Renderable() = default;
 
@@ -73,6 +76,7 @@ protected:
     // TODO: Animating sprites common function
 
     UpdateTimer m_animationTimer;
+    bool m_animationStart;
     bool m_animationComplete;
     float m_animationFPS;
     int m_animateXPos;

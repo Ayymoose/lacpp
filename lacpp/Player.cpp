@@ -59,7 +59,8 @@ Player::Player()
     m_currentCollisionMapY = 5;
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
 
-
+    m_usingWeapon = false;
+    m_useWeapon = false;
     //
     m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
     m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
@@ -315,10 +316,10 @@ void Player::control()
     {
         // TODO: Current frame has to be reset to intial frame
         
-        /*if (m_animationComplete)
+        if (!m_usingWeapon)
         {
             resetAnimation();
-        }*/
+        }
 
         m_dirLockRight = false;
         m_dirLockUp = false;
@@ -381,6 +382,7 @@ void Player::die()
 void Player::resetAnimation()
 {
     m_currentFrame = m_animations[m_state].startFrame;
+    m_clockAnimation.reset();
 }
 
 Vec2<float> Player::position() const
@@ -1013,6 +1015,8 @@ void Player::useWeapon(WEAPON weapon)
                 break;
             }
             std::cout << "Using weapon: " << wpn << std::endl;
+            m_useWeapon = true;
+            m_usingWeapon = true;
         }
         
         break;
@@ -1024,14 +1028,28 @@ void Player::useWeapon(WEAPON weapon)
 
 void Player::animate()
 {
-   // std::cout << "State: " << m_state << " Current frame: " << m_currentFrame << " Max frame: " << m_endFrame << std::endl;
-    if (m_animationTimer.update(m_animations[m_state].animationFPS))
+    // When animate() is called
+    // There are two types of animation
+    // - Key controlled animation
+    //  - When the key is held, the player is animated and when released, resets to the initial frame
+    // - One press animation
+    //  - An animation is carried out and when finished, resets to the initial frame
+
+    std::cout << "State: " << m_state << " Current frame: " << m_currentFrame << " Max frame: " << m_endFrame << std::endl;
+
+    m_clockAnimation.start();
+    if (m_clockAnimation.elapsed(m_animations[m_state].animationFPS))
     {
-        m_currentFrame++;
-        if (m_currentFrame > m_endFrame)
+        if (++m_currentFrame > m_endFrame)
         {
             // Reset to the initial frame
             m_currentFrame = m_animations[m_state].startFrame;
+            if (m_usingWeapon)
+            {
+                m_useWeapon = false;
+                m_usingWeapon = false;
+            }
         }
+        m_clockAnimation.reset();
     }
 }
