@@ -53,7 +53,10 @@ Player::Player()
     m_boomerang = nullptr;
     m_bomb = nullptr;
     m_flameRod = nullptr;
+    m_sword = nullptr;
     //
+
+    m_moveable = true;
     // Set to Tail cave entrace
     m_currentCollisionMapX = 3;
     m_currentCollisionMapY = 5;
@@ -281,8 +284,20 @@ void Player::render(SDL_Renderer* pRenderer)
         }
 
         // Animate link
-        // LINK_FLAME_ROD_ANIMATION_FPS
         animate();
+    }
+
+    if (m_sword)
+    {
+        if (!Camera::getInstance().visible(m_sword->position()))
+        {
+            Renderer::getInstance().removeRenderable(m_sword);
+            delete m_sword;
+            m_sword = nullptr;
+        }
+
+        // Animate link
+        //animate();
 
     }
 
@@ -361,6 +376,7 @@ void Player::attack()
     else if (!m_keyboardState[BUTTON_B])
     {
         m_useShield = false;
+        if (!m_usingWeapon)
         updateState();
     }
     if (m_keyboardState[BUTTON_B])
@@ -370,6 +386,7 @@ void Player::attack()
     else if (!m_keyboardState[BUTTON_A])
     {
         m_useShield = false;
+        if (!m_usingWeapon)
         updateState();
     }
 }
@@ -741,6 +758,23 @@ void Player::updateState()
 
     switch (m_state)
     {
+
+    case LINK_HOOK_DOWN:
+        m_state = LINK_WALK_DOWN;
+        break;
+
+    case LINK_HOOK_RIGHT:
+        m_state = LINK_WALK_RIGHT;
+        break;
+
+    case LINK_HOOK_LEFT:
+        m_state = LINK_WALK_LEFT;
+        break;
+
+    case LINK_HOOK_UP:
+        m_state = LINK_WALK_UP;
+        break;
+
     case LINK_WALK_DOWN:
         if (shieldEquipped)
         {
@@ -858,7 +892,20 @@ void Player::useWeapon(WEAPON weapon)
     switch (weapon)
     {
     case WPN_NONE: wpn = "None"; break;
-    case WPN_SWORD: wpn = "Sword"; break;
+    case WPN_SWORD:
+        wpn = "Sword";
+        
+        if (m_sword == nullptr)
+        {
+            m_sword = new Sword;
+            m_sword->setDirection(m_direction);
+            m_sword->setPosition(m_position);
+            m_sword->useWeapon();
+        }
+        
+        
+        
+        break;
     case WPN_SHIELD:
         wpn = "Shield";
         switch (m_state)
@@ -996,22 +1043,22 @@ void Player::useWeapon(WEAPON weapon)
             case LINK_WALK_LEFT_BIG_SHIELD:
             case LINK_WALK_LEFT_SMALL_SHIELD:
             case LINK_WALK_LEFT:
-                m_state = LINK_SWORD_LEFT;
+                m_state = LINK_HOOK_LEFT;
                 break;
             case LINK_WALK_RIGHT_BIG_SHIELD:
             case LINK_WALK_RIGHT_SMALL_SHIELD:
             case LINK_WALK_RIGHT:
-                m_state = LINK_SWORD_RIGHT;
+                m_state = LINK_HOOK_RIGHT;
                 break;
             case LINK_WALK_UP_BIG_SHIELD:
             case LINK_WALK_UP_SMALL_SHIELD:
             case LINK_WALK_UP:
-                m_state = LINK_SWORD_UP;
+                m_state = LINK_HOOK_UP;
                 break;
             case LINK_WALK_DOWN_BIG_SHIELD:
             case LINK_WALK_DOWN_SMALL_SHIELD:
             case LINK_WALK_DOWN:
-                m_state = LINK_SWORD_DOWN;
+                m_state = LINK_HOOK_DOWN;
                 break;
             }
             std::cout << "Using weapon: " << wpn << std::endl;

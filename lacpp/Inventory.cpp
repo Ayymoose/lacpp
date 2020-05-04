@@ -91,7 +91,7 @@ Inventory::Inventory()
     m_singlePressA = true;
     m_singlePressB = true;
     m_weaponA = WPN_HOOKSHOT;
-    m_weaponB = WPN_FLAME_ROD ;
+    m_weaponB = WPN_SWORD;
 
     m_ocarinaSong = SNG_FISH;
 
@@ -100,7 +100,7 @@ Inventory::Inventory()
     m_braceletLevel = WPN_LEVEL_1;
 
     m_items[0] = WPN_SHOVEL;
-    m_items[1] = WPN_SWORD;
+    m_items[1] = WPN_HOOKSHOT;
     m_items[2] = WPN_SHIELD;
     m_items[3] = WPN_BOMBS;
     m_items[4] = WPN_MAGIC_POWDER;

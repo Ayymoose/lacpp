@@ -15,6 +15,7 @@
 #include "FlameRod.h"
 #include "Boomerang.h"
 #include "Clock.h"
+#include "Sword.h"
 
 enum PlayerState
 {
@@ -169,12 +170,13 @@ private:
 
 
     // Weapon tests
-    Bow* m_arrow;
+    Bow* m_arrow;     //Arrow* m_arrowList[3];
     Boomerang* m_boomerang;
     Bomb* m_bomb;
     FlameRod* m_flameRod;
-    //Arrow* m_arrowList[3];
+    Sword* m_sword;
 
+    bool m_moveable;
 
     // Player animation state
     PlayerState m_state;
@@ -187,7 +189,7 @@ private:
 
     const Animation m_animations[LINK_COUNT] =
     {
-
+        // TODO: Add x and y offset to this
        // x   y startFrame endFrame,    animationFPS,     orientation,  flip
         {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_LEFT 
         {96  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_RIGHT
@@ -234,14 +236,14 @@ private:
         {96  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_RIGHT
         {64  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_UP
         {32  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_DOWN
-        {0   ,176 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_LEFT
-        {96  ,176 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_RIGHT
-        {64  ,176 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_UP
-        {32  ,176 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_DOWN
-        {0   ,192 ,  0,          2,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_LEFT
-        {48  ,192 ,  0,          2,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_RIGHT
-        {0   ,208 ,  0,          2,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_UP
-        {48  ,208 ,  0,          2,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_DOWN
+        {0   ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_LEFT
+        {96  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_RIGHT
+        {64  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_UP
+        {32  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_DOWN
+        {0   ,192 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_LEFT
+        {48  ,192 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_RIGHT
+        {0   ,208 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_UP
+        {48  ,208 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_DOWN
         {0   ,224 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_LEFT
         {0   ,240 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_RIGHT
         {64  ,224 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_UP
