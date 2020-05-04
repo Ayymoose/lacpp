@@ -2,7 +2,7 @@
 #include "Window.h"
 #include "InputControl.h"
 #include "Controller.h"
-
+#include "Keyboard.h"
 #include "Inventory.h"
 #include "Timer.h"
 #include <string>
@@ -36,7 +36,13 @@ void Window::beginEventLoop()
 
     BackgroundObject candle1(RSC_CANDLE, 16, 16, 0);
     BackgroundObject torch1(RSC_TORCH_1, -160, 32, 270);
+    
+    //
+    // This should be in the initialise code
+    Keyboard::getInstance();
+    
     // 
+
 
     // Stretch the textures to the window
     DASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(),
@@ -52,7 +58,7 @@ void Window::beginEventLoop()
     {
 
         handleInput();
-        handleWindowEvents();
+        handleEvents();
 
         auto renderSet = Renderer::getInstance().getRenderSet();
 
@@ -82,7 +88,7 @@ void Window::handleInput()
     }
 }
 
-void Window::handleWindowEvents()
+void Window::handleEvents()
 {
     if (SDL_PollEvent(&m_eventHandler))
     {
@@ -91,14 +97,19 @@ void Window::handleWindowEvents()
         case SDL_QUIT:
             m_quitApplication = true;
             break;
+        case SDL_KEYDOWN:
+            Keyboard::getInstance()[m_eventHandler.key.keysym.sym] = true;
+            break;
+        case SDL_KEYUP:
+            Keyboard::getInstance()[m_eventHandler.key.keysym.sym] = false;
+            break;
+
         }
     }
 }
 
 void Window::renderObjects()
 {
-
-    uint32_t startTime = SDL_GetTicks();
 
     // Main rendering loop
 
@@ -122,15 +133,7 @@ void Window::renderObjects()
     // Represent to the screen
     SDL_RenderPresent(pRenderer);
 
-    uint32_t endTime = SDL_GetTicks();
-    /*int delay = 17 - (endTime - startTime);
-    if (delay > 0)
-    {
-        SDL_Delay(delay);
-        std::cout << "Delayed " << delay << " ms\n";
 
-    }*/
-    //std::cout << "Rendered 1 frame in " << (endTime - startTime) << "ms\n";
 }
 
 

@@ -25,7 +25,7 @@ private:
     bool m_quitApplication;
     SDL_Event m_eventHandler;
 
-    void handleWindowEvents();
+    void handleEvents();
     void handleInput();
     void renderObjects();
 

@@ -146,6 +146,7 @@
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="FlameRod.cpp" />
     <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Resource.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Boomerang.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="FlameRod.h" />
+    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="MyAssert.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="BackgroundObject.h" />
