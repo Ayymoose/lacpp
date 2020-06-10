@@ -86,6 +86,19 @@ void Window::handleInput()
     {
         pController->control();
     }
+
+    /*if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
+    {
+        std::cout << "BUTTON_DOWN was pushed\n";
+    }
+    if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
+    {
+        std::cout << "BUTTON_DOWN was pressed\n";
+    }
+    if (Keyboard::getInstance().keyReleased(BUTTON_SELECT))
+    {
+        std::cout << "BUTTON_DOWN was released\n";
+    }*/
 }
 
 void Window::handleEvents()
@@ -98,10 +111,10 @@ void Window::handleEvents()
             m_quitApplication = true;
             break;
         case SDL_KEYDOWN:
-            Keyboard::getInstance()[m_eventHandler.key.keysym.sym] = true;
+            Keyboard::getInstance().updateKeyStates(m_eventHandler.key.keysym.scancode, true,false);
             break;
         case SDL_KEYUP:
-            Keyboard::getInstance()[m_eventHandler.key.keysym.sym] = false;
+            Keyboard::getInstance().updateKeyStates(m_eventHandler.key.keysym.scancode, false,true);
             break;
 
         }

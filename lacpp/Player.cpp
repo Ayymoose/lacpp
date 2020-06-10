@@ -7,6 +7,8 @@
 #include "Bow.h"
 #include "Depth.h"
 #include "MyAssert.h"
+#include "Keyboard.h"
+
 #include <set>
 
 Player::Player()
@@ -307,8 +309,9 @@ void Player::control()
 {
     m_keyboardState = SDL_GetKeyboardState(nullptr);
 
+
     // Open the inventory
-    if (m_keyboardState[BUTTON_SELECT])
+    if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
     {
         m_inventory.open();
         Controller::getInstance().pushController(this, &m_inventory);
@@ -319,15 +322,21 @@ void Player::control()
     move();
 
     // Only animate if moving
-    if (IS_MOVING(m_keyboardState))
+    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT) ||
+        Keyboard::getInstance().keyPushed(BUTTON_LEFT) ||
+        Keyboard::getInstance().keyPushed(BUTTON_DOWN) ||
+        Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
         // Animation
         animate();
     }
 
     // If no key is pressed (reset the animation)
-    SDL_PumpEvents();
-    if (!IS_GAMEPAD_PRESSED(m_keyboardState))
+
+    if (!(Keyboard::getInstance().keyPushed(BUTTON_RIGHT) ||
+        Keyboard::getInstance().keyPushed(BUTTON_LEFT) ||
+        Keyboard::getInstance().keyPushed(BUTTON_DOWN) ||
+        Keyboard::getInstance().keyPushed(BUTTON_UP)))
     {
         // TODO: Current frame has to be reset to intial frame
         
@@ -342,29 +351,29 @@ void Player::control()
         m_dirLockDown = false;
     }
 
-
     // If any directional keys are released
     // Release the direction lock
-    if (!m_keyboardState[BUTTON_RIGHT])
+    if (Keyboard::getInstance().keyReleased(BUTTON_RIGHT))
     {
         m_dirLockRight = false;
     }
-    if (!m_keyboardState[BUTTON_LEFT])
+    if (Keyboard::getInstance().keyReleased(BUTTON_LEFT))
     {
         m_dirLockLeft = false;
     }
-    if (!m_keyboardState[BUTTON_UP])
+    if (Keyboard::getInstance().keyReleased(BUTTON_UP))
     {
         m_dirLockUp = false;
     }
-    if (!m_keyboardState[BUTTON_DOWN])
+    if (Keyboard::getInstance().keyReleased(BUTTON_DOWN))
     {
         m_dirLockDown = false;
     }
 
     // Player attack
+    // Only attack if a key is actually pressed
     attack();
-
+    
 }
 
 void Player::attack()
@@ -441,7 +450,7 @@ void Player::replenish(float hearts)
 // Player control
 void Player::move()
 {
-    if (m_keyboardState[BUTTON_RIGHT])
+    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
     {
         m_speed_x = m_speed;
         m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
@@ -519,7 +528,7 @@ void Player::move()
         }
     }
 
-    if (m_keyboardState[BUTTON_LEFT])
+    if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
     {
         m_speed_x = -m_speed;
         m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
@@ -595,7 +604,7 @@ void Player::move()
             m_direction = DIRECTION_LEFT;
         }
     }
-    if (m_keyboardState[BUTTON_UP])
+    if (Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
         m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
         m_speed_y = -m_speed;
@@ -672,7 +681,7 @@ void Player::move()
             m_direction = DIRECTION_UP;
         }
     }
-    if (m_keyboardState[BUTTON_DOWN])
+    if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
     {
         m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
         m_speed_y = m_speed;
@@ -1082,7 +1091,7 @@ void Player::animate()
     // - One press animation
     //  - An animation is carried out and when finished, resets to the initial frame
 
-    std::cout << "State: " << m_state << " Current frame: " << m_currentFrame << " Max frame: " << m_endFrame << std::endl;
+    //std::cout << "State: " << m_state << " Current frame: " << m_currentFrame << " Max frame: " << m_endFrame << std::endl;
 
     m_clockAnimation.start();
     if (m_clockAnimation.elapsed(m_animations[m_state].animationFPS))

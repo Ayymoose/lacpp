@@ -7,6 +7,7 @@
 #include "Drawing.h"
 #include "Player.h"
 #include "MyAssert.h"
+#include "Keyboard.h"
 
 Inventory::Inventory()
 {
@@ -169,7 +170,7 @@ void Inventory::control()
     // 8 9
 
     // This code controls the selector through arrow keys
-    if (m_keyboardState[BUTTON_RIGHT] && m_singleLeftRight)
+    if (Keyboard::getInstance().keyPressed(BUTTON_RIGHT))/*m_keyboardState[BUTTON_RIGHT] && m_singleLeftRight)*/
     {
         if (m_selector_x == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
         {
