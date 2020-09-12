@@ -1,5 +1,4 @@
-#ifndef SINGLETON_H
-#define SINGLETON_H
+#pragma once
 
 #include <iostream>
 
@@ -24,9 +23,7 @@ protected:
 
     Singleton()
     {
-        std::cout << "Creating singleton: " << typeid(*this).name() << "\n";
+        std::cout << "Creating " << typeid(*this).name() << "\n";
     }
     virtual ~Singleton() = default;
 };
-
-#endif SINGLETON_H

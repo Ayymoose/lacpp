@@ -5,7 +5,7 @@
 
 Bow::Bow()
 {
-    m_texture = ResourceManager::getInstance()[RSC_WEAPON];
+    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_speed = 2;
     m_name = "Bow";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOW].w;
@@ -14,7 +14,7 @@ Bow::Bow()
     m_boundingBox.h = m_height;
 }
 
-void Bow::render(SDL_Renderer* pRenderer)
+void Bow::render(SDL_Renderer* pRenderer) noexcept
 {
 
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOW];

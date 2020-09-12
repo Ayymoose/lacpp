@@ -625,7 +625,7 @@ CollisionMap::CollisionMap()
     vector.clear();
 }
 
-std::vector<BoundingBox> CollisionMap::collisionMap(COLLISION_AREA area)
+std::vector<BoundingBox> CollisionMap::collisionMap(CollisionArea area)
 {
     assert(area > COLLISION_AREA_NONE && area < COLLISION_AREA_COUNT);
     return m_collisionMap[area];

@@ -2,11 +2,11 @@
 #include "Camera.h"
 #include "Resource.h"
 #include "ZD_Assert.h"
-#include "Player.h"
+#include "Link.h"
 
 FlameRod::FlameRod()
 {
-    m_texture = ResourceManager::getInstance()[RSC_WEAPON];
+    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_speed = 2;
     m_name = "Flamerod";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME].w;
@@ -16,11 +16,11 @@ FlameRod::FlameRod()
     m_flameRodOrientation = 0;
     m_flameRodWidth = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD].w;
     m_flameRodHeight = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD].h;
-    m_depth = BACKGROUND_DEPTH;
+    m_depth = ZD_DEPTH_BACKGROUND;
     m_display = true;
 }
 
-void FlameRod::render(SDL_Renderer* pRenderer)
+void FlameRod::render(SDL_Renderer* pRenderer) noexcept
 {
 
     SDL_Rect flameSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME];

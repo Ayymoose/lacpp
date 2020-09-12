@@ -1,5 +1,4 @@
-#ifndef DEPTH_H
-#define DEPTH_H
+#pragma once
 
 // Z-ordering is implemented through a std::multiset
 // Whenever a Renderable is added to the set, it uses the m_depth
@@ -10,10 +9,7 @@
 // Higher depth = Rendered later on (on top of everything else)
 // Lower depth  = Renderer earlier on (everything is renderer on top of this)
 
-#define BACKGROUND_DEPTH 1
-#define BACKGROUND_OBJECT_DEPTH (BACKGROUND_DEPTH+1)
-#define PLAYER_DEPTH (BACKGROUND_OBJECT_DEPTH+1)
-#define INVENTORY_DEPTH (PLAYER_DEPTH+1)
-
-
-#endif // DEPTH_H
+#define ZD_DEPTH_BACKGROUND 1
+#define ZD_DEPTH_BACKGROUND_OBJECT (ZD_DEPTH_BACKGROUND+1)
+#define ZD_DEPTH_PLAYER (ZD_DEPTH_BACKGROUND_OBJECT+1)
+#define ZD_DEPTH_INVENTORY (ZD_DEPTH_PLAYER+1)

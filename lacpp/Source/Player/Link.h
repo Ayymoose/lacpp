@@ -1,5 +1,4 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma
 
 #include "Renderable.h"
 #include "Controllable.h"
@@ -114,11 +113,10 @@ enum PlayerState
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
 #define PLAYER_CORNER_CUTTING_BOUNDARY 5
 
-class Player : public Controllable, public Renderable, public Character, public Singleton<Player>
+class Link : public Controllable, public Renderable, public Character, public Singleton<Link>
 {
 public:
-    Player();
-    ~Player();
+    Link();
 
     // Renderable overrides
     void render(SDL_Renderer* pRenderer) noexcept override;
@@ -126,7 +124,7 @@ public:
     // Character overrides
     float health() const noexcept override;
     void damage(float damage) noexcept override;
-    DIRECTION direction() const noexcept override;
+    Direction direction() const noexcept override;
     Vector<float> position() const noexcept override;
     void attack() noexcept override;
     void die() noexcept override;
@@ -146,28 +144,27 @@ public:
 
     int m_currentCollisionMapX;
     int m_currentCollisionMapY;
-    COLLISION_AREA m_collisionArea;
+    CollisionArea m_collisionArea;
 
 private:
     int m_speed;
     float m_healthMax;
     Inventory m_inventory;
-    int m_speed_x;
-    int m_speed_y;
+    int m_speedX;
+    int m_speedY;
     BoundingBox m_boundingBox;
     CollisionMap m_collisionMap;
+
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept;
-    UpdateTimer m_movementTimer;
-
-    bool m_useShield;
-
     void useWeapon(WEAPON weapon) noexcept;
+
+    UpdateTimer m_movementTimer;
+    bool m_useShield;
 
     bool m_dirLockRight;
     bool m_dirLockUp;
     bool m_dirLockDown;
     bool m_dirLockLeft;
-
 
     // Weapon tests
     Bow* m_arrow;     //Arrow* m_arrowList[3];
@@ -178,7 +175,7 @@ private:
 
     bool m_moveable;
 
-    // Player animation state
+    // Link animation state
     PlayerState m_state;
 
     // Temporary test
@@ -236,10 +233,10 @@ private:
         {96  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_RIGHT
         {64  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_UP
         {32  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_DOWN
-        {0   ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_LEFT
-        {96  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_RIGHT
-        {64  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_UP
-        {32  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_HOOK_DOWN
+        {0   ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_LEFT
+        {96  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_RIGHT
+        {64  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_UP
+        {32  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_DOWN
         {0   ,192 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_LEFT
         {48  ,192 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_RIGHT
         {0   ,208 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_UP
@@ -256,6 +253,3 @@ private:
     };
 
 };
-
-
-#endif // !PLAYER_H

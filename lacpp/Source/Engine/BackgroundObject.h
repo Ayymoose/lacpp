@@ -1,5 +1,4 @@
-#ifndef BACKGROUND_OBJECT_H
-#define BACKGROUND_OBJECT_H
+#pragma once
 
 #include "Renderable.h"
 #include "Resource.h"
@@ -10,10 +9,9 @@
 class BackgroundObject : public Renderable
 {
 public:
-	BackgroundObject(RESOURCE resource, int x, int y, double orientation);
+	BackgroundObject(Graphic resource, int x, int y, double orientation);
     BackgroundObject() = delete;
-	~BackgroundObject() = default;
-    void render(SDL_Renderer* pRenderer) override;
+    void render(SDL_Renderer* pRenderer) noexcept override;
 
 private:
     int m_render_x;
@@ -21,10 +19,10 @@ private:
 
 };
 
-BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orientation)
+BackgroundObject::BackgroundObject(Graphic resource, int x, int y, double orientation)
 {
 
-    m_depth = BACKGROUND_OBJECT_DEPTH;
+    m_depth = ZD_DEPTH_BACKGROUND_OBJECT;
 
     m_texture = ResourceManager::getInstance()[resource];
     m_width = 16;
@@ -35,7 +33,7 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
     m_orientation = orientation;
 	switch (resource)
 	{
-	case RSC_CANDLE:
+	case Graphic::GFX_CANDLE:
         m_animateXPos = 0;
         m_animateYPos = 0;
         m_currentFrame = 1;
@@ -43,7 +41,7 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
         m_name = "Candle";
 
         break;
-    case RSC_TORCH_1:
+    case Graphic::GFX_TORCH_1:
         m_animateXPos = 0;
         m_animateYPos = 0;
         m_currentFrame = 0;
@@ -51,23 +49,23 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
         m_name = "Torch";
 
         break;
-    case RSC_TORCH_2:
+    case Graphic::GFX_TORCH_2:
         break;
-    case RSC_SPIKE:
+    case Graphic::GFX_SPIKE:
         break;
-    case RSC_WATER_1:
+    case Graphic::GFX_WATER_1:
         break;
-    case RSC_WATER_2:
+    case Graphic::GFX_WATER_2:
         break;
-    case RSC_WATER_3:
+    case Graphic::GFX_WATER_3:
         break;
-    case RSC_WATER_4:
+    case Graphic::GFX_WATER_4:
         break;
-    case RSC_RAPID:
+    case Graphic::GFX_RAPID:
         break;
-    case RSC_FLOWER_1:
+    case Graphic::GFX_FLOWER_1:
         break;
-    case RSC_FLOWER_2:
+    case Graphic::GFX_FLOWER_2:
         break;
     default:
         break;
@@ -77,7 +75,7 @@ BackgroundObject::BackgroundObject(RESOURCE resource, int x, int y, double orien
 
 }
 
-void BackgroundObject::render(SDL_Renderer* pRenderer)
+void BackgroundObject::render(SDL_Renderer* pRenderer) noexcept
 {
     // srcRect is the sprite sheet
     SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width), m_animateYPos, m_width , m_height };
@@ -98,6 +96,3 @@ void BackgroundObject::render(SDL_Renderer* pRenderer)
         }
     }
 }
-
-
-#endif // !BACKGROUND_OBJECT_H

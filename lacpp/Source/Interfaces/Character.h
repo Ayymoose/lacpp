@@ -1,12 +1,11 @@
-#ifndef CHARACTER_H
-#define CHARACTER_H
+#pragma once
 
 #include "Vector.h"
 
 using namespace Zelda;
-// Defines a base class for which NPC, Boss, Enemy and Player inherit from
+// Defines a base class for which NPC, Boss, Enemy and Link inherit from
 
-enum DIRECTION
+enum Direction
 {
     DIRECTION_NONE = -1,
     DIRECTION_RIGHT,
@@ -23,11 +22,11 @@ public:
     virtual ~Character() = default;*/
     virtual float health() const = 0;
     virtual void damage(float damage) = 0;
-    DIRECTION virtual direction() const = 0;
+    Direction virtual direction() const = 0;
     virtual Vector<float> position() const = 0;
 protected:
     // Character direction
-    DIRECTION m_direction;
+    Direction m_direction;
     // Character health
     float m_health;
 
@@ -43,7 +42,3 @@ protected:
     // Move
     virtual void move() = 0;
 };
-
-
-
-#endif // !CHARACTER_H

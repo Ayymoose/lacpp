@@ -1,5 +1,4 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
 
 #include <SDL_image.h>
 #include "Controller.h"
@@ -9,70 +8,76 @@
 #include "Singleton.h"
 #include "Clock.h"
 
-// The "viewing region" dimensions
-#define CAMERA_WIDTH 160
-#define CAMERA_HEIGHT 128
-
-// Player related definitions
-// How much we add to the position vector of the player to scroll
-#define PLAYER_SCROLL_SPEED 1
-
-// How much edge pixels to add to the width/height of the character before it triggers a scroll
-#define SCROLL_RIGHT_EDGE 10
-#define SCROLL_LEFT_EDGE 0
-#define SCROLL_UP_EDGE 0
-#define SCROLL_DOWN_EDGE 0
-
-class Camera : public Renderable, public Singleton<Camera>//, public Controllable
+namespace Zelda
 {
-    friend class Singleton<Camera>;
-public:
-    void setPosition(int x, int y);
-    void setScrollSpeed(int scrollSpeed);
-    void render(SDL_Renderer* pRenderer) override;
-    void setCurrentBackground(SDL_Texture* currentBackground);
+    // The "viewing region" dimensions
+    constexpr int CameraWidth = 160;
+    constexpr int CameraHeight = 128;
 
-    // Returns true whether a point is visible in the camera region
-    bool visible(Vector<float> point) const;
+    // How much we add to the position vector of the player to scroll
+    constexpr int PlayerScrollSpeed = 1;
 
-    //void control() override;
+    // How much edge pixels to add to the width/height of the character before it triggers a scroll
+    constexpr int ScrollRightEdge = 10;
+    constexpr int ScrollLeftEdge = 0;
+    constexpr int ScrollUpEdge = 0;
+    constexpr int ScrollDownEdge = 0;
 
-    // The camera will track a Character
-    void track(Character* character);
+    // HUD Height
+    constexpr int HUDHeight = 16;
 
-    int getX() const;
-    int getY() const;
+    constexpr int ScrollSpeed = 4;
 
-private:
-    Camera();
-    // Called in the render function
-    void trackCharacter();
 
-    // m_scrollX and m_scrollY are manipulated to achieve scrolling
-    int m_scrollX;
-    int m_scrollY;
+    class Camera : public Renderable, public Singleton<Camera>
+    {
+        friend class Singleton<Camera>;
+    public:
+        Camera();
+        void setPosition(int x, int y) noexcept;
+        void setScrollSpeed(int scrollSpeed) noexcept;
+        void render(SDL_Renderer* pRenderer) noexcept override;
+        void setCurrentBackground(SDL_Texture* currentBackground) noexcept;
 
-    // m_x and m_y is the initial position of the camera on the screen
-    int m_x;
-    int m_y;
-    int m_scrollSpeed;
-    Character* m_tracker;
+        // Returns true whether a point is visible in the camera region
+        bool visible(Vector<float> point) const noexcept;
 
-    bool m_scrollLeft;
-    bool m_scrollRight;
-    bool m_scrollDown;
-    bool m_scrollUp;
-    int m_scrolled;
-    bool m_scrollCamera;
+        // The camera will track a Character
+        void track(Character* character) noexcept;
 
-    // TODO: Fix player movement during scrolling
-    UpdateTimer m_timerPlayerScroll;
+        int getX() const noexcept;
+        int getY() const noexcept;
 
-};
+    private:
+        // Called in the render function
+        void trackCharacter() noexcept;
 
-inline int function()
-{
-    return 2;
+        // m_scrollX and m_scrollY are manipulated to achieve scrolling
+        int m_scrollX;
+        int m_scrollY;
+
+        // m_x and m_y is the initial position of the camera on the screen
+        int m_x;
+        int m_y;
+        
+        // Scrolling speed
+        int m_scrollSpeed;
+        Character* m_tracker;
+
+        // Boolean flags to indicate which way the camera is scrolling
+        bool m_scrollLeft;
+        bool m_scrollRight;
+        bool m_scrollDown;
+        bool m_scrollUp;
+
+        // Are we scrolling
+        bool m_scrollCamera;
+
+        // How many we scrolled by
+        int m_scrolled;
+
+        // TODO: Fix player movement during scrolling
+        UpdateTimer m_timerPlayerScroll;
+
+    };
 }
-
-#endif

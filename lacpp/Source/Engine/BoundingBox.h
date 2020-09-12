@@ -1,17 +1,14 @@
-#ifndef BOUNDING_BOX_H
-#define BOUNDING_BOX_H
+#pragma once
 
 class BoundingBox
 {
 public:
-    BoundingBox();
+    BoundingBox() : x(0), y(0), w(0), h(0) {};
     BoundingBox(int x, int y, int w, int h);
     static bool intersects(const BoundingBox& b1, const BoundingBox& b2);
-   // BoundingBox operator-(int offset);
+
     int x;
     int y;
     int w;
     int h;
 };
-
-#endif // BOUNDING_BOX_H

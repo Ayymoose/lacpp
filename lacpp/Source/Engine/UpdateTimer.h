@@ -1,7 +1,6 @@
-#include <cstdint>
+#pragma once
 
-#ifndef UPDATE_TIMER_H
-#define UPDATE_TIMER_H
+#include <cstdint>
 
 // The game is locked to 60 fps because of VSync
 // So everything runs at 60 fps
@@ -36,7 +35,6 @@ class UpdateTimer
 {
 public:
     UpdateTimer();
-    ~UpdateTimer() = default;
     bool update(float dt);
     void reset();
     // m_counter is incremented everytime the timer is updated
@@ -46,7 +44,3 @@ private:
     uint32_t m_previousUpdateTime;
     bool m_reset;
 };
-
-
-
-#endif // !UPDATE_TIMER_H

@@ -2,20 +2,20 @@
 #include "Camera.h"
 #include "Resource.h"
 #include "ZD_Assert.h"
-#include "Player.h"
+#include "Link.h"
 
 Sword::Sword()
 {
-    m_texture = ResourceManager::getInstance()[RSC_WEAPON];
+    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_name = "Sword";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_SWORD].w;
     m_height = m_weaponSpritesSrc[WPN_SPRITE_SWORD].h;
     m_boundingBox.w = m_width;
     m_boundingBox.h = m_height;
-    m_depth = BACKGROUND_DEPTH;
+    m_depth = ZD_DEPTH_BACKGROUND;
 }
 
-void Sword::render(SDL_Renderer* pRenderer)
+void Sword::render(SDL_Renderer* pRenderer) noexcept
 {
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_SWORD];
     SDL_Rect dstRect =

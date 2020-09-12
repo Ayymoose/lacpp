@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "Link.h"
 #include "Resource.h"
 #include "InputControl.h"
 #include "Vector.h"
@@ -8,19 +8,21 @@
 #include "Depth.h"
 #include "ZD_Assert.h"
 #include "Keyboard.h"
+#include "Engine.h"
 
 #include <set>
 
-Player::Player()
+Link::Link()
 {
-    m_texture = ResourceManager::getInstance()[RSC_LINK];
+    m_texture = ResourceManager::getInstance()[Graphic::GFX_LINK];
     m_width = 16;
     m_height = 16;
     m_speed = 1;
 
-
-    m_position.x = 72; m_position.y = 32;
-    m_boundingBox.x = m_position.x; m_boundingBox.y = m_position.y;
+    m_position.x = 72;
+    m_position.y = 32;
+    m_boundingBox.x = m_position.x;
+    m_boundingBox.y = m_position.y;
 
     m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
     m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
@@ -28,7 +30,7 @@ Player::Player()
     m_health = 3;
     m_healthMax = 3;
 
-    m_depth = PLAYER_DEPTH;
+    m_depth = ZD_DEPTH_PLAYER;
     m_state = LINK_WALK_DOWN;
     m_direction = DIRECTION_DOWN;
 
@@ -47,8 +49,8 @@ Player::Player()
     m_useShield = false;
 
     // Collision related stuff
-    m_speed_x = 0;
-    m_speed_y = 0;
+    m_speedX = 0;
+    m_speedY = 0;
 
     // Weapon tests
     m_arrow = nullptr;
@@ -70,22 +72,22 @@ Player::Player()
     m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
     m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
 
-    m_name = "Player";
+    m_name = "Link";
     Renderer::getInstance().addRenderable(this);
     Controller::getInstance().setController(this);
 }
 
-float Player::health() const noexcept
+float Link::health() const noexcept
 {
     return m_health;
 }
 
-float Player::maxHealth() const noexcept
+float Link::maxHealth() const noexcept
 {
     return m_healthMax;
 }
 
-bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept
+bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept
 {
 
     // When moving in a direction
@@ -137,35 +139,35 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noex
 
     // TODO: Check whether there is space or not before pushing the player
     // Don't get stuck on a corner or increase speed when gliding along the wall
-    if (topLeftLeftToRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    if (topLeftLeftToRight && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
         m_position.y-= m_speed;
     }
-    if (topLeftTopToBottom && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
+    if (topLeftTopToBottom && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
     {
         m_position.x-= m_speed;
     }
-    if (topRightTopToBottom && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
+    if (topRightTopToBottom && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
     {
         m_position.x+= m_speed;
     }
-    if (topRightRightToLeft && !(m_speed_x == -m_speed && m_speed_y == m_speed) && !(m_speed_x == -m_speed && m_speed_y == -m_speed))
+    if (topRightRightToLeft && !(m_speedX == -m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == -m_speed))
     {
         m_position.y-= m_speed;
     }
-    if (bottomRightRightToLeft && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == -m_speed && m_speed_y == m_speed))
+    if (bottomRightRightToLeft && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
     {
         m_position.y+= m_speed;
     }
-    if (bottomRightBottomToTop && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    if (bottomRightBottomToTop && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
         m_position.x+= m_speed;
     }
-    if (bottomLeftBottomToTop && !(m_speed_x == -m_speed && m_speed_y == -m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    if (bottomLeftBottomToTop && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
         m_position.x-= m_speed;
     }
-    if (bottomLeftLeftToRight && !(m_speed_x == m_speed && m_speed_y == m_speed) && !(m_speed_x == m_speed && m_speed_y == -m_speed))
+    if (bottomLeftLeftToRight && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
         m_position.y+= m_speed;
     }
@@ -173,12 +175,7 @@ bool Player::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noex
     return collision;
 }
 
-Player::~Player()
-{
-
-}
-
-void Player::render(SDL_Renderer* pRenderer) noexcept
+void Link::render(SDL_Renderer* pRenderer) noexcept
 {
 
     // Get clock, if elapsed, increase frame counter
@@ -305,16 +302,14 @@ void Player::render(SDL_Renderer* pRenderer) noexcept
 
 }
 
-void Player::control() noexcept
+void Link::control() noexcept
 {
-    m_keyboardState = SDL_GetKeyboardState(nullptr);
-
-
     // Open the inventory
-    if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
+    if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
     {
         m_inventory.open();
         Controller::getInstance().pushController(this, &m_inventory);
+        Engine::getInstance().pauseEngine(true);
     }
 
     // If we are holding left and we press up or down, we don't want to change the state whatever it is...
@@ -353,7 +348,7 @@ void Player::control() noexcept
 
     // If any directional keys are released
     // Release the direction lock
-    if (Keyboard::getInstance().keyReleased(BUTTON_RIGHT))
+    /*if (Keyboard::getInstance().keyReleased(BUTTON_RIGHT))
     {
         m_dirLockRight = false;
     }
@@ -368,31 +363,31 @@ void Player::control() noexcept
     if (Keyboard::getInstance().keyReleased(BUTTON_DOWN))
     {
         m_dirLockDown = false;
-    }
+    }*/
 
-    // Player attack
+    // Link attack
     // Only attack if a key is actually pressed
     attack();
     
 }
 
-void Player::attack() noexcept
+void Link::attack() noexcept
 {
-    if (m_keyboardState[BUTTON_A])
+    if (Keyboard::getInstance()[BUTTON_A])
     {
         useWeapon(m_inventory.weaponA());
     }
-    else if (!m_keyboardState[BUTTON_B])
+    else if (!Keyboard::getInstance()[BUTTON_B])
     {
         m_useShield = false;
         if (!m_usingWeapon)
         updateState();
     }
-    if (m_keyboardState[BUTTON_B])
+    if (Keyboard::getInstance()[BUTTON_B])
     {
         useWeapon(m_inventory.weaponB());
     }
-    else if (!m_keyboardState[BUTTON_A])
+    else if (!Keyboard::getInstance()[BUTTON_A])
     {
         m_useShield = false;
         if (!m_usingWeapon)
@@ -400,29 +395,29 @@ void Player::attack() noexcept
     }
 }
 
-void Player::die() noexcept
+void Link::die() noexcept
 {
-    std::cout << "Player died" << std::endl;
+    std::cout << "Link died" << std::endl;
 }
 
-void Player::resetAnimation() noexcept
+void Link::resetAnimation() noexcept
 {
     m_currentFrame = m_animations[m_state].startFrame;
     m_clockAnimation.reset();
 }
 
-Vector<float> Player::position() const noexcept
+Vector<float> Link::position() const noexcept
 {
     return m_position;
 }
 
-void Player::addPosition(int x, int y) noexcept
+void Link::addPosition(int x, int y) noexcept
 {
     m_position.x += x;
     m_position.y += y;
 }
 
-void Player::damage(float damage) noexcept
+void Link::damage(float damage) noexcept
 {
     if (m_health - damage >= 0)
     {
@@ -434,12 +429,12 @@ void Player::damage(float damage) noexcept
     }
 }
 
-DIRECTION Player::direction() const noexcept
+Direction Link::direction() const noexcept
 {
     return m_direction;
 }
 
-void Player::replenish(float hearts) noexcept
+void Link::replenish(float hearts) noexcept
 {
     if (m_health + hearts <= m_healthMax)
     {
@@ -447,13 +442,13 @@ void Player::replenish(float hearts) noexcept
     }
 }
 
-// Player control
-void Player::move() noexcept
+// Link control
+void Link::move() noexcept
 {
     if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
     {
-        m_speed_x = m_speed;
-        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
+        m_speedX = m_speed;
+        m_speedY = m_speed * (Keyboard::getInstance()[BUTTON_DOWN] - Keyboard::getInstance()[BUTTON_UP]);
 
         if (!m_dirLockUp && !m_dirLockDown)
         {
@@ -461,8 +456,8 @@ void Player::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
                     {
@@ -473,7 +468,7 @@ void Player::move() noexcept
                         m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
                     }
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
@@ -492,9 +487,9 @@ void Player::move() noexcept
             m_direction = DIRECTION_RIGHT;
         }
 
-        if (!handleStaticCollisions(m_speed_x, 0))
+        if (!handleStaticCollisions(m_speedX, 0))
         {
-            m_position.x += m_speed_x;
+            m_position.x += m_speedX;
         }
         else
         {
@@ -505,17 +500,17 @@ void Player::move() noexcept
     }
     else
     {
-        if (m_state == LINK_PUSH_RIGHT && handleStaticCollisions(m_speed_x, 0))
+        if (m_state == LINK_PUSH_RIGHT && handleStaticCollisions(m_speedX, 0))
         {
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_RIGHT_BIG_SHIELD;
                 }
@@ -530,8 +525,8 @@ void Player::move() noexcept
 
     if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
     {
-        m_speed_x = -m_speed;
-        m_speed_y = m_speed * (m_keyboardState[BUTTON_DOWN] - m_keyboardState[BUTTON_UP]);
+        m_speedX = -m_speed;
+        m_speedY = m_speed * (Keyboard::getInstance()[BUTTON_DOWN] - Keyboard::getInstance()[BUTTON_UP]);
 
         if (!m_dirLockUp && !m_dirLockDown)
         {
@@ -539,8 +534,8 @@ void Player::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
                     {
@@ -551,7 +546,7 @@ void Player::move() noexcept
                         m_state = LINK_WALK_LEFT_SMALL_SHIELD;
                     }
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
@@ -569,9 +564,9 @@ void Player::move() noexcept
             }
             m_direction = DIRECTION_LEFT;
         }
-        if (!handleStaticCollisions(m_speed_x, 0))
+        if (!handleStaticCollisions(m_speedX, 0))
         {
-            m_position.x += m_speed_x;
+            m_position.x += m_speedX;
         }
         else
         {
@@ -582,17 +577,17 @@ void Player::move() noexcept
     }
     else
     {
-        if (m_state == LINK_PUSH_LEFT && handleStaticCollisions(m_speed_x, 0))
+        if (m_state == LINK_PUSH_LEFT && handleStaticCollisions(m_speedX, 0))
         {
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_LEFT_SMALL_SHIELD;
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_LEFT_BIG_SHIELD;
                 }
@@ -606,8 +601,8 @@ void Player::move() noexcept
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
-        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
-        m_speed_y = -m_speed;
+        m_speedX = m_speed * (Keyboard::getInstance()[BUTTON_RIGHT] - Keyboard::getInstance()[BUTTON_LEFT]);
+        m_speedY = -m_speed;
 
         if (!m_dirLockRight && !m_dirLockLeft)
         {
@@ -615,8 +610,8 @@ void Player::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
                     {
@@ -627,7 +622,7 @@ void Player::move() noexcept
                         m_state = LINK_WALK_UP_SMALL_SHIELD;
                     }
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
@@ -646,9 +641,9 @@ void Player::move() noexcept
             m_direction = DIRECTION_UP;
         }
 
-        if (!handleStaticCollisions(0, m_speed_y))
+        if (!handleStaticCollisions(0, m_speedY))
         {
-            m_position.y += m_speed_y;
+            m_position.y += m_speedY;
         }
         else
         {
@@ -659,17 +654,17 @@ void Player::move() noexcept
     }
     else
     {
-        if (m_state == LINK_PUSH_UP && handleStaticCollisions(0, m_speed_y))
+        if (m_state == LINK_PUSH_UP && handleStaticCollisions(0, m_speedY))
         {
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_UP_SMALL_SHIELD;
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_UP_BIG_SHIELD;
                 }
@@ -683,8 +678,8 @@ void Player::move() noexcept
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
     {
-        m_speed_x = m_speed * (m_keyboardState[BUTTON_RIGHT] - m_keyboardState[BUTTON_LEFT]);
-        m_speed_y = m_speed;
+        m_speedX = m_speed * (Keyboard::getInstance()[BUTTON_RIGHT] - Keyboard::getInstance()[BUTTON_LEFT]);
+        m_speedY = m_speed;
 
         if (!m_dirLockRight && !m_dirLockLeft)
         {
@@ -692,8 +687,8 @@ void Player::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
                     {
@@ -704,7 +699,7 @@ void Player::move() noexcept
                         m_state = LINK_WALK_DOWN_SMALL_SHIELD;
                     }
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
@@ -723,9 +718,9 @@ void Player::move() noexcept
             m_direction = DIRECTION_DOWN;
         }
 
-        if (!handleStaticCollisions(0, m_speed_y))
+        if (!handleStaticCollisions(0, m_speedY))
         {
-            m_position.y += m_speed_y;
+            m_position.y += m_speedY;
         }
         else
         {
@@ -736,16 +731,16 @@ void Player::move() noexcept
     }
     else
     {
-        if (m_state == LINK_PUSH_DOWN && handleStaticCollisions(0, m_speed_y))
+        if (m_state == LINK_PUSH_DOWN && handleStaticCollisions(0, m_speedY))
         {
             if (m_inventory.shieldEquipped())
             {
-                WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
-                if (shieldLevel == WPN_LEVEL_1)
+                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_DOWN_SMALL_SHIELD;
                 }
-                else if (shieldLevel == WPN_LEVEL_2)
+                else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_DOWN_BIG_SHIELD;
                 }
@@ -760,10 +755,10 @@ void Player::move() noexcept
 }
 
 // Update the player (visible state)
-void Player::updateState() noexcept
+void Link::updateState() noexcept
 {
     bool shieldEquipped = m_inventory.shieldEquipped();
-    WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+    WeaponLevel shieldLevel = m_inventory.shieldLevel();
 
     switch (m_state)
     {
@@ -787,11 +782,11 @@ void Player::updateState() noexcept
     case LINK_WALK_DOWN:
         if (shieldEquipped)
         {
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_WALK_DOWN_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_WALK_DOWN_BIG_SHIELD;
             }
@@ -800,11 +795,11 @@ void Player::updateState() noexcept
     case LINK_WALK_UP:
         if (shieldEquipped)
         {
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_WALK_UP_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_WALK_UP_BIG_SHIELD;
             }
@@ -813,11 +808,11 @@ void Player::updateState() noexcept
     case LINK_WALK_LEFT:
         if (shieldEquipped)
         {
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_WALK_LEFT_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_WALK_LEFT_BIG_SHIELD;
             }
@@ -826,11 +821,11 @@ void Player::updateState() noexcept
     case LINK_WALK_RIGHT:
         if (shieldEquipped)
         {
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_WALK_RIGHT_BIG_SHIELD;
             }
@@ -893,10 +888,10 @@ void Player::updateState() noexcept
     }
 }
 
-void Player::useWeapon(WEAPON weapon) noexcept
+void Link::useWeapon(WEAPON weapon) noexcept
 {
     std::string wpn;
-    WEAPON_LEVEL shieldLevel = m_inventory.shieldLevel();
+    WeaponLevel shieldLevel = m_inventory.shieldLevel();
 
     switch (weapon)
     {
@@ -922,11 +917,11 @@ void Player::useWeapon(WEAPON weapon) noexcept
         case LINK_WALK_LEFT_BIG_SHIELD:
         case LINK_WALK_LEFT_SMALL_SHIELD:
         case LINK_WALK_LEFT:
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_BLOCK_LEFT_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_BLOCK_LEFT_BIG_SHIELD;
             }
@@ -934,11 +929,11 @@ void Player::useWeapon(WEAPON weapon) noexcept
         case LINK_WALK_RIGHT_BIG_SHIELD:
         case LINK_WALK_RIGHT_SMALL_SHIELD:
         case LINK_WALK_RIGHT:
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_BLOCK_RIGHT_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_BLOCK_RIGHT_BIG_SHIELD;
             }
@@ -946,11 +941,11 @@ void Player::useWeapon(WEAPON weapon) noexcept
         case LINK_WALK_UP_BIG_SHIELD:
         case LINK_WALK_UP_SMALL_SHIELD:
         case LINK_WALK_UP:
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_BLOCK_UP_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_BLOCK_UP_BIG_SHIELD;
             }
@@ -958,11 +953,11 @@ void Player::useWeapon(WEAPON weapon) noexcept
         case LINK_WALK_DOWN_BIG_SHIELD:
         case LINK_WALK_DOWN_SMALL_SHIELD:
         case LINK_WALK_DOWN:
-            if (shieldLevel == WPN_LEVEL_1)
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
                 m_state = LINK_BLOCK_DOWN_SMALL_SHIELD;
             }
-            else if (shieldLevel == WPN_LEVEL_2)
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
                 m_state = LINK_BLOCK_DOWN_BIG_SHIELD;
             }
@@ -980,7 +975,7 @@ void Player::useWeapon(WEAPON weapon) noexcept
         // An arrow that goes off screen disappears
         // An arrow that hits an object deflects and disappears
         
-        if (Keyboard::getInstance().keyPressed(BUTTON_A) || Keyboard::getInstance().keyPressed(BUTTON_B))
+        if (Keyboard::getInstance().keyPushed(BUTTON_A) || Keyboard::getInstance().keyPushed(BUTTON_B))
         {
             if (m_arrow == nullptr)
             {
@@ -1086,7 +1081,7 @@ void Player::useWeapon(WEAPON weapon) noexcept
 
 }
 
-void Player::animate()
+void Link::animate()
 {
     // When animate() is called
     // There are two types of animation

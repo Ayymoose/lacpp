@@ -1,5 +1,4 @@
-#ifndef DRAWING_H
-#define DRAWING_H
+#pragma once
 
 #include <SDL.h>
 #include "Assert.h"
@@ -16,5 +15,3 @@ void CopyToTexture(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, SDL_Texture
 
 // Colours a part of a texture (or whole use nullptr with a given colour 
 void ColourTexture(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, SDL_Rect* srcRect, uint32_t colour);
-
-#endif // !DRAWING_H

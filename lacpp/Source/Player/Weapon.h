@@ -1,5 +1,4 @@
-#ifndef WEAPON_H
-#define WEAPON_H
+#pragma once
 
 #include "Depth.h"
 #include "Renderable.h"
@@ -46,7 +45,7 @@ public:
     Weapon()
     {
         m_direction = DIRECTION_NONE;
-        m_depth = BACKGROUND_OBJECT_DEPTH;
+        m_depth = ZD_DEPTH_BACKGROUND_OBJECT;
         Renderer::getInstance().addRenderable(this);
     }
 
@@ -57,7 +56,7 @@ public:
         return m_position;
     }
 
-    virtual void setDirection(DIRECTION direction)
+    virtual void setDirection(Direction direction)
     {
         m_direction = direction;
     }
@@ -73,7 +72,7 @@ public:
 
 protected:
     Vector<float> m_position;
-    DIRECTION m_direction;
+    Direction m_direction;
     UpdateTimer m_weaponTimer;
     BoundingBox m_boundingBox;
 
@@ -89,5 +88,3 @@ protected:
     };
 
 };
-
-#endif

@@ -1,145 +1,147 @@
+#pragma once
+
 #include <string>
 #include <assert.h>
 #include <SDL_image.h>
 #include <map>
 #include "Singleton.h"
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
-
 // A pinkish colour is used for transparency
 #define TRANSPARENCY_COLOUR (SDL_RGB(255,0,128))
 
-enum RESOURCE
+namespace Zelda
 {
-    RSC_RESOURCE_NONE = -1,
-    // Main overworld
-    RSC_BACKGROUND_OVERWORLD_MAIN,
-    
-    // Dungeons
-    RSC_DUNGEON_1_TAIL_CAVE,
-    RSC_DUNGEON_2_BOTTLE_GROTTO,
-    RSC_DUNGEON_3_KEY_CAVERN,
-    RSC_DUNGEON_4_ANGLER_TUNNEL,
-    RSC_DUNGEON_5_CATFISH_MAW,
-    RSC_DUNGEON_6_FACE_SHRINE,
-    RSC_DUNGEON_7_EAGLE_TOWER,
-    RSC_DUNGEON_8_TURTLE_ROCK,
-    RSC_DUNGEON_9_COLOUR_DUNGEON,
-    RSC_DUNGEON_10_WIND_FISH_EGG,
 
-    // Interiors
-    RSC_INTERIOR_KANALET_CASTLE,
-    RSC_INTERIOR_DREAM_SHRINE,
-    RSC_INTERIOR_ANCIENT_RUINS,
+    const std::string ResourceDungeonsPath = R"(Resources\Background\Dungeon\)";
+    const std::string ResourceSpriteLinkPath = R"(Resources\Sprite\Link\)";
+    const std::string ResourceObjectsPath = R"(Resources\Sprite\Object\)";
 
-    // Caves
-    RSC_CAVE_MOBLIN_CAVE,
-    RSC_CAVE_0,
-    RSC_CAVE_1,
-    RSC_CAVE_2,
-    RSC_CAVE_3,
-    RSC_CAVE_4,
-    RSC_CAVE_5,
-    RSC_CAVE_6,
-    RSC_CAVE_7,
-    RSC_CAVE_8,
-    RSC_CAVE_9,
-    RSC_CAVE_10,
-    RSC_CAVE_11,
-    RSC_CAVE_12,
-    RSC_CAVE_13,
-    RSC_CAVE_14,
-    RSC_CAVE_15,
-    RSC_CAVE_16,
-    RSC_CAVE_17,
-    RSC_CAVE_18,
-    RSC_CAVE_19,
-    RSC_CAVE_20,
-
-    // Houses
-    RSC_INTERIOR_HOUSE_0,
-    RSC_INTERIOR_HOUSE_1,
-    RSC_INTERIOR_HOUSE_2,
-    RSC_INTERIOR_HOUSE_3,
-    RSC_INTERIOR_HOUSE_4,
-    RSC_INTERIOR_HOUSE_5,
-    RSC_INTERIOR_HOUSE_6,
-    RSC_INTERIOR_HOUSE_7,
-    RSC_INTERIOR_HOUSE_8,
-    RSC_INTERIOR_HOUSE_9,
-    RSC_INTERIOR_HOUSE_10,
-    RSC_INTERIOR_HOUSE_11,
-    RSC_INTERIOR_HOUSE_12,
-    RSC_INTERIOR_HOUSE_13,
-    RSC_INTERIOR_HOUSE_14,
-    RSC_INTERIOR_HOUSE_15,
-    RSC_INTERIOR_HOUSE_16,
-    RSC_INTERIOR_HOUSE_17,
-    RSC_INTERIOR_HOUSE_18,
-    RSC_INTERIOR_HOUSE_19,
-    RSC_INTERIOR_HOUSE_20,
-    RSC_INTERIOR_HOUSE_21,
-    RSC_INTERIOR_HOUSE_22,
-
-    //Misc
-    RSC_INTERIOR_TELEPHONE_HOUSE,
-    RSC_INVENTORY,
-    RSC_FILE_MENU_1,
-    RSC_FILE_MENU_2,
-    RSC_FILE_MENU_3,
-
-    // Background Objects
-    RSC_CANDLE,
-    RSC_TORCH_1,
-    RSC_TORCH_2,
-    RSC_SPIKE,
-    RSC_WATER_1,
-    RSC_WATER_2,
-    RSC_WATER_3,
-    RSC_WATER_4,
-    RSC_RAPID,
-    RSC_FLOWER_1,
-    RSC_FLOWER_2,
-    
-    RSC_WEAPON,
-    
-
-    // Sprites
-    RSC_LINK,
-    
-    RSC_RESOURCE_COUNT
-};
-
-// There really should be another class (e.g ResourceManager) to manage
-// a list of Resource objects but I'm just lazy so
-// Resource is the object which manages all resources
-
-class ResourceManager : public Singleton<ResourceManager>
-{
-    friend class Singleton<ResourceManager>;
-
-public:
-
-    SDL_Texture* operator[](RESOURCE resource)
+    enum class Graphic
     {
-        assert(resource > RSC_RESOURCE_NONE && resource < RSC_RESOURCE_COUNT);
-        return m_Resources[resource];
-    }
+        GFX_RESOURCE_NONE = -1,
+        // Main overworld
+        GFX_BACKGROUND_OVERWORLD_MAIN,
 
-    void loadGraphics();
+        // Dungeons
+        GFX_DUNGEON_1_TAIL_CAVE,
+        GFX_DUNGEON_2_BOTTLE_GROTTO,
+        GFX_DUNGEON_3_KEY_CAVERN,
+        GFX_DUNGEON_4_ANGLER_TUNNEL,
+        GFX_DUNGEON_5_CATFISH_MAW,
+        GFX_DUNGEON_6_FACE_SHRINE,
+        GFX_DUNGEON_7_EAGLE_TOWER,
+        GFX_DUNGEON_8_TURTLE_ROCK,
+        GFX_DUNGEON_9_COLOUR_DUNGEON,
+        GFX_DUNGEON_10_WIND_FISH_EGG,
 
-    virtual ~ResourceManager();
-    
-private:
+        // Interiors
+        GFX_INTERIOR_KANALET_CASTLE,
+        GFX_INTERIOR_DREAM_SHRINE,
+        GFX_INTERIOR_ANCIENT_RUINS,
 
-    ResourceManager() = default;
+        // Caves
+        GFX_CAVE_MOBLIN_CAVE,
+        GFX_CAVE_0,
+        GFX_CAVE_1,
+        GFX_CAVE_2,
+        GFX_CAVE_3,
+        GFX_CAVE_4,
+        GFX_CAVE_5,
+        GFX_CAVE_6,
+        GFX_CAVE_7,
+        GFX_CAVE_8,
+        GFX_CAVE_9,
+        GFX_CAVE_10,
+        GFX_CAVE_11,
+        GFX_CAVE_12,
+        GFX_CAVE_13,
+        GFX_CAVE_14,
+        GFX_CAVE_15,
+        GFX_CAVE_16,
+        GFX_CAVE_17,
+        GFX_CAVE_18,
+        GFX_CAVE_19,
+        GFX_CAVE_20,
 
-    // Load a texture and specify the transparent colour
-    SDL_Texture* loadTexture(const std::string& path, uint32_t transparency);
+        // Houses
+        GFX_INTERIOR_HOUSE_0,
+        GFX_INTERIOR_HOUSE_1,
+        GFX_INTERIOR_HOUSE_2,
+        GFX_INTERIOR_HOUSE_3,
+        GFX_INTERIOR_HOUSE_4,
+        GFX_INTERIOR_HOUSE_5,
+        GFX_INTERIOR_HOUSE_6,
+        GFX_INTERIOR_HOUSE_7,
+        GFX_INTERIOR_HOUSE_8,
+        GFX_INTERIOR_HOUSE_9,
+        GFX_INTERIOR_HOUSE_10,
+        GFX_INTERIOR_HOUSE_11,
+        GFX_INTERIOR_HOUSE_12,
+        GFX_INTERIOR_HOUSE_13,
+        GFX_INTERIOR_HOUSE_14,
+        GFX_INTERIOR_HOUSE_15,
+        GFX_INTERIOR_HOUSE_16,
+        GFX_INTERIOR_HOUSE_17,
+        GFX_INTERIOR_HOUSE_18,
+        GFX_INTERIOR_HOUSE_19,
+        GFX_INTERIOR_HOUSE_20,
+        GFX_INTERIOR_HOUSE_21,
+        GFX_INTERIOR_HOUSE_22,
 
-    // Map between resources and pointer to all textures
-    std::map<RESOURCE, SDL_Texture*> m_Resources;
-};
+        //Misc
+        GFX_INTERIOR_TELEPHONE_HOUSE,
+        GFX_INVENTORY,
+        GFX_FILE_MENU_1,
+        GFX_FILE_MENU_2,
+        GFX_FILE_MENU_3,
 
-#endif
+        // Background Objects
+        GFX_CANDLE,
+        GFX_TORCH_1,
+        GFX_TORCH_2,
+        GFX_SPIKE,
+        GFX_WATER_1,
+        GFX_WATER_2,
+        GFX_WATER_3,
+        GFX_WATER_4,
+        GFX_RAPID,
+        GFX_FLOWER_1,
+        GFX_FLOWER_2,
+
+        GFX_WEAPON,
+
+
+        // Sprites
+        GFX_LINK,
+
+        GFX_RESOURCE_COUNT
+    };
+
+    // There really should be another class (e.g ResourceManager) to manage
+    // a list of Resource objects but I'm just lazy so
+    // Resource is the object which manages all resources
+
+    class ResourceManager : public Singleton<ResourceManager>
+    {
+        friend class Singleton<ResourceManager>;
+
+    public:
+
+        SDL_Texture* operator[](Graphic resource) noexcept
+        {
+            assert(resource > Graphic::GFX_RESOURCE_NONE && resource < Graphic::GFX_RESOURCE_COUNT);
+            return m_Resources[resource];
+        }
+
+        void loadGraphics() noexcept;
+        void loadSounds() noexcept;
+        virtual ~ResourceManager();
+
+    private:
+        // Load a texture and specify the transparent colour
+        SDL_Texture* loadTexture(const std::string& path, uint32_t transparency) noexcept;
+
+        // Map between resources and pointer to all textures
+        std::map<Graphic, SDL_Texture*> m_Resources;
+    };
+}

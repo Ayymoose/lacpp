@@ -8,9 +8,7 @@ class Boomerang : public Weapon
 {
 public:
     Boomerang();
-    ~Boomerang() = default;
-
-    void render(SDL_Renderer* pRenderer) override;
+    void render(SDL_Renderer* pRenderer) noexcept override;
     void useWeapon() override;
     void returnToPlayer();
     void setPosition(Vector<float> position) override;

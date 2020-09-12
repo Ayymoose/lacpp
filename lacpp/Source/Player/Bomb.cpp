@@ -2,11 +2,11 @@
 #include "Camera.h"
 #include "Resource.h"
 #include "ZD_Assert.h"
-#include "Player.h"
+#include "Link.h"
 
 Bomb::Bomb()
 {
-    m_texture = ResourceManager::getInstance()[RSC_WEAPON];
+    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_name = "Bomb";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOMB].w;
     m_height = m_weaponSpritesSrc[WPN_SPRITE_BOMB].h;
@@ -19,7 +19,7 @@ Bomb::Bomb()
     m_flashCount = 0;
 }
 
-void Bomb::render(SDL_Renderer* pRenderer)
+void Bomb::render(SDL_Renderer* pRenderer) noexcept
 {
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOMB];
     srcRect.x = m_animateXPos + (m_currentFrame * (m_width + SPRITE_SPACING));

@@ -1,5 +1,4 @@
-#ifndef CONTROLLABLE_H
-#define CONTROLLABLE_H
+#pragma once
 
 #include <iostream>
 #include <cassert>
@@ -17,13 +16,4 @@ public:
     {
         assert(false && "Controllable control() called");
     }
-    Controllable()
-    {
-        //std::cout << "Controllable constructor called" << std::endl;
-        m_keyboardState = nullptr;
-    }
-protected:
-    const uint8_t* m_keyboardState;
 };
-
-#endif

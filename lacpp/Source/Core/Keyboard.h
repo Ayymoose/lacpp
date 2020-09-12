@@ -1,23 +1,22 @@
 #pragma once
+
 #include "Singleton.h"
 #include <SDL_scancode.h>
 
-class Keyboard : public Singleton<Keyboard>
+namespace Zelda
 {
-public:
-    Keyboard();
-    ~Keyboard() = default;
-    void updateKeyStates(int key, bool pushedOrPressed, bool released);
 
-    // Returns true if a key was pressed (single press)
-    bool keyPressed(int key);
-    // Returns true if a key was released
-    bool keyReleased(int key);
+    class Keyboard : public Singleton<Keyboard>
+    {
+    public:
+        Keyboard();
+        // Updates the internal key state for every key
+        void updateKeyStates(int key, bool pushed) noexcept;
+        // Returns true if a key is being pushed (held)
+        bool keyPushed(int key) const noexcept;
+        int operator[](int key) noexcept;
+    private:
+        bool m_keyStatePushed[SDL_NUM_SCANCODES];
+    };
 
-    // Returns true if a key is being pushed (held)
-    bool keyPushed(int key) const;
-private:
-    bool m_keyStatePushed[SDL_NUM_SCANCODES];
-    bool m_keyStateReleased[SDL_NUM_SCANCODES];
-    bool m_keyStatePressed[SDL_NUM_SCANCODES];
-};
+}

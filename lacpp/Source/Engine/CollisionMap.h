@@ -1,12 +1,11 @@
-#ifndef COLLISION_MAP_H
-#define COLLISION_MAP_H
+#pragma once
 
 #include "BoundingBox.h"
 #include <vector>
 #include <map>
 
 
-enum COLLISION_AREA
+enum CollisionArea
 {
     COLLISION_AREA_NONE = -1,
     COLLISION_TAIL_CAVE_0,
@@ -45,11 +44,11 @@ class CollisionMap
 {
 public:
     CollisionMap();
-    std::vector<BoundingBox> collisionMap(COLLISION_AREA area);
+    std::vector<BoundingBox> collisionMap(CollisionArea area);
 
     // TODO: Put these in a single array
     // Map of areas to a list of rects defining positions of static objects
-    COLLISION_AREA m_tailCave[6][7] =
+    CollisionArea m_tailCave[6][7] =
     {
         { COLLISION_AREA_NONE   ,COLLISION_AREA_NONE   ,COLLISION_AREA_NONE    ,COLLISION_AREA_NONE   ,COLLISION_TAIL_CAVE_28,COLLISION_TAIL_CAVE_27,COLLISION_TAIL_CAVE_26},
         { COLLISION_AREA_NONE   ,COLLISION_TAIL_CAVE_25,COLLISION_TAIL_CAVE_24 ,COLLISION_TAIL_CAVE_23,COLLISION_TAIL_CAVE_22,COLLISION_TAIL_CAVE_21,COLLISION_TAIL_CAVE_20},
@@ -61,10 +60,6 @@ public:
 
 
 private:
-    std::map<COLLISION_AREA, std::vector<BoundingBox>> m_collisionMap;
+    std::map<CollisionArea, std::vector<BoundingBox>> m_collisionMap;
 
 };
-
-
-
-#endif 

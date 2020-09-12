@@ -2,11 +2,11 @@
 #include "Camera.h"
 #include "Resource.h"
 #include "ZD_Assert.h"
-#include "Player.h"
+#include "Link.h"
 
 Boomerang::Boomerang()
 {
-    m_texture = ResourceManager::getInstance()[RSC_WEAPON];
+    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_speed = 2;
     m_name = "Boomerang";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG].w;
@@ -16,7 +16,7 @@ Boomerang::Boomerang()
     m_return = false;
 }
 
-void Boomerang::render(SDL_Renderer* pRenderer)
+void Boomerang::render(SDL_Renderer* pRenderer) noexcept
 {
 
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG];
@@ -41,7 +41,7 @@ void Boomerang::render(SDL_Renderer* pRenderer)
     if (m_return)
     {
         // Get vector from player to here and repeatedly add position till we return to player
-        Vector<float> positionVector = Player::getInstance().position();
+        Vector<float> positionVector = Link::getInstance().position();
         Vector<float> returnVector = positionVector - m_position;
         if (returnVector.length() > 0.01)
         {

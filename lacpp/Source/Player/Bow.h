@@ -1,5 +1,4 @@
-#ifndef BOW_H
-#define BOW_H
+#pragma once
 
 #include "Weapon.h"
 #include <iostream>
@@ -8,9 +7,7 @@ class Bow : public Weapon
 {
 public:
     Bow();
-    ~Bow() = default;
-
-    void render(SDL_Renderer* pRenderer) override;
+    void render(SDL_Renderer* pRenderer) noexcept override;
     void useWeapon() override;
     void setPosition(Vector<float> position) override;
 
@@ -19,5 +16,3 @@ private:
     int m_speed;
 
 };
-
-#endif // ! BOW_H

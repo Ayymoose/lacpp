@@ -1,5 +1,4 @@
-#ifndef INPUT_CONTROL_H
-#define INPUT_CONTROL_H 
+#pragma once
 
 // Keyword control for Gameboy controls
 // Adjust here
@@ -29,6 +28,3 @@ KEYBOARD_STATE[BUTTON_SELECT])
 #define BUTTON_RIGHT SDL_SCANCODE_RIGHT
 #define BUTTON_START SDL_SCANCODE_RETURN
 #define BUTTON_SELECT SDL_SCANCODE_J
-
-
-#endif 

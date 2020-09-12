@@ -4,16 +4,23 @@
 #include "ZD_Assert.h"
 #include "Drawing.h"
 
-void ResourceManager::loadGraphics()
+using namespace Zelda;
+
+void ResourceManager::loadGraphics() noexcept
 {
     // Attempt to load all the graphic resources
-    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_DUNGEON_1_TAIL_CAVE, loadTexture("Resources\\Background\\Dungeon\\dungeon_tail_cave.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_LINK, loadTexture("Resources\\Sprite\\Link\\link.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_CANDLE, loadTexture("Resources\\Sprite\\Object\\candle.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_TORCH_1, loadTexture("Resources\\Sprite\\Object\\torch.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_INVENTORY, loadTexture("Resources\\Sprite\\Object\\inventory.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<RESOURCE, SDL_Texture*>(RSC_WEAPON, loadTexture("Resources\\Sprite\\Object\\weapons.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_DUNGEON_1_TAIL_CAVE, loadTexture(Zelda::ResourceDungeonsPath + "dungeon_tail_cave.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_LINK, loadTexture(Zelda::ResourceSpriteLinkPath + "link.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_CANDLE, loadTexture(Zelda::ResourceObjectsPath + "candle.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TORCH_1, loadTexture(Zelda::ResourceObjectsPath + "torch.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_INVENTORY, loadTexture(Zelda::ResourceObjectsPath + "inventory.png", TRANSPARENCY_COLOUR)));
+    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WEAPON, loadTexture(Zelda::ResourceObjectsPath + "weapons.png", TRANSPARENCY_COLOUR)));
 
+}
+
+void Zelda::ResourceManager::loadSounds() noexcept
+{
+    // TODO: Load sounds
 }
 
 ResourceManager::~ResourceManager()
@@ -26,7 +33,7 @@ ResourceManager::~ResourceManager()
     }
 }
 
-SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t transparency)
+SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t transparency) noexcept
 {
     // The final texture
     SDL_Texture* newTexture = nullptr;

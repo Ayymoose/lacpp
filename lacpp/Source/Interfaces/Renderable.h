@@ -1,9 +1,10 @@
-#ifndef RENDERABLE_H
-#define RENDERABLE_H
+#pragma once
 
 #include <SDL_image.h>
 #include "UpdateTimer.h"
 #include <iostream>
+#include <assert.h>
+#include "ZD_Assert.h"
 
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
@@ -44,17 +45,18 @@ public:
     virtual ~Renderable() = default;
 
     // Make it render the default texture if none specified
-    virtual void render(SDL_Renderer* pRenderer)
+    virtual void render(SDL_Renderer* pRenderer) noexcept
     {
-        SDL_RenderCopy(pRenderer, m_texture, nullptr, nullptr);
+        ZD_ASSERT(SDL_RenderCopy(pRenderer, m_texture, nullptr, nullptr) == 0, "SDL Error: " << SDL_GetError());
     }
 
-    int getDepth() const
+    int depth() const noexcept
     {
+        assert(m_depth > 0);
         return m_depth;
     }
 
-    std::string friendlyName() const
+    std::string friendlyName() const noexcept
     {
         return m_name;
     }
@@ -85,5 +87,3 @@ protected:
     int m_endFrame;
     float m_orientation;
 };
-
-#endif // !RENDERABLE_H

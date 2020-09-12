@@ -1,5 +1,4 @@
-#ifndef MAIN_CONTROLLER_H
-#define MAIN_CONTROLLER_H
+#pragma once
 
 #include "Singleton.h"
 #include "Controllable.h"
@@ -40,5 +39,3 @@ private:
     Controllable* m_pController;
     std::stack<Controllable*> m_stack;
 };
-
-#endif // !MAIN_CONTROLLER_H
