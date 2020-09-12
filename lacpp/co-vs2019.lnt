@@ -118,8 +118,11 @@
 --i"C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 --i"C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
 --i"C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"
---iD:\Users\Ayman\Desktop\lacpp\lacpp\SDL2_image-2.0.5\include
---iD:\Users\Ayman\Desktop\lacpp\lacpp\SDL2-2.0.10\include
+
+--i"D:\Users\Ayman\Desktop\lacpp\lacpp\SDL2_image-2.0.5\include"
+--i"D:\Users\Ayman\Desktop\lacpp\lacpp\SDL2-2.0.10\include"
+--i"D:\Users\Ayman\Desktop\lacpp\lacpp\Engine\Headers"
+--i"D:\Users\Ayman\Desktop\lacpp\lacpp\Engine\Interfaces"
 
 +libh(co-vs2019.h)
 -header(co-vs2019.h)

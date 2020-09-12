@@ -9,157 +9,174 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Source Files\Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{4e90ed4f-cc8a-4400-93d0-ba741da3f75a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{e1ea2068-7b8e-4152-8aa1-3d8c95530f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{fe832444-0817-4160-88bb-3497562f56c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces">
+      <UniqueIdentifier>{99e0a906-0d7d-4970-ad41-29d779001162}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{d12904e9-d4e4-4b8b-949b-67191b5f8645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{025383c3-7dac-4e68-92af-5d48cd986ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{2f451d9b-7938-4553-8d64-ef8442bc85aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interfaces">
+      <UniqueIdentifier>{cab504de-8678-4779-b59e-357767b0db55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Player\Bomb.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Player\Boomerang.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Player\Bow.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Player\FlameRod.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Player\Sword.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\Engine.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Core\Main.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="UpdateTimer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Core\Window.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="BoundingBox.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Core\Keyboard.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionMap.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\BoundingBox.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\Drawing.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Bow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Player\Player.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Drawing.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Player\Inventory.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Boomerang.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\CollisionMap.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Bomb.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Interfaces\Character.cpp">
+      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="FlameRod.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\Camera.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Clock.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\Clock.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Sword.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\Resource.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Engine\UpdateTimer.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoundingBox.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\Player.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\Bow.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionMap.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\FlameRod.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\Bomb.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundObject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\Weapon.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\Boomerang.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Controllable.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\Sword.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Depth.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\Vector.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Drawing.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Window.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="InputControl.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Keyboard.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Camera.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\CollisionMap.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\BoundingBox.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Renderable.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Clock.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Interfaces\Character.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Interfaces\Controllable.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Controller.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="UpdateTimer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Interfaces\Renderable.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Vec2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Player\Inventory.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\ZD_Assert.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\BackgroundObject.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Bow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\Depth.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="MyAssert.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\Drawing.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Boomerang.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\InputControl.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Bomb.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Renderer.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="FlameRod.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Core\Singleton.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Clock.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\Resource.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Sword.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\Engine\UpdateTimer.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
