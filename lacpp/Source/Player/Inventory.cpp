@@ -133,28 +133,28 @@ Inventory::Inventory()
 
 void Inventory::control() noexcept
 {
-    if (Keyboard::getInstance().keyPushed(BUTTON_A))
+    if (Keyboard::getInstance().keyPressed(BUTTON_A))
     {
        std::swap(m_weaponA, m_items[m_selectorIndex]);
     }
-    if (Keyboard::getInstance().keyPushed(BUTTON_B))
+    if (Keyboard::getInstance().keyPressed(BUTTON_B))
     {
        std::swap(m_weaponB, m_items[m_selectorIndex]);
     }
 
-    if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
+    if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
     {
         m_pushSelectTimer.reset();
         m_selectPressed = true;
     }
 
-    if (Keyboard::getInstance().keyPushed(BUTTON_START))
+    if (Keyboard::getInstance().keyPressed(BUTTON_START))
     {
         close();
         Controller::getInstance().popController();
         Link::getInstance().updateState();
-
         Engine::getInstance().pauseEngine(false);
+        std::cout << "Inventory closed!\n";
     }
 
 
@@ -166,8 +166,11 @@ void Inventory::control() noexcept
     // 6 7
     // 8 9
 
+    // If a key is pressed, record it was pressed
+    // If it was pressed and hadn't been released yet, 
+
     // This code controls the selector through arrow keys
-    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
+    if (Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
     {
         if (m_selectorX == SelectorInitialX + SelectorIncreaseX)
         {
@@ -190,7 +193,7 @@ void Inventory::control() noexcept
             m_selectorIndex++;
         }
     }
-    if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
+    if (Keyboard::getInstance().keyPressed(BUTTON_LEFT))
     {
         if (m_selectorX == SelectorInitialX)
         {
@@ -213,7 +216,7 @@ void Inventory::control() noexcept
             m_selectorIndex--;
         }
     }
-    if (Keyboard::getInstance().keyPushed(BUTTON_UP))
+    if (Keyboard::getInstance().keyPressed(BUTTON_UP))
     {
         if (m_selectorY == SelectorInitialY)
         {
@@ -231,7 +234,7 @@ void Inventory::control() noexcept
         }
 
     }
-    if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
+    if (Keyboard::getInstance().keyPressed(BUTTON_DOWN))
     {
         if (m_selectorY == SelectorInitialY + 4 * SelectorIncreaseY)
         {
@@ -261,10 +264,10 @@ void Inventory::control() noexcept
         m_selectorTimer.reset();
     }
 
-  /*  if (Keyboard::getInstance().keyReleased(BUTTON_SELECT))
+    if (Keyboard::getInstance().keyReleased(BUTTON_SELECT))
     {
         m_selectPressed = true;
-    }*/
+    }
 }
 
 void Inventory::render(SDL_Renderer* pRenderer) noexcept

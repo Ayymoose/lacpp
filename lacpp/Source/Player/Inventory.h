@@ -53,6 +53,7 @@ namespace Zelda
     constexpr int BombsMax = 50;
     constexpr int MagicPowderMax = 50;
     constexpr int ArrowsMax = 30;
+    constexpr int RuppeesMax = 999;
 
     // The width/height of the weapon level sprite
     constexpr int WeaponLevelX = 16;
@@ -118,7 +119,7 @@ namespace Zelda
         SNG_COUNT
     };
 
-    enum INVENTORY_SPRITES
+    enum InventorySprites
     {
         INVENTORY_DIVIDER_H = WPN_COUNT,
         INVENTORY_DIVIDER_V,
@@ -224,7 +225,7 @@ namespace Zelda
         INSTRUMENT_COUNT
     };
 
-    enum TRADE_ITEM
+    enum TradeItem
     {
         ITEM_NONE = -1,
         ITEM_DOLL,
@@ -325,7 +326,7 @@ namespace Zelda
         void drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept;
         void drawWeaponLevel(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept;
 
-        TRADE_ITEM m_tradeItem; // Current trade item
+        TradeItem m_tradeItem; // Current trade item
 
         bool m_open;
 

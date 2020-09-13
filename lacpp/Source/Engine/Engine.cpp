@@ -39,10 +39,10 @@ void Zelda::Engine::run() noexcept
     // Main game loop
     while (m_engineRunning)
     {
-        // Process input
-        processInput();
         // Process window/keyboard events
         processEvents();
+        // Process input
+        processInput();
         // Render objects
         renderObjects();
     }
@@ -76,10 +76,12 @@ void Zelda::Engine::processEvents() noexcept
             m_engineRunning = false;
             break;
         case SDL_KEYDOWN:
-            Keyboard::getInstance().updateKeyStates(eventHandler.key.keysym.scancode, true);
+            Keyboard::getInstance().updateKeyStates(eventHandler.key.keysym.scancode, true, false);
+            // If key was released in the next frame, set it to not released now
             break;
         case SDL_KEYUP:
-            Keyboard::getInstance().updateKeyStates(eventHandler.key.keysym.scancode, false);
+            Keyboard::getInstance().updateKeyStates(eventHandler.key.keysym.scancode, false, true);
+            // Set key released to true on this frame
             break;
 
         }
@@ -110,9 +112,13 @@ void Zelda::Engine::renderObjects() const noexcept
     {
         auto renderable = *iterator;
         assert(renderable != nullptr);
-        if (Engine::getInstance().enginePaused())
+        if (!Engine::getInstance().enginePaused())
         {
             // TODO: If engine is paused, all animation/movement must be stopped until resumed
+            // Engine is paused when 
+            // - Opening the inventory and remains paused until inventory is closed
+            // - Opening the file save screen
+            // - Dialogue is running
         }
         // TODO: Culling
         renderable->render(pRenderer);

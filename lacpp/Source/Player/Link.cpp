@@ -310,6 +310,8 @@ void Link::control() noexcept
         m_inventory.open();
         Controller::getInstance().pushController(this, &m_inventory);
         Engine::getInstance().pauseEngine(true);
+        //Keyboard::getInstance().clearKeyStates();
+        std::cout << "Inventory opened!\n";
     }
 
     // If we are holding left and we press up or down, we don't want to change the state whatever it is...
@@ -348,7 +350,7 @@ void Link::control() noexcept
 
     // If any directional keys are released
     // Release the direction lock
-    /*if (Keyboard::getInstance().keyReleased(BUTTON_RIGHT))
+    if (Keyboard::getInstance().keyReleased(BUTTON_RIGHT))
     {
         m_dirLockRight = false;
     }
@@ -363,7 +365,7 @@ void Link::control() noexcept
     if (Keyboard::getInstance().keyReleased(BUTTON_DOWN))
     {
         m_dirLockDown = false;
-    }*/
+    }
 
     // Link attack
     // Only attack if a key is actually pressed
