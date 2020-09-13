@@ -86,7 +86,7 @@ void BackgroundObject::render(SDL_Renderer* pRenderer) noexcept
     // Animation
     if (m_currentFrame <= m_endFrame)
     {
-        if (m_animationTimer.update(m_animationFPS))
+        if (m_animationTimer.elapsed(m_animationFPS))
         {
             m_currentFrame++;
             if (m_currentFrame > m_endFrame)

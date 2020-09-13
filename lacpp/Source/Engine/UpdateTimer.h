@@ -31,6 +31,8 @@
 #define BOMB_ANIMATION_TIME (1.0 / 12.0)
 #define FLAME_ROD_SPEED (1.0 / 69.0)
 
+#define SWORD_ATTACK_FPS 1//(1.0 / 30.0)
+
 class UpdateTimer
 {
 public:

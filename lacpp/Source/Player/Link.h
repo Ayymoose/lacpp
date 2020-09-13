@@ -16,6 +16,8 @@
 #include "Clock.h"
 #include "Sword.h"
 
+#include <memory>
+
 enum PlayerState
 {
     LINK_WALK_NONE = -1,
@@ -171,9 +173,10 @@ private:
     Boomerang* m_boomerang;
     Bomb* m_bomb;
     FlameRod* m_flameRod;
-    Sword* m_sword;
+    std::unique_ptr<Sword> m_sword;
 
     bool m_moveable;
+    bool m_usingSword;
 
     // Link animation state
     PlayerState m_state;
@@ -237,10 +240,10 @@ private:
         {96  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_RIGHT
         {64  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_UP
         {32  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_DOWN
-        {0   ,192 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_LEFT
-        {48  ,192 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_RIGHT
-        {0   ,208 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_UP
-        {48  ,208 ,  0,          2,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_DOWN
+        {0   ,192 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_LEFT
+        {48  ,192 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_RIGHT
+        {0   ,208 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_UP
+        {48  ,208 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_DOWN
         {0   ,224 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_LEFT
         {0   ,240 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_RIGHT
         {64  ,224 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_UP

@@ -27,7 +27,7 @@
 
 #define SPRITE_SPACING 2
 
-enum WPN_SPRITES
+enum WeaponSprites
 {
     WPN_SPRITE_NONE = -1,
     WPN_SPRITE_BOW,

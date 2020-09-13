@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SDL_image.h>
-#include "UpdateTimer.h"
+#include "Clock.h"
 #include <iostream>
 #include <assert.h>
 #include "ZD_Assert.h"
@@ -77,7 +77,7 @@ protected:
     // Animation
     // TODO: Animating sprites common function
 
-    UpdateTimer m_animationTimer;
+    Clock m_animationTimer;
     bool m_animationStart;
     bool m_animationComplete;
     float m_animationFPS;

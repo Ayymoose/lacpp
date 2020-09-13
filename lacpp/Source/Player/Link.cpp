@@ -61,6 +61,9 @@ Link::Link()
     //
 
     m_moveable = true;
+    m_usingSword = false;
+
+
     // Set to Tail cave entrace
     m_currentCollisionMapX = 3;
     m_currentCollisionMapY = 5;
@@ -178,7 +181,15 @@ bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexce
 void Link::render(SDL_Renderer* pRenderer) noexcept
 {
 
+    // The render loop calls render() every frame
+    // But there are special cases of animation
+
+    // Walking - Holding movement keys will play the same animation over and over unless the user has the sword out
+
+
+
     // Get clock, if elapsed, increase frame counter
+    // Source rect to pull from sprite sheet
     SDL_Rect srcRect =
     {
         m_animateXPos + (m_currentFrame * m_width),
@@ -187,11 +198,13 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
         m_height
     };
 
+    // Where to draw on screen
     SDL_Rect dstRect =
     {
         m_position.x - Camera::getInstance().getX(),
         m_position.y - Camera::getInstance().getY(),
-        m_width, m_height
+        m_width,
+        m_height
     };
 
     // Max frame controlled by the state
@@ -214,7 +227,8 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
     {
         m_boundingBox.x - Camera::getInstance().getX(),
         m_boundingBox.y - Camera::getInstance().getY(),
-        m_boundingBox.w, m_boundingBox.h
+        m_boundingBox.w,
+        m_boundingBox.h
     };
 
     //ZD_ASSERT(SDL_RenderDrawRect(pRenderer, &playerRect) == 0, "SDL Error: " << SDL_GetError());
@@ -233,7 +247,7 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
 
     // Perishable weapons
     // Weapons that go offscreen are culled
-    if (m_arrow)
+    /*if (m_arrow)
     {
         auto arrowPos = m_arrow->position();
         if (!Camera::getInstance().visible(arrowPos))
@@ -295,10 +309,7 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
             m_sword = nullptr;
         }
 
-        // Animate link
-        //animate();
-
-    }
+    }*/
 
 }
 
@@ -308,38 +319,44 @@ void Link::control() noexcept
     if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
     {
         m_inventory.open();
+        // Give control to the inventory and pause the engine
         Controller::getInstance().pushController(this, &m_inventory);
         Engine::getInstance().pauseEngine(true);
-        //Keyboard::getInstance().clearKeyStates();
         std::cout << "Inventory opened!\n";
     }
 
-    // If we are holding left and we press up or down, we don't want to change the state whatever it is...
-    // Same applies to other directions 
-    move();
-
     // Only animate if moving
-    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT) ||
-        Keyboard::getInstance().keyPushed(BUTTON_LEFT) ||
-        Keyboard::getInstance().keyPushed(BUTTON_DOWN) ||
-        Keyboard::getInstance().keyPushed(BUTTON_UP))
+    if (m_moveable && (Keyboard::getInstance().keyPushed(BUTTON_RIGHT) || Keyboard::getInstance().keyPushed(BUTTON_LEFT) || Keyboard::getInstance().keyPushed(BUTTON_DOWN) || Keyboard::getInstance().keyPushed(BUTTON_UP)))
     {
         // Animation
         animate();
+
+        // If we are holding left and we press up or down, we don't want to change the state whatever it is...
+        // Same applies to other directions 
+        move();
     }
-
-    // If no key is pressed (reset the animation)
-
-    if (!(Keyboard::getInstance().keyPushed(BUTTON_RIGHT) ||
-        Keyboard::getInstance().keyPushed(BUTTON_LEFT) ||
-        Keyboard::getInstance().keyPushed(BUTTON_DOWN) ||
-        Keyboard::getInstance().keyPushed(BUTTON_UP)))
+    else
     {
         // TODO: Current frame has to be reset to intial frame
-        
-        if (!m_usingWeapon)
+        if (!m_usingSword)
         {
             resetAnimation();
+        }
+        else
+        {
+            m_moveable = false;
+            if (!m_animationComplete)
+            {
+                animate();
+            }
+            else
+            {
+                updateState();
+                m_usingSword = false;
+                m_animationComplete = false;
+                m_moveable = true;
+                m_sword.reset();
+            }
         }
 
         m_dirLockRight = false;
@@ -379,22 +396,22 @@ void Link::attack() noexcept
     {
         useWeapon(m_inventory.weaponA());
     }
-    else if (!Keyboard::getInstance()[BUTTON_B])
+    /*else if (!Keyboard::getInstance()[BUTTON_B])
     {
         m_useShield = false;
         if (!m_usingWeapon)
         updateState();
-    }
+    }*/
     if (Keyboard::getInstance()[BUTTON_B])
     {
         useWeapon(m_inventory.weaponB());
     }
-    else if (!Keyboard::getInstance()[BUTTON_A])
+   /* else if (!Keyboard::getInstance()[BUTTON_A])
     {
         m_useShield = false;
         if (!m_usingWeapon)
         updateState();
-    }
+    }*/
 }
 
 void Link::die() noexcept
@@ -887,33 +904,116 @@ void Link::updateState() noexcept
     case LINK_BLOCK_DOWN_BIG_SHIELD:
         m_state = LINK_WALK_DOWN_BIG_SHIELD;
         break;
+
+    case LINK_SWORD_DOWN:
+        if (shieldEquipped)
+        {
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+            {
+                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
+            {
+                m_state = LINK_WALK_DOWN_BIG_SHIELD;
+            }
+        }
+        else
+        {
+            m_state = LINK_WALK_DOWN;
+        }
+        break;
+    case LINK_SWORD_RIGHT:
+        if (shieldEquipped)
+        {
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+            {
+                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
+            {
+                m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+            }
+        }
+        else
+        {
+            m_state = LINK_WALK_RIGHT;
+        }
+        break;
+    case LINK_SWORD_LEFT:
+        m_state = LINK_WALK_LEFT;
+        break;
+    case LINK_SWORD_UP:
+        if (shieldEquipped)
+        {
+            if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+            {
+                m_state = LINK_WALK_UP_SMALL_SHIELD;
+            }
+            else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
+            {
+                m_state = LINK_WALK_UP_BIG_SHIELD;
+            }
+        }
+        else
+        {
+            m_state = LINK_WALK_UP;
+        }
+        break;
     }
 }
 
 void Link::useWeapon(WEAPON weapon) noexcept
 {
-    std::string wpn;
     WeaponLevel shieldLevel = m_inventory.shieldLevel();
 
     switch (weapon)
     {
-    case WPN_NONE: wpn = "None"; break;
+    case WPN_NONE: break;
     case WPN_SWORD:
-        wpn = "Sword";
         
+        // Create a single sword object
+
+        // If the sword is held after the animation ends
+        // Remain in the last state and charge up the sword
+        // Otherwise destroy
+
+        switch (m_state)
+        {
+        case LINK_WALK_DOWN_BIG_SHIELD:
+        case LINK_WALK_DOWN_SMALL_SHIELD:
+        case LINK_WALK_DOWN:
+            m_state = LINK_SWORD_DOWN;
+            break;
+        case LINK_WALK_RIGHT_BIG_SHIELD:
+        case LINK_WALK_RIGHT_SMALL_SHIELD:
+        case LINK_WALK_RIGHT:
+            m_state = LINK_SWORD_RIGHT;
+            break;
+        case LINK_WALK_LEFT_BIG_SHIELD:
+        case LINK_WALK_LEFT_SMALL_SHIELD:
+        case LINK_WALK_LEFT:
+            m_state = LINK_SWORD_LEFT;
+            break;
+        case LINK_WALK_UP_BIG_SHIELD:
+        case LINK_WALK_UP_SMALL_SHIELD:
+        case LINK_WALK_UP:
+            m_state = LINK_SWORD_UP;
+            break;
+        }
+
         if (m_sword == nullptr)
         {
-            m_sword = new Sword;
+            m_sword = std::make_unique<Sword>();
             m_sword->setDirection(m_direction);
             m_sword->setPosition(m_position);
             m_sword->useWeapon();
+            m_usingSword = true;
         }
         
         
         
         break;
     case WPN_SHIELD:
-        wpn = "Shield";
         switch (m_state)
         {
         case LINK_WALK_LEFT_BIG_SHIELD:
@@ -969,8 +1069,6 @@ void Link::useWeapon(WEAPON weapon) noexcept
 
         break;
     case WPN_BOW:
-        wpn = "Bow";
-
 
         // We can fire multiple arrows
         // An arrow that hits an enemy disappears
@@ -996,7 +1094,6 @@ void Link::useWeapon(WEAPON weapon) noexcept
         
         break;
     case WPN_BOOMERANG:
-        wpn = "Boomerang";
 
         // A boomerang can only be thrown once
         // A boomerang that hits an enemy stuns it and returns to the player
@@ -1012,10 +1109,8 @@ void Link::useWeapon(WEAPON weapon) noexcept
         }
         
         break;
-    case WPN_MAGIC_POWDER: wpn = "Magic Powder"; break;
-    case WPN_BOMBS:
-        wpn = "Bombs";
-        
+    case WPN_MAGIC_POWDER: break;
+    case WPN_BOMBS:        
         if (m_bomb == nullptr)
         {
             if (m_inventory.bombsAvailable())
@@ -1031,16 +1126,15 @@ void Link::useWeapon(WEAPON weapon) noexcept
         
         
         break;
-    case WPN_POWER_BRACELET_1: wpn = "Power Bracelet 1"; break;
-    case WPN_POWER_BRACELET_2: wpn = "Power Bracelet 2"; break;
-    case WPN_ROC_FEATHER: wpn = "Roc Feather"; break;
-    case WPN_HOOKSHOT: wpn = "Hookshot"; break;
-    case WPN_OCARINA: wpn = "Ocarina"; break;
-    case WPN_PEGASUS_BOOT: wpn = "Pegasus Boot"; break;
-    case WPN_SHOVEL: wpn = "Shovel"; break;
+    case WPN_POWER_BRACELET_1: break;
+    case WPN_POWER_BRACELET_2: break;
+    case WPN_ROC_FEATHER: break;
+    case WPN_HOOKSHOT: break;
+    case WPN_OCARINA: break;
+    case WPN_PEGASUS_BOOT: break;
+    case WPN_SHOVEL: break;
     case WPN_FLAME_ROD:
-        wpn = "Flame rod";
-        
+
         if (m_flameRod == nullptr)
         {
             m_flameRod = new FlameRod();
@@ -1071,16 +1165,12 @@ void Link::useWeapon(WEAPON weapon) noexcept
                 m_state = LINK_HOOK_DOWN;
                 break;
             }
-            std::cout << "Using weapon: " << wpn << std::endl;
             m_useWeapon = true;
             m_usingWeapon = true;
         }
         
         break;
     }
-
-
-
 }
 
 void Link::animate()
@@ -1091,21 +1181,23 @@ void Link::animate()
     //  - When the key is held, the player is animated and when released, resets to the initial frame
     // - One press animation
     //  - An animation is carried out and when finished, resets to the initial frame
-
-    //std::cout << "State: " << m_state << " Current frame: " << m_currentFrame << " Max frame: " << m_endFrame << std::endl;
-
     m_clockAnimation.start();
     if (m_clockAnimation.elapsed(m_animations[m_state].animationFPS))
     {
-        if (++m_currentFrame > m_endFrame)
+        std::cout << "Animating frame " << m_currentFrame << " out of " << m_endFrame << '\n';
+        if (m_currentFrame+1 > m_endFrame)
         {
             // Reset to the initial frame
-            m_currentFrame = m_animations[m_state].startFrame;
-            if (m_usingWeapon)
+            if (!m_usingSword)
             {
-                m_useWeapon = false;
-                m_usingWeapon = false;
+                m_currentFrame = m_animations[m_state].startFrame;
             }
+            m_animationComplete = true;
+        }
+        else
+        {
+            m_currentFrame++;
+            m_animationComplete = false;
         }
         m_clockAnimation.reset();
     }

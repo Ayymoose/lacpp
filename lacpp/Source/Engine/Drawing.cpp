@@ -23,4 +23,9 @@ void ColourTexture(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, SDL_Rect* s
     ZD_ASSERT(SDL_SetRenderTarget(pRenderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 }
 
+void PalleteSwap(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, const std::vector<std::pair<int, int>>& palletes)
+{
+    // TODO:
+}
+
 

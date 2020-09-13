@@ -156,7 +156,7 @@ void Bomb::render(SDL_Renderer* pRenderer) noexcept
     else if (m_flashCount == BOMB_FLASH_MAX)
     {
         // Explode!
-        if (m_animationTimer.update(BOMB_ANIMATION_TIME))
+        if (m_animationTimer.elapsed(BOMB_ANIMATION_TIME))
         {
             if (m_currentFrame < BOMB_FRAMES-1)
             {

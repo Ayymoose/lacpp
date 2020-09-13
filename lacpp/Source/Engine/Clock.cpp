@@ -24,5 +24,6 @@ void Clock::reset()
 
 bool Clock::elapsed(float timeMs)
 {
-    return ((SDL_GetTicks() - m_startTime) / 1000.0f) > timeMs;
+    auto ticksNow = SDL_GetTicks();
+    return ((ticksNow - m_startTime) / 1000.0f) > timeMs;
 }
