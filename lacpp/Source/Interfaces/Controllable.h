@@ -12,8 +12,12 @@ public:
     {
         std::cout << "Controllable deconstructor called" << std::endl;
     }
-    virtual void control()
+    virtual void control() noexcept = 0;
+    std::string name() const noexcept
     {
-        assert(false && "Controllable control() called");
+        assert(!m_controllableName.empty());
+        return m_controllableName;
     }
+protected:
+    std::string m_controllableName;
 };

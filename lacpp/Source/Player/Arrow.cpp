@@ -1,20 +1,20 @@
-#include "Bow.h"
+#include "Arrow.h"
 #include "Camera.h"
 #include "Resource.h"
 #include "ZD_Assert.h"
 
-Bow::Bow()
+Arrow::Arrow()
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_speed = 2;
-    m_name = "Bow";
+    m_name = "Arrow";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOW].w;
     m_height = m_weaponSpritesSrc[WPN_SPRITE_BOW].h;
     m_boundingBox.w = m_width;
     m_boundingBox.h = m_height;
 }
 
-void Bow::render(SDL_Renderer* pRenderer) noexcept
+void Arrow::render(SDL_Renderer* pRenderer) noexcept
 {
 
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOW];
@@ -27,6 +27,33 @@ void Bow::render(SDL_Renderer* pRenderer) noexcept
         m_height
     };
 
+    switch (m_direction)
+    {
+    case Direction::DIRECTION_LEFT:
+        m_orientation = 270;
+        m_dirVec.x = -m_speed;
+        dstRect.x -= 12;
+        dstRect.y += 4;
+        break;
+    case Direction::DIRECTION_RIGHT:
+        m_orientation = 90;
+        m_dirVec.x = m_speed;
+        dstRect.x += 20;
+        dstRect.y += 4;
+        break;
+    case Direction::DIRECTION_DOWN:
+        m_orientation = 180;
+        m_dirVec.y = m_speed;
+        dstRect.x += 7;
+        dstRect.y += 16;
+        break;
+    case Direction::DIRECTION_UP:
+        m_orientation = 0;
+        m_dirVec.y = -m_speed;
+        dstRect.y -= 16;
+        break;
+    }
+
     ZD_ASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
 
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();
@@ -37,19 +64,7 @@ void Bow::render(SDL_Renderer* pRenderer) noexcept
 
 }
 
-void Bow::useWeapon()
-{
-    // Rotate to direction
-    switch (m_direction)
-    {
-    case DIRECTION_LEFT: m_orientation = 270; m_dirVec.x = -m_speed; break;
-    case DIRECTION_RIGHT: m_orientation = 90; m_dirVec.x = m_speed; break;
-    case DIRECTION_DOWN: m_orientation = 180; m_dirVec.y = m_speed; break;
-    case DIRECTION_UP: m_orientation = 0; m_dirVec.y = -m_speed; break;
-    }
-}
-
-void Bow::setPosition(Vector<float> position)
+void Arrow::setPosition(Vector<float> position)
 {
     m_position = position;
 }

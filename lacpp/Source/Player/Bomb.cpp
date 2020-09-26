@@ -170,23 +170,16 @@ void Bomb::render(SDL_Renderer* pRenderer) noexcept
     }
 }
 
-void Bomb::useWeapon()
-{
-    // Bomb starts as inert
-    // After 2 seconds it starts flashing then explodes
-    
-}
-
 void Bomb::setPosition(Vector<float> position)
 {
     m_position = position;
 
     switch (m_direction)
     {
-    case DIRECTION_LEFT: m_position.x -= m_width; break;
-    case DIRECTION_RIGHT: m_position.x += m_width * 2; break;
-    case DIRECTION_DOWN: m_position.y += m_height; break;
-    case DIRECTION_UP: m_position.y -= m_height; break;
+    case Direction::DIRECTION_LEFT: m_position.x -= m_width; break;
+    case Direction::DIRECTION_RIGHT: m_position.x += m_width * 2; break;
+    case Direction::DIRECTION_DOWN: m_position.y += m_height; break;
+    case Direction::DIRECTION_UP: m_position.y -= m_height; break;
     }
 
 }
@@ -194,4 +187,9 @@ void Bomb::setPosition(Vector<float> position)
 bool Bomb::exploded() const
 {
     return m_exploded;
+}
+
+bool Bomb::cull() noexcept
+{
+    return m_exploded || !Camera::getInstance().visible(position());
 }

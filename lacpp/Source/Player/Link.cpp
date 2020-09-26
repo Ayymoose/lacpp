@@ -4,7 +4,7 @@
 #include "Vector.h"
 #include "Camera.h"
 #include "Renderer.h"
-#include "Bow.h"
+#include "Arrow.h"
 #include "Depth.h"
 #include "ZD_Assert.h"
 #include "Keyboard.h"
@@ -32,7 +32,7 @@ Link::Link()
 
     m_depth = ZD_DEPTH_PLAYER;
     m_state = LINK_WALK_DOWN;
-    m_direction = DIRECTION_DOWN;
+    m_direction = Direction::DIRECTION_DOWN;
 
     m_animateXPos = 0;              // Initial X-position in sprite sheet for this animation
     m_animateYPos = 0;              // Initial Y-position in sprite sheet for this animation
@@ -53,7 +53,6 @@ Link::Link()
     m_speedY = 0;
 
     // Weapon tests
-    m_arrow = nullptr;
     m_boomerang = nullptr;
     m_bomb = nullptr;
     m_flameRod = nullptr;
@@ -62,7 +61,8 @@ Link::Link()
 
     m_moveable = true;
     m_usingSword = false;
-
+    m_usingArrow = false;
+    m_canUseArrow = true;
 
     // Set to Tail cave entrace
     m_currentCollisionMapX = 3;
@@ -76,6 +76,7 @@ Link::Link()
     m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
 
     m_name = "Link";
+    m_controllableName = m_name;
     Renderer::getInstance().addRenderable(this);
     Controller::getInstance().setController(this);
 }
@@ -247,16 +248,7 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
 
     // Perishable weapons
     // Weapons that go offscreen are culled
-    /*if (m_arrow)
-    {
-        auto arrowPos = m_arrow->position();
-        if (!Camera::getInstance().visible(arrowPos))
-        {
-            Renderer::getInstance().removeRenderable(m_arrow);
-            delete m_arrow;
-            m_arrow = nullptr;
-        }
-    }
+    /*
 
     if (m_boomerang)
     {
@@ -276,41 +268,18 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
             m_boomerang = nullptr;
         }
     }
-
-    if (m_bomb)
-    {
-        if (m_bomb->exploded() || !Camera::getInstance().visible(m_bomb->position()))
-        {
-            Renderer::getInstance().removeRenderable(m_bomb);
-            delete m_bomb;
-            m_bomb = nullptr;
-        }
-    }
-
-    if (m_flameRod)
-    {
-        if (!Camera::getInstance().visible(m_flameRod->position()))
-        {
-            Renderer::getInstance().removeRenderable(m_flameRod);
-            delete m_flameRod;
-            m_flameRod = nullptr;
-        }
-
-        // Animate link
-        animate();
-    }
-
-    if (m_sword)
-    {
-        if (!Camera::getInstance().visible(m_sword->position()))
-        {
-            Renderer::getInstance().removeRenderable(m_sword);
-            delete m_sword;
-            m_sword = nullptr;
-        }
-
     }*/
 
+}
+
+void Link::cull() noexcept
+{
+    // The owner of objects that can be culled must perform the culling to release the memory of the smart pointers
+    if (m_bomb && m_bomb->cull())
+    {
+        m_bomb.reset();
+    }
+    
 }
 
 void Link::control() noexcept
@@ -321,7 +290,7 @@ void Link::control() noexcept
         m_inventory.open();
         // Give control to the inventory and pause the engine
         Controller::getInstance().pushController(this, &m_inventory);
-        Engine::getInstance().pauseEngine(true);
+        Engine::getInstance().pause(true);
         std::cout << "Inventory opened!\n";
     }
 
@@ -338,7 +307,7 @@ void Link::control() noexcept
     else
     {
         // TODO: Current frame has to be reset to intial frame
-        if (!m_usingSword)
+        if (!m_usingSword && !m_usingArrow)
         {
             resetAnimation();
         }
@@ -352,10 +321,21 @@ void Link::control() noexcept
             else
             {
                 updateState();
-                m_usingSword = false;
                 m_animationComplete = false;
                 m_moveable = true;
-                m_sword.reset();
+
+                if (m_usingSword)
+                {
+                    m_usingSword = false;
+                    m_sword.reset();
+                }
+                else if (m_usingArrow)
+                {
+                    m_usingArrow = false;
+                    //m_quiver.erase(m_quiver.begin());
+                    m_canUseArrow = true;
+                }
+
             }
         }
 
@@ -396,22 +376,28 @@ void Link::attack() noexcept
     {
         useWeapon(m_inventory.weaponA());
     }
-    /*else if (!Keyboard::getInstance()[BUTTON_B])
-    {
-        m_useShield = false;
-        if (!m_usingWeapon)
-        updateState();
-    }*/
     if (Keyboard::getInstance()[BUTTON_B])
     {
         useWeapon(m_inventory.weaponB());
     }
-   /* else if (!Keyboard::getInstance()[BUTTON_A])
+
+
+    if (Keyboard::getInstance().keyReleased(BUTTON_A))
     {
-        m_useShield = false;
-        if (!m_usingWeapon)
-        updateState();
-    }*/
+        if (m_inventory.weaponA() == WPN_SHIELD)
+        {
+            m_useShield = false;
+            updateState();
+        }
+    }
+    if (Keyboard::getInstance().keyReleased(BUTTON_B))
+    {
+        if (m_inventory.weaponB() == WPN_SHIELD)
+        {
+            m_useShield = false;
+            updateState();
+        }
+    }
 }
 
 void Link::die() noexcept
@@ -503,7 +489,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_RIGHT;
             }
-            m_direction = DIRECTION_RIGHT;
+            m_direction = Direction::DIRECTION_RIGHT;
         }
 
         if (!handleStaticCollisions(m_speedX, 0))
@@ -514,7 +500,7 @@ void Link::move() noexcept
         {
             // If collision with wall
             m_state = LINK_PUSH_RIGHT;
-            m_direction = DIRECTION_RIGHT;
+            m_direction = Direction::DIRECTION_RIGHT;
         }
     }
     else
@@ -538,7 +524,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_RIGHT;
             }
-            m_direction = DIRECTION_RIGHT;
+            m_direction = Direction::DIRECTION_RIGHT;
         }
     }
 
@@ -581,7 +567,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_LEFT;
             }
-            m_direction = DIRECTION_LEFT;
+            m_direction = Direction::DIRECTION_LEFT;
         }
         if (!handleStaticCollisions(m_speedX, 0))
         {
@@ -591,7 +577,7 @@ void Link::move() noexcept
         {
             // If collision with wall
             m_state = LINK_PUSH_LEFT;
-            m_direction = DIRECTION_LEFT;
+            m_direction = Direction::DIRECTION_LEFT;
         }
     }
     else
@@ -615,7 +601,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_LEFT;
             }
-            m_direction = DIRECTION_LEFT;
+            m_direction = Direction::DIRECTION_LEFT;
         }
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_UP))
@@ -657,7 +643,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_UP;
             }
-            m_direction = DIRECTION_UP;
+            m_direction = Direction::DIRECTION_UP;
         }
 
         if (!handleStaticCollisions(0, m_speedY))
@@ -668,7 +654,7 @@ void Link::move() noexcept
         {
             // If collision with wall
             m_state = LINK_PUSH_UP;
-            m_direction = DIRECTION_UP;
+            m_direction = Direction::DIRECTION_UP;
         }
     }
     else
@@ -692,7 +678,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_UP;
             }
-            m_direction = DIRECTION_UP;
+            m_direction = Direction::DIRECTION_UP;
         }
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
@@ -734,7 +720,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_DOWN;
             }
-            m_direction = DIRECTION_DOWN;
+            m_direction = Direction::DIRECTION_DOWN;
         }
 
         if (!handleStaticCollisions(0, m_speedY))
@@ -745,7 +731,7 @@ void Link::move() noexcept
         {
             // If collision with wall
             m_state = LINK_PUSH_DOWN;
-            m_direction = DIRECTION_DOWN;
+            m_direction = Direction::DIRECTION_DOWN;
         }
     }
     else
@@ -768,7 +754,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_DOWN;
             }
-            m_direction = DIRECTION_DOWN;
+            m_direction = Direction::DIRECTION_DOWN;
         }
     }
 }
@@ -1006,7 +992,6 @@ void Link::useWeapon(WEAPON weapon) noexcept
             m_sword = std::make_unique<Sword>();
             m_sword->setDirection(m_direction);
             m_sword->setPosition(m_position);
-            m_sword->useWeapon();
             m_usingSword = true;
         }
         
@@ -1074,22 +1059,58 @@ void Link::useWeapon(WEAPON weapon) noexcept
         // An arrow that hits an enemy disappears
         // An arrow that goes off screen disappears
         // An arrow that hits an object deflects and disappears
-        
-        if (Keyboard::getInstance().keyPushed(BUTTON_A) || Keyboard::getInstance().keyPushed(BUTTON_B))
-        {
-            if (m_arrow == nullptr)
-            {
-                if (m_inventory.bowAndArrowAvailable())
-                {
-                    m_arrow = new Bow();
-                    m_arrow->setDirection(m_direction);
-                    m_arrow->setPosition(m_position);
-                    m_arrow->useWeapon();
-                    m_inventory.useBowAndArrow();
-                }
-            }
-        }
 
+        switch (m_state)
+        {
+        case LINK_WALK_DOWN_BIG_SHIELD:
+        case LINK_WALK_DOWN_SMALL_SHIELD:
+        case LINK_WALK_DOWN:
+            m_state = LINK_HOOK_DOWN;
+            break;
+        case LINK_WALK_RIGHT_BIG_SHIELD:
+        case LINK_WALK_RIGHT_SMALL_SHIELD:
+        case LINK_WALK_RIGHT:
+            m_state = LINK_HOOK_RIGHT;
+            break;
+        case LINK_WALK_LEFT_BIG_SHIELD:
+        case LINK_WALK_LEFT_SMALL_SHIELD:
+        case LINK_WALK_LEFT:
+            m_state = LINK_HOOK_LEFT;
+            break;
+        case LINK_WALK_UP_BIG_SHIELD:
+        case LINK_WALK_UP_SMALL_SHIELD:
+        case LINK_WALK_UP:
+            m_state = LINK_HOOK_UP;
+            break;
+        }
+        
+
+        // std::vector<std::shared_ptr> cullables;
+// for (auto cullable : cullables)
+// if (cullable->cull())
+// {
+//     cullable->reset();
+//     cullables.remove(this it);
+// }
+// 
+        // When a new object is created, add it to the cullable list
+        // Each frame, call cull() on each item in the cullable list
+        // If it returns true then remove the item from the render list and free the memory
+
+        // For bombs, it will get removed when it explodes or goes out of view
+        // For arrows it will get removed when it goes out of view
+
+
+            if (m_inventory.bowAndArrowAvailable() && m_canUseArrow)
+            {
+                auto arrow = std::make_unique<Arrow>();
+                arrow->setDirection(m_direction);
+                arrow->setPosition(m_position);
+                m_inventory.useBowAndArrow();
+                m_quiver.emplace_back(std::move(arrow));
+                m_canUseArrow = false;
+                m_usingArrow = true;
+            }
 
         
         break;
@@ -1105,24 +1126,25 @@ void Link::useWeapon(WEAPON weapon) noexcept
             m_boomerang = new Boomerang();
             m_boomerang->setDirection(m_direction);
             m_boomerang->setPosition(m_position);
-            m_boomerang->useWeapon();
         }
         
         break;
     case WPN_MAGIC_POWDER: break;
-    case WPN_BOMBS:        
+    case WPN_BOMBS:
+
+
         if (m_bomb == nullptr)
         {
             if (m_inventory.bombsAvailable())
             {
-                m_bomb = new Bomb();
+                m_bomb = std::make_unique<Bomb>();
                 m_bomb->setDirection(m_direction);
                 m_bomb->setPosition(m_position);
-                m_bomb->useWeapon();
                 m_inventory.useBombs();
             }
 
         }
+
         
         
         break;
@@ -1140,7 +1162,6 @@ void Link::useWeapon(WEAPON weapon) noexcept
             m_flameRod = new FlameRod();
             m_flameRod->setDirection(m_direction);
             m_flameRod->setPosition(m_position);
-            m_flameRod->useWeapon();
 
             switch (m_state)
             {

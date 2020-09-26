@@ -9,6 +9,7 @@
 #include "ZD_Assert.h"
 #include "Keyboard.h"
 #include "Engine.h"
+#include "Common.h"
 
 using namespace Zelda;
 
@@ -43,6 +44,7 @@ Inventory::Inventory()
     m_open = false;
     m_inDungeon = true;
     m_name = "Inventory";
+    m_controllableName = m_name;
     m_depth = ZD_DEPTH_INVENTORY;
     Renderer::getInstance().addRenderable(this);
     m_tradeItem = ITEM_NONE;
@@ -91,7 +93,7 @@ Inventory::Inventory()
 
     m_singlePressA = true;
     m_singlePressB = true;
-    m_weaponA = WPN_POWER_BRACELET_1;
+    m_weaponA = WPN_BOW;
     m_weaponB = WPN_SWORD;
 
     m_ocarinaSong = OcarinaSong::SNG_FISH;
@@ -105,7 +107,7 @@ Inventory::Inventory()
     m_items[2] = WPN_SHIELD;
     m_items[3] = WPN_BOMBS;
     m_items[4] = WPN_MAGIC_POWDER;
-    m_items[5] = WPN_BOW;
+    m_items[5] = WPN_POWER_BRACELET_1;
     m_items[6] = WPN_POWER_BRACELET_2;
     m_items[7] = WPN_ROC_FEATHER;
     m_items[8] = WPN_BOOMERANG;
@@ -142,10 +144,16 @@ void Inventory::control() noexcept
        std::swap(m_weaponB, m_items[m_selectorIndex]);
     }
 
-    if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
+    // Show the subscreen only when the select key is pushed
+    // TODO: Transition it in
+    if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
     {
         m_pushSelectTimer.reset();
         m_selectPressed = true;
+    }
+    else if (Keyboard::getInstance().keyReleased(BUTTON_SELECT))
+    {
+        m_selectPressed = false;
     }
 
     if (Keyboard::getInstance().keyPressed(BUTTON_START))
@@ -153,7 +161,7 @@ void Inventory::control() noexcept
         close();
         Controller::getInstance().popController();
         Link::getInstance().updateState();
-        Engine::getInstance().pauseEngine(false);
+        Engine::getInstance().pause(false);
         std::cout << "Inventory closed!\n";
     }
 
@@ -575,17 +583,7 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer) noexcept
         srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
         dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
 
-        if (!m_flashSelect && m_pushSelectTimer.update(PUSH_SELECTOR_FPS))
-        {
-            m_flashSelect = true;
-        }
-        else
-        {
-            if (m_pushSelectTimer.update(PUSH_SELECTOR_FPS))
-            {
-                m_flashSelect = false;
-            }
-        }
+        toggleItem(m_flashSelect, m_pushSelectTimer, PUSH_SELECTOR_FPS);
 
         // Draw "PUSH SELECT"
         if (m_flashSelect)
@@ -1036,18 +1034,9 @@ void Inventory::drawSelector(SDL_Renderer* pRenderer) noexcept
 
     SDL_Rect srcRect, dstRect;
     // Render the selector
+
     // Selector animation
-    if (!m_flashSelector && m_selectorTimer.update(INVENTORY_SELECTOR_FPS))
-    {
-        m_flashSelector = true;
-    }
-    else
-    {
-        if (m_selectorTimer.update(INVENTORY_SELECTOR_FPS))
-        {
-            m_flashSelector = false;
-        }
-    }
+    toggleItem(m_flashSelector, m_selectorTimer, INVENTORY_SELECTOR_FPS);
 
     if (m_flashSelector)
     {

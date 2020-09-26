@@ -70,17 +70,17 @@ void Boomerang::render(SDL_Renderer* pRenderer) noexcept
     // TODO: Collision with player after moving screen
 }
 
-void Boomerang::useWeapon()
+/*void Boomerang::useWeapon()
 {
     // Rotate to direction
     switch (m_direction)
     {
-    case DIRECTION_LEFT: m_orientation = 270; m_dirVec.x = -m_speed; break;
-    case DIRECTION_RIGHT: m_orientation = 90; m_dirVec.x = m_speed; break;
-    case DIRECTION_DOWN: m_orientation = 180; m_dirVec.y = m_speed; break;
-    case DIRECTION_UP: m_orientation = 0; m_dirVec.y = -m_speed; break;
+    case Direction::DIRECTION_LEFT: m_orientation = 270; m_dirVec.x = -m_speed; break;
+    case Direction::DIRECTION_RIGHT: m_orientation = 90; m_dirVec.x = m_speed; break;
+    case Direction::DIRECTION_DOWN: m_orientation = 180; m_dirVec.y = m_speed; break;
+    case Direction::DIRECTION_UP: m_orientation = 0; m_dirVec.y = -m_speed; break;
     }
-}
+}*/
 
 void Boomerang::returnToPlayer()
 {
@@ -93,10 +93,10 @@ void Boomerang::setPosition(Vector<float> position)
 
     switch (m_direction)
     {
-    case DIRECTION_LEFT: m_position.x -= m_width; break;
-    case DIRECTION_RIGHT: m_position.x += m_width * 2; break;
-    case DIRECTION_DOWN: m_position.y += m_height; break;
-    case DIRECTION_UP: m_position.y -= m_height; break;
+    case Direction::DIRECTION_LEFT: m_position.x -= m_width; break;
+    case Direction::DIRECTION_RIGHT: m_position.x += m_width * 2; break;
+    case Direction::DIRECTION_DOWN: m_position.y += m_height; break;
+    case Direction::DIRECTION_UP: m_position.y -= m_height; break;
     }
 
 }

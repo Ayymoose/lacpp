@@ -18,52 +18,56 @@ public:
 
     void createRenderer(SDL_Window* pWindow) noexcept
     {
-        m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
-        assert(m_pRenderer != nullptr);
+        m_renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+        assert(m_renderer != nullptr);
     }
 
     SDL_Renderer* getRenderer() const noexcept
     {
-        return m_pRenderer;
+        return m_renderer;
     }
     void setRenderer(SDL_Renderer* pRenderer) noexcept
     {
-        m_pRenderer = pRenderer;
+        m_renderer = pRenderer;
     }
 
     virtual ~Renderer()
     {
-        SDL_DestroyRenderer(m_pRenderer);
+        SDL_DestroyRenderer(m_renderer);
     }
 
     auto getRenderSet() const noexcept
     {
-        return m_Renderables;
+        return m_renderables;
     }
 
     void addRenderable(Renderable* renderable) noexcept
     {
-        m_Renderables.emplace(renderable);
+        m_renderables.emplace(renderable);
     }
 
     void removeRenderable(Renderable* renderable) noexcept
     {
-        auto iterator = std::find_if(m_Renderables.begin(), m_Renderables.end(), [renderable](const Renderable* r1) { return r1 == renderable; });
-        if (iterator != m_Renderables.end())
+        auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1) { return r1 == renderable; });
+        if (iterator != m_renderables.end())
         {
-            std::cout << "[removeRenderable] Removing " << (*iterator)->friendlyName() << std::endl;
-            m_Renderables.erase(iterator);
+            std::cout << "Removing renderable " << (*iterator)->name() << std::endl;
+            m_renderables.erase(iterator);
         }
         else
         {
+            // Attempting to remove something that wasn't in the renderable set
             assert(false);
         }
     }
 
 private:
-    Renderer() : m_pRenderer(nullptr) {}
+    Renderer() : m_renderer(nullptr)
+    {
+
+    }
     // Global renderer
-    SDL_Renderer* m_pRenderer;
+    SDL_Renderer* m_renderer;
 
     struct rendererComparator
     {
@@ -74,6 +78,6 @@ private:
     };
   
     // Multiset of Renderable objects that will be drawn
-    std::multiset<Renderable*, rendererComparator> m_Renderables;
+    std::multiset<Renderable*, rendererComparator> m_renderables;
 
 };

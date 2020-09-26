@@ -8,8 +8,8 @@ namespace Zelda
 
     class Keyboard : public Singleton<Keyboard>
     {
+        friend class Singleton<Keyboard>;
     public:
-        Keyboard();
         // Updates the internal key state for every key
         void updateKeyStates(int key, bool pushed, bool released) noexcept;
         // Returns true if a key is being pushed (held)
@@ -21,11 +21,11 @@ namespace Zelda
         int operator[](int key) noexcept;
         void clearKeyStates() noexcept;
     private:
-        bool m_keyStatePushed[SDL_NUM_SCANCODES];
+        Keyboard();
 
+        bool m_keyStatePushed[SDL_NUM_SCANCODES];
         bool m_keyStatePressed[SDL_NUM_SCANCODES];
         bool m_keyStatePressedRecord[SDL_NUM_SCANCODES];
-
         bool m_keyStateReleased[SDL_NUM_SCANCODES];
     };
 

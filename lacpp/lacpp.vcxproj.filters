@@ -41,9 +41,6 @@
     <ClCompile Include="Source\Player\Boomerang.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Player\Bow.cpp">
-      <Filter>Source Files\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Player\FlameRod.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
@@ -92,11 +89,14 @@
     <ClCompile Include="Source\Player\Link.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Player\Arrow.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Dialogue.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Player\Bow.h">
-      <Filter>Header Files\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Player\FlameRod.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
@@ -176,6 +176,18 @@
       <Filter>Header Files\Player</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Camera.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Arrow.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Interfaces\Cullable.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Dialogue.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Common.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

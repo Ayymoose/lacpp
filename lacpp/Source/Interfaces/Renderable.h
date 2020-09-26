@@ -32,23 +32,18 @@ public:
         m_width = 0;
         m_height = 0;
         m_depth = 0;
-        m_animationFPS = 0.0;
+        m_animationFPS = 0.0f;
         m_animateXPos = 0;
         m_animateYPos = 0;
         m_currentFrame = 0;
         m_endFrame = 0;
-        m_orientation = 0.0;
+        m_orientation = 0.0f;
 
         m_animationStart = false;
         m_animationComplete = false;
     }
     virtual ~Renderable() = default;
-
-    // Make it render the default texture if none specified
-    virtual void render(SDL_Renderer* pRenderer) noexcept
-    {
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, m_texture, nullptr, nullptr) == 0, "SDL Error: " << SDL_GetError());
-    }
+    virtual void render(SDL_Renderer* pRenderer) noexcept = 0;
 
     int depth() const noexcept
     {
@@ -56,8 +51,9 @@ public:
         return m_depth;
     }
 
-    std::string friendlyName() const noexcept
+    std::string name() const noexcept
     {
+        assert(!m_name.empty());
         return m_name;
     }
 

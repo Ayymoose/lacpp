@@ -15,7 +15,7 @@ namespace Zelda
     const std::string ResourceDungeonsPath = R"(Resources\Background\Dungeon\)";
     const std::string ResourceSpriteLinkPath = R"(Resources\Sprite\Link\)";
     const std::string ResourceObjectsPath = R"(Resources\Sprite\Object\)";
-
+    const std::string ResourceMiscPath = R"(Resources\Background\Misc\)";
     enum class Graphic
     {
         GFX_RESOURCE_NONE = -1,
@@ -94,6 +94,7 @@ namespace Zelda
         GFX_FILE_MENU_1,
         GFX_FILE_MENU_2,
         GFX_FILE_MENU_3,
+        GFX_TEXT,
 
         // Background Objects
         GFX_CANDLE,
@@ -123,14 +124,12 @@ namespace Zelda
 
     class ResourceManager : public Singleton<ResourceManager>
     {
-        friend class Singleton<ResourceManager>;
-
     public:
 
         SDL_Texture* operator[](Graphic resource) noexcept
         {
             assert(resource > Graphic::GFX_RESOURCE_NONE && resource < Graphic::GFX_RESOURCE_COUNT);
-            return m_Resources[resource];
+            return m_resources[resource];
         }
 
         void loadGraphics() noexcept;
@@ -142,6 +141,6 @@ namespace Zelda
         SDL_Texture* loadTexture(const std::string& path, uint32_t transparency) noexcept;
 
         // Map between resources and pointer to all textures
-        std::map<Graphic, SDL_Texture*> m_Resources;
+        std::map<Graphic, SDL_Texture*> m_resources;
     };
 }

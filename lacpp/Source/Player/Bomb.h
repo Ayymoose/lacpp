@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Weapon.h"
+#include "Cullable.h"
 #include <iostream>
 
 // How many times the bomb "flashes"
@@ -14,14 +15,15 @@
 #define BOMB_SPRITE_EXPLOSION 3
 #define BOMB_SPRITE_AFTER_SMOKE 4
 
-class Bomb : public Weapon
+class Bomb : public Weapon, public CullableChild
 {
 public:
     Bomb();
     void render(SDL_Renderer* pRenderer) noexcept override;
-    void useWeapon() override;
     void setPosition(Vector<float> position) override;
     bool exploded() const;
+
+    virtual bool cull() noexcept override;
 private:
     bool m_exploded;
     bool m_startBomb;

@@ -5,7 +5,7 @@
 using namespace Zelda;
 // Defines a base class for which NPC, Boss, Enemy and Link inherit from
 
-enum Direction
+enum class Direction
 {
     DIRECTION_NONE = -1,
     DIRECTION_RIGHT,

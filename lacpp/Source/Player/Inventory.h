@@ -373,7 +373,7 @@ namespace Zelda
         int m_selectorIndex;
 
         // Timer for flashing the selector
-        UpdateTimer m_selectorTimer;
+        Clock m_selectorTimer;
 
         // Weapons
         WEAPON m_items[InventoryMaxWeapons];
@@ -382,7 +382,7 @@ namespace Zelda
         Instrument m_instruments[static_cast<int>(Instrument::INSTRUMENT_COUNT)];
 
         UpdateTimer m_instrumentTimer;
-        UpdateTimer m_pushSelectTimer;
+        Clock m_pushSelectTimer;
 
         // Key press related stuff
         bool m_singleLeftRight;

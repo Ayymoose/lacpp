@@ -2,6 +2,8 @@
 #include "Keyboard.h"
 #include "Link.h"
 #include "ZD_Assert.h"
+#include "Dialogue.h"
+#include "Controllable.h"
 
 void Zelda::Engine::init() noexcept
 {
@@ -30,6 +32,10 @@ void Zelda::Engine::init() noexcept
 
     // TODO: Replace
     Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[Graphic::GFX_DUNGEON_1_TAIL_CAVE]);
+
+    // Dialogue::getInstance().message("You got your sword! It has your name on the back! Very nice");
+    // Dialogue::getInstance().message("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEFABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEF");//"You've got a    Guardian Acorn! It will reduce  the damage you  take by half!");
+     Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue");
 }
 
 void Zelda::Engine::run() noexcept
@@ -55,12 +61,12 @@ void Zelda::Engine::stop() const noexcept
     SDL_Quit();
 }
 
-void Zelda::Engine::pauseEngine(bool pause) noexcept
+void Zelda::Engine::pause(bool pause) noexcept
 {
     m_enginePaused = pause;
 }
 
-bool Zelda::Engine::enginePaused() const noexcept
+bool Zelda::Engine::paused() const noexcept
 {
     return m_enginePaused;
 }
@@ -91,37 +97,46 @@ void Zelda::Engine::processEvents() noexcept
 void Zelda::Engine::processInput() noexcept
 {
     // Handles input from the user and designates it to the Controller
-    Controllable* pController = Controller::getInstance().getController();
-    if (pController)
+    Controllable* controller = Controller::getInstance().getController();
+    if (controller)
     {
-        pController->control();
+        controller->control();
     }
 }
 
 void Zelda::Engine::renderObjects() const noexcept
 {
-    // Clear the screen
     SDL_Renderer* pRenderer = Renderer::getInstance().getRenderer();
 
-    ZD_ASSERT(SDL_RenderClear(pRenderer) == 0, "SDL Error: " << SDL_GetError());
-
-    // Draw any objects
+    // Render any objects
     auto renderSet = Renderer::getInstance().getRenderSet();
 
-    for (auto iterator = renderSet.begin(); iterator != renderSet.end(); iterator++)
+    for (auto& renderable : renderSet)
     {
-        auto renderable = *iterator;
-        assert(renderable != nullptr);
-        if (!Engine::getInstance().enginePaused())
+        assert(renderable);
+
+        if (!Engine::getInstance().paused())
         {
             // TODO: If engine is paused, all animation/movement must be stopped until resumed
             // Engine is paused when 
             // - Opening the inventory and remains paused until inventory is closed
             // - Opening the file save screen
             // - Dialogue is running
+            // - An item that opens the dialogue is obtained
         }
-        // TODO: Culling
+
+        auto cullable = dynamic_cast<CullableParent*>(renderable);
+        if (cullable)
+        {
+            cullable->cull();
+        }
         renderable->render(pRenderer);
+
+       /* auto controllable = dynamic_cast<Controllable*>(renderable);
+        if (controllable)
+        {
+            std::cout << "Controller name for " << renderable->name() << " is " << controllable->name() << '\n';
+        }*/
     }
 
     // Represent to the screen

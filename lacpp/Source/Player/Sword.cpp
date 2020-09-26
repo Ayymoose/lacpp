@@ -18,11 +18,6 @@ Sword::Sword()
     m_depth = ZD_DEPTH_BACKGROUND;
 }
 
-Sword::~Sword()
-{
-    Renderer::getInstance().removeRenderable(this);
-}
-
 void Sword::render(SDL_Renderer* pRenderer) noexcept
 {
     SDL_Rect srcRect =
@@ -46,7 +41,7 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
 
     switch (m_direction)
     {
-    case DIRECTION_DOWN:
+    case Direction::DIRECTION_DOWN:
 
         switch (m_currentFrame)
         {
@@ -62,12 +57,12 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
             break;
         case 2:
             m_orientation = 90;
-            dstRect.y += 14;
+            dstRect.y += 15;
             dstRect.x += 4;
             break;
         }
         break;
-    case DIRECTION_RIGHT:
+    case Direction::DIRECTION_RIGHT:
         m_orientation = 0;
         switch (m_currentFrame)
         {
@@ -85,7 +80,7 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
             break;
         }
         break;
-    case DIRECTION_LEFT:
+    case Direction::DIRECTION_LEFT:
         switch (m_currentFrame)
         {
         case 0:
@@ -105,7 +100,7 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
             break;
         }
         break;
-    case DIRECTION_UP:
+    case Direction::DIRECTION_UP:
         switch (m_currentFrame)
         {
         case 0:
@@ -144,10 +139,6 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
         }
         m_animationTimer.reset();
     }
-}
-
-void Sword::useWeapon()
-{
 }
 
 void Sword::setPosition(Vector<float> position)

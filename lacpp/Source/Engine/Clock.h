@@ -5,7 +5,6 @@ class Clock
 {
 public:
     Clock();
-    ~Clock() = default;
     void start();
     void reset();
     bool elapsed(float timeMs);

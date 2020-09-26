@@ -161,6 +161,7 @@
     <ClCompile Include="Source\Engine\Camera.cpp" />
     <ClCompile Include="Source\Engine\Clock.cpp" />
     <ClCompile Include="Source\Engine\CollisionMap.cpp" />
+    <ClCompile Include="Source\Engine\Dialogue.cpp" />
     <ClCompile Include="Source\Engine\Drawing.cpp" />
     <ClCompile Include="Source\Engine\Engine.cpp" />
     <ClCompile Include="Source\Engine\Resource.cpp" />
@@ -168,13 +169,16 @@
     <ClCompile Include="Source\Interfaces\Character.cpp" />
     <ClCompile Include="Source\Player\Bomb.cpp" />
     <ClCompile Include="Source\Player\Boomerang.cpp" />
-    <ClCompile Include="Source\Player\Bow.cpp" />
+    <ClCompile Include="Source\Player\Arrow.cpp" />
     <ClCompile Include="Source\Player\FlameRod.cpp" />
     <ClCompile Include="Source\Player\Inventory.cpp" />
     <ClCompile Include="Source\Player\Link.cpp" />
     <ClCompile Include="Source\Player\Sword.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\Common.h" />
+    <ClInclude Include="Source\Engine\Dialogue.h" />
+    <ClInclude Include="Source\Interfaces\Cullable.h" />
     <ClInclude Include="Source\Core\Controller.h" />
     <ClInclude Include="Source\Core\Keyboard.h" />
     <ClInclude Include="Source\Core\Renderer.h" />
@@ -197,7 +201,7 @@
     <ClInclude Include="Source\Interfaces\Renderable.h" />
     <ClInclude Include="Source\Player\Bomb.h" />
     <ClInclude Include="Source\Player\Boomerang.h" />
-    <ClInclude Include="Source\Player\Bow.h" />
+    <ClInclude Include="Source\Player\Arrow.h" />
     <ClInclude Include="Source\Player\FlameRod.h" />
     <ClInclude Include="Source\Player\Inventory.h" />
     <ClInclude Include="Source\Player\Link.h" />

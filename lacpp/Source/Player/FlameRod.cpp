@@ -16,7 +16,7 @@ FlameRod::FlameRod()
     m_flameRodOrientation = 0;
     m_flameRodWidth = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD].w;
     m_flameRodHeight = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD].h;
-    m_depth = ZD_DEPTH_BACKGROUND;
+    //m_depth = ZD_DEPTH_BACKGROUND;
     m_display = true;
 }
 
@@ -61,22 +61,22 @@ void FlameRod::render(SDL_Renderer* pRenderer) noexcept
     {
         switch (m_direction)
         {
-        case DIRECTION_LEFT:
+        case Direction::DIRECTION_LEFT:
             m_flameRodOrientation = 270;
             m_flameRodPosition.x -= (m_flameRodHeight / 2) + 2;
             m_flameRodPosition.y += m_flameRodHeight;
             break;
-        case DIRECTION_RIGHT:
+        case Direction::DIRECTION_RIGHT:
             m_flameRodOrientation = 90;
             m_flameRodPosition.x += (m_flameRodHeight / 2) + 2;
             m_flameRodPosition.y += m_flameRodHeight + 2;
             break;
-        case DIRECTION_DOWN:
+        case Direction::DIRECTION_DOWN:
             m_flameRodOrientation = 180;
             m_flameRodPosition.x += m_flameRodHeight - 1;
             m_flameRodPosition.y += m_flameRodHeight - 5;
             break;
-        case DIRECTION_UP:
+        case Direction::DIRECTION_UP:
             m_flameRodOrientation = 0;
             m_flameRodPosition.y -= m_height;
             m_flameRodPosition.x -= m_width;
@@ -96,17 +96,17 @@ void FlameRod::render(SDL_Renderer* pRenderer) noexcept
     // TODO: Use player position for offset
 }
 
-void FlameRod::useWeapon()
+/*void FlameRod::useWeapon()
 {
     // Rotate to direction
     switch (m_direction)
     {
-    case DIRECTION_LEFT: m_orientation = 270; m_dirVec.x = -m_speed; break;
-    case DIRECTION_RIGHT: m_orientation = 90; m_dirVec.x = m_speed; break;
-    case DIRECTION_DOWN: m_orientation = 180; m_dirVec.y = m_speed; break;
-    case DIRECTION_UP: m_orientation = 0; m_dirVec.y = -m_speed; break;
+    case Direction::DIRECTION_LEFT: m_orientation = 270; m_dirVec.x = -m_speed; break;
+    case Direction::DIRECTION_RIGHT: m_orientation = 90; m_dirVec.x = m_speed; break;
+    case Direction::DIRECTION_DOWN: m_orientation = 180; m_dirVec.y = m_speed; break;
+    case Direction::DIRECTION_UP: m_orientation = 0; m_dirVec.y = -m_speed; break;
     }
-}
+}*/
 
 void FlameRod::setPosition(Vector<float> position)
 {
@@ -115,7 +115,7 @@ void FlameRod::setPosition(Vector<float> position)
 
     switch (m_direction)
     {
-    case DIRECTION_LEFT:
+    case Direction::DIRECTION_LEFT:
         m_position.x -= m_width;
 
         m_flameRodOrientation = 0;
@@ -123,14 +123,14 @@ void FlameRod::setPosition(Vector<float> position)
         m_flameRodPosition.y -= m_flameRodHeight - 4;
 
         break;
-    case DIRECTION_RIGHT:
+    case Direction::DIRECTION_RIGHT:
         m_position.x += m_width;
 
         m_flameRodOrientation = 0;
         m_flameRodPosition.x += (m_flameRodHeight / 2);
         m_flameRodPosition.y -= m_flameRodHeight - 2;
         break;
-    case DIRECTION_DOWN:
+    case Direction::DIRECTION_DOWN:
         m_position.y += m_height;
 
         m_flameRodOrientation = 270;
@@ -138,7 +138,7 @@ void FlameRod::setPosition(Vector<float> position)
         m_flameRodPosition.y += m_flameRodWidth / 2;
 
         break;
-    case DIRECTION_UP:
+    case Direction::DIRECTION_UP:
         m_position.y -= m_height;
 
         m_flameRodOrientation = 90;

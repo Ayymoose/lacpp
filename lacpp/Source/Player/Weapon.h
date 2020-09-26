@@ -14,7 +14,7 @@
 
     Weapons that can be instantiated
 
-    - Bow (Arrows)
+    - Arrow (Arrows)
     - Bomb
     - Hookshot
     - Flame rod
@@ -44,28 +44,29 @@ class Weapon : public Renderable
 public:
     Weapon()
     {
-        m_direction = DIRECTION_NONE;
+        m_direction = Direction::DIRECTION_NONE;
         m_depth = ZD_DEPTH_BACKGROUND_OBJECT;
         Renderer::getInstance().addRenderable(this);
     }
 
-    virtual ~Weapon() = default;
+    virtual ~Weapon()
+    {
+        Renderer::getInstance().removeRenderable(this);
+    }
 
-    virtual Vector<float> position() const
+    Vector<float> position() const
     {
         return m_position;
     }
 
-    virtual void setDirection(Direction direction)
+    void setDirection(Direction direction)
     {
         m_direction = direction;
     }
 
     virtual void setPosition(Vector<float> position) = 0;
 
-    virtual void useWeapon() = 0;
-
-    virtual BoundingBox boundingBox() const
+    BoundingBox boundingBox() const
     {
         return m_boundingBox;
     }

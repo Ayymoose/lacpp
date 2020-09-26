@@ -18,7 +18,7 @@ void Clock::start()
 
 void Clock::reset()
 {
-    m_startTime = 0;
+    m_startTime = SDL_GetTicks();//0;
     m_started = false;
 }
 

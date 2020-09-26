@@ -10,11 +10,12 @@
 #include "BoundingBox.h"
 #include "CollisionMap.h"
 #include "Bomb.h"
-#include "Bow.h"
+#include "Arrow.h"
 #include "FlameRod.h"
 #include "Boomerang.h"
 #include "Clock.h"
 #include "Sword.h"
+#include "Cullable.h"
 
 #include <memory>
 
@@ -115,7 +116,7 @@ enum PlayerState
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
 #define PLAYER_CORNER_CUTTING_BOUNDARY 5
 
-class Link : public Controllable, public Renderable, public Character, public Singleton<Link>
+class Link : public Controllable, public Renderable, public Character, public Singleton<Link>, public CullableParent
 {
 public:
     Link();
@@ -135,8 +136,8 @@ public:
     // Controllable overrides
     void control() noexcept override;
 
-
-    
+    // CullableParent overrides
+    void cull() noexcept override;
  
     void resetAnimation() noexcept;
     void replenish(float hearts) noexcept;
@@ -169,12 +170,19 @@ private:
     bool m_dirLockLeft;
 
     // Weapon tests
-    Bow* m_arrow;     //Arrow* m_arrowList[3];
+
+    
     Boomerang* m_boomerang;
-    Bomb* m_bomb;
+    
     FlameRod* m_flameRod;
     std::unique_ptr<Sword> m_sword;
 
+    // Quiver of arrows
+    std::vector<std::unique_ptr<Arrow>> m_quiver;
+    std::unique_ptr<Bomb> m_bomb;
+
+    bool m_canUseArrow;
+    bool m_usingArrow;
     bool m_moveable;
     bool m_usingSword;
 

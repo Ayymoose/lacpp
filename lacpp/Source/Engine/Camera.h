@@ -33,7 +33,6 @@ namespace Zelda
     {
         friend class Singleton<Camera>;
     public:
-        Camera();
         void setPosition(int x, int y) noexcept;
         void setScrollSpeed(int scrollSpeed) noexcept;
         void render(SDL_Renderer* pRenderer) noexcept override;
@@ -49,6 +48,7 @@ namespace Zelda
         int getY() const noexcept;
 
     private:
+        Camera();
         // Called in the render function
         void trackCharacter() noexcept;
 

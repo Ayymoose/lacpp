@@ -9,13 +9,14 @@ using namespace Zelda;
 void ResourceManager::loadGraphics() noexcept
 {
     // Attempt to load all the graphic resources
-    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_DUNGEON_1_TAIL_CAVE, loadTexture(Zelda::ResourceDungeonsPath + "dungeon_tail_cave.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_LINK, loadTexture(Zelda::ResourceSpriteLinkPath + "link.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_CANDLE, loadTexture(Zelda::ResourceObjectsPath + "candle.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TORCH_1, loadTexture(Zelda::ResourceObjectsPath + "torch.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_INVENTORY, loadTexture(Zelda::ResourceObjectsPath + "inventory.png", TRANSPARENCY_COLOUR)));
-    m_Resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WEAPON, loadTexture(Zelda::ResourceObjectsPath + "weapons.png", TRANSPARENCY_COLOUR)));
-
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_DUNGEON_1_TAIL_CAVE, loadTexture(Zelda::ResourceDungeonsPath + "dungeon_tail_cave.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_LINK, loadTexture(Zelda::ResourceSpriteLinkPath + "link.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_CANDLE, loadTexture(Zelda::ResourceObjectsPath + "candle.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TORCH_1, loadTexture(Zelda::ResourceObjectsPath + "torch.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_INVENTORY, loadTexture(Zelda::ResourceObjectsPath + "inventory.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WEAPON, loadTexture(Zelda::ResourceObjectsPath + "weapons.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TEXT, loadTexture(Zelda::ResourceMiscPath + "dialogue.png", TRANSPARENCY_COLOUR)));
+    std::cout << "Loaded " << m_resources.size() << " resources\n";
 }
 
 void Zelda::ResourceManager::loadSounds() noexcept
@@ -26,9 +27,9 @@ void Zelda::ResourceManager::loadSounds() noexcept
 ResourceManager::~ResourceManager()
 {
     // Free all loaded resources
-    for (auto iterator = m_Resources.begin(); iterator != m_Resources.end(); iterator++)
+    for (auto const& texture : m_resources)
     {
-        SDL_Texture* pTexture = (*iterator).second;
+        SDL_Texture* pTexture = texture.second;
         SDL_DestroyTexture(pTexture);
     }
 }
@@ -43,6 +44,7 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t tran
     if (loadedSurface == nullptr)
     {
         fprintf(stderr,"Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+        assert(false);
     }
     else
     {
@@ -56,7 +58,6 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t tran
         // Get rid of old loaded surface
         SDL_FreeSurface(loadedSurface);
     }
-    assert(newTexture != nullptr);
 
     // Below sets the SDL_TEXTUREACCESS_TARGET access to our texture as we can't set it on a surface it seems
     // So we must copy every texture created from surface to a new one.
