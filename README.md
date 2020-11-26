@@ -1,6 +1,6 @@
 # lacpp (Links Awakening C++)
 
-Small side project of Link's Awakening in C++17 using SDL2.
+Small ongoing side project of Link's Awakening in C++17 using SDL2.
 
 **Features:**
 
@@ -9,6 +9,7 @@ Small side project of Link's Awakening in C++17 using SDL2.
 * View scrolling
 * Basic Enemys
 * Basic Collision
+* Basic animations
 * Keyboard control using arrow keys
 
 **Upcoming features:**
