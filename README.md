@@ -1,6 +1,7 @@
 # lacpp (Links Awakening C++)
 
 Small ongoing side project of Link's Awakening in C++17 using SDL2.
+Currently building using Visual Studio 2019 on Windows (No Linux support ATM)
 
 **Features:**
 
