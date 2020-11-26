@@ -17,6 +17,6 @@ Bosses
 Worldmap
 Dungeons
 
-Some screenshots of progress
+Some screenshots of progress:
 
-[Contribution guidelines for this project](Screens/000.png)
+![alt text](Screens/000.png
