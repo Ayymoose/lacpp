@@ -5,6 +5,7 @@
 class CullableParent
 {
 public:
+    virtual ~CullableParent() = default;
     virtual void cull() noexcept = 0;
 };
 
@@ -12,5 +13,6 @@ public:
 class CullableChild
 {
 public:
+    virtual ~CullableChild() = default;
     virtual bool cull() noexcept = 0;
 };

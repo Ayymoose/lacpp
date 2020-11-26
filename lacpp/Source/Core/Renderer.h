@@ -26,9 +26,9 @@ public:
     {
         return m_renderer;
     }
-    void setRenderer(SDL_Renderer* pRenderer) noexcept
+    void setRenderer(SDL_Renderer* renderer) noexcept
     {
-        m_renderer = pRenderer;
+        m_renderer = renderer;
     }
 
     virtual ~Renderer()
@@ -43,12 +43,26 @@ public:
 
     void addRenderable(Renderable* renderable) noexcept
     {
+        auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1)
+        { 
+            return r1 == renderable; 
+        });
+
+        if (iterator != m_renderables.end())
+        {
+            // No adding the same object to the render set
+            assert(false);
+        }
+        //std::cout << "Adding renderable " << renderable->name() << std::endl;
         m_renderables.emplace(renderable);
     }
 
     void removeRenderable(Renderable* renderable) noexcept
     {
-        auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1) { return r1 == renderable; });
+        auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1)
+        { 
+            return r1 == renderable; 
+        });
         if (iterator != m_renderables.end())
         {
             std::cout << "Removing renderable " << (*iterator)->name() << std::endl;

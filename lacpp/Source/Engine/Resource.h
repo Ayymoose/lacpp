@@ -16,6 +16,8 @@ namespace Zelda
     const std::string ResourceSpriteLinkPath = R"(Resources\Sprite\Link\)";
     const std::string ResourceObjectsPath = R"(Resources\Sprite\Object\)";
     const std::string ResourceMiscPath = R"(Resources\Background\Misc\)";
+    const std::string ResourceEnemyPath = R"(Resources\Sprite\Enemy\)";
+
     enum class Graphic
     {
         GFX_RESOURCE_NONE = -1,
@@ -114,6 +116,7 @@ namespace Zelda
 
         // Sprites
         GFX_LINK,
+        GFX_ENEMY,
 
         GFX_RESOURCE_COUNT
     };
@@ -124,12 +127,15 @@ namespace Zelda
 
     class ResourceManager : public Singleton<ResourceManager>
     {
+        friend class Singleton<ResourceManager>;
     public:
 
         SDL_Texture* operator[](Graphic resource) noexcept
         {
             assert(resource > Graphic::GFX_RESOURCE_NONE && resource < Graphic::GFX_RESOURCE_COUNT);
-            return m_resources[resource];
+            auto graphic = m_resources[resource];
+            assert(graphic);
+            return graphic;
         }
 
         void loadGraphics() noexcept;
@@ -137,6 +143,8 @@ namespace Zelda
         virtual ~ResourceManager();
 
     private:
+        ResourceManager() = default;
+
         // Load a texture and specify the transparent colour
         SDL_Texture* loadTexture(const std::string& path, uint32_t transparency) noexcept;
 

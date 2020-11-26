@@ -18,7 +18,7 @@ Sword::Sword()
     m_depth = ZD_DEPTH_BACKGROUND;
 }
 
-void Sword::render(SDL_Renderer* pRenderer) noexcept
+void Sword::render(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect =
     {
@@ -30,14 +30,14 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
 
     SDL_Rect dstRect =
     {
-        m_position.x - Camera::getInstance().getX(),
-        m_position.y - Camera::getInstance().getY(),
+        m_positionVector.x - Camera::getInstance().getX(),
+        m_positionVector.y - Camera::getInstance().getY(),
         m_width,
         m_height
     };
 
-    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
+    m_boundingBox.x = m_positionVector.x - Camera::getInstance().getX();
+    m_boundingBox.y = m_positionVector.y - Camera::getInstance().getY();
 
     switch (m_direction)
     {
@@ -121,7 +121,7 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
         break;
     }
 
-    ZD_ASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
 
 
 
@@ -143,5 +143,5 @@ void Sword::render(SDL_Renderer* pRenderer) noexcept
 
 void Sword::setPosition(Vector<float> position)
 {
-    m_position = position;
+    m_positionVector = position;
 }

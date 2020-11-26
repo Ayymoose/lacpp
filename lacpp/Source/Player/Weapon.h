@@ -56,7 +56,7 @@ public:
 
     Vector<float> position() const
     {
-        return m_position;
+        return m_positionVector;
     }
 
     void setDirection(Direction direction)
@@ -72,13 +72,13 @@ public:
     }
 
 protected:
-    Vector<float> m_position;
+    Vector<float> m_positionVector;
     Direction m_direction;
     UpdateTimer m_weaponTimer;
     BoundingBox m_boundingBox;
 
     // Weapon sprite sources
-    SDL_Rect m_weaponSpritesSrc[WPN_SPRITE_COUNT] =
+    const SDL_Rect m_weaponSpritesSrc[WPN_SPRITE_COUNT] =
     {
         {0,0,8,16},     // WPN_SPRITE_BOW
         {10,0,8,16},    // WPN_SPRITE_BOOMERANG

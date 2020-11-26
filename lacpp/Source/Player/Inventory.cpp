@@ -21,7 +21,7 @@ Inventory::Inventory()
 
     // Select sub screen
     m_subscreen = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SelectSubscreenWidth, SelectSubscreenHeight);
-    ColourTexture(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, SDL_RGB(0, 0, 0));
+    colourTexture(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, SDL_RGB(0, 0, 0));
     assert(m_subscreen != nullptr);
     
     // m_texture is the main texture we draw ontoas
@@ -32,11 +32,11 @@ Inventory::Inventory()
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
     m_inventoryDividerH = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, InventoryDividerWidthH, InventoryDividerHeightH);
     assert(m_inventoryDividerH != nullptr);
-    CopyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], m_inventoryDividerH, &srcRect, nullptr);
+    copyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], m_inventoryDividerH, &srcRect, nullptr);
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
     m_inventoryDividerV = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, InventoryDividerWidthV, InventoryDividerHeightV);
     assert(m_inventoryDividerV != nullptr);
-    CopyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], m_inventoryDividerV, &srcRect, nullptr);
+    copyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], m_inventoryDividerV, &srcRect, nullptr);
     //
 
     ZD_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0, "SDL Error: " << SDL_GetError());
@@ -278,7 +278,7 @@ void Inventory::control() noexcept
     }
 }
 
-void Inventory::render(SDL_Renderer* pRenderer) noexcept
+void Inventory::render(SDL_Renderer* renderer) noexcept
 {
     // if inventory closed
     // render top 16 pixels at bottom of screen
@@ -293,32 +293,32 @@ void Inventory::render(SDL_Renderer* pRenderer) noexcept
     }
     else
     {
-        renderY = CameraHeight;
+        renderY = CAMERA_HEIGHT;
     }
 
     // Render the inventory background
     SDL_Rect dstRect = { 0, renderY, m_width , m_height };
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, m_texture, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
-    ColourTexture(pRenderer, m_texture, nullptr, SDL_RGB(InventoryR, InventoryG, InventoryB));
+    ZD_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    colourTexture(renderer, m_texture, nullptr, SDL_RGB(InventoryR, InventoryG, InventoryB));
 
-    drawTopHUD(pRenderer);
+    drawTopHUD(renderer);
 
     // If the inventory is open
     if (m_open)
     {
-        drawInventoryDividers(pRenderer);
-        drawInventoryWeapons(pRenderer);
-        drawSelector(pRenderer);
+        drawInventoryDividers(renderer);
+        drawInventoryWeapons(renderer);
+        drawSelector(renderer);
         if (m_inDungeon)
         {
-            drawDungeonItems(pRenderer);
+            drawDungeonItems(renderer);
         }
         else
         {
-            drawInventoryItems(pRenderer);
+            drawInventoryItems(renderer);
         }
-        drawMiscItems(pRenderer);
-        drawSelectStatus(pRenderer);
+        drawMiscItems(renderer);
+        drawSelectStatus(renderer);
     }
 
 }
@@ -392,7 +392,7 @@ WeaponLevel Inventory::shieldLevel() const noexcept
     return m_shieldLevel;
 }
 
-void Inventory::drawDungeonMap(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
 {
     assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
 
@@ -438,11 +438,11 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer) noexcept
     case Dungeon::DUNGEON_TURTLE_ROCK: break;
     }
 
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
     // Draw dungeon map level
     dstRect = {72,64,8,8};
-    drawNumber(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], true, true, 0, static_cast<int>(m_dungeon), &dstRect);
+    drawNumber(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], true, true, 0, static_cast<int>(m_dungeon), &dstRect);
 
     // Draw the dungeon map
 
@@ -544,7 +544,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer) noexcept
             }
             dstRect.x += x * srcRect.w;
             dstRect.y += y * srcRect.w;
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
             // Draw current location flashing
             if (m_dungeonPosition.x == x && m_dungeonPosition.y == y)
@@ -558,7 +558,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer) noexcept
                         m_dungeonMapPositionTimer.m_counter = 0;
                     }
                 }
-                ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+                ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
             }
 
         }
@@ -566,7 +566,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* pRenderer) noexcept
 
 }
 
-void Inventory::drawSelectStatus(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawSelectStatus(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
@@ -575,10 +575,10 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer) noexcept
         // Draw two red arrows
         srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
         dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
         dstRect.x += 73;
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
         srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
         dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
@@ -588,17 +588,17 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer) noexcept
         // Draw "PUSH SELECT"
         if (m_flashSelect)
         {
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         }
     }
     else
     {
         // TODO: Transition the subscreen
         dstRect = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, m_subscreen, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, m_subscreen, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
-        auto currentRenderingTarget = SDL_GetRenderTarget(pRenderer);
-        ZD_ASSERT(SDL_SetRenderTarget(pRenderer, m_subscreen) == 0, "SDL Error: " << SDL_GetError());
+        auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
+        ZD_ASSERT(SDL_SetRenderTarget(renderer, m_subscreen) == 0, "SDL Error: " << SDL_GetError());
 
 
         // Tunic
@@ -616,7 +616,7 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer) noexcept
 
         }
         dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
         // Heart pieces
         srcRect = m_inventorySpritesSrc[INVENTORY_HEART_PIECES];
@@ -640,40 +640,40 @@ void Inventory::drawSelectStatus(SDL_Renderer* pRenderer) noexcept
             srcRect.x += 4 * (srcRect.w + 2);
             break;
         }
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
         // Photographs
         srcRect = m_inventorySpritesSrc[INVENTORY_PHOTOGRAPHS];
         dstRect = m_inventorySpritesDst[INVENTORY_PHOTOGRAPHS];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
         // Inventory "/"
         srcRect = m_inventorySpritesSrc[INVENTORY_SLASH];
         dstRect = m_inventorySpritesDst[INVENTORY_SLASH];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         dstRect.x = 64; dstRect.y = 8;
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         
         // Draw how many heart pieces we have (out of 4)
         dstRect = {56,7,8,8};
-        drawNumber(pRenderer, m_subscreen, false, false, 0, m_heartPieces, &dstRect);
+        drawNumber(renderer, m_subscreen, false, false, 0, m_heartPieces, &dstRect);
         dstRect = { 72,7,8,8 };
-        drawNumber(pRenderer, m_subscreen, false, false, 0, HeartPiecesMax, &dstRect);
+        drawNumber(renderer, m_subscreen, false, false, 0, HeartPiecesMax, &dstRect);
 
         // Draw number of photographs
         dstRect = { 24,23,8,8 };
-        drawNumber(pRenderer, m_subscreen, false, false, 1, m_photographs, &dstRect);
+        drawNumber(renderer, m_subscreen, false, false, 1, m_photographs, &dstRect);
         dstRect = { 48,23,8,8 };
-        drawNumber(pRenderer, m_subscreen, false, false, 1, MaxPhotographs, &dstRect);
+        drawNumber(renderer, m_subscreen, false, false, 1, MaxPhotographs, &dstRect);
 
         // Remember! This resets the drawing target to the screen
-        ZD_ASSERT(SDL_SetRenderTarget(pRenderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 
     }
 
 }
 
-void Inventory::drawMiscItems(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawMiscItems(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
@@ -681,34 +681,34 @@ void Inventory::drawMiscItems(SDL_Renderer* pRenderer) noexcept
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_FLIPPERS];
         dstRect = m_inventorySpritesDst[INVENTORY_FLIPPERS];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     if (m_potion)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_POTION];
         dstRect = m_inventorySpritesDst[INVENTORY_POTION];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     // Draw number of seashells
     srcRect = m_inventorySpritesSrc[INVENTORY_SEASHELLS];
     dstRect = m_inventorySpritesDst[INVENTORY_SEASHELLS];
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    drawNumber(pRenderer, m_texture, false, true, 1, m_seashells, &dstRect);
+    drawNumber(renderer, m_texture, false, true, 1, m_seashells, &dstRect);
 
     // Draw currently traded item (if any)
     if (m_tradeItem != ITEM_NONE)
     {
         srcRect = m_inventorySpritesSrc[TRADE_ITEM_SPRITE(m_tradeItem)];
         dstRect = m_inventorySpritesDst[TRADE_ITEM_SPRITE(m_tradeItem)];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 }
 
-void Inventory::drawInventoryItems(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawInventoryItems(SDL_Renderer* renderer) noexcept
 {
     // Depending on whether we are in a dungeon or not,
     // draws the inventory items or the dungeon items
@@ -720,41 +720,41 @@ void Inventory::drawInventoryItems(SDL_Renderer* pRenderer) noexcept
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_TAIL_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_TAIL_KEY];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     if (m_slimeKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_SLIME_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_SLIME_KEY];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     if (m_anglerKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_ANGLER_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_ANGLER_KEY];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
     
     if (m_faceKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_FACE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_FACE_KEY];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     if (m_birdKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_BIRD_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_BIRD_KEY];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
-    drawInstruments(pRenderer);
+    drawInstruments(renderer);
 }
 
-void Inventory::drawDungeonItems(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawDungeonItems(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
@@ -762,47 +762,47 @@ void Inventory::drawDungeonItems(SDL_Renderer* pRenderer) noexcept
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
         dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     if (m_nightmareKey)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     if (m_owlBeak)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
         dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     if (m_dungeonMap)
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
         dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
 
     // Draw the dungeon map
-    drawDungeonMap(pRenderer);
+    drawDungeonMap(renderer);
 
     // Draw dungeon keys
     srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_KEY];
     dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_KEY];
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    drawNumber(pRenderer, m_texture, false, true, 0, m_dungeonKeys, &dstRect);
+    drawNumber(renderer, m_texture, false, true, 0, m_dungeonKeys, &dstRect);
 
 
 
 }
 
-void Inventory::drawInstruments(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawInstruments(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
@@ -838,21 +838,21 @@ void Inventory::drawInstruments(SDL_Renderer* pRenderer) noexcept
                     m_instrumentTimer.m_counter = 0;
                 }
             }
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
             break;
         default:
             // If we don't have the instrument yet
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_BACK_0];
             dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK_0 + i - 1];
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
             dstRect.x += 8; dstRect.y += 8; dstRect.w = 8; dstRect.h = 8;
-            drawNumber(pRenderer, m_texture, false, true, 0, i, &dstRect);
+            drawNumber(renderer, m_texture, false, true, 0, i, &dstRect);
             break;
         }
     }
 }
 
-void Inventory::drawHealth(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
 {
     float currentHealth = Link::getInstance().health();
     float healthMax =  Link::getInstance().maxHealth();
@@ -911,7 +911,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer) noexcept
     // Draw whole hearts
     for (int i = 0; i < wholeHearts; i++)
     {
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HeartsPerRow)
@@ -925,7 +925,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer) noexcept
     if (quarterHearts == 0.25)
     {
         srcRect.x = (srcRect.w + 2) * 3;
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HeartsPerRow)
@@ -937,7 +937,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer) noexcept
     else if (quarterHearts == 0.5)
     {
         srcRect.x = (srcRect.w + 2) * 2;
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HeartsPerRow)
@@ -949,7 +949,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer) noexcept
     else if (quarterHearts == 0.75)
     {
         srcRect.x = (srcRect.w + 2) * 1;
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HeartsPerRow)
@@ -963,7 +963,7 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer) noexcept
     srcRect.x = (srcRect.w + 2) * 4;
     for (int i = 0; i < emptyHearts; i++)
     {
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         dstRect.x += srcRect.w;
         drawnHearts++;
         if (drawnHearts == HeartsPerRow)
@@ -974,15 +974,15 @@ void Inventory::drawHealth(SDL_Renderer* pRenderer) noexcept
     }
 }
 
-void Inventory::drawInventoryWeapons(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
     // Instead of creating an object for each item we have
     // We just render the items we have to a single texture
     // and render that instead
-    auto currentRenderingTarget = SDL_GetRenderTarget(pRenderer);
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, m_texture) == 0, SDL_GetError());
+    auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, m_texture) == 0, SDL_GetError());
 
     for (int i = 0; i < InventoryMaxWeapons; i++)
     {
@@ -1002,11 +1002,11 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* pRenderer) noexcept
                 InventorySpriteHeight
             };
             // Draw the inventory items onto the internal inventory
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         }
     }
 
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 
     for (int i = 0; i < InventoryMaxWeapons; i++)
     {
@@ -1020,17 +1020,17 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* pRenderer) noexcept
                 WeaponLevelHeight
             };
 
-            drawWeaponLevel(pRenderer, m_texture, m_items[i], &dstRect);
+            drawWeaponLevel(renderer, m_texture, m_items[i], &dstRect);
         }
     }
   
 
 }
 
-void Inventory::drawSelector(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawSelector(SDL_Renderer* renderer) noexcept
 {
-    auto currentRenderingTarget = SDL_GetRenderTarget(pRenderer);
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, m_texture) == 0, "SDL Error: " << SDL_GetError());
+    auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, m_texture) == 0, "SDL Error: " << SDL_GetError());
 
     SDL_Rect srcRect, dstRect;
     // Render the selector
@@ -1042,17 +1042,17 @@ void Inventory::drawSelector(SDL_Renderer* pRenderer) noexcept
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
         dstRect = { m_selectorX, m_selectorY, srcRect.w , srcRect.h };
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 
 }
 
-void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer) noexcept
+void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect dstRect;
-    auto currentRenderingTarget = SDL_GetRenderTarget(pRenderer);
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, m_texture) == 0, "SDL Error: " << SDL_GetError());
+    auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, m_texture) == 0, "SDL Error: " << SDL_GetError());
 
     // Draw horizontal divider
     for (int i = 0; i < (InventoryWidth / InventoryDividerWidthH)-2; i++)
@@ -1064,7 +1064,7 @@ void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer) noexcept
             InventoryDividerWidthH,
             InventoryDividerHeightH
         };
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, m_inventoryDividerH, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, m_inventoryDividerH, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
     // Draw vertical divider
@@ -1077,44 +1077,44 @@ void Inventory::drawInventoryDividers(SDL_Renderer* pRenderer) noexcept
             InventoryDividerWidthV,
             InventoryDividerHeightV
         };
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, m_inventoryDividerV, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, m_inventoryDividerV, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 }
 
-void Inventory::drawTopHUD(SDL_Renderer* pRenderer) noexcept 
+void Inventory::drawTopHUD(SDL_Renderer* renderer) noexcept 
 {
-    auto currentRenderingTarget = SDL_GetRenderTarget(pRenderer);
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, m_texture) == 0, "SDL Error: " << SDL_GetError());
+    auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, m_texture) == 0, "SDL Error: " << SDL_GetError());
 
     SDL_Rect srcRect, dstRect;
 
     // Copy "B" 
     srcRect = m_inventorySpritesSrc[INVENTORY_B_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_B_BUTTON];
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
     // Copy "A"
     srcRect = m_inventorySpritesSrc[INVENTORY_A_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_A_BUTTON];
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
     // Copy selector
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_1];
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_2];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_2];
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
     // Ruppee icon
     srcRect = m_inventorySpritesSrc[INVENTORY_RUPPEE];
     dstRect = m_inventorySpritesDst[INVENTORY_RUPPEE];
-    ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
     // Draw health
-    drawHealth(pRenderer);
+    drawHealth(renderer);
 
     // Draw weapon A
     if (m_weaponA != WPN_NONE)
@@ -1122,11 +1122,11 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer) noexcept
         // Draw the actual weapon
         srcRect = m_inventorySpritesSrc[m_weaponA];
         dstRect = {48,0, srcRect.w, srcRect.h };
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
         // Draw the weapon level
         dstRect = { 56,8, 8, 8 };
-        drawWeaponLevel(pRenderer, m_texture, m_weaponA, &dstRect);
+        drawWeaponLevel(renderer, m_texture, m_weaponA, &dstRect);
     }
 
     // Draw weapon B
@@ -1134,17 +1134,17 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer) noexcept
     {
         srcRect = m_inventorySpritesSrc[m_weaponB];
         dstRect = { 8,0, srcRect.w, srcRect.h };
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         dstRect = { 16,8, 8, 8 };
-        drawWeaponLevel(pRenderer, m_texture, m_weaponB, &dstRect);
+        drawWeaponLevel(renderer, m_texture, m_weaponB, &dstRect);
     }
 
     // Draw current ruppees
     dstRect = { 80,8,8,8 };
-    drawNumber(pRenderer, m_texture, false, true, 2, 10, &dstRect);
+    drawNumber(renderer, m_texture, false, true, 2, 10, &dstRect);
 
     // Pop rendering target
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, currentRenderingTarget) == 0, SDL_GetError());
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, SDL_GetError());
 }
 
 // Draw a number or level onto a texture
@@ -1154,15 +1154,15 @@ void Inventory::drawTopHUD(SDL_Renderer* pRenderer) noexcept
 // 09
 // 320
 
-void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept
+void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept
 {
     // drawLevel      = Draw the "L-" text next to the number
     // useNormalFont  = Use the normal digit text or text with black background
     // trailingDigits = Number of trailing digits to append to the LHS of the number (e.g 1 01 001)
 
     // Save the current renderering target
-    auto currentRenderingTarget = SDL_GetRenderTarget(pRenderer);
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, srcTexture) == 0, "SDL Error: " << SDL_GetError());
+    auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, srcTexture) == 0, "SDL Error: " << SDL_GetError());
 
     SDL_Rect srcRect;
 
@@ -1171,7 +1171,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
     {
         // Draw the "L-"
         srcRect = m_inventorySpritesSrc[INVENTORY_LEVEL];
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
 
         if (useNormalFont)
         {
@@ -1184,7 +1184,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
 
         srcRect.x += 2 * number + srcRect.w * number;
         dstRect->x += srcRect.w;
-        ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
     else
     {
@@ -1232,7 +1232,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
         // Add any trailing digits if needed in front of the number
         for (int i = 0; i < (number == 0 ? trailingDigits : trailingDigits+1 - numberLength); i++)
         {
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
             dstRect->x += srcRect.w;
         }
 
@@ -1250,7 +1250,7 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
             }
 
             srcRect.x += 2 * (number % 10) + srcRect.w * (number % 10);
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
             dstRect->x += srcRect.w;
             number /= 10;
         } while (number != 0);
@@ -1267,39 +1267,39 @@ void Inventory::drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, boo
         // Draw any reversed number whose 0 was lost
         for (int i = 0; i < trailingZeros; i++)
         {
-            ZD_ASSERT(SDL_RenderCopy(pRenderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
+            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
             dstRect->x += srcRect.w;
         }
     }
     // Restore "pop" the target backk
-    ZD_ASSERT(SDL_SetRenderTarget(pRenderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 }
 
-void Inventory::drawWeaponLevel(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept
+void Inventory::drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept
 {
     switch (weapon)
     {
     case WPN_SHIELD:
-        drawNumber(pRenderer, srcTexture, true, true, 0, (int)m_shieldLevel, dstRect);
+        drawNumber(renderer, srcTexture, true, true, 0, (int)m_shieldLevel, dstRect);
         break;
     case WPN_SWORD:
-        drawNumber(pRenderer, srcTexture, true, true, 0, (int)m_swordLevel, dstRect);
+        drawNumber(renderer, srcTexture, true, true, 0, (int)m_swordLevel, dstRect);
         break;
     case WPN_POWER_BRACELET_1:
     case WPN_POWER_BRACELET_2:
-        drawNumber(pRenderer, srcTexture, true, true, 0, (int)m_braceletLevel, dstRect);
+        drawNumber(renderer, srcTexture, true, true, 0, (int)m_braceletLevel, dstRect);
         break;
     case WPN_BOMBS:
-        drawNumber(pRenderer, srcTexture, false, true, 1, m_bombs, dstRect);
+        drawNumber(renderer, srcTexture, false, true, 1, m_bombs, dstRect);
         break;
     case WPN_BOW:
-        drawNumber(pRenderer, srcTexture, false, true, 1, m_arrows, dstRect);
+        drawNumber(renderer, srcTexture, false, true, 1, m_arrows, dstRect);
         break;
     case WPN_MAGIC_POWDER:
-        drawNumber(pRenderer, srcTexture, false, true, 1, m_magicPowder, dstRect);
+        drawNumber(renderer, srcTexture, false, true, 1, m_magicPowder, dstRect);
         break;
     case WPN_OCARINA:
-        drawNumber(pRenderer, srcTexture, false, true, 0, (int)m_ocarinaSong, dstRect);
+        drawNumber(renderer, srcTexture, false, true, 0, (int)m_ocarinaSong, dstRect);
         break;
     case WPN_BOOMERANG:
     case WPN_ROC_FEATHER:

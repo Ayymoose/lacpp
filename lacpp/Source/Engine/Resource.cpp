@@ -16,6 +16,8 @@ void ResourceManager::loadGraphics() noexcept
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_INVENTORY, loadTexture(Zelda::ResourceObjectsPath + "inventory.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WEAPON, loadTexture(Zelda::ResourceObjectsPath + "weapons.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TEXT, loadTexture(Zelda::ResourceMiscPath + "dialogue.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_ENEMY, loadTexture(Zelda::ResourceEnemyPath + "enemy.png", TRANSPARENCY_COLOUR)));
+
     std::cout << "Loaded " << m_resources.size() << " resources\n";
 }
 
@@ -66,7 +68,7 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t tran
     ZD_ASSERT(SDL_QueryTexture(newTexture, nullptr, nullptr, &textureWidth, &textureHeight) == 0, "SDL Error: " << SDL_GetError());
     auto texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, textureWidth, textureHeight);
     assert(texture != nullptr);
-    CopyToTexture(Renderer::getInstance().getRenderer(), newTexture, texture, nullptr, nullptr);
+    copyToTexture(Renderer::getInstance().getRenderer(), newTexture, texture, nullptr, nullptr);
     ZD_ASSERT(SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) == 0, "SDL Error: " << SDL_GetError());
     
     return texture;

@@ -11,8 +11,8 @@
 namespace Zelda
 {
     // The "viewing region" dimensions
-    constexpr int CameraWidth = 160;
-    constexpr int CameraHeight = 128;
+    constexpr int CAMERA_WIDTH = 160;
+    constexpr int CAMERA_HEIGHT = 128;
 
     // How much we add to the position vector of the player to scroll
     constexpr int PlayerScrollSpeed = 1;
@@ -24,9 +24,9 @@ namespace Zelda
     constexpr int ScrollDownEdge = 0;
 
     // HUD Height
-    constexpr int HUDHeight = 16;
+    constexpr int HUD_HEIGHT = 16;
 
-    constexpr int ScrollSpeed = 4;
+    constexpr int CAMERA_SCROLL_SPEED = 4;
 
 
     class Camera : public Renderable, public Singleton<Camera>
@@ -35,17 +35,20 @@ namespace Zelda
     public:
         void setPosition(int x, int y) noexcept;
         void setScrollSpeed(int scrollSpeed) noexcept;
-        void render(SDL_Renderer* pRenderer) noexcept override;
+        void render(SDL_Renderer* renderer) noexcept override;
         void setCurrentBackground(SDL_Texture* currentBackground) noexcept;
 
-        // Returns true whether a point is visible in the camera region
-        bool visible(Vector<float> point) const noexcept;
+        // Returns true whether a rect is visible in the camera region
+        bool visible(SDL_FRect&& rectangle) const noexcept;
 
         // The camera will track a Character
         void track(Character* character) noexcept;
 
         int getX() const noexcept;
         int getY() const noexcept;
+
+        // Position as a vector
+        Vector<float> position() const noexcept;
 
     private:
         Camera();

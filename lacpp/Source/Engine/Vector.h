@@ -1,61 +1,68 @@
 #pragma once
 
+#include <assert.h>
+#include <cmath>
+
 namespace Zelda
 {
-
     // 2D vector class
     template <typename T>
     class Vector
     {
     public:
-        Vector() : x(0), y(0) {};
+        constexpr Vector() : x(0), y(0) {};
         Vector(T x, T y)
         {
             this->x = x;
             this->y = y;
         }
 
-        Vector<T> operator*(int scalar) noexcept
+        Vector<T> operator/(float div) const noexcept
         {
-            this->x *= scalar;
-            this->y *= scalar;
-            return *this;
+            assert(div != 0);
+            return Vector<T>(x / div, y / div);
         }
 
-        /*  Vector<T> operator+=(int value)
-          {
-              this->x += value;
-              this->y += value;
-              return *this;
-          }*/
+        Vector<T> operator+(Vector<T> other) noexcept
+        {
+            return Vector<T>(x + other.x, y + other.y);
+        }
+
+        Vector<T> operator*(float scalar) const noexcept
+        {
+            return Vector<T>(x * scalar, y * scalar);
+        }
+
+        Vector<T> operator-() const noexcept
+        {
+            return Vector<T>(-x, -y);
+        }
 
         Vector<T> operator+=(Vector<T> other) noexcept
         {
-            this->x += other.x;
-            this->y += other.y;
+            x += other.x;
+            y += other.y;
             return *this;
         }
 
         Vector<T> operator=(Vector<T> other) noexcept
         {
-            this->x = other.x;
-            this->y = other.y;
+            x = other.x;
+            y = other.y;
             return *this;
         }
 
-        Vector<T> operator-(Vector<T> other) noexcept
+        Vector<T> operator-(Vector<T> other) const noexcept
         {
-            this->x -= other.x;
-            this->y -= other.y;
-            return *this;
+            return Vector<T>(x - other.x, y - other.y);
         }
 
-        bool operator==(Vector<T> other) noexcept
+        bool operator==(Vector<T> other) const noexcept
         {
-            return (this->x == other.x && this->y == other.y);
+            return (x == other.x && y == other.y);
         }
 
-        bool operator!=(Vector<T> other) noexcept
+        bool operator!=(Vector<T> other) const noexcept
         {
             return !operator==(other);
         }
@@ -63,8 +70,7 @@ namespace Zelda
         // Cross product of 2 2D vectors
         static constexpr T cross(const Vector& v1, const Vector& v2) noexcept
         {
-            assert(false);
-            return 0;
+            return (v1.x * v2.y) - (v1.y * v2.x);
         }
 
         // Dot product of 2 2D vectors 
@@ -73,10 +79,17 @@ namespace Zelda
             return v1.x * v2.x + v1.y * v2.y;
         }
 
+        static constexpr Vector<T> normalise(const Vector& v) noexcept
+        {
+            float len = v.length();
+            // TODO: Double/float epsilon comparison
+            assert(len != 0);
+            return Vector<T>(v.x / len, v.y / len);
+        }
+
         // Normalise a vector
         void normalise() noexcept
         {
-            
             float len = length();
             // TODO: Double/float epsilon comparison
             assert(len != 0);
@@ -88,7 +101,7 @@ namespace Zelda
         // Vector length
         constexpr float length() const noexcept
         {
-            return sqrt(x * x + y * y);
+            return static_cast<float>(std::sqrt(x * x + y * y));
         }
 
         // Just easier to have it public

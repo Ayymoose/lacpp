@@ -26,24 +26,10 @@ struct Animation
 class Renderable
 {
 public:
-    Renderable()
-    {
-        m_texture = nullptr;
-        m_width = 0;
-        m_height = 0;
-        m_depth = 0;
-        m_animationFPS = 0.0f;
-        m_animateXPos = 0;
-        m_animateYPos = 0;
-        m_currentFrame = 0;
-        m_endFrame = 0;
-        m_orientation = 0.0f;
 
-        m_animationStart = false;
-        m_animationComplete = false;
-    }
     virtual ~Renderable() = default;
-    virtual void render(SDL_Renderer* pRenderer) noexcept = 0;
+    // Can't be const* because the library takes non-const pointer
+    virtual void render(SDL_Renderer* renderer) noexcept = 0;
 
     int depth() const noexcept
     {
@@ -57,12 +43,37 @@ public:
         return m_name;
     }
 
+    Renderable()
+    {
+        m_texture = nullptr;
+        m_width = 0;
+        m_height = 0;
+        m_depth = 0;
+        m_animationFPS = 0.0f;
+        m_animateXPos = 0;
+        m_animateYPos = 0;
+        m_currentFrame = 0;
+        m_endFrame = 0;
+        m_orientation = 0.0f;
+        m_animationStart = false;
+        m_animationComplete = false;
+        m_srcRect = { 0,0,0,0 };
+        m_dstRect = { 0,0,0,0 };
+        m_flip = SDL_RendererFlip::SDL_FLIP_NONE;
+    }
 protected:
-    // Default rendering
+
+
+    // Default texture to render
     SDL_Texture* m_texture;
+
+    // Dimensions
     int m_width;
     int m_height;
 
+    // For sprite
+    SDL_Rect m_srcRect;
+    SDL_FRect m_dstRect;
 
     // Debug name
     std::string m_name;
@@ -82,4 +93,5 @@ protected:
     int m_currentFrame;
     int m_endFrame;
     float m_orientation;
+    SDL_RendererFlip m_flip;
 };

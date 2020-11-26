@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 
 #include "Renderable.h"
 #include "Controllable.h"
@@ -118,16 +118,13 @@ enum PlayerState
 
 class Link : public Controllable, public Renderable, public Character, public Singleton<Link>, public CullableParent
 {
+    friend class Singleton<Link>;
 public:
-    Link();
-
     // Renderable overrides
-    void render(SDL_Renderer* pRenderer) noexcept override;
+    void render(SDL_Renderer* renderer) noexcept override;
 
     // Character overrides
     float health() const noexcept override;
-    void damage(float damage) noexcept override;
-    Direction direction() const noexcept override;
     Vector<float> position() const noexcept override;
     void attack() noexcept override;
     void die() noexcept override;
@@ -145,11 +142,15 @@ public:
     float maxHealth() const noexcept;
     void updateState() noexcept;
 
+    bool moving() const noexcept;
+    Direction direction() const noexcept;
+
     int m_currentCollisionMapX;
     int m_currentCollisionMapY;
     CollisionArea m_collisionArea;
 
 private:
+    Link();
     int m_speed;
     float m_healthMax;
     Inventory m_inventory;
@@ -169,21 +170,17 @@ private:
     bool m_dirLockDown;
     bool m_dirLockLeft;
 
-    // Weapon tests
-
-    
+    // Weapons
     Boomerang* m_boomerang;
-    
     FlameRod* m_flameRod;
     std::unique_ptr<Sword> m_sword;
-
-    // Quiver of arrows
     std::vector<std::unique_ptr<Arrow>> m_quiver;
     std::unique_ptr<Bomb> m_bomb;
 
     bool m_canUseArrow;
     bool m_usingArrow;
     bool m_moveable;
+    bool m_moving;
     bool m_usingSword;
 
     // Link animation state

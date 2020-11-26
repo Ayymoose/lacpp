@@ -14,15 +14,15 @@ Arrow::Arrow()
     m_boundingBox.h = m_height;
 }
 
-void Arrow::render(SDL_Renderer* pRenderer) noexcept
+void Arrow::render(SDL_Renderer* renderer) noexcept
 {
 
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOW];
 
     SDL_Rect dstRect =
     {
-        m_position.x - Camera::getInstance().getX(),
-        m_position.y - Camera::getInstance().getY(),
+        m_positionVector.x - Camera::getInstance().getX(),
+        m_positionVector.y - Camera::getInstance().getY(),
         m_width,
         m_height
     };
@@ -54,17 +54,17 @@ void Arrow::render(SDL_Renderer* pRenderer) noexcept
         break;
     }
 
-    ZD_ASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
 
-    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
+    m_boundingBox.x = m_positionVector.x - Camera::getInstance().getX();
+    m_boundingBox.y = m_positionVector.y - Camera::getInstance().getY();
 
     // Fire the arrow
-    m_position += m_dirVec;
+    m_positionVector += m_dirVec;
 
 }
 
 void Arrow::setPosition(Vector<float> position)
 {
-    m_position = position;
+    m_positionVector = position;
 }

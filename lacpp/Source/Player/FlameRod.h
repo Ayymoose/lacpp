@@ -7,7 +7,7 @@ class FlameRod : public Weapon
 {
 public:
     FlameRod();
-    void render(SDL_Renderer* pRenderer) noexcept override;
+    void render(SDL_Renderer* renderer) noexcept override;
     void setPosition(Vector<float> position) override;
 private:
     Vector<float> m_dirVec;

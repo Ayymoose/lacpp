@@ -60,7 +60,7 @@ namespace Zelda
         std::string m_choice2;
 
         std::string m_message;
-        int m_currentChar;
+        size_t m_currentChar;
         int m_currentLine;
         int m_srcCharX;
         int m_srcCharY;

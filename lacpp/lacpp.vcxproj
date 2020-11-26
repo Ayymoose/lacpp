@@ -72,16 +72,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <IncludePath>$(WindowsSDK_IncludePath);$(VC_IncludePath);$(SolutionDir)Source\Engine;$(SolutionDir)Source\Player;$(SolutionDir)Source\Interfaces;$(SolutionDir)Source\Core;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Source\Enemy;$(SolutionDir)/Source/Core;$(SolutionDir)/Source/Interfaces;$(SolutionDir)/Source/Player;$(SolutionDir)/Source/Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)Source\Core;$(SolutionDir)Source\Interfaces;$(SolutionDir)Source\Player;$(SolutionDir)Source\Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Source\Enemy;$(SolutionDir)Source\Core;$(SolutionDir)Source\Interfaces;$(SolutionDir)Source\Player;$(SolutionDir)Source\Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)/Source/Core;$(SolutionDir)/Source/Interfaces;$(SolutionDir)/Source/Player;$(SolutionDir)/Source/Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Source\Enemy;$(SolutionDir)/Source/Core;$(SolutionDir)/Source/Interfaces;$(SolutionDir)/Source/Player;$(SolutionDir)/Source/Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Source\Core;$(SolutionDir)Source\Interfaces;$(SolutionDir)Source\Player;$(SolutionDir)Source\Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Source\Enemy;$(SolutionDir)Source\Core;$(SolutionDir)Source\Interfaces;$(SolutionDir)Source\Player;$(SolutionDir)Source\Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,6 +93,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>true</EnablePREfast>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>26812;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,9 +155,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Enemy\BuzzBlob.cpp" />
+    <ClCompile Include="Source\Enemy\FileSelect.cpp" />
+    <ClCompile Include="Source\Enemy\Peahat.cpp" />
+    <ClCompile Include="Source\Enemy\SandCrab.cpp" />
+    <ClCompile Include="Source\Enemy\Leever.cpp" />
+    <ClCompile Include="Source\Enemy\IronMask.cpp" />
+    <ClCompile Include="Source\Enemy\ShyGuy.cpp" />
+    <ClCompile Include="Source\Enemy\ArmMimic.cpp" />
+    <ClCompile Include="Source\Enemy\BladeTrap.cpp" />
+    <ClCompile Include="Source\Enemy\Bubble.cpp" />
+    <ClCompile Include="Source\Enemy\HardhatBeetle.cpp" />
+    <ClCompile Include="Source\Enemy\LikeLike.cpp" />
+    <ClCompile Include="Source\Enemy\Gibdo.cpp" />
+    <ClCompile Include="Source\Enemy\GopongaFlower.cpp" />
+    <ClCompile Include="Source\Enemy\Beamos.cpp" />
+    <ClCompile Include="Source\Enemy\SeaUrchin.cpp" />
     <ClCompile Include="Source\Core\Keyboard.cpp" />
     <ClCompile Include="Source\Core\Main.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
+    <ClCompile Include="Source\Player\Worldmap.cpp" />
+    <ClCompile Include="Source\Enemy\Zombie.cpp" />
     <ClCompile Include="Source\Engine\BoundingBox.cpp" />
     <ClCompile Include="Source\Engine\Camera.cpp" />
     <ClCompile Include="Source\Engine\Clock.cpp" />
@@ -166,7 +185,6 @@
     <ClCompile Include="Source\Engine\Engine.cpp" />
     <ClCompile Include="Source\Engine\Resource.cpp" />
     <ClCompile Include="Source\Engine\UpdateTimer.cpp" />
-    <ClCompile Include="Source\Interfaces\Character.cpp" />
     <ClCompile Include="Source\Player\Bomb.cpp" />
     <ClCompile Include="Source\Player\Boomerang.cpp" />
     <ClCompile Include="Source\Player\Arrow.cpp" />
@@ -174,8 +192,34 @@
     <ClCompile Include="Source\Player\Inventory.cpp" />
     <ClCompile Include="Source\Player\Link.cpp" />
     <ClCompile Include="Source\Player\Sword.cpp" />
+    <ClCompile Include="Source\Enemy\Star.cpp" />
+    <ClCompile Include="Source\Enemy\Vacuum.cpp" />
+    <ClCompile Include="Source\Enemy\WaterTektite.cpp" />
+    <ClCompile Include="Source\Enemy\ThreeOfAKind.cpp" />
+    <ClCompile Include="Source\Enemy\Spark.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Enemy\BuzzBlob.h" />
+    <ClInclude Include="Source\Enemy\FileSelect.h" />
+    <ClInclude Include="Source\Enemy\Peahat.h" />
+    <ClInclude Include="Source\Enemy\SandCrab.h" />
+    <ClInclude Include="Source\Enemy\Leever.h" />
+    <ClInclude Include="Source\Enemy\IronMask.h" />
+    <ClInclude Include="Source\Enemy\ShyGuy.h" />
+    <ClInclude Include="Source\Enemy\ArmMimic.h" />
+    <ClInclude Include="Source\Enemy\BladeTrap.h" />
+    <ClInclude Include="Source\Enemy\Bubble.h" />
+    <ClInclude Include="Source\Enemy\HardhatBeetle.h" />
+    <ClInclude Include="Source\Enemy\LikeLike.h" />
+    <ClInclude Include="Source\Enemy\Gibdo.h" />
+    <ClInclude Include="Source\Enemy\GopongaFlower.h" />
+    <ClInclude Include="Source\Enemy\Beamos.h" />
+    <ClInclude Include="Source\Enemy\SeaUrchin.h" />
+    <ClInclude Include="Source\Enemy\TileMapTools.h" />
+    <ClInclude Include="Source\Player\Worldmap.h" />
+    <ClInclude Include="Source\Enemy\Zombie.h" />
+    <ClInclude Include="Source\Interfaces\BasicCharacter.h" />
+    <ClInclude Include="Source\Interfaces\Enemy.h" />
     <ClInclude Include="Source\Engine\Common.h" />
     <ClInclude Include="Source\Engine\Dialogue.h" />
     <ClInclude Include="Source\Interfaces\Cullable.h" />
@@ -207,6 +251,11 @@
     <ClInclude Include="Source\Player\Link.h" />
     <ClInclude Include="Source\Player\Sword.h" />
     <ClInclude Include="Source\Player\Weapon.h" />
+    <ClInclude Include="Source\Enemy\Star.h" />
+    <ClInclude Include="Source\Enemy\Vacuum.h" />
+    <ClInclude Include="Source\Enemy\WaterTektite.h" />
+    <ClInclude Include="Source\Enemy\ThreeOfAKind.h" />
+    <ClInclude Include="Source\Enemy\Spark.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

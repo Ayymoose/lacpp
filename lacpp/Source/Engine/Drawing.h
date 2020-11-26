@@ -14,9 +14,9 @@
 
 // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
 // The dstRect co-ordinates are relative to the srcRect!
-void CopyToTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Texture* dstTexture, SDL_Rect* srcRect, SDL_Rect* dstRect);
+void copyToTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Texture* dstTexture, SDL_Rect* srcRect, SDL_Rect* dstRect);
 
 // Colours a part of a texture (or whole use nullptr for srcRect with a given colour)
-void ColourTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Rect* srcRect, uint32_t colour);
+void colourTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Rect* srcRect, uint32_t colour);
 
-void PalleteSwap(SDL_Renderer* renderer, SDL_Texture* srcTexture, const std::vector<std::pair<int,int>>& palletes);
+void palleteSwap(SDL_Renderer* renderer, SDL_Texture* srcTexture, const std::vector<std::pair<int,int>>& palletes);

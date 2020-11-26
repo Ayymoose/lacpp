@@ -4,6 +4,29 @@
 #include "ZD_Assert.h"
 #include "Dialogue.h"
 #include "Controllable.h"
+#include "Enemy.h"
+
+#include "ArmMimic.h"
+#include "SeaUrchin.h"
+#include "Beamos.h"
+#include "GopongaFlower.h"
+#include "Gibdo.h"
+#include "LikeLike.h"
+#include "HardhatBeetle.h"
+#include "Bubble.h"
+#include "Star.h"
+#include "Vacuum.h"
+#include "BladeTrap.h"
+#include "ShyGuy.h"
+#include "WaterTektite.h"
+#include "IronMask.h"
+#include "ThreeOfAKind.h"
+#include "Spark.h"
+#include "Leever.h"
+#include "SandCrab.h"
+#include "BuzzBlob.h"
+#include "Zombie.h"
+#include "Peahat.h"
 
 void Zelda::Engine::init() noexcept
 {
@@ -17,7 +40,7 @@ void Zelda::Engine::init() noexcept
     Renderer::getInstance().createRenderer(m_mainWindow.getWindowHandle());
 
     // Stretch the textures to the window size
-    ZD_ASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CameraWidth, MAIN_WINDOW_HEIGHT / ((float)CameraHeight + HUDHeight)) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + HUD_HEIGHT)) == 0, "SDL Error: " << SDL_GetError());
 
     // Load all resources (sound + graphics)
     ResourceManager::getInstance().loadGraphics();
@@ -27,15 +50,14 @@ void Zelda::Engine::init() noexcept
     
     // Initialise the camera
     Camera::getInstance().track(&Link::getInstance());
-    Camera::getInstance().setScrollSpeed(ScrollSpeed);
+    Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
     Camera::getInstance().setPosition(480, 640);
 
     // TODO: Replace
-    Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[Graphic::GFX_DUNGEON_1_TAIL_CAVE]);
+    //Camera::getInstance().setCurrentBackground(ResourceManager::getInstance()[Graphic::GFX_DUNGEON_1_TAIL_CAVE]);
 
-    // Dialogue::getInstance().message("You got your sword! It has your name on the back! Very nice");
-    // Dialogue::getInstance().message("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEFABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEF");//"You've got a    Guardian Acorn! It will reduce  the damage you  take by half!");
-     Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue");
+    // Testing goes in here
+    engineTest();
 }
 
 void Zelda::Engine::run() noexcept
@@ -106,7 +128,11 @@ void Zelda::Engine::processInput() noexcept
 
 void Zelda::Engine::renderObjects() const noexcept
 {
-    SDL_Renderer* pRenderer = Renderer::getInstance().getRenderer();
+    SDL_Renderer* renderer = Renderer::getInstance().getRenderer();
+
+    // Clear black
+    ZD_ASSERT(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderClear(renderer) == 0, "SDL Error: " << SDL_GetError());
 
     // Render any objects
     auto renderSet = Renderer::getInstance().getRenderSet();
@@ -114,6 +140,16 @@ void Zelda::Engine::renderObjects() const noexcept
     for (auto& renderable : renderSet)
     {
         assert(renderable);
+
+
+
+        auto cullable = dynamic_cast<CullableParent*>(renderable);
+        if (cullable)
+        {
+            cullable->cull();
+        }
+
+        // TODO: Should be in a logic function
 
         if (!Engine::getInstance().paused())
         {
@@ -123,22 +159,58 @@ void Zelda::Engine::renderObjects() const noexcept
             // - Opening the file save screen
             // - Dialogue is running
             // - An item that opens the dialogue is obtained
+
+            // Basic enemy function
+            auto enemy = dynamic_cast<Enemy*>(renderable);
+            if (enemy)
+            {
+                // Some Enemys can/can't move
+                enemy->move();
+                // Or can/can't attack
+                enemy->attack();
+
+                // Or can/can't be killed
+                if (enemy->health() <= 0)
+                {
+                    enemy->die();
+                }
+            }
         }
 
-        auto cullable = dynamic_cast<CullableParent*>(renderable);
-        if (cullable)
-        {
-            cullable->cull();
-        }
-        renderable->render(pRenderer);
+        renderable->render(renderer);
 
-       /* auto controllable = dynamic_cast<Controllable*>(renderable);
-        if (controllable)
-        {
-            std::cout << "Controller name for " << renderable->name() << " is " << controllable->name() << '\n';
-        }*/
     }
 
     // Represent to the screen
-    SDL_RenderPresent(pRenderer);
+    SDL_RenderPresent(renderer);
+}
+
+void Engine::engineTest()
+{
+    // Dialogue::getInstance().message("You got your sword! It has your name on the back! Very nice");
+    // Dialogue::getInstance().message("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEFABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEF");//"You've got a    Guardian Acorn! It will reduce  the damage you  take by half!");
+    // Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue");
+
+    /*static SeaUrchin su(72,64);
+    static Beamos be(72, 80);
+    static GopongaFlower goflower(32, 80);
+    static Gibdo gibdo(16, 64);
+    static LikeLike likelike(32, 64);
+    static HardhatBeetle hhb(80, 32);
+    static Bubble bubble(32, 16);
+    static Star star(64, 32);
+    static Vacuum vacuum(96, 0);
+    static BladeTrap bladeTrap(64, 64);
+    static ArmMimic arm(64, 64);
+    static ShyGuy arm(64, 64);
+    static WaterTektite waterTektite(64, 64);
+    static IronMask ironMask(64, 64);
+    static ThreeOfAKind threeOfAKind(64, 64);
+    static Spark spark(64, 64);
+    static Leever leever(64, 64);
+    static SandCrab sandcrab(64, 64);
+    static BuzzBlob buzzblod(64, 64);
+    static Zombie zombie(64, 64);*/
+    static Peahat peahat(64, 64);
+
 }

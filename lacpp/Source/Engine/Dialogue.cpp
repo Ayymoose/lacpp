@@ -41,8 +41,8 @@ Dialogue::Dialogue()
     m_text = ResourceManager::getInstance()[Graphic::GFX_TEXT];
     m_questionMarker = ResourceManager::getInstance()[Graphic::GFX_TEXT];
 
-    ColourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0,0,0));
-    ColourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
+    colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0,0,0));
+    colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
 
     m_scrolledLines = 0;
     m_currentChar = 0;
@@ -276,7 +276,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
         if (m_textTimer.elapsed(TEXT_SPEED) && !m_scrollMessage)
         {
 
-            std::cout << "Outputting character '" << m_message[m_currentChar] << "'\n";
+            //std::cout << "Outputting character '" << m_message[m_currentChar] << "'\n";
 
             m_textTimer.reset();
 
@@ -350,7 +350,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
                 m_height / 2
             };
             // 1. Hide the top half of the sub texture
-            ColourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcSubTextureHalf, SDL_RGB(0, 0, 0));
+            colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcSubTextureHalf, SDL_RGB(0, 0, 0));
 
 
             // Copy the bottom line of text to the top of the texture
@@ -378,10 +378,10 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
                     dstRectSubTextureLowerHalf.y = m_dstCharY;
 
                     // 3. Copy to a bottom half of texture to top half 
-                    CopyToTexture(renderer, m_subTexture, m_subTexture, &srcRectSubTextureLowerHalf, &dstRectSubTextureLowerHalf);
+                    copyToTexture(renderer, m_subTexture, m_subTexture, &srcRectSubTextureLowerHalf, &dstRectSubTextureLowerHalf);
                         
                     // Block out the what used to be the bottom line
-                    ColourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
+                    colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
 
                     m_currentLine = MAX_LINE - 1;
                     m_dstCharX = 0;
@@ -400,7 +400,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
         assert(srcRectChar.x >= 0 && srcRectChar.y >= 0 && srcRectChar.w >= 0 && srcRectChar.h >= 0);
         assert(dstRectChar.x >= 0 && dstRectChar.y >= 0 && dstRectChar.w >= 0 && dstRectChar.h >= 0);
 
-        CopyToTexture(renderer, m_text, m_subTexture, &srcRectChar, &dstRectChar);
+        copyToTexture(renderer, m_text, m_subTexture, &srcRectChar, &dstRectChar);
 
     }
 
@@ -413,7 +413,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
     };
 
     // Copy sub texture to main textbox
-    CopyToTexture(renderer, m_subTexture, m_texture, nullptr, &dstRectSubTexture);
+    copyToTexture(renderer, m_subTexture, m_texture, nullptr, &dstRectSubTexture);
 
     // Display the textbox
     ZD_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRectDialogue) == 0, "SDL Error: " << SDL_GetError());

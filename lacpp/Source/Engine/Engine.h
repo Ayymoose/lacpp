@@ -24,6 +24,8 @@ namespace Zelda
         void processInput() noexcept;
         void renderObjects() const noexcept;
 
+        void engineTest();
+
         Window m_mainWindow;
         bool m_enginePaused;
         bool m_engineRunning;

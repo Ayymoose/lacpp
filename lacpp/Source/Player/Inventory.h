@@ -19,8 +19,8 @@ namespace Zelda
     // The entire inventory
     constexpr int InventoryInternalX = 0;
     constexpr int InventoryInternalY = 21;
-    constexpr int InventoryWidth = CameraWidth;
-    constexpr int InventoryHeight = CameraWidth - HUDHeight; // Because of the HUD being at the top of the screen
+    constexpr int InventoryWidth = CAMERA_WIDTH;
+    constexpr int InventoryHeight = CAMERA_WIDTH - HUD_HEIGHT; // Because of the HUD being at the top of the screen
 
     // Inventory dividers horizontal/vertical
     constexpr int InventoryDividerXH = 0;
@@ -287,7 +287,7 @@ namespace Zelda
     public:
         Inventory();
         void control() noexcept override;
-        void render(SDL_Renderer* pRenderer) noexcept override;
+        void render(SDL_Renderer* renderer) noexcept override;
         void open() noexcept;
         void close() noexcept;
 
@@ -311,20 +311,20 @@ namespace Zelda
         SDL_Texture* m_inventoryDividerV;   // Vertical divider
         SDL_Texture* m_subscreen;        // The select status at the bottom of the screen
 
-        void drawDungeonMap(SDL_Renderer* pRenderer) noexcept;
-        void drawSelectStatus(SDL_Renderer* pRenderer) noexcept;
-        void drawMiscItems(SDL_Renderer* pRenderer) noexcept;
-        void drawInventoryItems(SDL_Renderer* pRenderer) noexcept;
-        void drawDungeonItems(SDL_Renderer* pRenderer) noexcept;
-        void drawInstruments(SDL_Renderer* pRenderer) noexcept;
-        void drawHealth(SDL_Renderer* pRenderer) noexcept;
-        void drawInventoryWeapons(SDL_Renderer* pRenderer) noexcept;
-        void drawSelector(SDL_Renderer* pRenderer) noexcept;
-        void drawInventoryDividers(SDL_Renderer* pRenderer) noexcept;
-        void drawTopHUD(SDL_Renderer* pRenderer) noexcept;
+        void drawDungeonMap(SDL_Renderer* renderer) noexcept;
+        void drawSelectStatus(SDL_Renderer* renderer) noexcept;
+        void drawMiscItems(SDL_Renderer* renderer) noexcept;
+        void drawInventoryItems(SDL_Renderer* renderer) noexcept;
+        void drawDungeonItems(SDL_Renderer* renderer) noexcept;
+        void drawInstruments(SDL_Renderer* renderer) noexcept;
+        void drawHealth(SDL_Renderer* renderer) noexcept;
+        void drawInventoryWeapons(SDL_Renderer* renderer) noexcept;
+        void drawSelector(SDL_Renderer* renderer) noexcept;
+        void drawInventoryDividers(SDL_Renderer* renderer) noexcept;
+        void drawTopHUD(SDL_Renderer* renderer) noexcept;
 
-        void drawNumber(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept;
-        void drawWeaponLevel(SDL_Renderer* pRenderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept;
+        void drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept;
+        void drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept;
 
         TradeItem m_tradeItem; // Current trade item
 

@@ -19,10 +19,10 @@ Link::Link()
     m_height = 16;
     m_speed = 1;
 
-    m_position.x = 72;
-    m_position.y = 32;
-    m_boundingBox.x = m_position.x;
-    m_boundingBox.y = m_position.y;
+    m_positionVector.x = 72;
+    m_positionVector.y = 32;
+    m_boundingBox.x = m_positionVector.x;
+    m_boundingBox.y = m_positionVector.y;
 
     m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
     m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
@@ -60,6 +60,7 @@ Link::Link()
     //
 
     m_moveable = true;
+    m_moving = false;
     m_usingSword = false;
     m_usingArrow = false;
     m_canUseArrow = true;
@@ -93,7 +94,7 @@ float Link::maxHealth() const noexcept
 
 bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept
 {
-
+    return false;
     // When moving in a direction
     // If our position + speed encounters a wall, stop
     // else keep moving in that direction
@@ -106,8 +107,8 @@ bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexce
     bool topLeftTopToBottom = false;
     bool topRightTopToBottom = false;
 
-    m_boundingBox.x = m_position.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
-    m_boundingBox.y = m_position.y + PLAYER_BOUNDING_BOX_HEIGHT;
+    m_boundingBox.x = m_positionVector.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
+    m_boundingBox.y = m_positionVector.y + PLAYER_BOUNDING_BOX_HEIGHT;
 
     // Copy box
     BoundingBox testBox = m_boundingBox;
@@ -145,41 +146,41 @@ bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexce
     // Don't get stuck on a corner or increase speed when gliding along the wall
     if (topLeftLeftToRight && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
-        m_position.y-= m_speed;
+        m_positionVector.y-= m_speed;
     }
     if (topLeftTopToBottom && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
     {
-        m_position.x-= m_speed;
+        m_positionVector.x-= m_speed;
     }
     if (topRightTopToBottom && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
     {
-        m_position.x+= m_speed;
+        m_positionVector.x+= m_speed;
     }
     if (topRightRightToLeft && !(m_speedX == -m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == -m_speed))
     {
-        m_position.y-= m_speed;
+        m_positionVector.y-= m_speed;
     }
     if (bottomRightRightToLeft && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
     {
-        m_position.y+= m_speed;
+        m_positionVector.y+= m_speed;
     }
     if (bottomRightBottomToTop && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
-        m_position.x+= m_speed;
+        m_positionVector.x+= m_speed;
     }
     if (bottomLeftBottomToTop && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
-        m_position.x-= m_speed;
+        m_positionVector.x-= m_speed;
     }
     if (bottomLeftLeftToRight && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
     {
-        m_position.y+= m_speed;
+        m_positionVector.y+= m_speed;
     }
 
     return collision;
 }
 
-void Link::render(SDL_Renderer* pRenderer) noexcept
+void Link::render(SDL_Renderer* renderer) noexcept
 {
 
     // The render loop calls render() every frame
@@ -191,7 +192,7 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
 
     // Get clock, if elapsed, increase frame counter
     // Source rect to pull from sprite sheet
-    SDL_Rect srcRect =
+    m_srcRect =
     {
         m_animateXPos + (m_currentFrame * m_width),
         m_animateYPos,
@@ -200,12 +201,12 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
     };
 
     // Where to draw on screen
-    SDL_Rect dstRect =
+    m_dstRect =
     {
-        m_position.x - Camera::getInstance().getX(),
-        m_position.y - Camera::getInstance().getY(),
-        m_width,
-        m_height
+        m_positionVector.x - Camera::getInstance().getX(),
+        m_positionVector.y - Camera::getInstance().getY(),
+        static_cast<float>(m_width),
+        static_cast<float>(m_height)
     };
 
     // Max frame controlled by the state
@@ -218,7 +219,7 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    ZD_ASSERT(SDL_RenderCopyEx(pRenderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0, "SDL Error: " << SDL_GetError());
+    ZD_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0, "SDL Error: " << SDL_GetError());
 
 
     // Drawing bounding boxes for testing
@@ -232,7 +233,7 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
         m_boundingBox.h
     };
 
-    //ZD_ASSERT(SDL_RenderDrawRect(pRenderer, &playerRect) == 0, "SDL Error: " << SDL_GetError());
+    //ZD_ASSERT(SDL_RenderDrawRect(renderer, &playerRect) == 0, "SDL Error: " << SDL_GetError());
 
     /* std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (const BoundingBox& box : bbs)
@@ -240,8 +241,8 @@ void Link::render(SDL_Renderer* pRenderer) noexcept
 
         SDL_Rect bbRect = { box.x , box.y, box.w, box.h };
 
-        ZD_ASSERT(SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 0) == 0, "SDL Error: " << SDL_GetError());
-        ZD_ASSERT(SDL_RenderDrawRect(pRenderer, &bbRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderDrawRect(renderer, &bbRect) == 0, "SDL Error: " << SDL_GetError());
     }
     
     */
@@ -303,9 +304,12 @@ void Link::control() noexcept
         // If we are holding left and we press up or down, we don't want to change the state whatever it is...
         // Same applies to other directions 
         move();
+
+        m_moving = true;
     }
     else
     {
+        m_moving = false;
         // TODO: Current frame has to be reset to intial frame
         if (!m_usingSword && !m_usingArrow)
         {
@@ -413,30 +417,13 @@ void Link::resetAnimation() noexcept
 
 Vector<float> Link::position() const noexcept
 {
-    return m_position;
+    return m_positionVector;
 }
 
 void Link::addPosition(int x, int y) noexcept
 {
-    m_position.x += x;
-    m_position.y += y;
-}
-
-void Link::damage(float damage) noexcept
-{
-    if (m_health - damage >= 0)
-    {
-        m_health -= damage;
-    }
-    else
-    {
-        die();
-    }
-}
-
-Direction Link::direction() const noexcept
-{
-    return m_direction;
+    m_positionVector.x += x;
+    m_positionVector.y += y;
 }
 
 void Link::replenish(float hearts) noexcept
@@ -494,7 +481,7 @@ void Link::move() noexcept
 
         if (!handleStaticCollisions(m_speedX, 0))
         {
-            m_position.x += m_speedX;
+            m_positionVector.x += m_speedX;
         }
         else
         {
@@ -571,7 +558,7 @@ void Link::move() noexcept
         }
         if (!handleStaticCollisions(m_speedX, 0))
         {
-            m_position.x += m_speedX;
+            m_positionVector.x += m_speedX;
         }
         else
         {
@@ -648,7 +635,7 @@ void Link::move() noexcept
 
         if (!handleStaticCollisions(0, m_speedY))
         {
-            m_position.y += m_speedY;
+            m_positionVector.y += m_speedY;
         }
         else
         {
@@ -725,7 +712,7 @@ void Link::move() noexcept
 
         if (!handleStaticCollisions(0, m_speedY))
         {
-            m_position.y += m_speedY;
+            m_positionVector.y += m_speedY;
         }
         else
         {
@@ -948,6 +935,16 @@ void Link::updateState() noexcept
     }
 }
 
+bool Link::moving() const noexcept
+{
+    return m_moving;
+}
+
+Direction Link::direction() const noexcept
+{
+    return m_direction;
+}
+
 void Link::useWeapon(WEAPON weapon) noexcept
 {
     WeaponLevel shieldLevel = m_inventory.shieldLevel();
@@ -991,7 +988,7 @@ void Link::useWeapon(WEAPON weapon) noexcept
         {
             m_sword = std::make_unique<Sword>();
             m_sword->setDirection(m_direction);
-            m_sword->setPosition(m_position);
+            m_sword->setPosition(m_positionVector);
             m_usingSword = true;
         }
         
@@ -1105,7 +1102,7 @@ void Link::useWeapon(WEAPON weapon) noexcept
             {
                 auto arrow = std::make_unique<Arrow>();
                 arrow->setDirection(m_direction);
-                arrow->setPosition(m_position);
+                arrow->setPosition(m_positionVector);
                 m_inventory.useBowAndArrow();
                 m_quiver.emplace_back(std::move(arrow));
                 m_canUseArrow = false;
@@ -1125,7 +1122,7 @@ void Link::useWeapon(WEAPON weapon) noexcept
         {
             m_boomerang = new Boomerang();
             m_boomerang->setDirection(m_direction);
-            m_boomerang->setPosition(m_position);
+            m_boomerang->setPosition(m_positionVector);
         }
         
         break;
@@ -1139,7 +1136,7 @@ void Link::useWeapon(WEAPON weapon) noexcept
             {
                 m_bomb = std::make_unique<Bomb>();
                 m_bomb->setDirection(m_direction);
-                m_bomb->setPosition(m_position);
+                m_bomb->setPosition(m_positionVector);
                 m_inventory.useBombs();
             }
 
@@ -1161,7 +1158,7 @@ void Link::useWeapon(WEAPON weapon) noexcept
         {
             m_flameRod = new FlameRod();
             m_flameRod->setDirection(m_direction);
-            m_flameRod->setPosition(m_position);
+            m_flameRod->setPosition(m_positionVector);
 
             switch (m_state)
             {

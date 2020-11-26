@@ -1,37 +1,35 @@
 #pragma once
 
 #include "Vector.h"
+#include "BasicCharacter.h"
 
 using namespace Zelda;
-// Defines a base class for which NPC, Boss, Enemy and Link inherit from
 
-enum class Direction
-{
-    DIRECTION_NONE = -1,
-    DIRECTION_RIGHT,
-    DIRECTION_LEFT,
-    DIRECTION_UP,
-    DIRECTION_DOWN,
-    DIRECTION_COUNT
-};
+// Defines a base class for which NPC, Boss, enemies inherit from
 
-class Character
+// Link won't inherit from here 
+
+
+
+class Character : public BasicCharacter
 {
 public:
-    /*Character() = default;
-    virtual ~Character() = default;*/
-    virtual float health() const = 0;
-    virtual void damage(float damage) = 0;
-    Direction virtual direction() const = 0;
-    virtual Vector<float> position() const = 0;
+    virtual ~Character() = default;
+    /*virtual float health() const noexcept = 0;
+    virtual void damage(float damage) noexcept = 0;
+    virtual Direction direction() const noexcept = 0;
+    virtual Vector<float> position() const noexcept = 0;*/
 protected:
+    Character() = default;
+
     // Character direction
-    Direction m_direction;
+   /* Direction m_direction;
+
     // Character health
     float m_health;
 
     // Position vector
-    Vector<float> m_position;
+    Vector<float> m_positionVector;*/
 
     // Attack
     virtual void attack() = 0;
