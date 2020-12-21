@@ -74,9 +74,33 @@ print("Tile down: " + str(tilesDown))
 
 tileMap = {}
 
+# TODO: cmd args
+roomWidth = 160
+roomHeight = 128
 
-for y in range(tilesDown):
-	for x in range(tilesAcross):	
+# Calculate how many tiles across/down for the room
+roomTilesAcross = int(roomWidth / tileWidth)
+roomTilesDown = int(roomHeight / tileHeight)
+
+# Calculate how many rooms we'll have
+roomsAcross = int(imageWidth / roomWidth)
+roomsDown = int(imageHeight / roomHeight)
+
+print("Room size: " + str(roomWidth) + "x" + str(roomHeight))
+print("# rooms: " + str(roomsAcross * roomsDown))
+
+
+currentRoomIndex = 0
+uniqueTileIndex = 0
+
+print("{")
+for y in range(roomTilesDown):
+	print("{",end='')
+	for x in range(roomTilesAcross):	
+	
+		# Create a tilemap for each room by 
+		# Going left-to-right then down to up for each room
+	
 		#img[y1:y2, x1:x2]
 		x1 = startX + x * (tileWidth + spaceX)
 		y1 = startY + y * (tileHeight + spaceY)
@@ -84,45 +108,28 @@ for y in range(tilesDown):
 		y2 = tileHeight + y1
 
 		# Grab a tile at (x1,y1) up to (x2,y2)
+		#print("tile = img[" + str(y1)+":"+str(y2)+","+str(x1)+":"+str(x2)+"]")
 		tile = img[y1:y2, x1:x2]
 
+		# Add to hash map if not exists
 		tileHash = hashTile(tile)
+		
 		if tileHash not in tileMap:
-			tileMap[tileHash] = (x1,y1,x2,y2)
-
-		# TODO: Add horizontal and vertical flip
-
-		# Grab a tile
-		# Calculate 4 hashes for each orientation (0,90,180,270 degrees)
-		# If none of the hashes exist in the map, add the tile at 0 degrees
-		# else if any hash already exists, add the orientation and position
-		
-#		tile0Degrees = checkTile(tileMap, tile, None)
-#		tile90Degrees = checkTile(tileMap, tile, cv2.ROTATE_90_CLOCKWISE)
-#		tile180Degrees = checkTile(tileMap, tile, cv2.ROTATE_180)
-#		tile270Degrees = checkTile(tileMap, tile, cv2.ROTATE_90_COUNTERCLOCKWISE)
-		
-#		if tile0Degrees == False and tile90Degrees == False and tile180Degrees == False and tile270Degrees == False:
-#			tileHash = hashTile(tile)
-#			tileMap[tileHash] = (x1,y1,x2,y2,0)
-#			continue
-#		else:
-#			if tile0Degrees == True:
-#				tileHash = hashTile(tile)
-#				tileMap[tileHash] = (x1,y1,x2,y2,0)
-#				continue
-#			elif tile90Degrees == True:
-#				tileHash = hashTile(cv2.rotate(tile, cv2.ROTATE_90_CLOCKWISE))
-#				tileMap[tileHash] = (x1,y1,x2,y2,90)
-#				continue			
-#			elif tile180Degrees == True:
-#				tileHash = hashTile(cv2.rotate(tile, cv2.ROTATE_180))
-#				tileMap[tileHash] = (x1,y1,x2,y2,180)
-#				continue			
-#			elif tile270Degrees == True:
-#				tileHash = hashTile(cv2.rotate(tile, cv2.ROTATE_90_COUNTERCLOCKWISE))
-#				tileMap[tileHash] = (x1,y1,x2,y2,270)
-#				continue
+			tileMap[tileHash] = (x1,y1,x2,y2,uniqueTileIndex)
+			# Output the tile number
+			print(uniqueTileIndex,end='')
+			uniqueTileIndex+=1
+			if x != roomTilesAcross-1:
+				print(",",end='')
+		else:
+			# Tile already exists so print its number and continue
+			tileMapInfo = tileMap[tileHash]
+			# Output the tile number
+			print(tileMapInfo[4],end='')
+			if x != roomTilesAcross-1:
+				print(",",end='')	
+	print("},")
+print("},")
 
 
 # Now we have the map with all the tiles and positions
@@ -145,38 +152,17 @@ tileY = 0
 # Copy tiles onto tilemap
 for tile in tileMap:
 	tileInfo = tileMap[tile]
+	print("tilesetOutputImageFile[" + str(tileY) + ":" + str(tileHeight) + "," + str(tileX) + ":" + str(tileWidth) + "] = img[" + str(tileInfo[1]) + ":" + str(tileInfo[3]) + ", " + str(tileInfo[0]) + ":" + str(tileInfo[2]) + "]")
+	tilesetOutputImageFile[tileY:tileY+tileHeight, tileX:tileX+tileWidth] = img[tileInfo[1]:tileInfo[3], tileInfo[0]:tileInfo[2]]
 	if tileX + tileWidth != outputImageWidth:
 		tileX+= tileWidth
 	else:
 		tileX = 0
 		tileY += tileHeight
-	print("tilesetOutputImageFile[" + str(tileY) + ":" + str(tileHeight) + "," + str(tileX) + ":" + str(tileWidth) + "] = img[" + str(tileInfo[1]) + ":" + str(tileInfo[3]) + ", " + str(tileInfo[0]) + ":" + str(tileInfo[2]) + "]")
-	tilesetOutputImageFile[tileY:tileY+tileHeight, tileX:tileX+tileWidth] = img[tileInfo[1]:tileInfo[3], tileInfo[0]:tileInfo[2]]
+	
 
 cv2.namedWindow('image', cv2.WINDOW_KEEPRATIO)
 cv2.imshow('image',tilesetOutputImageFile)
 cv2.resizeWindow('image', outputImageWidth*4, outputImageHeight*4)
 cv2.imwrite(tilesetOutputImageFileName,tilesetOutputImageFile)
 cv2.waitKey(0)
-# 0  1  2  3
-
-# x1,y1, x2,y2 
-#(1, 1, 8, 8)
-
-		 #[y1:y2, x1:x2] #[y1:y2, x1:x2]
-#blankImage[0:7, 0:7] = img[1:8, 1:8] #img[rect[1]:rect[3], rect[0]:rect[2]]
-
-#bx1 = 0
-#by1 = 0
-#bx2 = tileW
-#by2 = tileH
-#for tile in tileMap:
-#	rect = tileMap[tile]
-	#blankImage[y1:y2, x1:x2]
-#	print(rect)
-	# Copies each unique tile onto a blank image for user [by1:by2, bx1:bx2]
-	#print('blankImage[' + str(by1) + ':' + str(by2) + ', '  + str(bx1) + ':' + str(bx2) + '] = img[' + str(rect[1]) + ':' + str(rect[3]) + ', ' + str(rect[0]) + ':' + str(rect[2]) + ']')
-#	blankImage[0:7, 0:7] = img[rect[1]:rect[3], rect[0]:rect[2]]
-#	blankImage[0:7, 7:7] = img[rect[1]:rect[3], rect[0]:rect[2]]
-#	bx1 += tileW
-#	bx2 += bx1
