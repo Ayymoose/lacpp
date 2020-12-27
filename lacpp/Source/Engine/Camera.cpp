@@ -6,6 +6,8 @@
 #include "Depth.h"
 #include "ZD_Assert.h"
 #include "Engine.h"
+#include "Drawing.h"
+
 
 using namespace Zelda;
 
@@ -27,14 +29,19 @@ Camera::Camera()
     m_scrollUp = false;
     m_tracker = nullptr;
 
-    m_depth = ZD_DEPTH_BACKGROUND;
+    // Create a blank canvas for a the area
+    m_texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
+    assert(m_texture != nullptr);
 
+    m_depth = ZD_DEPTH_BACKGROUND;
     m_name = "Camera";
     Renderer::getInstance().addRenderable(this);
 }
 
 void Camera::setPosition(int x, int y) noexcept
 {
+    assert(x % CAMERA_WIDTH == 0);
+    assert(y % CAMERA_HEIGHT == 0);
     m_x = x;
     m_y = y;
 }
@@ -206,20 +213,61 @@ void Camera::trackCharacter() noexcept
 
 }
 
+void Zelda::Camera::renderTileMap(SDL_Renderer* renderer) noexcept
+{
+    // Render the tilemap
+    SDL_Rect dstRect = { 0, 0, m_width, m_height };
+
+    // Get the room tiles for the current room index
+    // Calculate index into room array from co-ordinates
+  
+    int roomX = (m_x / CAMERA_WIDTH);
+    int roomY = (m_y / CAMERA_HEIGHT);
+
+    auto roomIndex = (roomY * m_tilemap.roomWidth()) + roomX;
+    auto roomTiles = m_tilemap.getRoomTiles(roomIndex);
+
+    // Get texture used
+    auto tilemapTexture = m_tilemap.getTilemapTexture();
+
+    auto target = pushRenderingTarget(renderer, m_texture);
+
+    // Start painting the canvas with tiles
+    for (int tileY = 0; tileY < ROOM_TILES_DOWN; tileY++)
+    {
+        for (int tileX = 0; tileX < ROOM_TILES_ACROSS; tileX++)
+        {
+            // The tile will be the ID in the image
+            auto tileID = roomTiles[tileY][tileX];
+
+            // Calculate where to grab the tile from in the image
+            auto srcTileX = TILE_WIDTH * (tileID % TILE_MAP_TILES_ACROSS);
+            auto srcTileY = TILE_HEIGHT * (tileID / TILE_MAP_TILES_ACROSS);
+
+            SDL_Rect srcTile = { srcTileX , srcTileY ,TILE_WIDTH, TILE_HEIGHT};
+            SDL_Rect dstTile = { tileX * TILE_WIDTH, tileY * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
+
+            // Paste tile from tilemap
+            ZD_ASSERT(SDL_RenderCopy(renderer, tilemapTexture, &srcTile, &dstTile) == 0, "SDL Error: " << SDL_GetError());
+        }
+    }
+    popRenderingTarget(renderer, target);
+
+    // Finally render the canvas
+    ZD_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+}
+
 void Camera::render(SDL_Renderer* renderer) noexcept
 {
     trackCharacter();
-
-    SDL_Rect srcRect = { m_x + m_scrollX, m_y + m_scrollY,m_width ,m_height };
-    SDL_Rect dstRect = { 0, 0, m_width, m_height };
-    //ZD_ASSERT(SDL_RenderCopy(renderer, m_texture, &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
-    
-
+    renderTileMap(renderer);
 }
 
-void Camera::setCurrentBackground(SDL_Texture* currentBackground) noexcept
+// Set the tilemap to use
+void Zelda::Camera::setTileMap(TilemapArea tilemap)
 {
-    m_texture = currentBackground;
+    // Set the internal map to use
+    m_tilemap.setTileMap(tilemap);
 }
 
 bool Camera::visible(SDL_FRect&& rectangle) const noexcept

@@ -197,6 +197,7 @@
     <ClCompile Include="Source\Enemy\WaterTektite.cpp" />
     <ClCompile Include="Source\Enemy\ThreeOfAKind.cpp" />
     <ClCompile Include="Source\Enemy\Spark.cpp" />
+    <ClCompile Include="Source\Engine\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Enemy\BuzzBlob.h" />
@@ -256,6 +257,7 @@
     <ClInclude Include="Source\Enemy\WaterTektite.h" />
     <ClInclude Include="Source\Enemy\ThreeOfAKind.h" />
     <ClInclude Include="Source\Enemy\Spark.h" />
+    <ClInclude Include="Source\Engine\Tilemap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

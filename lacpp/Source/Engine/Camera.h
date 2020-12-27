@@ -7,6 +7,7 @@
 #include "UpdateTimer.h"
 #include "Singleton.h"
 #include "Clock.h"
+#include "Tilemap.h"
 
 namespace Zelda
 {
@@ -36,7 +37,8 @@ namespace Zelda
         void setPosition(int x, int y) noexcept;
         void setScrollSpeed(int scrollSpeed) noexcept;
         void render(SDL_Renderer* renderer) noexcept override;
-        void setCurrentBackground(SDL_Texture* currentBackground) noexcept;
+
+        void setTileMap(TilemapArea tilemap);
 
         // Returns true whether a rect is visible in the camera region
         bool visible(SDL_FRect&& rectangle) const noexcept;
@@ -54,6 +56,7 @@ namespace Zelda
         Camera();
         // Called in the render function
         void trackCharacter() noexcept;
+        void renderTileMap(SDL_Renderer* renderer) noexcept;
 
         // m_scrollX and m_scrollY are manipulated to achieve scrolling
         int m_scrollX;
@@ -78,6 +81,9 @@ namespace Zelda
 
         // How many we scrolled by
         int m_scrolled;
+
+        // World tilemap
+        Tilemap m_tilemap;
 
         // TODO: Fix player movement during scrolling
         UpdateTimer m_timerPlayerScroll;

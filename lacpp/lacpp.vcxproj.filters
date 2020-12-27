@@ -167,6 +167,9 @@
     <ClCompile Include="Source\Enemy\FileSelect.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Engine\Tilemap.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Player\FlameRod.h">
@@ -339,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="Source\Enemy\TileMapTools.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Tilemap.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

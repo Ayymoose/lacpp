@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SDL.h>
-#include "Assert.h"
 #include <vector>
 #include <utility>
 
@@ -20,3 +19,6 @@ void copyToTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Texture*
 void colourTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Rect* srcRect, uint32_t colour);
 
 void palleteSwap(SDL_Renderer* renderer, SDL_Texture* srcTexture, const std::vector<std::pair<int,int>>& palletes);
+
+SDL_Texture* pushRenderingTarget(SDL_Renderer* renderer, SDL_Texture* dstTexture);
+void popRenderingTarget(SDL_Renderer* renderer, SDL_Texture* srcTexture);

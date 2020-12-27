@@ -4,12 +4,16 @@
 
 // Some handy drawing functions
 
+// NOT RECOMMENDED FOR TIGHT LOOPS AS PUSHING AND POPPING OFF THE RENDERING TARGET INCURS A PERFORMANCE PENALTY!
 // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
 void copyToTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Texture* dstTexture, SDL_Rect* srcRect, SDL_Rect* dstRect)
 {
+    // Push rendering target
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
     ZD_ASSERT(SDL_SetRenderTarget(renderer, dstTexture) == 0, "SDL Error: " << SDL_GetError());
+
     ZD_ASSERT(SDL_RenderCopy(renderer, srcTexture, srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
+    // Pop rendering target
     ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 }
 
@@ -28,4 +32,14 @@ void palleteSwap(SDL_Renderer* renderer, SDL_Texture* srcTexture, const std::vec
     // TODO:
 }
 
+SDL_Texture* pushRenderingTarget(SDL_Renderer* renderer, SDL_Texture* dstTexture)
+{
+    auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, dstTexture) == 0, "SDL Error: " << SDL_GetError());
+    return currentRenderingTarget;
+}
 
+void popRenderingTarget(SDL_Renderer* renderer, SDL_Texture* srcTexture)
+{
+    ZD_ASSERT(SDL_SetRenderTarget(renderer, srcTexture) == 0, "SDL Error: " << SDL_GetError());
+}
