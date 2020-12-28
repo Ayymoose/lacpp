@@ -99,7 +99,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
     auto y = position.y;
 
     // Calculate room index
-    int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomWidth()) + (m_x / CAMERA_WIDTH);
+    int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
     m_nextRoomIndex = roomIndex;
 
         // Transition the player if they move off the screen
@@ -256,14 +256,14 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             }
 
             // Load next room tiles
-            m_nextRoomIndex += m_tilemap.roomWidth();
+            m_nextRoomIndex += m_tilemap.roomsAcross();
         }
         else
         {
             // Unpause engine
             Engine::getInstance().pause(false);
 
-            roomIndex += m_tilemap.roomWidth();
+            roomIndex += m_tilemap.roomsAcross();
             m_y += CAMERA_HEIGHT;
             m_screenY += CAMERA_HEIGHT;
 
@@ -289,11 +289,11 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             }
 
             // Load next room tiles
-            m_nextRoomIndex -= m_tilemap.roomWidth();
+            m_nextRoomIndex -= m_tilemap.roomsAcross();
         }
         else
         {
-            roomIndex -= m_tilemap.roomWidth();
+            roomIndex -= m_tilemap.roomsAcross();
             m_y -= CAMERA_HEIGHT;
             m_screenY -= CAMERA_HEIGHT;
 
@@ -310,6 +310,14 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             player->resetAnimation();
         }
     }
+
+    // Set position of dungeon marker if Link in dungeon
+    int dx = roomIndex % m_tilemap.roomsAcross();
+    // The y offset is calculated because we line the dungeon map array with 1s on the top and right
+    // if roomsDown > 9 then we'll get assertion failure
+    int dy = (DungeonMaxBlocksY - m_tilemap.roomsDown()) + (roomIndex / m_tilemap.roomsAcross());
+
+    player->setDungeonMarkerLocation(dx,dy);
 
     // Render the main view
     SDL_Rect dstRect = { m_screenX - m_scrollX, m_screenY - m_scrollY, m_width, m_height };

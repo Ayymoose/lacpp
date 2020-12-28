@@ -50,6 +50,7 @@ namespace Zelda
     constexpr int InventoryB = 168;
 
     // Item limits
+    // TODO: This acually changes throughout the game IIRC
     constexpr int BombsMax = 50;
     constexpr int MagicPowderMax = 50;
     constexpr int ArrowsMax = 30;
@@ -305,6 +306,9 @@ namespace Zelda
         WEAPON weaponA() const noexcept;
         WEAPON weaponB() const noexcept;
 
+        // Set position of current location marker for dungeon
+        void setDungeonLocationMarker(int x, int y) noexcept;
+
     private:
         SDL_Texture* m_inventorySelector;   // Selector sprite
         SDL_Texture* m_inventoryDividerH;   // Horizontal divider
@@ -435,6 +439,7 @@ namespace Zelda
             17 - Area UP RIGHT and DOWN exit only
             18 - Area UP LEFT and DOWN exit only
             19 - Area UP and DOWN exit only
+            20 - Area LEFT and RIGHT exit only
 
             No dungeon map                 -> Empty map
             Dungeon map (no visietd areas) -> Unvisited block on each area
@@ -446,7 +451,7 @@ namespace Zelda
 
         uint8_t m_dungeonMaps[MaxDungeons][DungeonMaxBlocksX][DungeonMaxBlocksY] =
         {
-            {
+            {   // Lvl 0 - Colour dungeon
                 {0,0,0,0,0,0,0,0,1},
                 {0,0,0,0,0,0,0,0,1},
                 {0,0,0,0,0,0,0,0,1},
@@ -457,29 +462,21 @@ namespace Zelda
                 {0,0,0,0,0,0,0,0,1},
                 {0,0,0,0,0,0,0,0,1},
             },
-            {
+            {   // Lvl 1 - Tail Cave
+                // TODO: Never thought about where the dungeon marker is when Link is in the side-scrolling part of dungeon
+                // Maybe it stays at the last point when we are side scrolling
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 { 0, 0, 0, 0, 0, 0, 0, 0, 1},
                 { 0, 0, 0, 0, 0, 0, 0, 0, 1},
                 { 0, 0, 0, 0, 0, 0,12, 0, 1},
                 { 0, 5,11, 6, 0, 0, 4, 0, 1},
                 {12, 0,17, 3, 8,12,19, 0, 1},
-                {19, 5,17,10,10,18,15, 0, 1},
+                {19, 5,17,10,10,10,15, 0, 1},
                 {13, 0,14,11,15, 0, 0, 0, 1},
-                { 0, 5,11,18, 0, 0, 0, 0, 1},
+                { 0, 5,20,18, 0, 0, 0, 0, 1},
+                // Rooms start at the bottom left of the map here (0,8)
             },
-            {
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-            },
-            {
+            {   // Lvl 2 - Bottle Grotto
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
@@ -490,7 +487,7 @@ namespace Zelda
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
             },
-            {
+            {   // Lvl 3 - Key Cavern
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
@@ -501,7 +498,7 @@ namespace Zelda
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
             },
-            {
+            {   // Lvl 4 - Angler Tunnel
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
@@ -512,7 +509,7 @@ namespace Zelda
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
             },
-            {
+            {   // Lvl 5 - Catfish Maw
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
@@ -523,7 +520,7 @@ namespace Zelda
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
             },
-            {
+            {   // Lvl 6 - Face Shrine
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
@@ -534,7 +531,18 @@ namespace Zelda
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
             },
-            {
+            {   // Lvl 7 - Eagle Tower
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+            },
+            {   // Lvl 8 - Turtle Rock
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0},

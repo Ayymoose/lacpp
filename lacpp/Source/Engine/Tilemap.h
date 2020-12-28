@@ -60,7 +60,8 @@ namespace Zelda
 		// Get current room dimensions of tilemap
 		Room getRoomTiles(int roomIndex) const noexcept;
 
-        uint16_t roomWidth() const noexcept;
+        uint16_t roomsDown() const noexcept;
+        uint16_t roomsAcross() const noexcept;
 
         // Tilemap texture used
         SDL_Texture* getTilemapTexture() const noexcept;

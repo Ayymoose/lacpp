@@ -382,6 +382,13 @@ WEAPON Inventory::weaponB() const noexcept
     return m_weaponB;
 }
 
+void Zelda::Inventory::setDungeonLocationMarker(int x, int y) noexcept
+{
+    assert(x < DungeonMaxBlocksX && x >= 0 && y >= 0 && y < DungeonMaxBlocksY);
+    m_dungeonPosition.x = x;
+    m_dungeonPosition.y = y;
+}
+
 bool Inventory::shieldEquipped() const noexcept
 {
     return (m_weaponA == WPN_SHIELD || m_weaponB == WPN_SHIELD);
@@ -417,7 +424,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
         17 - Area UP RIGHT and DOWN exit only
         18 - Area UP LEFT and DOWN exit only
         19 - Area UP and DOWN exit only
-
+        20 - Area LEFT and RIGHT exit only
     */
 
 
@@ -441,106 +448,117 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
     ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
 
     // Draw dungeon map level
-    dstRect = {72,64,8,8};
-    drawNumber(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], true, true, 0, static_cast<int>(m_dungeon), &dstRect);
+    SDL_Rect dstRectMapLevel = {72,64,8,8};
+    drawNumber(renderer, m_texture, true, true, 0, static_cast<int>(m_dungeon), &dstRectMapLevel);
 
     // Draw the dungeon map
-
-
-    // Tail cave start position
-    // Link position in dungeon map
-    m_dungeonPosition.x = 3;
-    m_dungeonPosition.y = 8;
-
+    
     // Without a map, all the paths are not drawn
     // Unvisited areas are marked with a grey block
     for (int x = 0; x < DungeonMaxBlocksX; x++)
     {
         for (int y = 0; y < DungeonMaxBlocksY; y++)
         {
-            // TODO: enum these magic values
-            switch (m_dungeonMaps[static_cast<int>(m_dungeon)][y][x])
+            // Don't display anything if dungeon map not present
+            if (m_dungeonMap)
             {
-            case 0: // INVENTORY_AREA_EMPTY
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
-                break;
-            case 1: // Inventory space
-                continue;
-            case 2: // INVENTORY_AREA_UNVISITED
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_UNVISITED];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_UNVISITED];
-                break;
-            case 3: // INVENTORY_AREA_TREASURE
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_TREASURE];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_TREASURE];
-                break;
-            case 4: // INVENTORY_AREA_NIGHTMARE
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
-                break;
-            case 5: // INVENTORY_AREA_EXIT_RIGHT
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT];
-                break;
-            case 6: // INVENTORY_AREA_EXIT_LEFT
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT];
-                break;
-            case 7: // INVENTORY_AREA_EXIT_RIGHT_DOWN
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT_DOWN];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT_DOWN];
-                break;
-            case 8: // INVENTORY_AREA_EXIT_LEFT_DOWN
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN];
-                break;
-            case 9: // INVENTORY_AREA_EXIT_NONE
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_NONE];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_NONE];
-                break;
-            case 10: // INVENTORY_AREA_EXIT_LEFT_UP_RIGHT
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
-                break;
-            case 11: // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
-                break;
-            case 12: // INVENTORY_AREA_EXIT_DOWN
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_DOWN];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_DOWN];
-                break;
-            case 13: // INVENTORY_AREA_EXIT_UP
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP];
-                break;
-            case 14: // INVENTORY_AREA_EXIT_UP_RIGHT
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT];
-                break;
-            case 15: // INVENTORY_AREA_EXIT_LEFT_UP
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP];
-                break;
-            case 16: // INVENTORY_AREA_EXIT_ALL
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_ALL];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_ALL];
-                break;
-            case 17: // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
-                break;
-            case 18: // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
-                break;
-            case 19: // INVENTORY_AREA_EXIT_UP_DOWN
-                srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_DOWN];
-                dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_DOWN];
-                break;
-            default:
-                assert(false);
+                // TODO: enum these magic values
+                switch (m_dungeonMaps[static_cast<int>(m_dungeon)][y][x])
+                {
+                case 0: // INVENTORY_AREA_EMPTY
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
+                    break;
+                case 1: // Inventory space
+                    continue;
+                case 2: // INVENTORY_AREA_UNVISITED
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_UNVISITED];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_UNVISITED];
+                    break;
+                case 3: // INVENTORY_AREA_TREASURE
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_TREASURE];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_TREASURE];
+                    break;
+                case 4: // INVENTORY_AREA_NIGHTMARE
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
+                    break;
+                case 5: // INVENTORY_AREA_EXIT_RIGHT
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT];
+                    break;
+                case 6: // INVENTORY_AREA_EXIT_LEFT
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT];
+                    break;
+                case 7: // INVENTORY_AREA_EXIT_RIGHT_DOWN
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT_DOWN];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT_DOWN];
+                    break;
+                case 8: // INVENTORY_AREA_EXIT_LEFT_DOWN
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN];
+                    break;
+                case 9: // INVENTORY_AREA_EXIT_NONE
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_NONE];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_NONE];
+                    break;
+                case 10: // INVENTORY_AREA_EXIT_LEFT_UP_RIGHT
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
+                    break;
+                case 11: // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
+                    break;
+                case 12: // INVENTORY_AREA_EXIT_DOWN
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_DOWN];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_DOWN];
+                    break;
+                case 13: // INVENTORY_AREA_EXIT_UP
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP];
+                    break;
+                case 14: // INVENTORY_AREA_EXIT_UP_RIGHT
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT];
+                    break;
+                case 15: // INVENTORY_AREA_EXIT_LEFT_UP
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP];
+                    break;
+                case 16: // INVENTORY_AREA_EXIT_ALL
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_ALL];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_ALL];
+                    break;
+                case 17: // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
+                    break;
+                case 18: // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
+                    break;
+                case 19: // INVENTORY_AREA_EXIT_UP_DOWN
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_DOWN];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_DOWN];
+                    break;
+                case 20: // INVENTORY_AREA_EXIT_LEFT_RIGHT
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_RIGHT];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_RIGHT];
+                    break;
+                default:
+                    assert(false);
+                }
+            }
+            else
+            {
+                // Hide map
+                if (m_dungeonMaps[static_cast<int>(m_dungeon)][y][x] != 1)
+                {
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
+                }
             }
             dstRect.x += x * srcRect.w;
             dstRect.y += y * srcRect.w;

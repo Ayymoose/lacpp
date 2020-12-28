@@ -149,6 +149,8 @@ public:
     int m_currentCollisionMapY;
     CollisionArea m_collisionArea;
 
+    void setDungeonMarkerLocation(int x, int y) noexcept;
+
 private:
     Link();
     int m_speed;

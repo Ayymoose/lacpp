@@ -187,7 +187,7 @@ void Zelda::Engine::renderObjects() const noexcept
 void Engine::engineTest()
 {
     // Set camera position
-    Camera::getInstance().setPosition(800, 256);
+    Camera::getInstance().setPosition(480, 640);
     Camera::getInstance().setTileMap(TM_TAIL_CAVE);
 
 

@@ -12,6 +12,11 @@
 
 #include <set>
 
+void Link::setDungeonMarkerLocation(int x, int y) noexcept
+{
+    m_inventory.setDungeonLocationMarker(x, y);
+}
+
 Link::Link()
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_LINK];
