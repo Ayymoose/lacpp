@@ -43,9 +43,6 @@ namespace Zelda
         // Returns true whether a rect is visible in the camera region
         bool visible(SDL_FRect&& rectangle) const noexcept;
 
-        // The camera will track a Character
-        void track(Character* character) noexcept;
-
         int getX() const noexcept;
         int getY() const noexcept;
 
@@ -55,20 +52,25 @@ namespace Zelda
     private:
         Camera();
         // Called in the render function
-        void trackCharacter() noexcept;
-        void renderTileMap(SDL_Renderer* renderer) noexcept;
+        void renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture* srcTexture, uint16_t roomIndex) noexcept;
 
         // m_scrollX and m_scrollY are manipulated to achieve scrolling
         int m_scrollX;
         int m_scrollY;
 
-        // m_x and m_y is the initial position of the camera on the screen
+        // m_x and m_y is the initial position of the camera in the tilemap
         int m_x;
         int m_y;
+
+        int m_screenX;
+        int m_screenY;
+
+
+        int m_swapX;
+        int m_swapY;
         
         // Scrolling speed
         int m_scrollSpeed;
-        Character* m_tracker;
 
         // Boolean flags to indicate which way the camera is scrolling
         bool m_scrollLeft;
@@ -88,5 +90,7 @@ namespace Zelda
         // TODO: Fix player movement during scrolling
         UpdateTimer m_timerPlayerScroll;
 
+        SDL_Texture* m_swapCanvas;
+        int m_nextRoomIndex;
     };
 }

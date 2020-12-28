@@ -5,8 +5,8 @@
 #include "Renderer.h"
 #include "Camera.h"
 
-#define MAIN_WINDOW_WIDTH 160*4
-#define MAIN_WINDOW_HEIGHT 144*4
+constexpr int MAIN_WINDOW_WIDTH = 160 * 4;
+constexpr int MAIN_WINDOW_HEIGHT = 144 * 4;
 #define MAIN_WINDOW_TITLE "Link's Awakening"
 
 namespace Zelda

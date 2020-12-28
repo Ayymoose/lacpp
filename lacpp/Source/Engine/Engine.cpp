@@ -47,12 +47,12 @@ void Zelda::Engine::init() noexcept
 
     // Load all resources (sound + graphics)
     ResourceManager::getInstance().loadGraphics();
+    ResourceManager::getInstance().loadSounds();
 
     // Initialise the keyboard
     Keyboard::getInstance();
     
     // Initialise the camera
-    Camera::getInstance().track(&Link::getInstance());
     Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
 
     // Testing goes in here
@@ -193,7 +193,7 @@ void Engine::engineTest()
 
     // Dialogue::getInstance().message("You got your sword! It has your name on the back! Very nice");
     // Dialogue::getInstance().message("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEFABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEF");//"You've got a    Guardian Acorn! It will reduce  the damage you  take by half!");
-    Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue");
+    //Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue");
 
     // TODO: Make sure local objects when destroyed get removed from renderer
     /*static SeaUrchin su(72,64);
