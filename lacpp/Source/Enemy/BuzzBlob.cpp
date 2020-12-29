@@ -90,18 +90,13 @@ Vector<float> BuzzBlob::position() const noexcept
     return m_positionVector;
 }
 
-void BuzzBlob::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void BuzzBlob::die() noexcept
 {
 
 
 }
 
-void BuzzBlob::move() noexcept
+void BuzzBlob::attack() noexcept
 {
     // Move's randomly in 4 directions only
     // Bouncing off objects

@@ -76,18 +76,13 @@ Vector<float> LikeLike::position() const noexcept
     return m_positionVector;
 }
 
-void LikeLike::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void LikeLike::die() noexcept
 {
 
 
 }
 
-void LikeLike::move() noexcept
+void LikeLike::attack() noexcept
 {
     // Move's randomly in 4 directions only
     // Bouncing off objects

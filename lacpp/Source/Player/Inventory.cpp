@@ -114,11 +114,15 @@ Inventory::Inventory()
     m_items[8] = WPN_BOOMERANG;
     m_items[9] = WPN_OCARINA;
 
-    m_dungeonKeys = 1;
-    m_compass = true;
-    m_dungeonMap = true;
-    m_nightmareKey = true;
-    m_owlBeak = true;
+    for (uint8_t i = 0; i < static_cast<uint8_t>(Dungeon::DUNGEON_COUNT); i++)
+    {
+        m_dungeonKeys[i] = 1;
+        m_compass[i] = true;
+        m_dungeonMap[i] = true;
+        m_nightmareKey[i] = true;
+        m_owlBeak[i] = true;
+    }
+
     m_flippers = true;
     m_potion = true;
     m_tradeItem = ITEM_STICK;
@@ -779,28 +783,28 @@ void Inventory::drawDungeonItems(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
-    if (m_compass)
+    if (m_compass[static_cast<uint8_t>(m_dungeon)])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
         dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
         ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
-    if (m_nightmareKey)
+    if (m_nightmareKey[static_cast<uint8_t>(m_dungeon)])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
         ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
-    if (m_owlBeak)
+    if (m_owlBeak[static_cast<uint8_t>(m_dungeon)])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
         dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
         ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
 
-    if (m_dungeonMap)
+    if (m_dungeonMap[static_cast<uint8_t>(m_dungeon)])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
         dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
@@ -817,7 +821,7 @@ void Inventory::drawDungeonItems(SDL_Renderer* renderer) noexcept
     ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    drawNumber(renderer, m_texture, false, true, 0, m_dungeonKeys, &dstRect);
+    drawNumber(renderer, m_texture, false, true, 0, m_dungeonKeys[static_cast<uint8_t>(m_dungeon)], &dstRect);
 
 
 

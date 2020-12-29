@@ -76,17 +76,12 @@ Vector<float> WaterTektite::position() const noexcept
     return m_positionVector;
 }
 
-void WaterTektite::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void WaterTektite::die() noexcept
 {
     // Can't remember if it dies or not
 }
 
-void WaterTektite::move() noexcept
+void WaterTektite::attack() noexcept
 {
     // Moves in random diagnoal strides
     if (!m_stride)

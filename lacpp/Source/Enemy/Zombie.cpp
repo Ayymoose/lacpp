@@ -83,18 +83,13 @@ Vector<float> Zombie::position() const noexcept
     return m_positionVector;
 }
 
-void Zombie::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void Zombie::die() noexcept
 {
 
 
 }
 
-void Zombie::move() noexcept
+void Zombie::attack() noexcept
 {
     // Emerges from the ground from a random place and moves towards Link for a while
     // Then burrows back in and appears at a random place again

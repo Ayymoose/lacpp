@@ -83,18 +83,13 @@ Vector<float> ArmMimic::position() const noexcept
     return m_positionVector;
 }
 
-void ArmMimic::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void ArmMimic::die() noexcept
 {
 
 
 }
 
-void ArmMimic::move() noexcept
+void ArmMimic::attack() noexcept
 {
     // Moves in the opposite direction to Link
     // If Link moves left, we move right

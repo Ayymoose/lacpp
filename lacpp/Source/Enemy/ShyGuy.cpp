@@ -84,18 +84,13 @@ Vector<float> ShyGuy::position() const noexcept
     return m_positionVector;
 }
 
-void ShyGuy::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void ShyGuy::die() noexcept
 {
 
 
 }
 
-void ShyGuy::move() noexcept
+void ShyGuy::attack() noexcept
 {
     // Moves in the opposite direction to Link
     // If Link moves left, we move right

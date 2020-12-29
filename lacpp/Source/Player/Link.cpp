@@ -303,15 +303,16 @@ void Link::control() noexcept
         std::cout << "Inventory opened!\n";
     }
 
+    // TODO: Open worldmap only if inventory not open
     // Open worldmap
-    if (Keyboard::getInstance().keyPushed(BUTTON_START))
+    /*if (Keyboard::getInstance().keyPushed(BUTTON_START))
     {
         m_worldmap.open();
         // Give control to the inventory and pause the engine
         Controller::getInstance().pushController(this, &m_worldmap);
         Engine::getInstance().pause(true);
         std::cout << "Worldmap opened!\n";
-    }
+    }*/
 
     // Only animate if moving
     if (m_moveable && (Keyboard::getInstance().keyPushed(BUTTON_RIGHT) || Keyboard::getInstance().keyPushed(BUTTON_LEFT) || Keyboard::getInstance().keyPushed(BUTTON_DOWN) || Keyboard::getInstance().keyPushed(BUTTON_UP)))

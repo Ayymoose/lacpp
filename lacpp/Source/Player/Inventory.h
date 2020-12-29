@@ -336,11 +336,11 @@ namespace Zelda
 
         // Dungeon related items
         bool m_inDungeon;    // Are we in a dungeon?
-        int m_dungeonKeys;  // Number of dungeon keys
-        bool m_compass;      // Dungeon compass
-        bool m_dungeonMap;   // Dungeon map
-        bool m_nightmareKey; // Nightmare boss key
-        bool m_owlBeak;      // Owl beak
+        uint8_t m_dungeonKeys[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];  // Number of dungeon keys
+        bool m_compass[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];      // Dungeon compass
+        bool m_dungeonMap[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];   // Dungeon map
+        bool m_nightmareKey[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)]; // Nightmare boss key
+        bool m_owlBeak[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];      // Owl beak
 
         // Dungeon keys
         bool m_tailKey;

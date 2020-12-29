@@ -22,7 +22,6 @@ public:
     // Enemy overrides
     void attack() noexcept override;
     void die() noexcept override;
-    void move() noexcept override;
 private:
     float m_strideLength;
     float m_strided;

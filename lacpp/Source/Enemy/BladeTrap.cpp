@@ -408,8 +408,3 @@ void BladeTrap::die() noexcept
 {
     // Can't remember if it dies or not
 }
-
-void BladeTrap::move() noexcept
-{
-
-}

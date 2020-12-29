@@ -21,8 +21,6 @@ public:
     // Enemy overrides
     void attack() noexcept override;
     void die() noexcept override;
-    void move() noexcept override;
-
 private:
     int m_vacuums;
 };

@@ -75,18 +75,13 @@ Vector<float> Gibdo::position() const noexcept
     return m_positionVector;
 }
 
-void Gibdo::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void Gibdo::die() noexcept
 {
     
 
 }
 
-void Gibdo::move() noexcept
+void Gibdo::attack() noexcept
 {
     // Move's randomly in 4 directions only
     // Bouncing off objects

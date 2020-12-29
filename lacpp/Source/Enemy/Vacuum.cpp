@@ -97,8 +97,3 @@ void Vacuum::die() noexcept
 {
     // Can't remember if it dies or not
 }
-
-void Vacuum::move() noexcept
-{
-    // Doesn't move
-}

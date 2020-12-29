@@ -91,8 +91,6 @@ public:
     // Die
     virtual void die() noexcept = 0;
 
-    // Move
-    virtual void move() noexcept = 0;
 protected:
     Enemy() : m_auxiliaryFrame(0), m_moving(false)
     {

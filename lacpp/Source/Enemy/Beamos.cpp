@@ -78,8 +78,3 @@ void Beamos::die() noexcept
 {
     // This enemy can't die
 }
-
-void Beamos::move() noexcept
-{
-    // This enemy doesn't move
-}

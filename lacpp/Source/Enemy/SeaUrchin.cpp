@@ -77,8 +77,3 @@ void SeaUrchin::attack() noexcept
 void SeaUrchin::die() noexcept
 {
 }
-
-void SeaUrchin::move() noexcept
-{
-    // This enemy doesn't move and doesn't do anything except animate
-}

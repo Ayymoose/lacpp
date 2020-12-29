@@ -136,12 +136,12 @@ void Zelda::Engine::renderObjects() const noexcept
     // Render any objects
     auto renderSet = Renderer::getInstance().getRenderSet();
 
-    for (auto& renderable : renderSet)
+    for (const auto& renderable : renderSet)
     {
         assert(renderable);
 
 
-
+        // Cull any objects out of view
         auto cullable = dynamic_cast<CullableParent*>(renderable);
         if (cullable)
         {
@@ -163,8 +163,6 @@ void Zelda::Engine::renderObjects() const noexcept
             auto enemy = dynamic_cast<Enemy*>(renderable);
             if (enemy)
             {
-                // Some Enemys can/can't move
-                enemy->move();
                 // Or can/can't attack
                 enemy->attack();
 
@@ -219,5 +217,25 @@ void Engine::engineTest()
     static BuzzBlob buzzblod(64, 64);
     static Zombie zombie(64, 64);*/
     static Peahat peahat(64, 64);
+
+
+
+    /*
+
+        // TODOs
+
+        // 1. Game introduction
+        // 2. File select
+        // 3. Save file
+        // 4. Collisions
+        // 5. Enemies
+        // 6. Sound
+        // 7. Objects 
+        // 8. Fix timer classes
+        // 9. Dialogue outstanding issues
+        // 10. Engine pausing
+
+
+    */
 
 }

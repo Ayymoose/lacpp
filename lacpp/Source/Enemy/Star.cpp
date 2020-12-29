@@ -74,17 +74,12 @@ Vector<float> Star::position() const noexcept
     return m_positionVector;
 }
 
-void Star::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void Star::die() noexcept
 {
     // Can't remember if it dies or not
 }
 
-void Star::move() noexcept
+void Star::attack() noexcept
 {
     // Bounces diagonally off the walls/screen
     // Change direction as if bouncing off a wall

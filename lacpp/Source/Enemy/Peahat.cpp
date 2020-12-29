@@ -84,18 +84,13 @@ Vector<float> Peahat::position() const noexcept
     return m_positionVector;
 }
 
-void Peahat::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void Peahat::die() noexcept
 {
 
 
 }
 
-void Peahat::move() noexcept
+void Peahat::attack() noexcept
 {
     // Stays stationary for a while then
     // Starts spinning then rises up and once risen, moves around before settling back

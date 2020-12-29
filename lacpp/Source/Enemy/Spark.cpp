@@ -77,19 +77,13 @@ Vector<float> Spark::position() const noexcept
 
 void Spark::attack() noexcept
 {
-    // This enemy doesn't attack
+    // A possibly more complicated enemy that I thought
+// Moves along the edges of solids
+// Not sure how to implement that just yet
 }
 
 void Spark::die() noexcept
 {
 
 
-}
-
-void Spark::move() noexcept
-{
-    // A possibly more complicated enemy that I thought
-    // Moves along the edges of solids
-    // Not sure how to implement that just yet
- 
 }

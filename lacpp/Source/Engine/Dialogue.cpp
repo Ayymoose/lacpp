@@ -60,6 +60,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
 {
     // Displays a message on screen to the player
     // Engine is paused while the message is being displayed
+    Engine::getInstance().pause(true);
 
     // Acceptable characters in the message are only
     // a-z A-Z !?'.,- 0-9 space
@@ -465,6 +466,8 @@ void Zelda::Dialogue::control() noexcept
         // Close dialogue box and restore control
         Controller::getInstance().popController();
         Renderer::getInstance().removeRenderable(this);
+        // Unpause
+        Engine::getInstance().pause(false);
     }
     else if (m_isQuestion)
     {

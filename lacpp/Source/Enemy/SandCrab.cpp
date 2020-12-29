@@ -76,18 +76,13 @@ Vector<float> SandCrab::position() const noexcept
     return m_positionVector;
 }
 
-void SandCrab::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void SandCrab::die() noexcept
 {
 
 
 }
 
-void SandCrab::move() noexcept
+void SandCrab::attack() noexcept
 {
     // Moves in 4 directions only
     // Moves fast when moving sideways but moves half the speed when up/down

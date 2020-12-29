@@ -86,18 +86,13 @@ Vector<float> ThreeOfAKind::position() const noexcept
     return m_positionVector;
 }
 
-void ThreeOfAKind::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void ThreeOfAKind::die() noexcept
 {
 
 
 }
 
-void ThreeOfAKind::move() noexcept
+void ThreeOfAKind::attack() noexcept
 {
     // Move's randomly in 4 directions only
 

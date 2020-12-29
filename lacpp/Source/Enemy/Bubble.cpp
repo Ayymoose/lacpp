@@ -74,17 +74,12 @@ Vector<float> Bubble::position() const noexcept
     return m_positionVector;
 }
 
-void Bubble::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void Bubble::die() noexcept
 {
     // Can't remember if it dies or not
 }
 
-void Bubble::move() noexcept
+void Bubble::attack() noexcept
 {
     // Bounces diagonally off the walls/screen
     // Change direction as if bouncing off a wall

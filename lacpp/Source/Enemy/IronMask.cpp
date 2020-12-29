@@ -79,18 +79,13 @@ Vector<float> IronMask::position() const noexcept
     return m_positionVector;
 }
 
-void IronMask::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void IronMask::die() noexcept
 {
 
 
 }
 
-void IronMask::move() noexcept
+void IronMask::attack() noexcept
 {
     // Move's randomly in 4 directions only
     

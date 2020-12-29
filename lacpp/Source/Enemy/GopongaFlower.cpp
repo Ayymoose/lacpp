@@ -78,8 +78,3 @@ void GopongaFlower::die() noexcept
 {
     
 }
-
-void GopongaFlower::move() noexcept
-{
-    // This enemy doesn't move
-}

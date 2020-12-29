@@ -75,18 +75,13 @@ Vector<float> HardhatBeetle::position() const noexcept
     return m_positionVector;
 }
 
-void HardhatBeetle::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void HardhatBeetle::die() noexcept
 {
 
 
 }
 
-void HardhatBeetle::move() noexcept
+void HardhatBeetle::attack() noexcept
 {
     // Moves towards Link
     Vector<float> linkPositionVector = Link::getInstance().position();

@@ -83,18 +83,13 @@ Vector<float> Leever::position() const noexcept
     return m_positionVector;
 }
 
-void Leever::attack() noexcept
-{
-    // This enemy doesn't attack
-}
-
 void Leever::die() noexcept
 {
 
 
 }
 
-void Leever::move() noexcept
+void Leever::attack() noexcept
 {
     // Emerges from the ground from a random place and moves towards Link for a while
     // Then burrows back in and appears at a random place again
