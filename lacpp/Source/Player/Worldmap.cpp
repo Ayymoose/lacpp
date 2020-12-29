@@ -34,30 +34,34 @@ void Zelda::Worldmap::control() noexcept
     // Move scope around map if the area is visited
     if (Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
     {
-        if (m_scopeX+1 < WORLDMAP_MAX_X && m_worldmapLocation[m_scopeX+1][m_scopeY].visited)
+        if (m_worldmapLocation[(m_scopeX+1) % WORLDMAP_MAX_X][m_scopeY].visited)
         {
-            m_scopeX++;
+            m_scopeX = (m_scopeX + 1) % WORLDMAP_MAX_X;
+            assert(m_scopeX >= 0 && m_scopeX < WORLDMAP_MAX_X);
         }
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_LEFT))
     {
-        if (m_scopeX - 1 >= 0 &&  m_worldmapLocation[m_scopeX-1][m_scopeY].visited)
+        if (m_worldmapLocation[(uint8_t)(m_scopeX-1) % WORLDMAP_MAX_X][m_scopeY].visited)
         {
-            m_scopeX--;
+            m_scopeX = (uint8_t)(m_scopeX - 1) % WORLDMAP_MAX_X;
+            assert(m_scopeX >= 0 && m_scopeX < WORLDMAP_MAX_X);
         }
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_UP))
     {
-        if (m_scopeY - 1 >= 0 && m_worldmapLocation[m_scopeX][m_scopeY - 1].visited)
+        if (m_worldmapLocation[m_scopeX][(uint8_t)(m_scopeY-1) % WORLDMAP_MAX_Y].visited)
         {
-            m_scopeY--;
+            m_scopeY = (uint8_t)(m_scopeY-1) % WORLDMAP_MAX_Y;
+            assert(m_scopeY >= 0 && m_scopeY < WORLDMAP_MAX_Y);
         }
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_DOWN))
     {
-        if (m_scopeY + 1 < WORLDMAP_MAX_Y && m_worldmapLocation[m_scopeX][m_scopeY+1].visited)
+        if (m_worldmapLocation[m_scopeX][(uint8_t)(m_scopeY+1) % WORLDMAP_MAX_Y].visited)
         {
-            m_scopeY++;
+            m_scopeY = (uint8_t)(m_scopeY + 1) % WORLDMAP_MAX_Y;
+            assert(m_scopeY >= 0 && m_scopeY < WORLDMAP_MAX_Y);
         }
     }
 
@@ -111,7 +115,7 @@ void Zelda::Worldmap::control() noexcept
             Dialogue::getInstance().message("  Town Tool Shop ", yPos);
             break;
         case LN_MARIN_AND_TARIN_HOUSE:
-            Dialogue::getInstance().message("Marin and       ""   Tarin's House ", yPos);
+            Dialogue::getInstance().message("Marin and       ""   Tarin's House", yPos);
             break;
         case LN_WITCH_HUT:
             Dialogue::getInstance().message("   Witch's Hut ", yPos);
@@ -183,7 +187,7 @@ void Zelda::Worldmap::control() noexcept
             Dialogue::getInstance().message("Madam MeowMeow's""     House      "" Beware of Dog! ", yPos);
             break;
         case LN_OLD_MAN_ULRIRA_HOUSE:
-            Dialogue::getInstance().message("Old Man Ulrira's""     House       ", yPos);
+            Dialogue::getInstance().message("Old Man Ulrira's""     House      ", yPos);
             break;
         case LN_WEIRD_MR_WRITE:
             Dialogue::getInstance().message("Weird Mr. Write  ", yPos);
@@ -279,10 +283,28 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
                 assert(false);
                 break;
             }
-            // TODO: Place in right place
-            // Depends on whether the scope is in one of four quarters on the map it seems
+            // Show the location type which depends on whether the scope is in one of four quarters on the map it seems
+            uint8_t sx, sy;
 
-            dstRect = { 100,100, 30,30 };
+            if (m_scopeX / 8 == 0)
+            {
+                sx = 105;
+            }
+            else
+            {
+                sx = 25;
+            }
+
+            if (m_scopeY / 8 == 0)
+            {
+                sy = 16;
+            }
+            else
+            {
+                sy = 97;
+            }
+
+            dstRect = { sx,sy, 30,30 };
             ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRectLocation, &dstRect) == 0, "SDL Error: " << SDL_GetError());
         }
 
