@@ -100,7 +100,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
     auto y = position.y;
 
     // Calculate room index
-    int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
+    uint16_t roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
     m_nextRoomIndex = roomIndex;
 
         // Transition the player if they move off the screen

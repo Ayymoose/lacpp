@@ -90,7 +90,7 @@ namespace Zelda
         // Credits go to https://github.com/zladx/LADX-Disassembly for providing the text
 
         // TODO: Remove duplicate lines from here
-
+        /*
         const std::string m_dialogue[159 + 89 + 135 + 184 + 98 + 4] =
         {
             "Whoa, boy! Where""ya off to in    ""such a hurry?   ""Set a spell, I  ""got somethin' ta""tell ya!@",
@@ -769,6 +769,6 @@ namespace Zelda
             "    1993 STAFF    "" DUNGEON DESIGNER ""   ILLUSTRATOR    ""     PRODUCER     ""EXECUTIVE PRODUCER""                  ",
             "                  ""  TAKASHI TEZUKA  ""YOSINORI TUTIYAMA "" NOBUO MATSUMIYA  ""    EIJI NOTO     ""   KIYOSHI KODA   ""SIGEHIRO KASAMATU ""  MIKIO MISHIMA   ""   KYOKO KIMURA   ""   YUICHI OZAKI   ""   KEIKO IZAWA    ""   N KOGANEZAWA   ""   JIM WORNELL    ""   KEIKO TAMURA   ""    TAMAYO ITO    ""  AKIYA SAKAMOTO  "" R&D2 DEBUG STAFF "" SUPER MARIO CLUB ""YASUHISA YAMAMURA ""  KENSUKE TANABE  "" YOSHIAKI KOIZUMI ""  KAZUAKI MORITA  ""TAKAMITSU KUZUHARA"" MASANAO ARIMOTO  ""  SHIGEFUMI HINO  ""  KAZUMI TOTAKA   ""  MINAKO HAMANO   ""  KOZUE ISHIKAWA  ""  YOUICHI KOTABE  ""    DAN OWSEN     "" TOSHIHIKO NAKAGO ""    KOJI KONDO    "" TOMOAKI KUROUME  "" MASAICHI OKUMURA ""    KANAE WADA    "" SHIGERU MIYAMOTO "" HIROSHI YAMAUCHI ""THE  END          "
         
-        };
+        };*/
     };
 }

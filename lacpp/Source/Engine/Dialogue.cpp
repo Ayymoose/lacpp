@@ -130,9 +130,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
     // TODO: Add dialogue paramter to configure where to put on screen
     // - Not only Link uses this dialogue
 
-    // Display at top or bottom on screen depending on Link's position
-    //auto linkPosition = Link::getInstance().position();
-    // yPos = linkPosition.y
+    // Display at top or bottom on screen depending on yPos
     auto yDiff = yPos - Camera::getInstance().getY();
     if (yDiff > DIALOGUE_HEIGHT + DIALOGUE_POS_Y_HIGH)
     {

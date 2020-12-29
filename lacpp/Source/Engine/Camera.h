@@ -91,6 +91,6 @@ namespace Zelda
         UpdateTimer m_timerPlayerScroll;
 
         SDL_Texture* m_swapCanvas;
-        int m_nextRoomIndex;
+        uint16_t m_nextRoomIndex;
     };
 }
