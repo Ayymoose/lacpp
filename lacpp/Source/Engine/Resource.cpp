@@ -10,6 +10,10 @@ void ResourceManager::loadGraphics() noexcept
 {
     // Attempt to load all the graphic resources
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_DUNGEON_1_TAIL_CAVE, loadTexture(Zelda::ResourceDungeonsPath + "tm_tail_cave.png", TRANSPARENCY_COLOUR)));
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WORLD_MAP, loadTexture(Zelda::ResourceMiscPath + "tm_worldmap.png", TRANSPARENCY_COLOUR)));
+
+
+    
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_LINK, loadTexture(Zelda::ResourceSpriteLinkPath + "link.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_CANDLE, loadTexture(Zelda::ResourceObjectsPath + "candle.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TORCH_1, loadTexture(Zelda::ResourceObjectsPath + "torch.png", TRANSPARENCY_COLOUR)));

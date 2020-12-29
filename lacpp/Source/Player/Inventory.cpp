@@ -47,6 +47,7 @@ Inventory::Inventory()
     m_controllableName = m_name;
     m_depth = ZD_DEPTH_INVENTORY;
     Renderer::getInstance().addRenderable(this);
+
     m_tradeItem = ITEM_NONE;
     m_seashells = 0;
     m_flippers = false;
@@ -452,6 +453,8 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
     drawNumber(renderer, m_texture, true, true, 0, static_cast<int>(m_dungeon), &dstRectMapLevel);
 
     // Draw the dungeon map
+
+    // TODO: Show the nightmare and chest locations if they have the compass
     
     // Without a map, all the paths are not drawn
     // Unvisited areas are marked with a grey block

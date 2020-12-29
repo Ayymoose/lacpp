@@ -41,9 +41,9 @@ namespace Zelda
     {
         friend class Singleton<Dialogue>;
     public:
-        void message(const std::string& message) noexcept;
-        bool question(const std::string& question, const std::string& choice1, const std::string& choice2) noexcept;
-        bool question(const char* question, const std::string& choice1, const std::string& choice2) noexcept;
+        void message(const std::string& message, float yPos) noexcept;
+        bool question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
+        bool question(const char* question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
         void render(SDL_Renderer* renderer) noexcept override;
 
         void control() noexcept override;

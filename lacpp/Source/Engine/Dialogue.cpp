@@ -56,7 +56,7 @@ Dialogue::Dialogue()
     m_questionYPos = 0;
 }
 
-void Dialogue::message(const std::string& message) noexcept
+void Dialogue::message(const std::string& message, float yPos) noexcept
 {
     // Displays a message on screen to the player
     // Engine is paused while the message is being displayed
@@ -105,23 +105,36 @@ void Dialogue::message(const std::string& message) noexcept
 
     // If all characters are displayed then display the blinking red arrow in the corner
     // Once user pressers the continue key, move the text up 
+
+    // Reset after use
+    // TODO: Check if question() needs similar resets
     m_message = message;
-    m_currentChar = 0;
+
     m_dstCharX = 0;
     m_dstCharY = 0;
     m_currentLine = 0;
     m_scrollMessage = false;
+
     m_scrolledLines = 0;
+    m_currentChar = 0;
     m_flashArrow = false;
     m_continue = false;
+    m_moreText = false;
+
+    colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
 
     // TODO: Correct text colour
     // TODO: Add special characters (arrows, items etc)
     // TODO: Add heart container on RHS when acquired
 
+    // TODO: Add dialogue paramter to configure where to put on screen
+    // - Not only Link uses this dialogue
+
     // Display at top or bottom on screen depending on Link's position
-    auto linkPosition = Link::getInstance().position();
-    if (linkPosition.y - Camera::getInstance().getY() > DIALOGUE_HEIGHT + DIALOGUE_POS_Y_HIGH)
+    //auto linkPosition = Link::getInstance().position();
+    // yPos = linkPosition.y
+    auto yDiff = yPos - Camera::getInstance().getY();
+    if (yDiff > DIALOGUE_HEIGHT + DIALOGUE_POS_Y_HIGH)
     {
         m_dialoguePosY = DIALOGUE_POS_Y_HIGH;
     }
@@ -130,17 +143,17 @@ void Dialogue::message(const std::string& message) noexcept
         m_dialoguePosY = DIALOGUE_POS_Y_LOW;
     }
 
-    // Display
-    Controller::getInstance().pushController(&Link::getInstance(), this);
+    // Switch controller over to this
+    Controller::getInstance().pushController(Controller::getInstance().getController(), this);
 }
 
-bool Dialogue::question(const std::string& question, const std::string& choice1, const std::string& choice2) noexcept
+bool Dialogue::question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos) noexcept
 {
     // TODO: Why can't this overload be called as question?
-    return this->question(question.c_str(), choice1, choice2);
+    return this->question(question.c_str(), choice1, choice2, yPos);
 }
 
-bool Dialogue::question(const char* question, const std::string& choice1, const std::string& choice2) noexcept
+bool Dialogue::question(const char* question, const std::string& choice1, const std::string& choice2, float yPos) noexcept
 {
     // If it's a question
     // Output the message and then add an extra line with the given options
@@ -163,7 +176,7 @@ bool Dialogue::question(const char* question, const std::string& choice1, const 
     m_isQuestion = true;
     //'                '
     //'Red Blue'
-    message(question + messagePad + optionsPad + options);
+    message(question + messagePad + optionsPad + options, yPos);
 
     m_questionXPos = m_dialoguePosX + (optionsPadding * (CHAR_WIDTH - 1));
     m_questionYPos = m_dialoguePosY + TEXT_POS_Y + LINE_HEIGHT;

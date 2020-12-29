@@ -36,6 +36,9 @@ namespace Zelda
         GFX_DUNGEON_9_COLOUR_DUNGEON,
         GFX_DUNGEON_10_WIND_FISH_EGG,
 
+        // World map
+        GFX_WORLD_MAP,
+
         // Interiors
         GFX_INTERIOR_KANALET_CASTLE,
         GFX_INTERIOR_DREAM_SHRINE,

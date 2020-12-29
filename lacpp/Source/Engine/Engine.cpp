@@ -195,6 +195,8 @@ void Engine::engineTest()
     // Dialogue::getInstance().message("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEFABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEF");//"You've got a    Guardian Acorn! It will reduce  the damage you  take by half!");
     //Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue");
 
+    Dialogue::getInstance().message("Level 1--       ""     Tail Cave", Link::getInstance().position().y);
+
     // TODO: Make sure local objects when destroyed get removed from renderer
     /*static SeaUrchin su(72,64);
     static Beamos be(72, 80);

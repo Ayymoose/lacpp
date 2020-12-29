@@ -35,6 +35,7 @@ Camera::Camera()
     m_screenY = 0;
 
     // Create a blank canvas for a the area
+    // TODO: Free textures on shutdown
     m_texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
     assert(m_texture != nullptr);
     m_swapCanvas = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
@@ -182,6 +183,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollX -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
+            // TODO: Correct player addition vector
             if (m_timerPlayerScroll.update(FPS_33))
             {
                 player->addPosition(-PlayerScrollSpeed, 0);

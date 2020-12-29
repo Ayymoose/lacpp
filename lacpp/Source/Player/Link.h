@@ -16,6 +16,7 @@
 #include "Clock.h"
 #include "Sword.h"
 #include "Cullable.h"
+#include "Worldmap.h"
 
 #include <memory>
 
@@ -160,6 +161,8 @@ private:
     int m_speedY;
     BoundingBox m_boundingBox;
     CollisionMap m_collisionMap;
+
+    Worldmap m_worldmap;
 
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept;
     void useWeapon(WEAPON weapon) noexcept;

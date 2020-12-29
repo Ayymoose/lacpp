@@ -100,6 +100,8 @@ float Link::maxHealth() const noexcept
 bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept
 {
     return false;
+
+#if 0
     // When moving in a direction
     // If our position + speed encounters a wall, stop
     // else keep moving in that direction
@@ -183,6 +185,7 @@ bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexce
     }
 
     return collision;
+#endif
 }
 
 void Link::render(SDL_Renderer* renderer) noexcept
@@ -298,6 +301,16 @@ void Link::control() noexcept
         Controller::getInstance().pushController(this, &m_inventory);
         Engine::getInstance().pause(true);
         std::cout << "Inventory opened!\n";
+    }
+
+    // Open worldmap
+    if (Keyboard::getInstance().keyPushed(BUTTON_START))
+    {
+        m_worldmap.open();
+        // Give control to the inventory and pause the engine
+        Controller::getInstance().pushController(this, &m_worldmap);
+        Engine::getInstance().pause(true);
+        std::cout << "Worldmap opened!\n";
     }
 
     // Only animate if moving
