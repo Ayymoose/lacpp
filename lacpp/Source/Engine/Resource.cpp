@@ -55,11 +55,12 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t tran
     else
     {
         // Set transparency
-        ZD_ASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, SDL_RED(transparency), SDL_GREEN(transparency), SDL_BLUE(transparency))) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, SDL_RED(transparency), SDL_GREEN(transparency), SDL_BLUE(transparency))), SDL_ERROR_MESSAGE);
 
         // Create texture from surface
         newTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().getRenderer(), loadedSurface);
-        ZD_ASSERT(newTexture != nullptr, "SDL Error: " << SDL_GetError());
+        // TODO: Fix SDL_ASSERT to handle nullptr checks
+        assert(newTexture);
 
         // Get rid of old loaded surface
         SDL_FreeSurface(loadedSurface);
@@ -69,11 +70,11 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t tran
     // So we must copy every texture created from surface to a new one.
     // A limitation of SDL
     int textureWidth,textureHeight;
-    ZD_ASSERT(SDL_QueryTexture(newTexture, nullptr, nullptr, &textureWidth, &textureHeight) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_QueryTexture(newTexture, nullptr, nullptr, &textureWidth, &textureHeight), SDL_ERROR_MESSAGE);
     auto texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, textureWidth, textureHeight);
     assert(texture != nullptr);
     copyToTexture(Renderer::getInstance().getRenderer(), newTexture, texture, nullptr, nullptr);
-    ZD_ASSERT(SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND), SDL_ERROR_MESSAGE);
     
     return texture;
 }

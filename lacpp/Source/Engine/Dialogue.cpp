@@ -414,12 +414,12 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
     copyToTexture(renderer, m_subTexture, m_texture, nullptr, &dstRectSubTexture);
 
     // Display the textbox
-    ZD_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRectDialogue) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRectDialogue), SDL_ERROR_MESSAGE);
 
     // Flashing red arrow 
     if (m_flashArrow && m_continue)
     {
-        ZD_ASSERT(SDL_RenderCopy(renderer, m_redArrow, &srcRectArrow, &dstRectArrow) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopy(renderer, m_redArrow, &srcRectArrow, &dstRectArrow), SDL_ERROR_MESSAGE);
     }
 
     // Flash the continue arrow
@@ -434,7 +434,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
             SDL_Rect srcQuestionRect = {144,16, CHAR_WIDTH, CHAR_HEIGHT };
             SDL_Rect dstQuestionRect = {m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
 
-            ZD_ASSERT(SDL_RenderCopy(renderer, m_questionMarker, &srcQuestionRect, &dstQuestionRect) == 0, "SDL Error: " << SDL_GetError());
+            SDL_ASSERT(SDL_RenderCopy(renderer, m_questionMarker, &srcQuestionRect, &dstQuestionRect), SDL_ERROR_MESSAGE);
         }
     }
 }

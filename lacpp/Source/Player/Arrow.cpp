@@ -54,7 +54,7 @@ void Arrow::render(SDL_Renderer* renderer) noexcept
         break;
     }
 
-    ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
     m_boundingBox.x = m_positionVector.x - Camera::getInstance().getX();
     m_boundingBox.y = m_positionVector.y - Camera::getInstance().getY();

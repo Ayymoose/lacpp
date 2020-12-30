@@ -52,7 +52,7 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
         static_cast<float>(m_height)
     };
 
-    ZD_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -67,7 +67,7 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
         m_animationTimer.reset();
     }
 
-    /*ZD_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255) == 0, "SDL Error: " << SDL_GetError());
+    /*SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255), SDL_ERROR_MESSAGE);
 
     // Position on screen
     auto positionVector = m_positionVector - Camera::getInstance().position();
@@ -85,11 +85,11 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
     auto b3 = positionVector;
     b3.y += m_height;
 
-    ZD_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, b0.x, b0.y) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, b1.x, b1.y) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, b2.x, b2.y) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, b3.x, b3.y) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, b0.x, b0.y), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, b1.x, b1.y), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, b2.x, b2.y), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, b3.x, b3.y), SDL_ERROR_MESSAGE);
     
 
     auto linkPositionVector = Link::getInstance().position() - Camera::getInstance().position();
@@ -105,14 +105,14 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
     auto p3 = linkPositionVector;
     p3.y += m_height;
 
-    ZD_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, p0.x, p0.y) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, p1.x, p1.y) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, p2.x, p2.y) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, p3.x, p3.y) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, p0.x, p0.y), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, p1.x, p1.y), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, p2.x, p2.y), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, p3.x, p3.y), SDL_ERROR_MESSAGE);
     
     auto b2b3mid = (b2 + b3) / 2;
-    ZD_ASSERT(SDL_RenderDrawPoint(renderer, b2b3mid.x, b2b3mid.y) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderDrawPoint(renderer, b2b3mid.x, b2b3mid.y), SDL_ERROR_MESSAGE);
     */
     
     // SDL_RenderDrawLine

@@ -240,7 +240,7 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
                 {
                     SDL_Rect srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED];
                     dstRect = { WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7,7 };
-                    ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+                    SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
                 }
             }
         }
@@ -249,13 +249,13 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
 
         // Render the worldmap
         dstRect = { 0, 0, m_width, m_height };
-        ZD_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
 
         // TODO: Animate properly
         // Draw current world location marker
         SDL_Rect srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_LOCATION];
         dstRect = { (WORLDMAP_START_X + m_worldX * 8) - 1, (WORLDMAP_START_Y + m_worldY * 8) - 1, 8,8 };
-        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
 
         // Draw the location if we hit upon one
         if (m_worldmapLocation[m_scopeX][m_scopeY].locationType != LT_NONE)
@@ -301,13 +301,13 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
             }
 
             dstRect = { sx,sy, 30,30 };
-            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRectLocation, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+            SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRectLocation, &dstRect), SDL_ERROR_MESSAGE);
         }
 
         // Draw the "scope" we use to move around
         srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE];
         dstRect = { (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5 , 16, 16 };
-        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
    
 
         toggleItem(m_scopeSelect, m_scopeSelectTimer, WORLDMAP_SELECTOR_FPS);
@@ -321,19 +321,19 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
             dstRect.x += 4;
             dstRect.y -= 10;
             // Up arrow
-            ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+            SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
             // Right arrow
             dstRect.x += 15;
             dstRect.y += 14;
-            ZD_ASSERT(SDL_RenderCopyEx(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 90, nullptr, SDL_RendererFlip::SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+            SDL_ASSERT(SDL_RenderCopyEx(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 90, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
             // Down arrow
             dstRect.x -= 15;
             dstRect.y += 15;
-            ZD_ASSERT(SDL_RenderCopyEx(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 180, nullptr, SDL_RendererFlip::SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+            SDL_ASSERT(SDL_RenderCopyEx(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 180, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
             // Left arrow
             dstRect.x -= 15;
             dstRect.y -= 15;
-            ZD_ASSERT(SDL_RenderCopyEx(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 270, nullptr, SDL_RendererFlip::SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+            SDL_ASSERT(SDL_RenderCopyEx(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 270, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         }
     }

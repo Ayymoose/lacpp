@@ -10,21 +10,21 @@ void copyToTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Texture*
 {
     // Push rendering target
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    ZD_ASSERT(SDL_SetRenderTarget(renderer, dstTexture) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture), SDL_ERROR_MESSAGE);
 
-    ZD_ASSERT(SDL_RenderCopy(renderer, srcTexture, srcRect, dstRect) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture, srcRect, dstRect), SDL_ERROR_MESSAGE);
     // Pop rendering target
-    ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
 // Colours a part of a texture (or whole use nullptr with a given colour 
 void colourTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Rect* srcRect, uint32_t colour)
 {
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    ZD_ASSERT(SDL_SetRenderTarget(renderer, srcTexture) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_SetRenderDrawColor(renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderFillRect(renderer, srcRect) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_SetRenderDrawColor(renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderFillRect(renderer, srcRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
 void palleteSwap(SDL_Renderer* renderer, SDL_Texture* srcTexture, const std::vector<std::pair<int, int>>& palletes)
@@ -35,11 +35,11 @@ void palleteSwap(SDL_Renderer* renderer, SDL_Texture* srcTexture, const std::vec
 SDL_Texture* pushRenderingTarget(SDL_Renderer* renderer, SDL_Texture* dstTexture)
 {
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    ZD_ASSERT(SDL_SetRenderTarget(renderer, dstTexture) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture), SDL_ERROR_MESSAGE);
     return currentRenderingTarget;
 }
 
 void popRenderingTarget(SDL_Renderer* renderer, SDL_Texture* srcTexture)
 {
-    ZD_ASSERT(SDL_SetRenderTarget(renderer, srcTexture) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture), SDL_ERROR_MESSAGE);
 }

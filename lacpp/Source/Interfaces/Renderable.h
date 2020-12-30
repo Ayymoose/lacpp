@@ -58,7 +58,7 @@ public:
         m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
     {
         m_texture = texture;
-        ZD_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height), SDL_ERROR_MESSAGE);
         m_depth = depth;
     }
 

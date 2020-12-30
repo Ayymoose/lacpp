@@ -34,7 +34,7 @@
 void Zelda::Engine::init() noexcept
 {
     // Initialise SDL
-    ZD_ASSERT(SDL_Init(SDL_INIT_VIDEO) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO), SDL_ERROR_MESSAGE);
 
     // Create the main window
     m_mainWindow.createWindow(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
@@ -43,7 +43,7 @@ void Zelda::Engine::init() noexcept
     Renderer::getInstance().createRenderer(m_mainWindow.getWindowHandle());
 
     // Stretch the textures to the window size
-    ZD_ASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + HUD_HEIGHT)) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + HUD_HEIGHT)), SDL_ERROR_MESSAGE);
 
     // Load all resources (sound + graphics)
     ResourceManager::getInstance().loadGraphics();
@@ -130,8 +130,8 @@ void Zelda::Engine::renderObjects() const noexcept
     SDL_Renderer* renderer = Renderer::getInstance().getRenderer();
 
     // Clear black
-    ZD_ASSERT(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0) == 0, "SDL Error: " << SDL_GetError());
-    ZD_ASSERT(SDL_RenderClear(renderer) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderClear(renderer), SDL_ERROR_MESSAGE);
 
     // Render any objects
     auto renderSet = Renderer::getInstance().getRenderSet();

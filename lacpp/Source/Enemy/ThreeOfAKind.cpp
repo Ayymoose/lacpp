@@ -47,7 +47,7 @@ void ThreeOfAKind::render(SDL_Renderer* renderer) noexcept
         static_cast<float>(m_height)
     };
 
-    ZD_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_flip) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_flip), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {

@@ -34,7 +34,7 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
     };
 
     // The flame
-    ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
 
     SDL_Rect flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
@@ -53,7 +53,7 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
 
     // The flame rod
     if (m_display)
-    ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
 
     // Animate the flame rod

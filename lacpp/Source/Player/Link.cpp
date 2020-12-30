@@ -200,7 +200,7 @@ void Link::render(SDL_Renderer* renderer) noexcept
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    ZD_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_animations[m_state].flip) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_animations[m_state].flip), SDL_ERROR_MESSAGE);
 
 
     // Drawing bounding boxes for testing
@@ -214,7 +214,7 @@ void Link::render(SDL_Renderer* renderer) noexcept
         m_boundingBox.h
     };
 
-    //ZD_ASSERT(SDL_RenderDrawRect(renderer, &playerRect) == 0, "SDL Error: " << SDL_GetError());
+    //SDL_ASSERT(SDL_RenderDrawRect(renderer, &playerRect), SDL_ERROR_MESSAGE);
 
     /* std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
     for (const BoundingBox& box : bbs)
@@ -222,8 +222,8 @@ void Link::render(SDL_Renderer* renderer) noexcept
 
         SDL_Rect bbRect = { box.x , box.y, box.w, box.h };
 
-        ZD_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0) == 0, "SDL Error: " << SDL_GetError());
-        ZD_ASSERT(SDL_RenderDrawRect(renderer, &bbRect) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderDrawRect(renderer, &bbRect), SDL_ERROR_MESSAGE);
     }
     
     */

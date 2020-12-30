@@ -1,14 +1,23 @@
 #pragma once
 
 #include <iostream>
+#include <type_traits>
 
+#define SDL_ERROR_MESSAGE "SDL Error: " << SDL_GetError()
 // Custom assert to display message
 
 #ifdef NDEBUG
     // TODO: Check this actually works (is compiled out) in Release mode
-    #define ZD_ASSERT(assertion, message) assertion
+    #define SDL_ASSERT(assertion, message) assertion
 #else
-    // TODO: Fix macro as if we keep in release we'll be left with exp == 0 for SDL commands
-    #define ZD_ASSERT(assertion, message) do { if (!(assertion)) { std::cerr << message << std::endl; __debugbreak(); std::terminate(); } } while (0)
+    // Use for SDL_* functions which should always return 0
+    #define SDL_ASSERT(assertion, message) \
+    do \
+    { \
+        if (!((assertion) == 0))\
+        {\
+            std::cerr << message << std::endl; __debugbreak(); std::terminate(); \
+        }\
+    } while (0)
 #endif
 

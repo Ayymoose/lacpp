@@ -48,7 +48,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
 
     case BOMB_SPRITE_INERT:
     case BOMB_SPRITE_FLASHING:
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         break;
     case BOMB_SPRITE_INITIAL_CLOUD:
 
@@ -58,13 +58,13 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         m_boundingBox.x -= 4;
         m_boundingBox.y -= 4;
 
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 12;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.y += 8;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x -= 12;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 28;
         m_boundingBox.h = 24;
@@ -77,13 +77,13 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         m_boundingBox.x -= 6;
         m_boundingBox.y -= 6;
 
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 16;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_HORIZONTAL) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_HORIZONTAL), SDL_ERROR_MESSAGE);
         dstRect.y += 16;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, 270, nullptr, SDL_FLIP_VERTICAL) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, 270, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
         dstRect.x -= 16;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_VERTICAL) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 32;
         m_boundingBox.h = 32;
@@ -96,13 +96,13 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         m_boundingBox.x -= 6;
         m_boundingBox.y -= 6;
 
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 16;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.y += 16;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x -= 16;
-        ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 32;
         m_boundingBox.h = 32;
@@ -118,7 +118,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
     };
 
     // Bounding Box rect
-    // ZD_ASSERT(SDL_RenderDrawRect(renderer, &boundingRect) == 0, "SDL Error: " << SDL_GetError());
+    // SDL_ASSERT(SDL_RenderDrawRect(renderer, &boundingRect), SDL_ERROR_MESSAGE);
 
 
     // When a bomb is placed

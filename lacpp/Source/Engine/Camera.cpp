@@ -71,13 +71,13 @@ void Zelda::Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_
             SDL_Rect dstTile = { tileX * TILE_WIDTH, tileY * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
 
             // Paste tile from tilemap
-            ZD_ASSERT(SDL_RenderCopy(renderer, tilemapTexture, &srcTile, &dstTile) == 0, "SDL Error: " << SDL_GetError());
+            SDL_ASSERT(SDL_RenderCopy(renderer, tilemapTexture, &srcTile, &dstTile), SDL_ERROR_MESSAGE);
         }
     }
     popRenderingTarget(renderer, target);
 
     // Finally render the canvas
-    ZD_ASSERT(SDL_RenderCopy(renderer, srcTexture, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
 }
 
 void Camera::render(SDL_Renderer* renderer) noexcept
@@ -350,8 +350,8 @@ bool Camera::visible(SDL_FRect&& rectangle) const noexcept
 
 void Camera::setScrollSpeed(int scrollSpeed) noexcept
 {
-    ZD_ASSERT(CAMERA_WIDTH % scrollSpeed == 0, "scrollSpeed not multiple of CAMERA_WIDTH");
-    ZD_ASSERT(CAMERA_HEIGHT % scrollSpeed == 0, "scrollSpeed not multiple of CAMERA_HEIGHT");
+    SDL_ASSERT(CAMERA_WIDTH % scrollSpeed, "scrollSpeed not multiple of CAMERA_WIDTH");
+    SDL_ASSERT(CAMERA_HEIGHT % scrollSpeed, "scrollSpeed not multiple of CAMERA_HEIGHT");
     m_scrollSpeed = scrollSpeed;
 }
 

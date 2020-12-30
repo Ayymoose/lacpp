@@ -81,7 +81,7 @@ void BackgroundObject::render(SDL_Renderer* renderer) noexcept
     SDL_Rect srcRect = { m_animateXPos + (m_currentFrame * m_width), m_animateYPos, m_width , m_height };
     // dstRect is the screen
     SDL_Rect dstRect = { m_render_x - Camera::getInstance().getX() , m_render_y - Camera::getInstance().getY() , m_width, m_height};
-    ZD_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE) == 0, "SDL Error: " << SDL_GetError());
+    SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
     // Animation
     if (m_currentFrame <= m_endFrame)
