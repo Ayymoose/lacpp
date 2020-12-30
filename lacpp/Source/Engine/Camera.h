@@ -38,7 +38,7 @@ namespace Zelda
         void setScrollSpeed(int scrollSpeed) noexcept;
         void render(SDL_Renderer* renderer) noexcept override;
 
-        void setTileMap(TilemapArea tilemap);
+        void setTileMap(TilemapArea tilemap) noexcept;
 
         // Returns true whether a rect is visible in the camera region
         bool visible(SDL_FRect&& rectangle) const noexcept;
@@ -78,9 +78,6 @@ namespace Zelda
         bool m_scrollDown;
         bool m_scrollUp;
 
-        // Are we scrolling
-        bool m_scrollCamera;
-
         // How many we scrolled by
         int m_scrolled;
 
@@ -91,6 +88,6 @@ namespace Zelda
         UpdateTimer m_timerPlayerScroll;
 
         SDL_Texture* m_swapCanvas;
-        uint16_t m_nextRoomIndex;
+        int m_nextRoomIndex;
     };
 }

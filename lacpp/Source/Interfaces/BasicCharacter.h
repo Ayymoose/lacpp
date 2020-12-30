@@ -38,7 +38,4 @@ protected:
 
     // Direction vector
     Vector<float> m_directionVector;
-
-    
-
 };

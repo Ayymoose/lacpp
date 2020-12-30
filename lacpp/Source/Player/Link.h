@@ -117,7 +117,7 @@ enum PlayerState
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
 #define PLAYER_CORNER_CUTTING_BOUNDARY 5
 
-class Link : public Controllable, public Renderable, public Character, public Singleton<Link>, public CullableParent
+class Link : public Renderable, public Controllable, public Character, public Singleton<Link>, public CullableParent
 {
     friend class Singleton<Link>;
 public:
@@ -146,21 +146,20 @@ public:
     bool moving() const noexcept;
     Direction direction() const noexcept;
 
-    int m_currentCollisionMapX;
-    int m_currentCollisionMapY;
-    CollisionArea m_collisionArea;
+    //int m_currentCollisionMapX;
+    //int m_currentCollisionMapY;
+    //CollisionArea m_collisionArea;
 
     void setDungeonMarkerLocation(int x, int y) noexcept;
 
 private:
     Link();
-    int m_speed;
     float m_healthMax;
     Inventory m_inventory;
     int m_speedX;
     int m_speedY;
     BoundingBox m_boundingBox;
-    CollisionMap m_collisionMap;
+    //CollisionMap m_collisionMap;
 
     Worldmap m_worldmap;
 

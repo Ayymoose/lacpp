@@ -11,38 +11,28 @@
 
 using namespace Zelda;
 
-Camera::Camera()
+Camera::Camera() : 
+    Renderable("Camera", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
+    m_scrollX(0),
+    m_scrollY(0),
+    m_x(0),
+    m_y(0),
+    m_screenX(0),
+    m_screenY(0),
+    m_swapX(CAMERA_WIDTH),
+    m_swapY(CAMERA_HEIGHT),
+    m_scrollSpeed(0),
+    m_scrollLeft(false),
+    m_scrollRight(false),
+    m_scrollDown(false),
+    m_scrollUp(false),
+    m_scrolled(0),
+    m_nextRoomIndex(0)
 {
-    m_x = 0;
-    m_y = 0;
-    m_scrollX = 0;
-    m_scrollY = 0;
-    m_swapX = m_width;
-    m_swapY = m_height;
-    m_scrollSpeed = 0;
-    m_texture = nullptr;
-    m_width = CAMERA_WIDTH;
-    m_height = CAMERA_HEIGHT;
-    m_scrollCamera = false;
-    m_scrolled = 0;
-    m_scrollLeft = false;
-    m_scrollRight = false;
-    m_scrollDown = false;
-    m_scrollUp = false;
-    m_nextRoomIndex = 0;
-
-    m_screenX = 0;
-    m_screenY = 0;
-
-    // Create a blank canvas for a the area
     // TODO: Free textures on shutdown
-    m_texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
-    assert(m_texture != nullptr);
+    assert(m_texture);
     m_swapCanvas = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
-    assert(m_swapCanvas != nullptr);
-
-    m_depth = ZD_DEPTH_BACKGROUND;
-    m_name = "Camera";
+    assert(m_swapCanvas);
     Renderer::getInstance().addRenderable(this);
 }
 
@@ -100,7 +90,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
     auto y = position.y;
 
     // Calculate room index
-    uint16_t roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
+    int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
     m_nextRoomIndex = roomIndex;
 
         // Transition the player if they move off the screen
@@ -114,7 +104,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         Engine::getInstance().pause(true);
 
         // TODO: Globalise
-        player->m_currentCollisionMapX--;
+        //player->m_currentCollisionMapX--;
         std::cout << "Scrolling left" << std::endl;
 
         m_swapX = -m_width;
@@ -135,7 +125,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         Engine::getInstance().pause(true);
 
         // TODO: Globalise
-        player->m_currentCollisionMapX++;
+        //player->m_currentCollisionMapX++;
         std::cout << "Scrolling right" << std::endl;
 
         m_swapX = m_width;
@@ -153,7 +143,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         Engine::getInstance().pause(true);
 
         // TODO: Globalise
-        player->m_currentCollisionMapY--;
+        //player->m_currentCollisionMapY--;
         std::cout << "Scrolling up" << std::endl;
 
         m_swapX = 0;
@@ -170,7 +160,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         Engine::getInstance().pause(true);
 
         // TODO: Globalise
-        player->m_currentCollisionMapY++;
+        //player->m_currentCollisionMapY++;
         std::cout << "Scrolling down" << std::endl;
 
         m_swapX = 0;
@@ -331,7 +321,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 }
 
 // Set the tilemap to use
-void Zelda::Camera::setTileMap(TilemapArea tilemap)
+void Zelda::Camera::setTileMap(TilemapArea tilemap) noexcept
 {
     // Set the internal map to use
     m_tilemap.setTileMap(tilemap);

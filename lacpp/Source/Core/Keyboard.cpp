@@ -6,7 +6,13 @@ using namespace Zelda;
 
 Keyboard::Keyboard()
 {
-    clearKeyStates();
+    for (int i = 0; i < SDL_NUM_SCANCODES; i++)
+    {
+        m_keyStatePushed[i] = false;
+        m_keyStateReleased[i] = false;
+        m_keyStatePressed[i] = false;
+        m_keyStatePressedRecord[i] = false;
+    }
 }
 
 // Updates the internal key state every frame
@@ -71,17 +77,4 @@ int Zelda::Keyboard::operator[](int key) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     return m_keyStatePushed[key];
-}
-
-void Zelda::Keyboard::clearKeyStates() noexcept
-{
-    for (int i = 0; i < SDL_NUM_SCANCODES; i++)
-    {
-        m_keyStatePushed[i] = false;
-        m_keyStateReleased[i] = false;
-
-
-        m_keyStatePressed[i] = false;
-        m_keyStatePressedRecord[i] = false;
-    }
 }

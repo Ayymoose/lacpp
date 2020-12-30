@@ -43,26 +43,44 @@ public:
         return m_name;
     }
 
-    Renderable()
+    Renderable(const char* name, SDL_Texture* texture, int depth) :
+        m_srcRect({ 0,0,0,0 }),
+        m_dstRect({ 0,0,0,0 }),
+        m_name(name),
+        m_animationStart(false),
+        m_animationComplete(false),
+        m_animationFPS(0.0f),
+        m_animateXPos(0),
+        m_animateYPos(0),
+        m_currentFrame(0),
+        m_endFrame(0),
+        m_orientation(0.0f),
+        m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
     {
-        m_texture = nullptr;
-        m_width = 0;
-        m_height = 0;
-        m_depth = 0;
-        m_animationFPS = 0.0f;
-        m_animateXPos = 0;
-        m_animateYPos = 0;
-        m_currentFrame = 0;
-        m_endFrame = 0;
-        m_orientation = 0.0f;
-        m_animationStart = false;
-        m_animationComplete = false;
-        m_srcRect = { 0,0,0,0 };
-        m_dstRect = { 0,0,0,0 };
-        m_flip = SDL_RendererFlip::SDL_FLIP_NONE;
+        m_texture = texture;
+        ZD_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0, "SDL Error: " << SDL_GetError());
+        m_depth = depth;
+    }
+
+    Renderable() : 
+        m_texture(nullptr),
+        m_width(0),
+        m_height(0),
+        m_srcRect({ 0,0,0,0 }),
+        m_dstRect({ 0,0,0,0 }),
+        m_depth(0),
+        m_animationStart(false),
+        m_animationComplete(false),
+        m_animationFPS(0.0f),
+        m_animateXPos(0),
+        m_animateYPos(0),
+        m_currentFrame(0),
+        m_endFrame(0),
+        m_orientation(0.0f),
+        m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
+    {
     }
 protected:
-
 
     // Default texture to render
     SDL_Texture* m_texture;

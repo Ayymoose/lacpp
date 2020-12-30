@@ -111,7 +111,7 @@ namespace Zelda
 
     #define WORLDMAP_SELECTOR_FPS (1.0f / 4.0f)
 
-    class Worldmap : public Controllable, public Renderable
+    class Worldmap : public Renderable, public Controllable
     {
     public:
         Worldmap();

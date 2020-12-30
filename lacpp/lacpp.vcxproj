@@ -216,7 +216,6 @@
     <ClInclude Include="Source\Enemy\GopongaFlower.h" />
     <ClInclude Include="Source\Enemy\Beamos.h" />
     <ClInclude Include="Source\Enemy\SeaUrchin.h" />
-    <ClInclude Include="Source\Enemy\TileMapTools.h" />
     <ClInclude Include="Source\Player\Worldmap.h" />
     <ClInclude Include="Source\Enemy\Zombie.h" />
     <ClInclude Include="Source\Interfaces\BasicCharacter.h" />

@@ -11,49 +11,35 @@
 
 using namespace Zelda;
 
-Dialogue::Dialogue()
+Dialogue::Dialogue() : 
+    Renderable("Dialogue", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, DIALOGUE_WIDTH, DIALOGUE_HEIGHT), ZD_DEPTH_DIALOGUE),
+    Controllable(m_name),
+    m_dialoguePosX(DIALOGUE_POS_X),
+    m_dialoguePosY(DIALOGUE_POS_Y_LOW),
+    m_currentChar(0),
+    m_currentLine(0),
+    m_srcCharX(TEXT_POS_X),
+    m_srcCharY(TEXT_POS_Y),
+    m_dstCharX(0),
+    m_dstCharY(0),
+    m_text(ResourceManager::getInstance()[Graphic::GFX_TEXT]),
+    m_subTexture(SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, DIALOGUE_WIDTH, DIALOGUE_HEIGHT)),
+    m_moreText(false),
+    m_flashQuestion(false),
+    m_questionXPos(0),
+    m_questionYPos(0),
+    m_isQuestion(false),
+    m_questionMarker(ResourceManager::getInstance()[Graphic::GFX_TEXT]),
+    m_flashArrow(false),
+    m_redArrow(ResourceManager::getInstance()[Graphic::GFX_TEXT]),
+    m_continue(false),
+    m_scrollMessage(false),
+    m_scrolledLines(0)
 {
-    m_depth = ZD_DEPTH_DIALOGUE;
-    m_name = "Dialogue";
-    m_controllableName = m_name;
-
-    m_width = DIALOGUE_WIDTH;
-    m_height = DIALOGUE_HEIGHT;
-
-    m_dialoguePosX = DIALOGUE_POS_X;
-    // Assume its low for now but depends on Link's position on screen
-    m_dialoguePosY = DIALOGUE_POS_Y_LOW;
-
-    m_srcCharX = TEXT_POS_X;
-    m_srcCharY = TEXT_POS_Y;
-
-    m_dstCharX = 0;
-    m_dstCharY = 0;
-    m_currentLine = 0;
-    m_scrollMessage = false;
-
-    m_texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
     assert(m_texture);
-    m_subTexture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
     assert(m_subTexture);
-
-    m_redArrow = ResourceManager::getInstance()[Graphic::GFX_TEXT];
-    m_text = ResourceManager::getInstance()[Graphic::GFX_TEXT];
-    m_questionMarker = ResourceManager::getInstance()[Graphic::GFX_TEXT];
-
     colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0,0,0));
     colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
-
-    m_scrolledLines = 0;
-    m_currentChar = 0;
-    m_flashArrow = false;
-    m_continue = false;
-    m_moreText = false;
-
-    m_flashQuestion = false;
-    m_isQuestion = false;
-    m_questionXPos = 0;
-    m_questionYPos = 0;
 }
 
 void Dialogue::message(const std::string& message, float yPos) noexcept

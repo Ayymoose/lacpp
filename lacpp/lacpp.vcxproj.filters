@@ -340,9 +340,6 @@
     <ClInclude Include="Source\Enemy\FileSelect.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy\TileMapTools.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Engine\Tilemap.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>

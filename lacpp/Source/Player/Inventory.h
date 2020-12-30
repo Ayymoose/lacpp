@@ -283,7 +283,7 @@ namespace Zelda
 
 #define TRADE_ITEM_SPRITE(ITEM) (INVENTORY_DOLL + ITEM)
 
-    class Inventory : public Controllable, public Renderable
+    class Inventory : public Renderable, public Controllable
     {
     public:
         Inventory();
@@ -310,10 +310,6 @@ namespace Zelda
         void setDungeonLocationMarker(int x, int y) noexcept;
 
     private:
-        SDL_Texture* m_inventorySelector;   // Selector sprite
-        SDL_Texture* m_inventoryDividerH;   // Horizontal divider
-        SDL_Texture* m_inventoryDividerV;   // Vertical divider
-        SDL_Texture* m_subscreen;        // The select status at the bottom of the screen
 
         void drawDungeonMap(SDL_Renderer* renderer) noexcept;
         void drawSelectStatus(SDL_Renderer* renderer) noexcept;
@@ -330,14 +326,15 @@ namespace Zelda
         void drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept;
         void drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept;
 
-        TradeItem m_tradeItem; // Current trade item
+        SDL_Texture* m_subscreen;   // The select status at the bottom of the screen
+        TradeItem m_tradeItem;      // Current trade item
 
         bool m_open;
 
         // Dungeon related items
         bool m_inDungeon;    // Are we in a dungeon?
         uint8_t m_dungeonKeys[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];  // Number of dungeon keys
-        bool m_compass[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];      // Dungeon compass
+        bool m_compass[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];       // Dungeon compass
         bool m_dungeonMap[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];   // Dungeon map
         bool m_nightmareKey[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)]; // Nightmare boss key
         bool m_owlBeak[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];      // Owl beak
@@ -389,10 +386,6 @@ namespace Zelda
         Clock m_pushSelectTimer;
 
         // Key press related stuff
-        bool m_singleLeftRight;
-        bool m_singleUpDown;
-        bool m_singlePressA;
-        bool m_singlePressB;
         bool m_flashSelector;
         bool m_flashSelect;
         bool m_selectPressed;

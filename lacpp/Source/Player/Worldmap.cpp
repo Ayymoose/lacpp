@@ -4,6 +4,8 @@
 #include "Dialogue.h"
 
 Zelda::Worldmap::Worldmap() : 
+    Renderable("Worldmap", ResourceManager::getInstance()[Graphic::GFX_WORLD_MAP], ZD_DEPTH_WORLDMAP),
+    Controllable(m_name),
     m_scopeX(WORLDMAP_INITIAL_POS_X), 
     m_scopeY(WORLDMAP_INITIAL_POS_Y), 
     m_show(false), 
@@ -11,12 +13,6 @@ Zelda::Worldmap::Worldmap() :
     m_worldX(WORLDMAP_INITIAL_POS_X),
     m_worldY(WORLDMAP_INITIAL_POS_Y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_WORLD_MAP];
-    m_name = "Worldmap";
-    m_controllableName = m_name;
-    m_depth = ZD_DEPTH_INVENTORY;
-
-    ZD_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0, "SDL Error: " << SDL_GetError());
     Renderer::getInstance().addRenderable(this);
 }
 

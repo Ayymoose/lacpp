@@ -13,66 +13,53 @@
 
 using namespace Zelda;
 
-Inventory::Inventory()
+Inventory::Inventory() : 
+    Renderable("Inventory", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, InventoryWidth, InventoryHeight), ZD_DEPTH_INVENTORY),
+    Controllable(m_name),
+    m_subscreen(SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SelectSubscreenWidth, SelectSubscreenHeight)),
+    m_tradeItem(ITEM_NONE),
+    m_open(false),
+    m_inDungeon(true),
+    m_tailKey(true),
+    m_slimeKey(true),
+    m_anglerKey(true),
+    m_faceKey(true),
+    m_birdKey(true),
+    m_arrows(60),
+    m_bombs(60),
+    m_magicPowder(60),
+    m_swordLevel(WeaponLevel::WPN_LEVEL_1),
+    m_shieldLevel(WeaponLevel::WPN_LEVEL_2),
+    m_braceletLevel(WeaponLevel::WPN_LEVEL_1),
+    m_ocarinaSong(OcarinaSong::SNG_FISH),
+    m_seashells(0),
+    m_flippers(false),
+    m_potion(false),
+    m_tunic(Tunic::TUNIC_BLUE),
+    m_heartPieces(static_cast<int>(HeartPieces::HEART_HALF)),
+    m_goldleaf(0),
+    m_photographs(0),
+    m_weaponA(WEAPON::WPN_BOW),
+    m_weaponB(WEAPON::WPN_SWORD),
+    m_selectorX(SelectorInitialX),
+    m_selectorY(SelectorInitialY),
+    m_selectorIndex(0),
+    m_flashSelector(false),
+    m_flashSelect(false),
+    m_selectPressed(false),
+    m_dungeon(Dungeon::DUNGEON_TAIL_CAVE)
 {
     static_assert(sizeof(m_inventorySpritesSrc) == sizeof(m_inventorySpritesDst));
 
-    SDL_Rect srcRect;
-
     // Select sub screen
-    m_subscreen = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SelectSubscreenWidth, SelectSubscreenHeight);
-    colourTexture(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, SDL_RGB(0, 0, 0));
-    assert(m_subscreen != nullptr);
-    
+    assert(m_subscreen);
     // m_texture is the main texture we draw ontoas
-    m_texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, InventoryWidth, InventoryHeight);
-    assert(m_texture != nullptr);
-
-    // Inventory divider
-    srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
-    m_inventoryDividerH = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, InventoryDividerWidthH, InventoryDividerHeightH);
-    assert(m_inventoryDividerH != nullptr);
-    copyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], m_inventoryDividerH, &srcRect, nullptr);
-    srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
-    m_inventoryDividerV = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, InventoryDividerWidthV, InventoryDividerHeightV);
-    assert(m_inventoryDividerV != nullptr);
-    copyToTexture(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], m_inventoryDividerV, &srcRect, nullptr);
-    //
-
-    ZD_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height) == 0, "SDL Error: " << SDL_GetError());
-
-    m_open = false;
-    m_inDungeon = true;
-    m_name = "Inventory";
-    m_controllableName = m_name;
-    m_depth = ZD_DEPTH_INVENTORY;
-    Renderer::getInstance().addRenderable(this);
-
-    m_tradeItem = ITEM_NONE;
-    m_seashells = 0;
-    m_flippers = false;
-    m_potion = false;
-    m_tunic = Tunic::TUNIC_BLUE;
-    m_heartPieces = static_cast<int>(HeartPieces::HEART_HALF);
-    m_selectPressed = false;
-
-    // Initial top left position
-    m_selectorX = SelectorInitialX;
-    m_selectorY = SelectorInitialY;
-
-    m_arrows = 60;
-    m_bombs = 60;
-    m_magicPowder = 60;
-
-    m_selectorIndex = 0;
+    assert(m_texture);
+    colourTexture(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, SDL_RGB(0, 0, 0));
 
     // 7 -> 39 x increases of 32
     // 27 -> 50 y increases by 23
-    m_singleUpDown = true;
-    m_singleLeftRight = true;
 
-    m_flashSelector = false;
-    m_flashSelect = false;
     for (int i = 0; i < InventoryMaxWeapons; i++)
     {
         m_items[i] = WPN_NONE;
@@ -91,17 +78,6 @@ Inventory::Inventory()
     m_instruments[5] = Instrument::CORAL_TRIANGLE;
     m_instruments[6] = Instrument::ORGAN_OF_EVENING_CALM;
     m_instruments[7] = Instrument::THUNDER_DRUM;
-
-    m_singlePressA = true;
-    m_singlePressB = true;
-    m_weaponA = WPN_BOW;
-    m_weaponB = WPN_SWORD;
-
-    m_ocarinaSong = OcarinaSong::SNG_FISH;
-
-    m_swordLevel = WeaponLevel::WPN_LEVEL_1;
-    m_shieldLevel = WeaponLevel::WPN_LEVEL_2;
-    m_braceletLevel = WeaponLevel::WPN_LEVEL_1;
 
     m_items[0] = WPN_SHOVEL;
     m_items[1] = WPN_HOOKSHOT;
@@ -123,19 +99,7 @@ Inventory::Inventory()
         m_owlBeak[i] = true;
     }
 
-    m_flippers = true;
-    m_potion = true;
-    m_tradeItem = ITEM_STICK;
-
-    m_goldleaf = 0;
-
-    m_tailKey = true;
-    m_slimeKey = true;
-    m_anglerKey = true;
-    m_faceKey = true;
-    m_birdKey = true;
-
-    m_dungeon = Dungeon::DUNGEON_TAIL_CAVE;
+    Renderer::getInstance().addRenderable(this);
 }
 
 void Inventory::control() noexcept
@@ -1075,10 +1039,11 @@ void Inventory::drawSelector(SDL_Renderer* renderer) noexcept
 
 void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
 {
-    SDL_Rect dstRect;
+    SDL_Rect srcRect, dstRect;
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
     ZD_ASSERT(SDL_SetRenderTarget(renderer, m_texture) == 0, "SDL Error: " << SDL_GetError());
 
+    srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
     // Draw horizontal divider
     for (int i = 0; i < (InventoryWidth / InventoryDividerWidthH)-2; i++)
     {
@@ -1089,9 +1054,9 @@ void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
             InventoryDividerWidthH,
             InventoryDividerHeightH
         };
-        ZD_ASSERT(SDL_RenderCopy(renderer, m_inventoryDividerH, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
-
+    srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
     // Draw vertical divider
     for (int i = 0; i < ((InventoryHeight - InventoryDividerYV) / InventoryDividerWidthV); i++)
     {
@@ -1102,7 +1067,7 @@ void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
             InventoryDividerWidthV,
             InventoryDividerHeightV
         };
-        ZD_ASSERT(SDL_RenderCopy(renderer, m_inventoryDividerV, nullptr, &dstRect) == 0, "SDL Error: " << SDL_GetError());
+        ZD_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect) == 0, "SDL Error: " << SDL_GetError());
     }
     ZD_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget) == 0, "SDL Error: " << SDL_GetError());
 }

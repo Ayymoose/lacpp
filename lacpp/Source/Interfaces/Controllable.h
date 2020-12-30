@@ -8,6 +8,10 @@
 class Controllable
 {
 public:
+    Controllable(const std::string& name) : m_controllableName(name)
+    {
+    }
+    Controllable() = default;
     virtual ~Controllable()
     {
         std::cout << "Controllable deconstructor called" << std::endl;

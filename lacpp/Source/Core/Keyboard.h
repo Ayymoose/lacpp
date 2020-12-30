@@ -19,7 +19,6 @@ namespace Zelda
 
         bool keyReleased(int key) noexcept;
         int operator[](int key) noexcept;
-        void clearKeyStates() noexcept;
     private:
         Keyboard();
 

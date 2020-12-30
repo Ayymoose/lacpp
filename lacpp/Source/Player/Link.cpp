@@ -17,72 +17,45 @@ void Link::setDungeonMarkerLocation(int x, int y) noexcept
     m_inventory.setDungeonLocationMarker(x, y);
 }
 
-Link::Link()
+Link::Link() : 
+    Renderable("Link", ResourceManager::getInstance()[Graphic::GFX_LINK], ZD_DEPTH_PLAYER),
+    Controllable(m_name),
+    m_healthMax(3),
+    m_speedX(0),
+    m_speedY(0),
+    m_useShield(false),
+    m_dirLockRight(false),
+    m_dirLockUp(false),
+    m_dirLockDown(false),
+    m_dirLockLeft(false),
+    m_boomerang(nullptr),
+    m_flameRod(nullptr),
+    m_canUseArrow(true),
+    m_usingArrow(false),
+    m_moveable(true),
+    m_moving(false),
+    m_usingSword(false),
+    m_state(LINK_WALK_UP),
+    m_useWeapon(false),
+    m_usingWeapon(false)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_LINK];
     m_width = 16;
     m_height = 16;
-    m_speed = 1;
 
     m_positionVector.x = 72;
     m_positionVector.y = 32;
-    m_boundingBox.x = m_positionVector.x;
-    m_boundingBox.y = m_positionVector.y;
-
-    m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
-    m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
+    m_boundingBox = { (int)m_positionVector.x,(int)m_positionVector.y, PLAYER_BOUNDING_BOX_WIDTH, PLAYER_BOUNDING_BOX_HEIGHT };
 
     m_health = 3;
-    m_healthMax = 3;
-
-    m_depth = ZD_DEPTH_PLAYER;
-    m_state = LINK_WALK_DOWN;
+    m_speed = 1;
     m_direction = Direction::DIRECTION_DOWN;
 
-    m_animateXPos = 0;              // Initial X-position in sprite sheet for this animation
-    m_animateYPos = 0;              // Initial Y-position in sprite sheet for this animation
-    m_currentFrame = 0;             // Initial frame in this animation
-    m_endFrame = 0;                 // Maximum frame number for this animation
-    m_animationFPS = 0;             // Animation rate in FPS
-    m_animationComplete = false;    // Set to true when animation complete
-
-    m_dirLockRight = false;
-    m_dirLockUp = false;
-    m_dirLockDown = false;
-    m_dirLockLeft = false;
-
-    m_useShield = false;
-
-    // Collision related stuff
-    m_speedX = 0;
-    m_speedY = 0;
-
-    // Weapon tests
-    m_boomerang = nullptr;
-    m_bomb = nullptr;
-    m_flameRod = nullptr;
-    m_sword = nullptr;
-    //
-
-    m_moveable = true;
-    m_moving = false;
-    m_usingSword = false;
-    m_usingArrow = false;
-    m_canUseArrow = true;
-
     // Set to Tail cave entrace
+    /*
     m_currentCollisionMapX = 3;
     m_currentCollisionMapY = 5;
-    m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
+    m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];*/
 
-    m_usingWeapon = false;
-    m_useWeapon = false;
-    //
-    m_boundingBox.w = PLAYER_BOUNDING_BOX_WIDTH;
-    m_boundingBox.h = PLAYER_BOUNDING_BOX_HEIGHT;
-
-    m_name = "Link";
-    m_controllableName = m_name;
     Renderer::getInstance().addRenderable(this);
     Controller::getInstance().setController(this);
 }
@@ -231,7 +204,7 @@ void Link::render(SDL_Renderer* renderer) noexcept
 
 
     // Drawing bounding boxes for testing
-    m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
+    //m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
     
     SDL_Rect playerRect =
     {
