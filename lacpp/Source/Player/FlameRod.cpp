@@ -57,7 +57,7 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
 
 
     // Animate the flame rod
-    if (m_weaponTimer.update(1.0 / 8.0f) && m_currentFrame++ < 1)
+    if (m_weaponTimer.elapsed(1.0 / 8.0f) && m_currentFrame++ < 1)
     {
         switch (m_direction)
         {

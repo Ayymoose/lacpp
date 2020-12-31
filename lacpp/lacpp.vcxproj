@@ -178,13 +178,12 @@
     <ClCompile Include="Source\Enemy\Zombie.cpp" />
     <ClCompile Include="Source\Engine\BoundingBox.cpp" />
     <ClCompile Include="Source\Engine\Camera.cpp" />
-    <ClCompile Include="Source\Engine\Clock.cpp" />
+    <ClCompile Include="Source\Engine\Timer.cpp" />
     <ClCompile Include="Source\Engine\CollisionMap.cpp" />
     <ClCompile Include="Source\Engine\Dialogue.cpp" />
     <ClCompile Include="Source\Engine\Drawing.cpp" />
     <ClCompile Include="Source\Engine\Engine.cpp" />
     <ClCompile Include="Source\Engine\Resource.cpp" />
-    <ClCompile Include="Source\Engine\UpdateTimer.cpp" />
     <ClCompile Include="Source\Player\Bomb.cpp" />
     <ClCompile Include="Source\Player\Boomerang.cpp" />
     <ClCompile Include="Source\Player\Arrow.cpp" />
@@ -216,6 +215,7 @@
     <ClInclude Include="Source\Enemy\GopongaFlower.h" />
     <ClInclude Include="Source\Enemy\Beamos.h" />
     <ClInclude Include="Source\Enemy\SeaUrchin.h" />
+    <ClInclude Include="Source\Engine\Timer.h" />
     <ClInclude Include="Source\Player\Worldmap.h" />
     <ClInclude Include="Source\Enemy\Zombie.h" />
     <ClInclude Include="Source\Interfaces\BasicCharacter.h" />
@@ -228,7 +228,6 @@
     <ClInclude Include="Source\Core\Renderer.h" />
     <ClInclude Include="Source\Core\Singleton.h" />
     <ClInclude Include="Source\Core\Window.h" />
-    <ClInclude Include="Source\Engine\BackgroundObject.h" />
     <ClInclude Include="Source\Engine\BoundingBox.h" />
     <ClInclude Include="Source\Engine\Camera.h" />
     <ClInclude Include="Source\Engine\CollisionMap.h" />
@@ -237,7 +236,6 @@
     <ClInclude Include="Source\Engine\Engine.h" />
     <ClInclude Include="Source\Engine\InputControl.h" />
     <ClInclude Include="Source\Engine\Resource.h" />
-    <ClInclude Include="Source\Engine\UpdateTimer.h" />
     <ClInclude Include="Source\Engine\Vector.h" />
     <ClInclude Include="Source\Engine\ZD_Assert.h" />
     <ClInclude Include="Source\Interfaces\Character.h" />

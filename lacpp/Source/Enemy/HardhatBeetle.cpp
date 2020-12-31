@@ -60,7 +60,7 @@ void HardhatBeetle::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        m_animationTimer.reset();
+        //m_animationTimer.reset();
     }
 }
 

@@ -9,7 +9,7 @@
 #include "InputControl.h"
 #include "Controller.h"
 #include "Engine.h"
-#include "Clock.h"
+#include "Timer.h"
 
 namespace Zelda
 {
@@ -145,7 +145,7 @@ namespace Zelda
         uint8_t m_scopeY;
         bool m_show;
 
-        Clock m_scopeSelectTimer;
+        Timer m_scopeSelectTimer;
         bool m_scopeSelect;
 
         // Position of Link in the worldmap

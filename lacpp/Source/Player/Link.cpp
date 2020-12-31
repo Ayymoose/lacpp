@@ -404,7 +404,7 @@ void Link::die() noexcept
 void Link::resetAnimation() noexcept
 {
     m_currentFrame = m_animations[m_state].startFrame;
-    m_clockAnimation.reset();
+    //m_clockAnimation.reset();
 }
 
 Vector<float> Link::position() const noexcept
@@ -1191,7 +1191,7 @@ void Link::animate()
     //  - When the key is held, the player is animated and when released, resets to the initial frame
     // - One press animation
     //  - An animation is carried out and when finished, resets to the initial frame
-    m_clockAnimation.start();
+    //m_clockAnimation.start();
     if (m_clockAnimation.elapsed(m_animations[m_state].animationFPS))
     {
         std::cout << "Animating frame " << m_currentFrame << " out of " << m_endFrame << '\n';
@@ -1209,6 +1209,6 @@ void Link::animate()
             m_currentFrame++;
             m_animationComplete = false;
         }
-        m_clockAnimation.reset();
+        //m_clockAnimation.reset();
     }
 }

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "UpdateTimer.h"
 #include "Weapon.h"
 #include <iostream>
+
+constexpr float BOOMERANG_ROTATION_FPS = (1.0f / 12.0f);
 
 class Boomerang : public Weapon
 {

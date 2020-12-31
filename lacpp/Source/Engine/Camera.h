@@ -4,9 +4,8 @@
 #include "Controller.h"
 #include "Renderable.h"
 #include "Character.h"
-#include "UpdateTimer.h"
 #include "Singleton.h"
-#include "Clock.h"
+#include "Timer.h"
 #include "Tilemap.h"
 
 namespace Zelda
@@ -29,6 +28,14 @@ namespace Zelda
 
     constexpr int CAMERA_SCROLL_SPEED = 4;
 
+    // The game is locked to 60 fps because of VSync
+    // So everything runs at 60 fps
+    // It seems like using timers for scrolling to lock it 60fps was messing with that
+    // It's not choppy anymore
+
+    // #define FPS_60 (1.0 / 60.0) 
+    constexpr float FPS_66 = (1.0f / 60.0f);
+    constexpr float FPS_33 = (1.0f / 33.0f);    // To be adjusted!
 
     class Camera : public Renderable, public Singleton<Camera>
     {
@@ -85,7 +92,7 @@ namespace Zelda
         Tilemap m_tilemap;
 
         // TODO: Fix player movement during scrolling
-        UpdateTimer m_timerPlayerScroll;
+        Timer m_timerPlayerScroll;
 
         SDL_Texture* m_swapCanvas;
         int m_nextRoomIndex;

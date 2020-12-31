@@ -1,15 +1,17 @@
 #pragma once
 #include <cstdint>
 
-class Clock
+// Basic timer functionality 
+
+class Timer
 {
 public:
-    Clock();
-    void start();
+    Timer();
+    //void start();
     void reset();
     bool elapsed(float timeMs);
 
 private:
     uint32_t m_startTime;
-    bool m_started;
+    //bool m_started;
 };

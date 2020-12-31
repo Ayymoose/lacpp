@@ -80,13 +80,7 @@
     <ClCompile Include="Source\Engine\Camera.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Engine\Clock.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Engine\Resource.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\UpdateTimer.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Source\Player\Link.cpp">
@@ -170,6 +164,9 @@
     <ClCompile Include="Source\Engine\Tilemap.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Engine\Timer.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Player\FlameRod.h">
@@ -220,9 +217,6 @@
     <ClInclude Include="Source\Engine\ZD_Assert.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Engine\BackgroundObject.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Engine\Depth.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
@@ -239,9 +233,6 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Resource.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Engine\UpdateTimer.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Engine.h">
@@ -341,6 +332,9 @@
       <Filter>Header Files\Player</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Tilemap.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Timer.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

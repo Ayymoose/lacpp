@@ -59,8 +59,8 @@ void Vacuum::render(SDL_Renderer* renderer) noexcept
                 m_vacuums++;
             }
             
-            m_animationTimer.reset();
-            m_enemyTimer.reset();
+            //m_animationTimer.reset();
+            //m_enemyTimer.reset();
         }
     }
     else
@@ -70,7 +70,7 @@ void Vacuum::render(SDL_Renderer* renderer) noexcept
         if (m_enemyTimer.elapsed(2.0f))
         {
             m_vacuums = 0;
-            m_enemyTimer.reset();
+            //m_enemyTimer.reset();
         }
     }
 

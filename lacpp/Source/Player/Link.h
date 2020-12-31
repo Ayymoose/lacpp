@@ -4,7 +4,6 @@
 #include "Controllable.h"
 #include "Vector.h"
 #include "Character.h"
-#include "UpdateTimer.h"
 #include "Inventory.h"
 #include "Singleton.h"
 #include "BoundingBox.h"
@@ -13,7 +12,7 @@
 #include "Arrow.h"
 #include "FlameRod.h"
 #include "Boomerang.h"
-#include "Clock.h"
+#include "Timer.h"
 #include "Sword.h"
 #include "Cullable.h"
 #include "Worldmap.h"
@@ -117,6 +116,12 @@ enum PlayerState
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
 #define PLAYER_CORNER_CUTTING_BOUNDARY 5
 
+constexpr float PLAYER_ANIMATION_FPS = 1.0f / 10.0f;
+constexpr float LINK_FALL_FPS = 1.0f / 3.0f;
+constexpr float LINK_FLAME_ROD_ANIMATION_FPS = 1.0f / 4.0f;
+constexpr float SWORD_ATTACK_FPS = 1.0f / 30.0f;
+constexpr float LINK_DROWN_FPS = 1.0f / 3.0f;
+
 class Link : public Renderable, public Controllable, public Character, public Singleton<Link>, public CullableParent
 {
     friend class Singleton<Link>;
@@ -166,7 +171,7 @@ private:
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept;
     void useWeapon(WEAPON weapon) noexcept;
 
-    UpdateTimer m_movementTimer;
+    Timer m_movementTimer;
     bool m_useShield;
 
     bool m_dirLockRight;
@@ -194,7 +199,7 @@ private:
     bool m_useWeapon;
     bool m_usingWeapon;
     void animate();
-    Clock m_clockAnimation;
+    Timer m_clockAnimation;
 
     const Animation m_animations[LINK_COUNT] =
     {

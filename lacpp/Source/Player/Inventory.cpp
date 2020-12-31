@@ -117,7 +117,7 @@ void Inventory::control() noexcept
     // TODO: Transition it in
     if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
     {
-        m_pushSelectTimer.reset();
+        //m_pushSelectTimer.reset();
         m_selectPressed = true;
     }
     else if (Keyboard::getInstance().keyReleased(BUTTON_SELECT))
@@ -539,14 +539,14 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
             if (m_dungeonPosition.x == x && m_dungeonPosition.y == y)
             {
                 srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_CURRENT_LOCATION];
-                srcRect.x = srcRect.x + ((2 + srcRect.w) * m_dungeonMapPositionTimer.m_counter);
-                if (m_dungeonMapPositionTimer.update(INSTRUMENT_FPS))
+                /*srcRect.x = srcRect.x + ((2 + srcRect.w) * m_dungeonMapPositionTimer.m_counter);
+                if (m_dungeonMapPositionTimer.elapsed(INSTRUMENT_FPS))
                 {
                     if (m_dungeonMapPositionTimer.m_counter > 1)
                     {
                         m_dungeonMapPositionTimer.m_counter = 0;
                     }
-                }
+                }*/
                 SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
             }
 
@@ -819,14 +819,14 @@ void Inventory::drawInstruments(SDL_Renderer* renderer) noexcept
         case Instrument::THUNDER_DRUM:
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_0 + (i-1)];
             dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_0 + (i-1)];
-            srcRect.x = srcRect.x + (srcRect.w * m_instrumentTimer.m_counter);
-            if (m_instrumentTimer.update(INSTRUMENT_FPS))
+            /*srcRect.x = srcRect.x + (srcRect.w * m_instrumentTimer.m_counter);
+            if (m_instrumentTimer.elapsed(INSTRUMENT_FPS))
             {
                 if (m_instrumentTimer.m_counter > INSTRUMENTS_FRAME)
                 {
                     m_instrumentTimer.m_counter = 0;
                 }
-            }
+            }*/
             SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
             break;
         default:

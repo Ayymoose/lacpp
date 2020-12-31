@@ -65,7 +65,7 @@ void Leever::render(SDL_Renderer* renderer) noexcept
             {
                 m_currentFrame = animation.startFrame;
             }
-            m_animationTimer.reset();
+            //m_animationTimer.reset();
         }
     }
 
@@ -102,7 +102,7 @@ void Leever::attack() noexcept
             m_auxiliaryFrame = 2;
             m_emerging = false;
         }
-        m_enemyTimer.reset();
+        //m_enemyTimer.reset();
     }
     else
     {
@@ -110,7 +110,7 @@ void Leever::attack() noexcept
         {
             // Burrow back in the ground again
             m_burrowing = true;
-            m_enemyTimer.reset();
+            //m_enemyTimer.reset();
         }
     }
     
@@ -134,7 +134,7 @@ void Leever::attack() noexcept
 
             m_emerging = true;
             m_moving = true;
-            m_emergeTimer.reset();
+            //m_emergeTimer.reset();
         }
     }
 

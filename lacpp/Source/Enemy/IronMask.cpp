@@ -64,7 +64,7 @@ void IronMask::render(SDL_Renderer* renderer) noexcept
                 m_currentFrame = animation.startFrame;
             }
         }
-        m_animationTimer.reset();
+        //m_animationTimer.reset();
     }
 }
 
@@ -140,7 +140,7 @@ void IronMask::attack() noexcept
             }
             m_moving = true;
         }
-        m_enemyTimer.reset();
+        //m_enemyTimer.reset();
     }
     else if (m_moving)
     {
@@ -150,7 +150,7 @@ void IronMask::attack() noexcept
         {
             m_positionVector += m_directionVector;
             m_steps++;
-            m_enemyTimer.reset();
+            //m_enemyTimer.reset();
         }
         else
         {

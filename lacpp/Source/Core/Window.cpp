@@ -6,7 +6,6 @@
 #include "Inventory.h"
 #include <string>
 #include "Link.h"
-#include "BackgroundObject.h"
 #include "ZD_Assert.h"
 
 Window::~Window()

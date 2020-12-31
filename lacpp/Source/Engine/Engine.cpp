@@ -194,7 +194,7 @@ void Engine::engineTest()
     //Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue", Link::getInstance().position().y);
 
     //std::string test = "test";
-    //Dialogue::getInstance().message("Level 1--       ""     Tail Cave", Link::getInstance().position().y);
+    Dialogue::getInstance().message("Level 1--       ""     Tail Cave", Link::getInstance().position().y);
 
     // TODO: Make sure local objects when destroyed get removed from renderer
     /*static SeaUrchin su(72,64);

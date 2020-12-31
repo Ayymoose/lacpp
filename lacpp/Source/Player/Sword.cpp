@@ -125,7 +125,7 @@ void Sword::render(SDL_Renderer* renderer) noexcept
 
 
 
-    m_animationTimer.start();
+    //m_animationTimer.start();
     if (m_animationTimer.elapsed(SWORD_ATTACK_FPS))
     {
         if (m_currentFrame + 1 > m_endFrame)
@@ -137,7 +137,7 @@ void Sword::render(SDL_Renderer* renderer) noexcept
             m_currentFrame++;
             m_animationComplete = false;
         }
-        m_animationTimer.reset();
+        //m_animationTimer.reset();
     }
 }
 

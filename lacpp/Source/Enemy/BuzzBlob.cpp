@@ -69,7 +69,7 @@ void BuzzBlob::render(SDL_Renderer* renderer) noexcept
                 m_flip = SDL_RendererFlip::SDL_FLIP_NONE;
             }
         }
-        m_animationTimer.reset();
+        ////m_animationTimer.reset();
     }
 
     // Cukeman
@@ -128,7 +128,7 @@ void BuzzBlob::attack() noexcept
             };
             m_directionVector = dirs[dir];
         }
-        m_enemyTimer.reset();
+        ////m_enemyTimer.reset();
     }
 
     // If attempt to move out of view, flip direction

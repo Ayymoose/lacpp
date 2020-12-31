@@ -61,7 +61,7 @@ void WaterTektite::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        m_animationTimer.reset();
+        //m_animationTimer.reset();
     }
 }
 
@@ -110,7 +110,7 @@ void WaterTektite::attack() noexcept
             {
                 m_strided = m_strideLength;
             }
-            m_enemyTimer.reset();
+            //m_enemyTimer.reset();
         }
         else
         {
@@ -118,7 +118,7 @@ void WaterTektite::attack() noexcept
             {
                 m_strided = 0;
                 m_stride = false;
-                m_enemyTimer.reset();
+                //m_enemyTimer.reset();
             }
 
         }

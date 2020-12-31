@@ -25,5 +25,5 @@ private:
     bool m_startingUp;
     bool m_coolDown;
     float m_risen;
-    Clock m_cooldownTimer;
+    Timer m_cooldownTimer;
 };

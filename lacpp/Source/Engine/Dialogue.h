@@ -5,7 +5,7 @@
 #include "Controllable.h"
 #include "Vector.h"
 #include "Common.h"
-#include "Clock.h"
+#include "Timer.h"
 #include <string>
 
 namespace Zelda
@@ -54,7 +54,7 @@ namespace Zelda
         int m_dialoguePosX;
         int m_dialoguePosY;
 
-        Clock m_textTimer;
+        Timer m_textTimer;
         std::string m_choice;
         std::string m_choice1;
         std::string m_choice2;
@@ -71,20 +71,20 @@ namespace Zelda
         bool m_moreText;
 
         bool m_flashQuestion;
-        Clock m_questionTimer;
+        Timer m_questionTimer;
         int m_questionXPos;
         int m_questionYPos;
         bool m_isQuestion;
         SDL_Texture* m_questionMarker;
 
         // Continue arrow
-        Clock m_redArrowTimer;
+        Timer m_redArrowTimer;
         bool m_flashArrow;
         SDL_Texture* m_redArrow;
         bool m_continue;
         bool m_scrollMessage;
         int m_scrolledLines;
-        Clock m_scrollTimer;
+        Timer m_scrollTimer;
 
         // All the dialogue from the game
         // Credits go to https://github.com/zladx/LADX-Disassembly for providing the text

@@ -83,6 +83,10 @@ namespace Zelda
     constexpr int DUNGEON_MAX_BLOCKS_X = 9;
     constexpr int DUNGEON_MAX_BLOCKS_Y = 9;
 
+    constexpr float INVENTORY_SELECTOR_FPS = (1.0f / 4.0f);
+    constexpr float INSTRUMENT_FPS = (1.0f / 6.0f);
+    constexpr float PUSH_SELECTOR_FPS = (1.0f / 2.0f);
+
     enum WEAPON
     {
         WPN_NONE = -1,
@@ -374,7 +378,7 @@ namespace Zelda
         int m_selectorIndex;
 
         // Timer for flashing the selector
-        Clock m_selectorTimer;
+        Timer m_selectorTimer;
 
         // Weapons
         WEAPON m_items[INVENTORY_MAX_WEAPONS];
@@ -382,8 +386,8 @@ namespace Zelda
         // Instruments
         Instrument m_instruments[static_cast<int>(Instrument::INSTRUMENT_COUNT)];
 
-        UpdateTimer m_instrumentTimer;
-        Clock m_pushSelectTimer;
+        Timer m_instrumentTimer;
+        Timer m_pushSelectTimer;
 
         // Key press related stuff
         bool m_flashSelector;
@@ -393,7 +397,7 @@ namespace Zelda
         // Link position in dungeon map as a vector
         Vector<uint8_t> m_dungeonPosition;
 
-        UpdateTimer m_dungeonMapPositionTimer;
+        Timer m_dungeonMapPositionTimer;
 
         // Array of dungeon maps
         /*

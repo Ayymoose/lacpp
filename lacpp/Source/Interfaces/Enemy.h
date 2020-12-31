@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "ZD_Assert.h"
 #include "Renderer.h"
-#include "Clock.h"
+#include "Timer.h"
 #include "Engine.h"
 #include "Link.h"
 
@@ -102,7 +102,7 @@ protected:
     }
 
     // Generic timer
-    Clock m_enemyTimer;
+    Timer m_enemyTimer;
     int m_auxiliaryFrame;
     bool m_moving;
 

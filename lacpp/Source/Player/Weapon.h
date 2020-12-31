@@ -5,7 +5,6 @@
 #include "Inventory.h"
 #include "Vector.h"
 #include "Character.h"
-#include "UpdateTimer.h"
 #include "Renderer.h"
 #include "BoundingBox.h"
 
@@ -74,7 +73,7 @@ public:
 protected:
     Vector<float> m_positionVector;
     Direction m_direction;
-    UpdateTimer m_weaponTimer;
+    Timer m_weaponTimer;
     BoundingBox m_boundingBox;
 
     // Weapon sprite sources

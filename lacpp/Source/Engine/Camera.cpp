@@ -174,7 +174,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             m_scrollX -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
             // TODO: Correct player addition vector
-            if (m_timerPlayerScroll.update(FPS_33))
+            if (m_timerPlayerScroll.elapsed(FPS_33))
             {
                 player->addPosition(-PLAYER_SCROLL_SPEED, 0);
             }
@@ -208,7 +208,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollX += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            if (m_timerPlayerScroll.update(FPS_33))
+            if (m_timerPlayerScroll.elapsed(FPS_33))
             {
                 player->addPosition(PLAYER_SCROLL_SPEED, 0);
             }
@@ -242,7 +242,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollY += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            if (m_timerPlayerScroll.update(FPS_33))
+            if (m_timerPlayerScroll.elapsed(FPS_33))
             {
                 player->addPosition(0, PLAYER_SCROLL_SPEED);
             }
@@ -275,7 +275,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollY -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            if (m_timerPlayerScroll.update(FPS_33))
+            if (m_timerPlayerScroll.elapsed(FPS_33))
             {
                 player->addPosition(0, -PLAYER_SCROLL_SPEED);
             }

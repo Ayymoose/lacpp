@@ -64,7 +64,7 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        m_animationTimer.reset();
+        ////m_animationTimer.reset();
     }
 
     /*SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255), SDL_ERROR_MESSAGE);
@@ -375,9 +375,9 @@ void BladeTrap::attack() noexcept
             m_moved += m_speed;
 
             // Start the cooldown period
-            // The current problem with the Clock object is that elapsed() will return true immediately on the first call unless reset() 
+            // The current problem with the Timer object is that elapsed() will return true immediately on the first call unless reset() 
             // is called as it uses the creation time of the object to compare the time to. Must fix asap
-            m_enemyTimer.reset();
+            ////m_enemyTimer.reset();
         }
         else
         {

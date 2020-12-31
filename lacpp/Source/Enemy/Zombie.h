@@ -24,5 +24,5 @@ public:
 private:
     bool m_emerging;
     bool m_burrowing;
-    Clock m_emergeTimer;
+    Timer m_emergeTimer;
 };

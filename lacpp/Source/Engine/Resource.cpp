@@ -13,10 +13,9 @@ void ResourceManager::loadGraphics() noexcept
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WORLD_MAP, loadTexture(Zelda::ResourceMiscPath + "tm_worldmap.png", TRANSPARENCY_COLOUR)));
 
 
+
     
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_LINK, loadTexture(Zelda::ResourceSpriteLinkPath + "link.png", TRANSPARENCY_COLOUR)));
-    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_CANDLE, loadTexture(Zelda::ResourceObjectsPath + "candle.png", TRANSPARENCY_COLOUR)));
-    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TORCH_1, loadTexture(Zelda::ResourceObjectsPath + "torch.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_INVENTORY, loadTexture(Zelda::ResourceObjectsPath + "inventory.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WEAPON, loadTexture(Zelda::ResourceObjectsPath + "weapons.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TEXT, loadTexture(Zelda::ResourceMiscPath + "dialogue.png", TRANSPARENCY_COLOUR)));
@@ -40,6 +39,7 @@ ResourceManager::~ResourceManager()
     }
 }
 
+// Load a PNG image to a texture with a RGB colour used for transparency
 SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t transparency) noexcept
 {
     // The final texture

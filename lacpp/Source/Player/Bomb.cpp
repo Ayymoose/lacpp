@@ -130,7 +130,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
     // Keep flashing for 1 seconds
     // Then explode
 
-    if (m_weaponTimer.update(BOMB_START_TIME) && !m_startBomb)
+    if (m_weaponTimer.elapsed(BOMB_START_TIME) && !m_startBomb)
     {
         // Start the bomb
         m_startBomb = true;
@@ -138,7 +138,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
 
     if (m_startBomb && m_flashCount != BOMB_FLASH_MAX)
     {
-        if (!m_flashBomb && m_weaponTimer.update(BOMB_EXPLODE_TIME))
+        if (!m_flashBomb && m_weaponTimer.elapsed(BOMB_EXPLODE_TIME))
         {
             m_currentFrame = 1;
             m_flashBomb = true;
@@ -146,7 +146,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         }
         else
         {
-            if (m_weaponTimer.update(BOMB_EXPLODE_TIME))
+            if (m_weaponTimer.elapsed(BOMB_EXPLODE_TIME))
             {
                 m_currentFrame = 0;
                 m_flashBomb = false;

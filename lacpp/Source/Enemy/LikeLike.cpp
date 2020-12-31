@@ -61,7 +61,7 @@ void LikeLike::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        m_animationTimer.reset();
+        //m_animationTimer.reset();
     }
 }
 
@@ -105,7 +105,7 @@ void LikeLike::attack() noexcept
             };
             m_directionVector = dirs[dir];
         }
-        m_enemyTimer.reset();
+        //m_enemyTimer.reset();
     }
 
     // If attempt to move out of view, flip direction

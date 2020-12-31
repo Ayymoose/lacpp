@@ -276,7 +276,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
 
             //std::cout << "Outputting character '" << m_message[m_currentChar] << "'\n";
 
-            m_textTimer.reset();
+            //m_textTimer.reset();
 
             // Only allow MAX_CHAR_PER_LINE characters per line
             // After that we move onto the next line

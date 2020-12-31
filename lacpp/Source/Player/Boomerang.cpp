@@ -56,7 +56,7 @@ void Boomerang::render(SDL_Renderer* renderer) noexcept
     }
 
     // Rotate the boomerang
-    if (m_weaponTimer.update(BOOMERANG_ROTATION_FPS))
+    if (m_weaponTimer.elapsed(BOOMERANG_ROTATION_FPS))
     {
         m_orientation += 90;
         m_orientation = static_cast<int>(m_orientation) % 360;
