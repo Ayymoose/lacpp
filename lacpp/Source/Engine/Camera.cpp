@@ -115,7 +115,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         // Scroll the next room canvas and current room to transition to next room
         // Once scrolling completed, swap textures around
     }
-    else if (x > m_scrollX + CAMERA_WIDTH - ScrollRightEdge && !m_scrollRight)
+    else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE && !m_scrollRight)
     {
         // Scroll right
         m_scrollRight = true;
@@ -176,7 +176,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             // TODO: Correct player addition vector
             if (m_timerPlayerScroll.update(FPS_33))
             {
-                player->addPosition(-PlayerScrollSpeed, 0);
+                player->addPosition(-PLAYER_SCROLL_SPEED, 0);
             }
 
             // Load next room tiles
@@ -210,7 +210,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             m_scrolled += m_scrollSpeed;
             if (m_timerPlayerScroll.update(FPS_33))
             {
-                player->addPosition(PlayerScrollSpeed, 0);
+                player->addPosition(PLAYER_SCROLL_SPEED, 0);
             }
 
             // Load next room tiles
@@ -244,7 +244,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             m_scrolled += m_scrollSpeed;
             if (m_timerPlayerScroll.update(FPS_33))
             {
-                player->addPosition(0, PlayerScrollSpeed);
+                player->addPosition(0, PLAYER_SCROLL_SPEED);
             }
 
             // Load next room tiles
@@ -277,7 +277,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             m_scrolled += m_scrollSpeed;
             if (m_timerPlayerScroll.update(FPS_33))
             {
-                player->addPosition(0, -PlayerScrollSpeed);
+                player->addPosition(0, -PLAYER_SCROLL_SPEED);
             }
 
             // Load next room tiles
@@ -307,7 +307,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
     int dx = roomIndex % m_tilemap.roomsAcross();
     // The y offset is calculated because we line the dungeon map array with 1s on the top and right
     // if roomsDown > 9 then we'll get assertion failure
-    int dy = (DungeonMaxBlocksY - m_tilemap.roomsDown()) + (roomIndex / m_tilemap.roomsAcross());
+    int dy = (DUNGEON_MAX_BLOCKS_Y - m_tilemap.roomsDown()) + (roomIndex / m_tilemap.roomsAcross());
 
     player->setDungeonMarkerLocation(dx,dy);
 

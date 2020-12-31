@@ -8,80 +8,80 @@
 namespace Zelda
 {
     // Initial selector position and increases
-    constexpr int SelectorInitialX = 6;
-    constexpr int SelectorInitialY = 26;
-    constexpr int SelectorIncreaseX = 32;
-    constexpr int SelectorIncreaseY = 23;
+    constexpr int SELECTOR_INITIAL_X = 6;
+    constexpr int SELECTOR_INITIAL_Y = 26;
+    constexpr int SELECTOR_INCREASE_X = 32;
+    constexpr int SELECTOR_INCREASE_Y = 23;
 
     // Maximum "storable" items in inventory
-    constexpr int InventoryMaxWeapons = 10;
+    constexpr int INVENTORY_MAX_WEAPONS = 10;
 
     // The entire inventory
-    constexpr int InventoryInternalX = 0;
-    constexpr int InventoryInternalY = 21;
-    constexpr int InventoryWidth = CAMERA_WIDTH;
-    constexpr int InventoryHeight = CAMERA_WIDTH - HUD_HEIGHT; // Because of the HUD being at the top of the screen
+    constexpr int INVENTORY_INTERNAL_X = 0;
+    constexpr int INVENTORY_INTERNAL_Y = 21;
+    constexpr int INVENTORY_WIDTH = CAMERA_WIDTH;
+    constexpr int INVENTORY_HEIGHT = CAMERA_WIDTH - HUD_HEIGHT; // Because of the HUD being at the top of the screen
 
     // Inventory dividers horizontal/vertical
-    constexpr int InventoryDividerXH = 0;
-    constexpr int InventoryDividerYH = 18;
-    constexpr int InventoryDividerXV = 67;
-    constexpr int InventoryDividerYV = 24;
-    constexpr int InventoryDividerWidthH = 7;
-    constexpr int InventoryDividerHeightH = 3;
-    constexpr int InventoryDividerWidthV = 3;
-    constexpr int InventoryDividerHeightV = 7;
+    constexpr int INVENTORY_DIVIDER_XH = 0;
+    constexpr int INVENTORY_DIVIDER_YH = 18;
+    constexpr int INVENTORY_DIVIDER_XV = 67;
+    constexpr int INVENTORY_DIVIDER_YV = 24;
+    constexpr int INVENTORY_DIVIDER_WIDTH_H = 7;
+    constexpr int INVENTORY_DIVIDER_HEIGHT_H = 3;
+    constexpr int INVENTORY_DIVIDER_WIDTH_V = 3;
+    constexpr int INVENTORY_DIVIDER_HEIGHT_V = 7;
 
     // Sprite width/height of the inventory items
-    constexpr int InventorySpriteWidth = 8;
-    constexpr int InventorySpriteHeight = 16;
+    constexpr int INVENTORY_SPRITE_WIDTH = 8;
+    constexpr int INVENTORY_SPRITE_HEIGHT = 16;
 
     // Initial position of the inventory sprite item
-    constexpr int InventoryPosX = 8;
-    constexpr int InventoryPosY = 25;
+    constexpr int INVENTORY_POS_X = 8;
+    constexpr int INVENTORY_POS_Y = 25;
 
     // Spacing between each inventory sprite item on the lhs
-    constexpr int InventoryXSpacing = 32;
-    constexpr int InventoryYSpacing = 23;
+    constexpr int INVENTORY_X_SPACING = 32;
+    constexpr int INVENTORY_Y_SPACING = 23;
 
     // RGB components of inventory colour
-    constexpr int InventoryR = 248;
-    constexpr int InventoryG = 248;
-    constexpr int InventoryB = 168;
+    constexpr int INVENTORY_R = 248;
+    constexpr int INVENTORY_G = 248;
+    constexpr int INVENTORY_B = 168;
 
     // Item limits
     // TODO: This acually changes throughout the game IIRC
-    constexpr int BombsMax = 50;
-    constexpr int MagicPowderMax = 50;
-    constexpr int ArrowsMax = 30;
-    constexpr int RuppeesMax = 999;
+    constexpr int BOMBS_MAX = 50;
+    constexpr int MAGIC_POWDER_MAX = 50;
+    constexpr int ARROWS_MAX = 30;
+    constexpr int RUPPEES_MAX = 999;
 
     // The width/height of the weapon level sprite
-    constexpr int WeaponLevelX = 16;
-    constexpr int WeaponLevelY = 33;
-    constexpr int WeaponLevelSpacingX = 32;
-    constexpr int WeaponLevelSpacingY = 23;
-    constexpr int WeaponLevelWidth = 8;
-    constexpr int WeaponLevelHeight = 8;
+    constexpr int WEAPON_LEVEL_X = 16;
+    constexpr int WEAPON_LEVEL_Y = 33;
+    constexpr int WEAPON_LEVEL_SPACING_X = 32;
+    constexpr int WEAPON_LEVEL_SPACING_Y = 23;
+    constexpr int WEAPON_LEVEL_WIDTH = 8;
+    constexpr int WEAPON_LEVEL_HEIGHT = 8;
 
     // Subscreen constants
-    constexpr int SelectSubscreenWidth = 80;
-    constexpr int SelectSubscreenHeight = 32;
+    constexpr int SELECT_SUBSCREEN_WIDTH = 80;
+    constexpr int SELECT_SUBSCREEN_HEIGHT = 32;
     
     // Hearts per row
-    constexpr int HeartsPerRow = 7;
-    constexpr int HeartPiecesMax = 4;
+    constexpr int HEARTS_PER_ROW = 7;
+    constexpr int HEARTS_PIECE_MAX = 4;
     
     // Maximum photographs we are allowed
-    constexpr int MaxPhotographs = 12;
+    constexpr int MAX_PHOTOGRAPHS = 12;
     
     // Animation stuff
-    constexpr int InstrumentsFrame = 12;
+    constexpr int INSTRUMENTS_FRAME = 12;
 
     // Dungeon map
-    constexpr int MaxDungeons = 9;
-    constexpr int DungeonMaxBlocksX = 9;
-    constexpr int DungeonMaxBlocksY = 9;
+    constexpr int MAX_DUNGEONS = 9;
+    constexpr int DUNGEON_MAX_BLOCKS_X = 9;
+    constexpr int DUNGEON_MAX_BLOCKS_Y = 9;
 
     enum WEAPON
     {
@@ -377,7 +377,7 @@ namespace Zelda
         Clock m_selectorTimer;
 
         // Weapons
-        WEAPON m_items[InventoryMaxWeapons];
+        WEAPON m_items[INVENTORY_MAX_WEAPONS];
 
         // Instruments
         Instrument m_instruments[static_cast<int>(Instrument::INSTRUMENT_COUNT)];
@@ -442,7 +442,7 @@ namespace Zelda
 
         Dungeon m_dungeon;
 
-        uint8_t m_dungeonMaps[MaxDungeons][DungeonMaxBlocksX][DungeonMaxBlocksY] =
+        uint8_t m_dungeonMaps[MAX_DUNGEONS][DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y] =
         {
             {   // Lvl 0 - Colour dungeon
                 {0,0,0,0,0,0,0,0,1},
@@ -624,7 +624,7 @@ namespace Zelda
             {90,162,8,8}, // INVENTORY_RED_ARROW
             {50,38,58,8}, // INVENTORY_PUSH_SELECT,
 
-            {0,0,SelectSubscreenWidth,SelectSubscreenHeight}, // INVENTORY_SUBSCREEN
+            {0,0,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, // INVENTORY_SUBSCREEN
             {0,100,31,14}, // INVENTORY_TUNIC (Green)
             {0,84,16,14}, // INVENTORY_HEART_PIECES
             {90,84,14,12}, // INVENTORY_PHOTOGRAPHS
@@ -734,7 +734,7 @@ namespace Zelda
             {75,136,8,8}, // INVENTORY_RED_ARROW
             {86,136,58,8}, // INVENTORY_PUSH_SELECT,
 
-            {75,104,SelectSubscreenWidth,SelectSubscreenHeight}, //INVENTORY_SUBSCREEN
+            {75,104,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, //INVENTORY_SUBSCREEN
             {1,1,31,14}, // INVENTORY_TUNIC (Green)
             {41,1,16,14}, // INVENTORY_HEART_PIECES
             {9,18,14,12}, // INVENTORY_PHOTOGRAPHS

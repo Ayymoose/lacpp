@@ -14,9 +14,9 @@
 using namespace Zelda;
 
 Inventory::Inventory() : 
-    Renderable("Inventory", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, InventoryWidth, InventoryHeight), ZD_DEPTH_INVENTORY),
+    Renderable("Inventory", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, INVENTORY_WIDTH, INVENTORY_HEIGHT), ZD_DEPTH_INVENTORY),
     Controllable(m_name),
-    m_subscreen(SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SelectSubscreenWidth, SelectSubscreenHeight)),
+    m_subscreen(SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SELECT_SUBSCREEN_WIDTH, SELECT_SUBSCREEN_HEIGHT)),
     m_tradeItem(ITEM_NONE),
     m_open(false),
     m_inDungeon(true),
@@ -41,8 +41,8 @@ Inventory::Inventory() :
     m_photographs(0),
     m_weaponA(WEAPON::WPN_BOW),
     m_weaponB(WEAPON::WPN_SWORD),
-    m_selectorX(SelectorInitialX),
-    m_selectorY(SelectorInitialY),
+    m_selectorX(SELECTOR_INITIAL_X),
+    m_selectorY(SELECTOR_INITIAL_Y),
     m_selectorIndex(0),
     m_flashSelector(false),
     m_flashSelect(false),
@@ -60,7 +60,7 @@ Inventory::Inventory() :
     // 7 -> 39 x increases of 32
     // 27 -> 50 y increases by 23
 
-    for (int i = 0; i < InventoryMaxWeapons; i++)
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
         m_items[i] = WPN_NONE;
     }
@@ -149,87 +149,87 @@ void Inventory::control() noexcept
     // This code controls the selector through arrow keys
     if (Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
     {
-        if (m_selectorX == SelectorInitialX + SelectorIncreaseX)
+        if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
         {
-            m_selectorX = SelectorInitialX;
+            m_selectorX = SELECTOR_INITIAL_X;
             // If not the bottom right of the inventory
-            if (m_selectorY != SelectorInitialY + 4*SelectorIncreaseY)
+            if (m_selectorY != SELECTOR_INITIAL_Y + 4*SELECTOR_INCREASE_Y)
             {
-                m_selectorY += SelectorIncreaseY;
+                m_selectorY += SELECTOR_INCREASE_Y;
                 m_selectorIndex++;
             }
             else
             {
-                m_selectorY = SelectorInitialY;
+                m_selectorY = SELECTOR_INITIAL_Y;
                 m_selectorIndex = 0;
             }
         }
         else
         {
-            m_selectorX += SelectorIncreaseX;
+            m_selectorX += SELECTOR_INCREASE_X;
             m_selectorIndex++;
         }
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_LEFT))
     {
-        if (m_selectorX == SelectorInitialX)
+        if (m_selectorX == SELECTOR_INITIAL_X)
         {
-            m_selectorX = SelectorInitialX + SelectorIncreaseX;
+            m_selectorX = SELECTOR_INITIAL_X + SELECTOR_INCREASE_X;
             // If not the top left of the inventory
-            if (m_selectorY != SelectorInitialY)
+            if (m_selectorY != SELECTOR_INITIAL_Y)
             {
-                m_selectorY -= SelectorIncreaseY;
+                m_selectorY -= SELECTOR_INCREASE_Y;
                 m_selectorIndex--;
             }
             else
             {
-                m_selectorY = SelectorInitialY + 4 * SelectorIncreaseY;
-                m_selectorIndex = InventoryMaxWeapons - 1;
+                m_selectorY = SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y;
+                m_selectorIndex = INVENTORY_MAX_WEAPONS - 1;
             }
         }
         else
         {
-            m_selectorX -= SelectorIncreaseX;
+            m_selectorX -= SELECTOR_INCREASE_X;
             m_selectorIndex--;
         }
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_UP))
     {
-        if (m_selectorY == SelectorInitialY)
+        if (m_selectorY == SELECTOR_INITIAL_Y)
         {
-            if (m_selectorX == SelectorInitialX)
+            if (m_selectorX == SELECTOR_INITIAL_X)
             {
-                m_selectorX += SelectorIncreaseX;
+                m_selectorX += SELECTOR_INCREASE_X;
             }
-            m_selectorY = SelectorInitialY + 4 * SelectorIncreaseY;
-            m_selectorIndex = InventoryMaxWeapons - 1;
+            m_selectorY = SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y;
+            m_selectorIndex = INVENTORY_MAX_WEAPONS - 1;
         }
         else
         {
             m_selectorIndex -= 2;
-            m_selectorY -= SelectorIncreaseY;
+            m_selectorY -= SELECTOR_INCREASE_Y;
         }
 
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_DOWN))
     {
-        if (m_selectorY == SelectorInitialY + 4 * SelectorIncreaseY)
+        if (m_selectorY == SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y)
         {
-            if (m_selectorX == SelectorInitialX + SelectorIncreaseX)
+            if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
             {
-                m_selectorX -= SelectorIncreaseX;
+                m_selectorX -= SELECTOR_INCREASE_X;
             }
             m_selectorIndex = 0;
-            m_selectorY = SelectorInitialY;
+            m_selectorY = SELECTOR_INITIAL_Y;
         }
         else
         {
-            m_selectorY += SelectorIncreaseY;
+            m_selectorY += SELECTOR_INCREASE_Y;
             // Change by 2 because of the way we index the array (see above)
             m_selectorIndex += 2;
         }
     }
-    assert(m_selectorIndex < InventoryMaxWeapons);
+    assert(m_selectorIndex < INVENTORY_MAX_WEAPONS);
 
     // If any select keys pressed, reset the flashing animation
     if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT) ||
@@ -268,7 +268,7 @@ void Inventory::render(SDL_Renderer* renderer) noexcept
     // Render the inventory background
     SDL_Rect dstRect = { 0, renderY, m_width , m_height };
     SDL_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
-    colourTexture(renderer, m_texture, nullptr, SDL_RGB(InventoryR, InventoryG, InventoryB));
+    colourTexture(renderer, m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
     drawTopHUD(renderer);
 
@@ -353,7 +353,7 @@ WEAPON Inventory::weaponB() const noexcept
 
 void Zelda::Inventory::setDungeonLocationMarker(int x, int y) noexcept
 {
-    assert(x < DungeonMaxBlocksX && x >= 0 && y >= 0 && y < DungeonMaxBlocksY);
+    assert(x < DUNGEON_MAX_BLOCKS_X && x >= 0 && y >= 0 && y < DUNGEON_MAX_BLOCKS_Y);
     m_dungeonPosition.x = x;
     m_dungeonPosition.y = y;
 }
@@ -426,9 +426,9 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
     
     // Without a map, all the paths are not drawn
     // Unvisited areas are marked with a grey block
-    for (int x = 0; x < DungeonMaxBlocksX; x++)
+    for (int x = 0; x < DUNGEON_MAX_BLOCKS_X; x++)
     {
-        for (int y = 0; y < DungeonMaxBlocksY; y++)
+        for (int y = 0; y < DUNGEON_MAX_BLOCKS_Y; y++)
         {
             // Don't display anything if dungeon map not present
             if (m_dungeonMap)
@@ -647,13 +647,13 @@ void Inventory::drawSelectStatus(SDL_Renderer* renderer) noexcept
         dstRect = {56,7,8,8};
         drawNumber(renderer, m_subscreen, false, false, 0, m_heartPieces, &dstRect);
         dstRect = { 72,7,8,8 };
-        drawNumber(renderer, m_subscreen, false, false, 0, HeartPiecesMax, &dstRect);
+        drawNumber(renderer, m_subscreen, false, false, 0, HEARTS_PIECE_MAX, &dstRect);
 
         // Draw number of photographs
         dstRect = { 24,23,8,8 };
         drawNumber(renderer, m_subscreen, false, false, 1, m_photographs, &dstRect);
         dstRect = { 48,23,8,8 };
-        drawNumber(renderer, m_subscreen, false, false, 1, MaxPhotographs, &dstRect);
+        drawNumber(renderer, m_subscreen, false, false, 1, MAX_PHOTOGRAPHS, &dstRect);
 
         // Remember! This resets the drawing target to the screen
         SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
@@ -822,7 +822,7 @@ void Inventory::drawInstruments(SDL_Renderer* renderer) noexcept
             srcRect.x = srcRect.x + (srcRect.w * m_instrumentTimer.m_counter);
             if (m_instrumentTimer.update(INSTRUMENT_FPS))
             {
-                if (m_instrumentTimer.m_counter > InstrumentsFrame)
+                if (m_instrumentTimer.m_counter > INSTRUMENTS_FRAME)
                 {
                     m_instrumentTimer.m_counter = 0;
                 }
@@ -903,7 +903,7 @@ void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         dstRect.x += srcRect.w;
         drawnHearts++;
-        if (drawnHearts == HeartsPerRow)
+        if (drawnHearts == HEARTS_PER_ROW)
         {
             dstRect.y += srcRect.h;
             dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
@@ -917,7 +917,7 @@ void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         dstRect.x += srcRect.w;
         drawnHearts++;
-        if (drawnHearts == HeartsPerRow)
+        if (drawnHearts == HEARTS_PER_ROW)
         {
             dstRect.y += srcRect.h;
             dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
@@ -929,7 +929,7 @@ void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         dstRect.x += srcRect.w;
         drawnHearts++;
-        if (drawnHearts == HeartsPerRow)
+        if (drawnHearts == HEARTS_PER_ROW)
         {
             dstRect.y += srcRect.h;
             dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
@@ -941,7 +941,7 @@ void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         dstRect.x += srcRect.w;
         drawnHearts++;
-        if (drawnHearts == HeartsPerRow)
+        if (drawnHearts == HEARTS_PER_ROW)
         {
             dstRect.y += srcRect.h;
             dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
@@ -955,7 +955,7 @@ void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         dstRect.x += srcRect.w;
         drawnHearts++;
-        if (drawnHearts == HeartsPerRow)
+        if (drawnHearts == HEARTS_PER_ROW)
         {
             dstRect.y += srcRect.h;
             dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
@@ -973,7 +973,7 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
     SDL_ASSERT(SDL_SetRenderTarget(renderer, m_texture), SDL_ERROR_MESSAGE);
 
-    for (int i = 0; i < InventoryMaxWeapons; i++)
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
         if (m_items[i] != WPN_NONE)
         {
@@ -985,10 +985,10 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
             // This correctly positions the item
             dstRect =
             {
-                InventoryPosX + ((((i & 1) == 1) ? 1 : 0) * InventoryXSpacing),
-                InventoryPosY + ((i / 2) * InventoryYSpacing),
-                InventorySpriteWidth,
-                InventorySpriteHeight
+                INVENTORY_POS_X + ((((i & 1) == 1) ? 1 : 0) * INVENTORY_X_SPACING),
+                INVENTORY_POS_Y + ((i / 2) * INVENTORY_Y_SPACING),
+                INVENTORY_SPRITE_WIDTH,
+                INVENTORY_SPRITE_HEIGHT
             };
             // Draw the inventory items onto the internal inventory
             SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
@@ -997,16 +997,16 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
 
     SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 
-    for (int i = 0; i < InventoryMaxWeapons; i++)
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
         if (m_items[i] != WPN_NONE)
         {
             dstRect =
             {
-                WeaponLevelX + ((((i & 1) == 1) ? 1 : 0) * WeaponLevelSpacingX),
-                WeaponLevelY + ((i / 2) * WeaponLevelSpacingY),
-                WeaponLevelWidth,
-                WeaponLevelHeight
+                WEAPON_LEVEL_X + ((((i & 1) == 1) ? 1 : 0) * WEAPON_LEVEL_SPACING_X),
+                WEAPON_LEVEL_Y + ((i / 2) * WEAPON_LEVEL_SPACING_Y),
+                WEAPON_LEVEL_WIDTH,
+                WEAPON_LEVEL_HEIGHT
             };
 
             drawWeaponLevel(renderer, m_texture, m_items[i], &dstRect);
@@ -1045,27 +1045,27 @@ void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
 
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
     // Draw horizontal divider
-    for (int i = 0; i < (InventoryWidth / InventoryDividerWidthH)-2; i++)
+    for (int i = 0; i < (INVENTORY_WIDTH / INVENTORY_DIVIDER_WIDTH_H)-2; i++)
     {
         dstRect = 
         {
-            InventoryDividerXH + i + InventoryDividerWidthH * i,
-            InventoryDividerYH,
-            InventoryDividerWidthH,
-            InventoryDividerHeightH
+            INVENTORY_DIVIDER_XH + i + INVENTORY_DIVIDER_WIDTH_H * i,
+            INVENTORY_DIVIDER_YH,
+            INVENTORY_DIVIDER_WIDTH_H,
+            INVENTORY_DIVIDER_HEIGHT_H
         };
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
     // Draw vertical divider
-    for (int i = 0; i < ((InventoryHeight - InventoryDividerYV) / InventoryDividerWidthV); i++)
+    for (int i = 0; i < ((INVENTORY_HEIGHT - INVENTORY_DIVIDER_YV) / INVENTORY_DIVIDER_WIDTH_V); i++)
     {
         dstRect =
         {
-            InventoryDividerXV ,
-            InventoryDividerYV + i + InventoryDividerHeightV * i,
-            InventoryDividerWidthV,
-            InventoryDividerHeightV
+            INVENTORY_DIVIDER_XV ,
+            INVENTORY_DIVIDER_YV + i + INVENTORY_DIVIDER_HEIGHT_V * i,
+            INVENTORY_DIVIDER_WIDTH_V,
+            INVENTORY_DIVIDER_HEIGHT_V
         };
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }

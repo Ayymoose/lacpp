@@ -16,13 +16,13 @@ namespace Zelda
     constexpr int CAMERA_HEIGHT = 128;
 
     // How much we add to the position vector of the player to scroll
-    constexpr int PlayerScrollSpeed = 1;
+    constexpr int PLAYER_SCROLL_SPEED = 1;
 
     // How much edge pixels to add to the width/height of the character before it triggers a scroll
-    constexpr int ScrollRightEdge = 10;
-    constexpr int ScrollLeftEdge = 0;
-    constexpr int ScrollUpEdge = 0;
-    constexpr int ScrollDownEdge = 0;
+    constexpr int SCROLL_RIGHT_EDGE = 10;
+    constexpr int SCROLL_LEFT_EDGE = 0;
+    constexpr int SCROLL_UP_EDGE = 0;
+    constexpr int SCROLL_DOWN_EDGE = 0;
 
     // HUD Height
     constexpr int HUD_HEIGHT = 16;

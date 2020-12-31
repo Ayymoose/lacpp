@@ -109,7 +109,7 @@ namespace Zelda
     constexpr uint8_t WORLDMAP_INITIAL_POS_X = 2;
     constexpr uint8_t WORLDMAP_INITIAL_POS_Y = 10;
 
-    #define WORLDMAP_SELECTOR_FPS (1.0f / 4.0f)
+    constexpr float WORLDMAP_SELECTOR_FPS = (1.0f / 4.0f);
 
     class Worldmap : public Renderable, public Controllable
     {
