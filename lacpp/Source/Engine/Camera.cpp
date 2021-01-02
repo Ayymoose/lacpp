@@ -94,7 +94,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
     m_nextRoomIndex = roomIndex;
 
         // Transition the player if they move off the screen
-    if (x < m_scrollX && !m_scrollLeft)
+    if (x < m_scrollX - SCROLL_LEFT_EDGE && !m_scrollLeft)
     {
         // Scroll left
         m_scrollLeft = true;
@@ -133,7 +133,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 
 
     }
-    else if (y < m_scrollY && !m_scrollUp)
+    else if (y < m_scrollY - SCROLL_UP_EDGE && !m_scrollUp)
     {
         // Scroll up
         m_scrollUp = true;
@@ -144,14 +144,14 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 
         // TODO: Globalise
         //player->m_currentCollisionMapY--;
-        std::cout << "Scrolling up" << std::endl;
-
         m_swapX = 0;
         m_swapY = -m_height;
 
     }
-    else if (y > m_scrollY + CAMERA_HEIGHT - HUD_HEIGHT /* -HUD height because its on the bottom*/ && !m_scrollDown)
+    else if (y > m_scrollY + CAMERA_HEIGHT - HUD_HEIGHT - SCROLL_DOWN_EDGE  && !m_scrollDown)
     {
+        // -HUD height because its on the bottom
+
         // Scroll down
         m_scrollDown = true;
         Controller::getInstance().setController(nullptr);
@@ -161,7 +161,6 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 
         // TODO: Globalise
         //player->m_currentCollisionMapY++;
-        std::cout << "Scrolling down" << std::endl;
 
         m_swapX = 0;
         m_swapY = m_height;
@@ -173,17 +172,19 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollX -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            // TODO: Correct player addition vector
-            if (m_timerPlayerScroll.elapsed(FPS_33))
+
+                // At 60 fps, we'll move the player 1 pixels every frame
+                // TODO: Correct player addition vector
+            if (m_timerPlayerScroll.elapsed(1.0f / 25.0f))
             {
                 player->addPosition(-PLAYER_SCROLL_SPEED, 0);
             }
-
             // Load next room tiles
             m_nextRoomIndex--;
         }
         else
         {
+
             // Update current view
             roomIndex--;
             m_x -= CAMERA_WIDTH;
@@ -208,7 +209,8 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollX += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            if (m_timerPlayerScroll.elapsed(FPS_33))
+
+            if (m_timerPlayerScroll.elapsed(1.0f / 25.0f))
             {
                 player->addPosition(PLAYER_SCROLL_SPEED, 0);
             }
@@ -218,7 +220,6 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         }
         else
         {
-
             roomIndex++;
             m_x += CAMERA_WIDTH;
             m_screenX += CAMERA_WIDTH;
@@ -242,7 +243,8 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollY += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            if (m_timerPlayerScroll.elapsed(FPS_33))
+
+            if (m_timerPlayerScroll.elapsed(1.0f / 30.0f))
             {
                 player->addPosition(0, PLAYER_SCROLL_SPEED);
             }
@@ -252,6 +254,10 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         }
         else
         {
+            // Player will be 1 pixel off so move back
+            // Hacky code
+            player->addPosition(0, -1.0f);
+
             // Unpause engine
             Engine::getInstance().pause(false);
 
@@ -275,10 +281,9 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollY -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            if (m_timerPlayerScroll.elapsed(FPS_33))
-            {
-                player->addPosition(0, -PLAYER_SCROLL_SPEED);
-            }
+            
+            // More hacky code to assure the player is 1 pixel above the HUD
+            player->addPosition(0, -0.40625f);
 
             // Load next room tiles
             m_nextRoomIndex -= m_tilemap.roomsAcross();

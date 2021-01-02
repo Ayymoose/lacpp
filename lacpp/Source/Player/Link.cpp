@@ -58,6 +58,9 @@ Link::Link() :
 
     Renderer::getInstance().addRenderable(this);
     Controller::getInstance().setController(this);
+
+    m_left = 0;
+    m_right = 0;
 }
 
 float Link::health() const noexcept
@@ -404,7 +407,6 @@ void Link::die() noexcept
 void Link::resetAnimation() noexcept
 {
     m_currentFrame = m_animations[m_state].startFrame;
-    //m_clockAnimation.reset();
 }
 
 Vector<float> Link::position() const noexcept
@@ -412,7 +414,7 @@ Vector<float> Link::position() const noexcept
     return m_positionVector;
 }
 
-void Link::addPosition(int x, int y) noexcept
+void Link::addPosition(float x, float y) noexcept
 {
     m_positionVector.x += x;
     m_positionVector.y += y;
@@ -585,6 +587,7 @@ void Link::move() noexcept
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
+        // TODO: Add timer for non-vsync
         m_speedX = m_speed * (Keyboard::getInstance()[BUTTON_RIGHT] - Keyboard::getInstance()[BUTTON_LEFT]);
         m_speedY = -m_speed;
 
@@ -1209,6 +1212,5 @@ void Link::animate()
             m_currentFrame++;
             m_animationComplete = false;
         }
-        //m_clockAnimation.reset();
     }
 }

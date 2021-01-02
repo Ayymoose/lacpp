@@ -144,7 +144,7 @@ public:
  
     void resetAnimation() noexcept;
     void replenish(float hearts) noexcept;
-    void addPosition(int x, int y) noexcept;
+    void addPosition(float x, float y) noexcept;
     float maxHealth() const noexcept;
     void updateState() noexcept;
 
@@ -156,13 +156,14 @@ public:
     //CollisionArea m_collisionArea;
 
     void setDungeonMarkerLocation(int x, int y) noexcept;
-
+    int m_right;
+    int m_left;
 private:
     Link();
     float m_healthMax;
     Inventory m_inventory;
-    int m_speedX;
-    int m_speedY;
+    float m_speedX;
+    float m_speedY;
     BoundingBox m_boundingBox;
     //CollisionMap m_collisionMap;
 
@@ -171,7 +172,6 @@ private:
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept;
     void useWeapon(WEAPON weapon) noexcept;
 
-    Timer m_movementTimer;
     bool m_useShield;
 
     bool m_dirLockRight;

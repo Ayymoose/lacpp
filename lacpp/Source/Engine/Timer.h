@@ -3,15 +3,15 @@
 
 // Basic timer functionality 
 
+constexpr float FPS_60 = 1.0f / 60.0f;
+
 class Timer
 {
 public:
     Timer();
-    //void start();
     void reset();
-    bool elapsed(float timeMs);
+    bool elapsed(float ticksMs);
 
 private:
     uint32_t m_startTime;
-    //bool m_started;
 };

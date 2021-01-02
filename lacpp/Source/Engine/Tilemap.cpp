@@ -543,17 +543,18 @@ Zelda::Room Zelda::Tilemap::getRoomTiles(int roomIndex) const noexcept
 
 uint16_t Zelda::Tilemap::roomsAcross() const noexcept
 {
+	assert(m_currentTileMap.roomsAcross > 0);
 	return m_currentTileMap.roomsAcross;
 }
 
 uint16_t Zelda::Tilemap::roomsDown() const noexcept
 {
+	assert(m_currentTileMap.roomsDown > 0);
 	return m_currentTileMap.roomsDown;
 }
 
 SDL_Texture* Zelda::Tilemap::getTilemapTexture() const noexcept
 {
-	assert(m_currentTileMap.tilemap != Graphic::GFX_RESOURCE_NONE);
 	return ResourceManager::getInstance()[m_currentTileMap.tilemap];
 }
 

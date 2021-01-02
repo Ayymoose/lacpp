@@ -15,12 +15,12 @@ namespace Zelda
     constexpr int CAMERA_HEIGHT = 128;
 
     // How much we add to the position vector of the player to scroll
-    constexpr int PLAYER_SCROLL_SPEED = 1;
+    constexpr float PLAYER_SCROLL_SPEED = 1.0f;
 
     // How much edge pixels to add to the width/height of the character before it triggers a scroll
-    constexpr int SCROLL_RIGHT_EDGE = 10;
-    constexpr int SCROLL_LEFT_EDGE = 0;
-    constexpr int SCROLL_UP_EDGE = 0;
+    constexpr int SCROLL_RIGHT_EDGE = 12;
+    constexpr int SCROLL_LEFT_EDGE = 4;
+    constexpr int SCROLL_UP_EDGE = 2;
     constexpr int SCROLL_DOWN_EDGE = 0;
 
     // HUD Height
@@ -56,7 +56,7 @@ namespace Zelda
         // Position as a vector
         Vector<float> position() const noexcept;
 
-    private:
+   // private:
         Camera();
         // Called in the render function
         void renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture* srcTexture, uint16_t roomIndex) noexcept;

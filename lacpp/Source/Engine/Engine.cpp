@@ -33,6 +33,9 @@
 
 void Zelda::Engine::init() noexcept
 {
+
+    // TODO: Add monitor VSync + 60Hz check here
+
     // Initialise SDL
     SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO), SDL_ERROR_MESSAGE);
 
@@ -70,6 +73,7 @@ void Zelda::Engine::run() noexcept
         processEvents();
         // Process input
         processInput();
+
         // Render objects
         renderObjects();
     }
@@ -127,6 +131,9 @@ void Zelda::Engine::processInput() noexcept
 
 void Zelda::Engine::renderObjects() const noexcept
 {
+    /*static*/ auto renderStartTime = SDL_GetTicks();
+    static auto renderedFrames = 0;
+
     SDL_Renderer* renderer = Renderer::getInstance().getRenderer();
 
     // Clear black
@@ -180,6 +187,18 @@ void Zelda::Engine::renderObjects() const noexcept
 
     // Represent to the screen
     SDL_RenderPresent(renderer);
+    
+    renderedFrames++;
+    /* auto elapsedTicks = SDL_GetTicks() - renderStartTime;
+    std::cout << "elapsed: " << elapsedTicks << "\n";
+
+   if (elapsedTicks >= 1000)
+    {
+        std::string windowTitle = MAIN_WINDOW_TITLE " - FPS: " + std::to_string((elapsedTicks / 1000.0f) * (float)renderedFrames);
+        SDL_SetWindowTitle(m_mainWindow.getWindowHandle(), windowTitle.c_str());
+        renderStartTime = SDL_GetTicks();
+        renderedFrames = 0;
+    }*/
 }
 
 void Engine::engineTest()
@@ -194,7 +213,7 @@ void Engine::engineTest()
     //Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue", Link::getInstance().position().y);
 
     //std::string test = "test";
-    Dialogue::getInstance().message("Level 1--       ""     Tail Cave", Link::getInstance().position().y);
+   // Dialogue::getInstance().message("Level 1--       ""     Tail Cave", Link::getInstance().position().y);
 
     // TODO: Make sure local objects when destroyed get removed from renderer
     /*static SeaUrchin su(72,64);

@@ -95,7 +95,7 @@ protected:
     Enemy() : m_auxiliaryFrame(0), m_moving(false)
     {
     }
-    Enemy(int x, int y) : m_auxiliaryFrame(0), m_moving(true)
+    Enemy(float x, float y) : m_auxiliaryFrame(0), m_moving(true)
     {
         m_positionVector.x = x;
         m_positionVector.y = y;
