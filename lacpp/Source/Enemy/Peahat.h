@@ -3,13 +3,13 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Peahat : public Enemy, public Renderable
+class Peahat : public Renderable, public Enemy
 {
 public:
-    Peahat() : m_startingUp(false), m_risen(0), m_coolDown(false)
+    Peahat() : m_startingUp(false), m_coolDown(false), m_risen(0)
     {
     }
-    Peahat(int x, int y);
+    Peahat(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

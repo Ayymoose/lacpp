@@ -7,7 +7,7 @@ class Spark : public Enemy, public Renderable
 {
 public:
     Spark() = default;
-    Spark(int x, int y);
+    Spark(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

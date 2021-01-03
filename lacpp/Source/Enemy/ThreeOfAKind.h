@@ -9,7 +9,7 @@ public:
     ThreeOfAKind() : m_steps(0)
     {
     }
-    ThreeOfAKind(int x, int y);
+    ThreeOfAKind(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

@@ -1,6 +1,6 @@
 #include "GopongaFlower.h"
 
-GopongaFlower::GopongaFlower(int x, int y) : Enemy(x, y)
+GopongaFlower::GopongaFlower(float x, float y) : Enemy(x, y)
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
@@ -13,7 +13,6 @@ GopongaFlower::GopongaFlower(int x, int y) : Enemy(x, y)
 
     m_name = "Goponga Flower";
     m_depth = ZD_DEPTH_ENEMY;
-    Renderer::getInstance().addRenderable(this);
 }
 
 void GopongaFlower::render(SDL_Renderer* renderer) noexcept
@@ -36,8 +35,8 @@ void GopongaFlower::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - Camera::getInstance().getX(),
-        m_positionVector.y - Camera::getInstance().getY(),
+        m_positionVector.x - m_xTransition - Camera::getInstance().getX(),
+        m_positionVector.y - m_yTransition - Camera::getInstance().getY(),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -54,7 +53,6 @@ void GopongaFlower::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        ////m_animationTimer.reset();
     }
 }
 

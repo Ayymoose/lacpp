@@ -1,6 +1,7 @@
 #include "RoomManager.h"
 #include "Peahat.h"
 #include "Gibdo.h"
+#include "Shyguy.h"
 
 namespace Zelda
 {
@@ -42,7 +43,7 @@ RoomManager::RoomManager()
         {},
         {},
         {},
-        {},
+        { new ShyGuy(64,64)},
         {},
         {},
         {},
@@ -69,7 +70,7 @@ void RoomManager::setRoom(RoomName room) noexcept
 }
 
 // Loads the room objects for the current room at roomIndex
-void RoomManager::roomOjects(RoomAction action, size_t roomIndex) noexcept
+void RoomManager::roomObjects(RoomAction action, size_t roomIndex) noexcept
 {
     // Check we have a room
     assert(m_currentRoom.size() && roomIndex < m_currentRoom.size());
@@ -88,6 +89,19 @@ void RoomManager::roomOjects(RoomAction action, size_t roomIndex) noexcept
             std::cout << "[ROOM_MANAGER] Removing " << roomObject->name() << " at index " << roomIndex << "\n";
             Renderer::getInstance().removeRenderable(roomObject);
         }
+    }
+}
+
+void RoomManager::transitionObjects(size_t roomIndex, int xTransition, int yTransition) noexcept
+{
+    // Check we have a room
+    assert(m_currentRoom.size() && roomIndex < m_currentRoom.size());
+
+    // Add or remove objects depending on action
+    for (auto const& roomObject : m_currentRoom[roomIndex])
+    {
+        assert(roomObject);
+        roomObject->transition(xTransition, yTransition);
     }
 }
 

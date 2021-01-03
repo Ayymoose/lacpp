@@ -10,7 +10,7 @@ public:
     {
 
     }
-    WaterTektite(int x, int y);
+    WaterTektite(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

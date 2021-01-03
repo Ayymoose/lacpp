@@ -7,7 +7,7 @@ class Star : public Enemy, public Renderable
 {
 public:
     Star() = default;
-    Star(int x, int y);
+    Star(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

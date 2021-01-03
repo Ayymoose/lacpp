@@ -9,7 +9,7 @@ class Vacuum : public Enemy, public Renderable
 {
 public:
     Vacuum() : m_vacuums(0) {};
-    Vacuum(int x, int y);
+    Vacuum(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

@@ -9,7 +9,7 @@ public:
     Leever() : m_emerging(false), m_burrowing(false)
     {
     }
-    Leever(int x, int y);
+    Leever(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

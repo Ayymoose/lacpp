@@ -7,7 +7,7 @@ class ArmMimic : public Enemy, public Renderable
 {
 public:
     ArmMimic() = default;
-    ArmMimic(int x, int y);
+    ArmMimic(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

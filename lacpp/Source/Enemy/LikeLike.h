@@ -7,7 +7,7 @@ class LikeLike : public Enemy, public Renderable
 {
 public:
     LikeLike() = default;
-    LikeLike(int x, int y);
+    LikeLike(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

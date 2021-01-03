@@ -1,7 +1,7 @@
 #include "ThreeOfAKind.h"
 #include "Common.h"
 
-ThreeOfAKind::ThreeOfAKind(int x, int y) : Enemy(x, y)
+ThreeOfAKind::ThreeOfAKind(float x, float y) : Enemy(x, y)
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
@@ -18,7 +18,6 @@ ThreeOfAKind::ThreeOfAKind(int x, int y) : Enemy(x, y)
 
     m_name = "Three Of A Kind";
     m_depth = ZD_DEPTH_ENEMY;
-    Renderer::getInstance().addRenderable(this);
 }
 
 void ThreeOfAKind::render(SDL_Renderer* renderer) noexcept
@@ -41,8 +40,8 @@ void ThreeOfAKind::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - static_cast<float>(Camera::getInstance().getY()),
+        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -71,7 +70,6 @@ void ThreeOfAKind::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        //m_animationTimer.reset();
     }
 }
 

@@ -7,7 +7,7 @@ class Beamos : public Enemy, public Renderable
 {
 public:
     Beamos() = default;
-    Beamos(int x, int y);
+    Beamos(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

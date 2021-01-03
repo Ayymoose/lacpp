@@ -1,24 +1,20 @@
 #include "Peahat.h"
 #include "Common.h"
+#include "Drawing.h"
 
-Peahat::Peahat(int x, int y) : Enemy(x, y)
+Peahat::Peahat(float x, float y) :
+    Renderable("Peahat", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y),
+    m_startingUp(true),
+    m_coolDown(false),
+    m_risen(0)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
-
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;
-
     m_health = 5;
     m_speed = 0.5f;
-
-    m_startingUp = true;
-    m_moving = false;
-
-    m_name = "Peahat";
-    m_depth = ZD_DEPTH_ENEMY;
-    //Renderer::getInstance().addRenderable(this);
 }
 
 void Peahat::render(SDL_Renderer* renderer) noexcept
@@ -48,29 +44,28 @@ void Peahat::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - static_cast<float>(Camera::getInstance().getY()),
+        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-        SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
-        if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
+    if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
+    {
+        if (m_moving || m_startingUp || m_coolDown)
         {
-            if (m_moving || m_startingUp || m_coolDown)
+            if (m_currentFrame < m_endFrame)
             {
-                if (m_currentFrame < m_endFrame)
-                {
-                    m_currentFrame++;
-                }
-                else
-                {
-                    m_currentFrame = animation.startFrame;
-                }
+                m_currentFrame++;
             }
-            //m_animationTimer.reset();
+            else
+            {
+                m_currentFrame = animation.startFrame;
+            }
         }
+    }
 }
 
 float Peahat::health() const noexcept

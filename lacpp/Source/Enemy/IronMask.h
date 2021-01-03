@@ -9,7 +9,7 @@ public:
     IronMask() : m_exposed(false), m_steps(0)
     {
     }
-    IronMask(int x, int y);
+    IronMask(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

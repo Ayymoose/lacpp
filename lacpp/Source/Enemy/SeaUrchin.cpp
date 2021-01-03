@@ -1,6 +1,6 @@
 #include "SeaUrchin.h"
 
-SeaUrchin::SeaUrchin(int x, int y) : Enemy(x,y)
+SeaUrchin::SeaUrchin(float x, float y) : Enemy(x,y)
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
@@ -14,7 +14,6 @@ SeaUrchin::SeaUrchin(int x, int y) : Enemy(x,y)
 
     m_name = "Sea Urchin";
     m_depth = ZD_DEPTH_ENEMY;
-    Renderer::getInstance().addRenderable(this);
 }
 
 void SeaUrchin::render(SDL_Renderer* renderer) noexcept
@@ -37,8 +36,8 @@ void SeaUrchin::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - Camera::getInstance().getX(),
-        m_positionVector.y - Camera::getInstance().getY(),
+        m_positionVector.x - m_xTransition - Camera::getInstance().getX(),
+        m_positionVector.y - m_yTransition - Camera::getInstance().getY(),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -55,7 +54,6 @@ void SeaUrchin::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        //m_animationTimer.reset();
     }
 }
 

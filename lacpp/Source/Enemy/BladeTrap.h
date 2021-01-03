@@ -10,7 +10,7 @@ public:
     {
 
     };
-    BladeTrap(int x, int y);
+    BladeTrap(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

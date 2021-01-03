@@ -7,7 +7,7 @@ class SeaUrchin : public Enemy, public Renderable
 {
 public:
     SeaUrchin() = default;
-    SeaUrchin(int x, int y);
+    SeaUrchin(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

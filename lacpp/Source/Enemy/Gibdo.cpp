@@ -1,9 +1,10 @@
 #include "Gibdo.h"
 #include "Common.h"
 
-Gibdo::Gibdo(int x, int y) : Enemy(x, y)
+Gibdo::Gibdo(float x, float y) :
+    Renderable("Gibdo", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -11,16 +12,10 @@ Gibdo::Gibdo(int x, int y) : Enemy(x, y)
     m_height = 16;
 
     m_health = 5;
-
     m_speed = 0.5f;
 
     // Set it off in a random direction
     m_directionVector = { 0, m_speed };
-
-    m_name = "Gibdo";
-    m_depth = ZD_DEPTH_ENEMY;
-    
-    //Renderer::getInstance().addRenderable(this);
 }
 
 void Gibdo::render(SDL_Renderer* renderer) noexcept
@@ -43,8 +38,8 @@ void Gibdo::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - static_cast<float>(Camera::getInstance().getY()),
+        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -61,7 +56,6 @@ void Gibdo::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        ////m_animationTimer.reset();
     }
 }
 

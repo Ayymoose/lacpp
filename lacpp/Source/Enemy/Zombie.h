@@ -9,7 +9,7 @@ public:
     Zombie() : m_emerging(false), m_burrowing(false)
     {
     }
-    Zombie(int x, int y);
+    Zombie(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

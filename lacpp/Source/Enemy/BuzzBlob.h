@@ -9,7 +9,7 @@ public:
     BuzzBlob() : m_bigEyes(false)
     {
     };
-    BuzzBlob(int x, int y);
+    BuzzBlob(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

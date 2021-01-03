@@ -43,9 +43,17 @@ public:
         return m_name;
     }
 
+    void transition(int xTransition, int yTransition) noexcept
+    {
+        m_xTransition = xTransition;
+        m_yTransition = yTransition;
+    }
+
     Renderable(const char* name, SDL_Texture* texture, int depth) :
         m_srcRect({ 0,0,0,0 }),
         m_dstRect({ 0,0,0,0 }),
+        m_xTransition(0),
+        m_yTransition(0),
         m_name(name),
         m_animationStart(false),
         m_animationComplete(false),
@@ -68,6 +76,8 @@ public:
         m_height(0),
         m_srcRect({ 0,0,0,0 }),
         m_dstRect({ 0,0,0,0 }),
+        m_xTransition(0),
+        m_yTransition(0),
         m_depth(0),
         m_animationStart(false),
         m_animationComplete(false),
@@ -92,6 +102,9 @@ protected:
     // For sprite
     SDL_Rect m_srcRect;
     SDL_FRect m_dstRect;
+
+    int m_xTransition;
+    int m_yTransition;
 
     // Debug name
     std::string m_name;

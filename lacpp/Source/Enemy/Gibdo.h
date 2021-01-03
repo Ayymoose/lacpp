@@ -3,11 +3,11 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Gibdo : public Enemy, public Renderable
+class Gibdo : public Renderable, public Enemy
 {
 public:
     Gibdo() = default;
-    Gibdo(int x, int y);
+    Gibdo(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

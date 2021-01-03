@@ -7,7 +7,7 @@ class Bubble : public Enemy, public Renderable
 {
 public:
     Bubble() = default;
-    Bubble(int x, int y);
+    Bubble(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

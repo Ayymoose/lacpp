@@ -53,10 +53,13 @@ namespace Zelda
         int getX() const noexcept;
         int getY() const noexcept;
 
+        int offScrollX() const noexcept;
+        int offScrollY() const noexcept;
+
         // Position as a vector
         Vector<float> position() const noexcept;
 
-   // private:
+    private:
         Camera();
         // Called in the render function
         void renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture* srcTexture, uint16_t roomIndex) noexcept;
@@ -64,6 +67,9 @@ namespace Zelda
         // m_scrollX and m_scrollY are manipulated to achieve scrolling
         int m_scrollX;
         int m_scrollY;
+
+        int m_offScrollX;
+        int m_offScrollY;
 
         // m_x and m_y is the initial position of the camera in the tilemap
         int m_x;

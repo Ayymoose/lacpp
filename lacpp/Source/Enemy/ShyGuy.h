@@ -7,7 +7,7 @@ class ShyGuy : public Enemy, public Renderable
 {
 public:
     ShyGuy() = default;
-    ShyGuy(int x, int y);
+    ShyGuy(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

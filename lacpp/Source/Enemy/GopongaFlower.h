@@ -7,7 +7,7 @@ class GopongaFlower : public Enemy, public Renderable
 {
 public:
     GopongaFlower() = default;
-    GopongaFlower(int x, int y);
+    GopongaFlower(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

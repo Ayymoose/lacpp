@@ -33,7 +33,6 @@
 
 void Zelda::Engine::init() noexcept
 {
-
     // TODO: Add monitor VSync + 60Hz check here
 
     // Initialise SDL

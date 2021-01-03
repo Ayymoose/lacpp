@@ -1,7 +1,7 @@
 #include "BuzzBlob.h"
 #include "Common.h"
 
-BuzzBlob::BuzzBlob(int x, int y) : Enemy(x, y)
+BuzzBlob::BuzzBlob(float x, float y) : Enemy(x, y)
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
@@ -20,7 +20,6 @@ BuzzBlob::BuzzBlob(int x, int y) : Enemy(x, y)
 
     m_name = "Buzz Blob";
     m_depth = ZD_DEPTH_ENEMY;
-    Renderer::getInstance().addRenderable(this);
 }
 
 void BuzzBlob::render(SDL_Renderer* renderer) noexcept
@@ -43,8 +42,8 @@ void BuzzBlob::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - static_cast<float>(Camera::getInstance().getY()),
+        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -69,7 +68,6 @@ void BuzzBlob::render(SDL_Renderer* renderer) noexcept
                 m_flip = SDL_RendererFlip::SDL_FLIP_NONE;
             }
         }
-        ////m_animationTimer.reset();
     }
 
     // Cukeman

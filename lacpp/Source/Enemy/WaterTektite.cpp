@@ -1,7 +1,7 @@
 #include "WaterTektite.h"
 #include "Common.h"
 
-WaterTektite::WaterTektite(int x, int y) : Enemy(x, y)
+WaterTektite::WaterTektite(float x, float y) : Enemy(x, y)
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
@@ -20,7 +20,6 @@ WaterTektite::WaterTektite(int x, int y) : Enemy(x, y)
 
     m_name = "Water Tektite";
     m_depth = ZD_DEPTH_ENEMY;
-    Renderer::getInstance().addRenderable(this);
 }
 
 void WaterTektite::render(SDL_Renderer* renderer) noexcept
@@ -43,8 +42,8 @@ void WaterTektite::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - static_cast<float>(Camera::getInstance().getY()),
+        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -61,7 +60,6 @@ void WaterTektite::render(SDL_Renderer* renderer) noexcept
         {
             m_currentFrame = animation.startFrame;
         }
-        //m_animationTimer.reset();
     }
 }
 

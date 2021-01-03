@@ -7,7 +7,7 @@ class HardhatBeetle : public Enemy, public Renderable
 {
 public:
     HardhatBeetle() = default;
-    HardhatBeetle(int x, int y);
+    HardhatBeetle(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

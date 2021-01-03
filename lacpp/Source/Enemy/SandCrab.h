@@ -7,7 +7,7 @@ class SandCrab : public Enemy, public Renderable
 {
 public:
     SandCrab() = default;
-    SandCrab(int x, int y);
+    SandCrab(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;
