@@ -100,7 +100,32 @@ protected:
     int m_depth;
 
     // Animation
-    // TODO: Animating sprites common function
+
+    // Basic horizontal strip animation
+    void basicAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps)
+    {
+        static Timer animationTimer;
+        static int frameCounter = 0;
+        srcRect.x = srcRect.x + ((srcRect.w + gap) * (startFrame + frameCounter));
+        if (animationTimer.elapsed(fps))
+        {
+            frameCounter = (frameCounter + 1) % frameCount;
+        }
+        SDL_ASSERT(SDL_RenderCopy(renderer, texture, &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+    }
+
+    // TODO: When the animation finishes, reverse the animation
+    void reverseAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps)
+    {
+        static Timer animationTimer;
+        static int frameCounter = 0;
+        srcRect.x = srcRect.x + ((srcRect.w + gap) * (startFrame + frameCounter));
+        if (animationTimer.elapsed(fps))
+        {
+            frameCounter = (frameCounter + 1) % frameCount;
+        }
+        SDL_ASSERT(SDL_RenderCopy(renderer, texture, &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+    }
 
     Timer m_animationTimer;
     bool m_animationStart;

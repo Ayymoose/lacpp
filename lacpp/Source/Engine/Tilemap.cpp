@@ -522,19 +522,19 @@ Zelda::Tilemap::Tilemap()
 	ti.roomsAcross = 7;
 	ti.roomsDown = 6;
 	ti.tilemap = Graphic::GFX_DUNGEON_1_TAIL_CAVE;
-	m_tileMaps[TM_TAIL_CAVE] = ti;
+	m_tileMaps[RM_TAIL_CAVE] = ti;
 }
 
-void Zelda::Tilemap::setTileMap(TilemapArea tilemap) noexcept
+void Zelda::Tilemap::setTileMap(RoomName tilemap) noexcept
 {
-	assert(tilemap > TM_NONE && tilemap < TM_COUNT);
+	assert(tilemap > RM_NONE && tilemap < RM_COUNT);
 	m_currentTileMap = m_tileMaps[tilemap];
 }
 
-Zelda::Room Zelda::Tilemap::getRoomTiles(int roomIndex) const noexcept
+Zelda::TileRoom Zelda::Tilemap::getRoomTiles(size_t roomIndex) const noexcept
 {
 	// Check room index is within bounds
-	assert(roomIndex >= 0 && roomIndex < (m_currentTileMap.roomsAcross * m_currentTileMap.roomsDown));
+	assert(roomIndex < (m_currentTileMap.roomsAcross * m_currentTileMap.roomsDown));
 	// Check if there is a room
 	assert(m_currentTileMap.rooms.size());
 

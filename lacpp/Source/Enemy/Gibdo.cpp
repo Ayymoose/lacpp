@@ -19,7 +19,8 @@ Gibdo::Gibdo(int x, int y) : Enemy(x, y)
 
     m_name = "Gibdo";
     m_depth = ZD_DEPTH_ENEMY;
-    Renderer::getInstance().addRenderable(this);
+    
+    //Renderer::getInstance().addRenderable(this);
 }
 
 void Gibdo::render(SDL_Renderer* renderer) noexcept

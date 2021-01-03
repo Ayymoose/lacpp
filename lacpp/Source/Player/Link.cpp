@@ -59,8 +59,8 @@ Link::Link() :
     Renderer::getInstance().addRenderable(this);
     Controller::getInstance().setController(this);
 
-    m_left = 0;
-    m_right = 0;
+    m_upDownSpeedLimiter = 1;
+
 }
 
 float Link::health() const noexcept
@@ -420,6 +420,12 @@ void Link::addPosition(float x, float y) noexcept
     m_positionVector.y += y;
 }
 
+void Link::setPosition(float x, float y) noexcept
+{
+    m_positionVector.x = x;
+    m_positionVector.y = y;
+}
+
 void Link::replenish(float hearts) noexcept
 {
     if (m_health + hearts <= m_healthMax)
@@ -433,8 +439,9 @@ void Link::move() noexcept
 {
     if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
     {
+
+        // TODO: Diagonal speed lock
         m_speedX = m_speed;
-        m_speedY = m_speed * (Keyboard::getInstance()[BUTTON_DOWN] - Keyboard::getInstance()[BUTTON_UP]);
 
         if (!m_dirLockUp && !m_dirLockDown)
         {
@@ -512,7 +519,7 @@ void Link::move() noexcept
     if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
     {
         m_speedX = -m_speed;
-        m_speedY = m_speed * (Keyboard::getInstance()[BUTTON_DOWN] - Keyboard::getInstance()[BUTTON_UP]);
+        m_upDownSpeedLimiter = 0.70710678118654752440084436210485f;
 
         if (!m_dirLockUp && !m_dirLockDown)
         {
@@ -587,8 +594,6 @@ void Link::move() noexcept
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
-        // TODO: Add timer for non-vsync
-        m_speedX = m_speed * (Keyboard::getInstance()[BUTTON_RIGHT] - Keyboard::getInstance()[BUTTON_LEFT]);
         m_speedY = -m_speed;
 
         if (!m_dirLockRight && !m_dirLockLeft)
@@ -665,7 +670,6 @@ void Link::move() noexcept
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
     {
-        m_speedX = m_speed * (Keyboard::getInstance()[BUTTON_RIGHT] - Keyboard::getInstance()[BUTTON_LEFT]);
         m_speedY = m_speed;
 
         if (!m_dirLockRight && !m_dirLockLeft)

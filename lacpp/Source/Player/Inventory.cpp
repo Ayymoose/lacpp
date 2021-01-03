@@ -539,15 +539,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
             if (m_dungeonPosition.x == x && m_dungeonPosition.y == y)
             {
                 srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_CURRENT_LOCATION];
-                /*srcRect.x = srcRect.x + ((2 + srcRect.w) * m_dungeonMapPositionTimer.m_counter);
-                if (m_dungeonMapPositionTimer.elapsed(INSTRUMENT_FPS))
-                {
-                    if (m_dungeonMapPositionTimer.m_counter > 1)
-                    {
-                        m_dungeonMapPositionTimer.m_counter = 0;
-                    }
-                }*/
-                SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+                basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, INSTRUMENT_FPS);
             }
 
         }
@@ -819,15 +811,7 @@ void Inventory::drawInstruments(SDL_Renderer* renderer) noexcept
         case Instrument::THUNDER_DRUM:
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_0 + (i-1)];
             dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_0 + (i-1)];
-            /*srcRect.x = srcRect.x + (srcRect.w * m_instrumentTimer.m_counter);
-            if (m_instrumentTimer.elapsed(INSTRUMENT_FPS))
-            {
-                if (m_instrumentTimer.m_counter > INSTRUMENTS_FRAME)
-                {
-                    m_instrumentTimer.m_counter = 0;
-                }
-            }*/
-            SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+            basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 0, 0, INSTRUMENTS_FRAME, INSTRUMENT_FPS);
             break;
         default:
             // If we don't have the instrument yet

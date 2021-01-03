@@ -45,7 +45,7 @@ namespace Zelda
         void setScrollSpeed(int scrollSpeed) noexcept;
         void render(SDL_Renderer* renderer) noexcept override;
 
-        void setTileMap(TilemapArea tilemap) noexcept;
+        void setTileMap(RoomName tilemap) noexcept;
 
         // Returns true whether a rect is visible in the camera region
         bool visible(SDL_FRect&& rectangle) const noexcept;

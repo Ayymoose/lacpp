@@ -6,6 +6,7 @@
 #include <map>
 
 #include "Resource.h"
+#include "RoomManager.h"
 
 namespace Zelda
 {
@@ -23,26 +24,8 @@ namespace Zelda
    
     constexpr int TILE_MAP_TILES_ACROSS = (TILE_MAP_WIDTH / TILE_WIDTH);
 
-    using Room = std::array<std::array<uint16_t, ROOM_TILES_ACROSS>, ROOM_TILES_DOWN>;
-    using TilemapArray = std::vector<Room>;
-
-    enum TilemapArea
-    {
-        TM_NONE = -1,
-        TM_TAIL_CAVE,
-        TM_BOTTLE_GROTTO,
-        TM_KEY_CAVERN,
-        TM_ANGLER_TUNNEL,
-        TM_CATFISH_MAW,
-        TM_FACE_SHRINE,
-        TM_EAGLE_TOWER,
-        TM_TURTLE_ROCK,
-        TM_WIND_FISH_EGG,
-        TM_KANALET_CASTLE,
-        TM_COLOUR_DUNGEON,
-        TM_OVERWORLD,
-        TM_COUNT
-    };
+    using TileRoom = std::array<std::array<uint16_t, ROOM_TILES_ACROSS>, ROOM_TILES_DOWN>;
+    using TilemapArray = std::vector<TileRoom>;
 
 	typedef struct
 	{
@@ -56,9 +39,9 @@ namespace Zelda
 	{
     public:
 		// Sets the tilemap to use
-        void setTileMap(TilemapArea tilemap) noexcept;
+        void setTileMap(RoomName roomname) noexcept;
 		// Get current room dimensions of tilemap
-		Room getRoomTiles(int roomIndex) const noexcept;
+        TileRoom getRoomTiles(size_t roomIndex) const noexcept;
 
         uint16_t roomsDown() const noexcept;
         uint16_t roomsAcross() const noexcept;
@@ -73,7 +56,7 @@ namespace Zelda
         // Loading tiles when moving to next room
 
         TilemapInformation m_currentTileMap;
-		std::map<TilemapArea, TilemapInformation> m_tileMaps;
+		std::map<RoomName, TilemapInformation> m_tileMaps;
 
     };
 }

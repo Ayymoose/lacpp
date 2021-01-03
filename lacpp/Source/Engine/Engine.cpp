@@ -6,7 +6,7 @@
 #include "Controllable.h"
 #include "Enemy.h"
 
-#include "ArmMimic.h"
+/*#include "ArmMimic.h"
 #include "SeaUrchin.h"
 #include "Beamos.h"
 #include "GopongaFlower.h"
@@ -26,9 +26,9 @@
 #include "SandCrab.h"
 #include "BuzzBlob.h"
 #include "Zombie.h"
-#include "Peahat.h"
+#include "Peahat.h"*/
 
-
+#include "RoomManager.h"
 #include "Tilemap.h"
 
 void Zelda::Engine::init() noexcept
@@ -54,6 +54,8 @@ void Zelda::Engine::init() noexcept
 
     // Initialise the keyboard
     Keyboard::getInstance();
+
+    RoomManager::getInstance();
     
     // Initialise the camera
     Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
@@ -189,6 +191,14 @@ void Zelda::Engine::renderObjects() const noexcept
     SDL_RenderPresent(renderer);
     
     renderedFrames++;
+
+    auto lx = Link::getInstance().position().x;
+    auto ly = Link::getInstance().position().y;
+
+    std::string windowTitle = MAIN_WINDOW_TITLE " - LX: " + std::to_string(lx) + " LY: " + std::to_string(ly);
+    SDL_SetWindowTitle(m_mainWindow.getWindowHandle(), windowTitle.c_str());
+
+
     /* auto elapsedTicks = SDL_GetTicks() - renderStartTime;
     std::cout << "elapsed: " << elapsedTicks << "\n";
 
@@ -205,7 +215,7 @@ void Engine::engineTest()
 {
     // Set camera position
     Camera::getInstance().setPosition(480, 640);
-    Camera::getInstance().setTileMap(TM_TAIL_CAVE);
+    Camera::getInstance().setTileMap(RM_TAIL_CAVE);
 
 
     // Dialogue::getInstance().message("You got your sword! It has your name on the back! Very nice");
@@ -235,8 +245,8 @@ void Engine::engineTest()
     static Leever leever(64, 64);
     static SandCrab sandcrab(64, 64);
     static BuzzBlob buzzblod(64, 64);
-    static Zombie zombie(64, 64);*/
-    static Peahat peahat(64, 64);
+    static Zombie zombie(64, 64);
+    static Peahat peahat(64, 64);*/
 
 
 

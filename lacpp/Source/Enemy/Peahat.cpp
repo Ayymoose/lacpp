@@ -18,7 +18,7 @@ Peahat::Peahat(int x, int y) : Enemy(x, y)
 
     m_name = "Peahat";
     m_depth = ZD_DEPTH_ENEMY;
-    Renderer::getInstance().addRenderable(this);
+    //Renderer::getInstance().addRenderable(this);
 }
 
 void Peahat::render(SDL_Renderer* renderer) noexcept

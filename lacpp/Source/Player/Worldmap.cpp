@@ -251,11 +251,10 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
         dstRect = { 0, 0, m_width, m_height };
         SDL_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
 
-        // TODO: Animate properly
         // Draw current world location marker
         SDL_Rect srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_LOCATION];
         dstRect = { (WORLDMAP_START_X + m_worldX * 8) - 1, (WORLDMAP_START_Y + m_worldY * 8) - 1, 8,8 };
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+        basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, WORLDMAP_LOCATION_FPS);
 
         // Draw the location if we hit upon one
         if (m_worldmapLocation[m_scopeX][m_scopeY].locationType != LT_NONE)

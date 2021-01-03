@@ -144,7 +144,11 @@ public:
  
     void resetAnimation() noexcept;
     void replenish(float hearts) noexcept;
+    
     void addPosition(float x, float y) noexcept;
+    void setPosition(float x, float y) noexcept;
+
+
     float maxHealth() const noexcept;
     void updateState() noexcept;
 
@@ -156,8 +160,8 @@ public:
     //CollisionArea m_collisionArea;
 
     void setDungeonMarkerLocation(int x, int y) noexcept;
-    int m_right;
-    int m_left;
+
+
 private:
     Link();
     float m_healthMax;
@@ -178,6 +182,8 @@ private:
     bool m_dirLockUp;
     bool m_dirLockDown;
     bool m_dirLockLeft;
+
+    float m_upDownSpeedLimiter;
 
     // Weapons
     Boomerang* m_boomerang;

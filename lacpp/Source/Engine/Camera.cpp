@@ -93,7 +93,17 @@ void Camera::render(SDL_Renderer* renderer) noexcept
     int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
     m_nextRoomIndex = roomIndex;
 
-        // Transition the player if they move off the screen
+
+    // Camera scrolling is implemented by using two canvases
+    // One main canvas and a swap canvas
+    // The main canvas is the one we always see on the screen
+    // The swap canvas is the canvas that we see when scrolling to the next area
+    // usually it is hidden offscreen
+
+    // Once scrolling is complete, we reset the main canvas position and player position
+    // This just makes it easier to position solids and enemies within one screen
+
+    // Transition the player if they move off the screen
     if (x < m_scrollX - SCROLL_LEFT_EDGE && !m_scrollLeft)
     {
         // Scroll left
@@ -103,17 +113,10 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         // Pause engine
         Engine::getInstance().pause(true);
 
-        // TODO: Globalise
-        //player->m_currentCollisionMapX--;
         std::cout << "Scrolling left" << std::endl;
 
         m_swapX = -m_width;
         m_swapY = 0;
-
-        // When the player goes offscreen, get the room tiles for the next room they went into
-        // Draw the tilemap for the next room and place it next to the current canvas
-        // Scroll the next room canvas and current room to transition to next room
-        // Once scrolling completed, swap textures around
     }
     else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE && !m_scrollRight)
     {
@@ -124,8 +127,6 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         // Pause engine
         Engine::getInstance().pause(true);
 
-        // TODO: Globalise
-        //player->m_currentCollisionMapX++;
         std::cout << "Scrolling right" << std::endl;
 
         m_swapX = m_width;
@@ -142,8 +143,6 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         // Pause engine
         Engine::getInstance().pause(true);
 
-        // TODO: Globalise
-        //player->m_currentCollisionMapY--;
         m_swapX = 0;
         m_swapY = -m_height;
 
@@ -159,9 +158,6 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         // Pause engine
         Engine::getInstance().pause(true);
 
-        // TODO: Globalise
-        //player->m_currentCollisionMapY++;
-
         m_swapX = 0;
         m_swapY = m_height;
     }
@@ -173,8 +169,6 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             m_scrollX -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
 
-                // At 60 fps, we'll move the player 1 pixels every frame
-                // TODO: Correct player addition vector
             if (m_timerPlayerScroll.elapsed(1.0f / 25.0f))
             {
                 player->addPosition(-PLAYER_SCROLL_SPEED, 0);
@@ -185,10 +179,23 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         else
         {
 
+            // Scrolling left complete
+
             // Update current view
             roomIndex--;
             m_x -= CAMERA_WIDTH;
-            m_screenX -= CAMERA_WIDTH;
+
+
+           // m_screenX -= CAMERA_WIDTH;
+            
+            // Reset initial positions
+            m_screenX = 0;
+            m_screenY = 0;
+            m_scrollX = 0;
+            m_scrollY = 0;
+            // Reset Link position
+            player->setPosition(CAMERA_WIDTH + player->position().x, player->position().y);
+            
 
             // Put swap canvas out of view
             m_swapX = m_width;
@@ -222,7 +229,18 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             roomIndex++;
             m_x += CAMERA_WIDTH;
-            m_screenX += CAMERA_WIDTH;
+
+            //m_screenX += CAMERA_WIDTH;
+            // Reset initial positions
+            m_screenX = 0;
+            m_screenY = 0;
+            m_scrollX = 0;
+            m_scrollY = 0;
+            // Reset Link position
+            //std::cout << "Player X : " << player->position().x << "\n";
+            player->setPosition(player->position().x - CAMERA_WIDTH, player->position().y);
+
+
 
             // Put swap canvas out of view
             m_swapX = m_width;
@@ -263,7 +281,18 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 
             roomIndex += m_tilemap.roomsAcross();
             m_y += CAMERA_HEIGHT;
-            m_screenY += CAMERA_HEIGHT;
+           
+            //m_screenY += CAMERA_HEIGHT;
+
+            // Reset initial positions
+            m_screenX = 0;
+            m_screenY = 0;
+            m_scrollX = 0;
+            m_scrollY = 0;
+            // Reset Link position
+            player->setPosition(player->position().x, player->position().y - CAMERA_HEIGHT);
+
+
 
             // Put swap canvas out of view
             m_swapX = m_width;
@@ -292,7 +321,17 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             roomIndex -= m_tilemap.roomsAcross();
             m_y -= CAMERA_HEIGHT;
-            m_screenY -= CAMERA_HEIGHT;
+            
+            //m_screenY -= CAMERA_HEIGHT;
+
+
+            // Reset initial positions
+            m_screenX = 0;
+            m_screenY = 0;
+            m_scrollX = 0;
+            m_scrollY = 0;
+            // Reset Link position
+            player->setPosition(player->position().x, CAMERA_HEIGHT + player->position().y);
 
             // Put swap canvas out of view
             m_swapX = m_width;
@@ -326,10 +365,17 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 }
 
 // Set the tilemap to use
-void Zelda::Camera::setTileMap(TilemapArea tilemap) noexcept
+void Zelda::Camera::setTileMap(RoomName roomname) noexcept
 {
     // Set the internal map to use
-    m_tilemap.setTileMap(tilemap);
+    m_tilemap.setTileMap(roomname);
+
+    // And room to use
+    RoomManager::getInstance().setRoom(roomname);
+
+    // And load the current room objects
+    int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
+    RoomManager::getInstance().roomOjects(RoomAction::ROOM_LOAD, roomIndex);
 }
 
 bool Camera::visible(SDL_FRect&& rectangle) const noexcept
