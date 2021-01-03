@@ -101,11 +101,17 @@ protected:
         m_positionVector.y = y;
     }
 
+    void basicEnemyRender() noexcept
+    {
+        // TODO: Fill out
+    }
+
     // Generic timer
     Timer m_enemyTimer;
     int m_auxiliaryFrame;
     bool m_moving;
 
+    // TODO: constexpr floatify
     // Enemy frames
     #define ENEMY_SEA_URCHIN_FPS (1.0f / 4.0f)
     #define ENEMY_BEAMOS_FPS (1.0f / 4.0f)

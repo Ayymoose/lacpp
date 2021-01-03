@@ -14,7 +14,7 @@ void ResourceManager::loadGraphics() noexcept
 
 
 
-    
+    m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_ANIMATED_TILES, loadTexture(Zelda::ResourceObjectsPath + "animated_tiles.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_LINK, loadTexture(Zelda::ResourceSpriteLinkPath + "link.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_INVENTORY, loadTexture(Zelda::ResourceObjectsPath + "inventory.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_WEAPON, loadTexture(Zelda::ResourceObjectsPath + "weapons.png", TRANSPARENCY_COLOUR)));

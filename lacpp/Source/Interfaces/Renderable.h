@@ -90,6 +90,20 @@ public:
         m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
     {
     }
+private:
+
+
+    void basicAnimateHelper(SDL_Rect& srcRect, int gap, int startFrame, int frameCount, float fps, bool pause) noexcept
+    {
+        static Timer animationTimer;
+        static int frameCounter = 0;
+        srcRect.x = srcRect.x + ((srcRect.w + gap) * (startFrame + frameCounter));
+        if (animationTimer.elapsed(fps) && !pause)
+        {
+            frameCounter = (frameCounter + 1) % frameCount;
+        }
+    }
+
 protected:
 
     // Default texture to render
@@ -115,20 +129,21 @@ protected:
     // Animation
 
     // Basic horizontal strip animation
-    void basicAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps)
+    void basicAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps, bool pause)
     {
-        static Timer animationTimer;
-        static int frameCounter = 0;
-        srcRect.x = srcRect.x + ((srcRect.w + gap) * (startFrame + frameCounter));
-        if (animationTimer.elapsed(fps))
-        {
-            frameCounter = (frameCounter + 1) % frameCount;
-        }
+        basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
         SDL_ASSERT(SDL_RenderCopy(renderer, texture, &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
+    // Note: Takes an SDL_FRect for dstRect
+    void basicAnimateExF(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect srcRect, SDL_FRect dstRect, int gap, int startFrame, int frameCount, float fps, float orientation, bool pause)
+    {
+        basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
+        SDL_ASSERT(SDL_RenderCopyExF(renderer, texture, &srcRect, &dstRect, orientation, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    }
+
     // TODO: When the animation finishes, reverse the animation
-    void reverseAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps)
+    /*void reverseAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps)
     {
         static Timer animationTimer;
         static int frameCounter = 0;
@@ -138,7 +153,7 @@ protected:
             frameCounter = (frameCounter + 1) % frameCount;
         }
         SDL_ASSERT(SDL_RenderCopy(renderer, texture, &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-    }
+    }*/
 
     Timer m_animationTimer;
     bool m_animationStart;
@@ -149,5 +164,7 @@ protected:
     int m_currentFrame;
     int m_endFrame;
     float m_orientation;
+
+    // TODO: Flip probably isn't needed at all
     SDL_RendererFlip m_flip;
 };

@@ -100,19 +100,7 @@ namespace Zelda
         GFX_FILE_MENU_2,
         GFX_FILE_MENU_3,
         GFX_TEXT,
-
-        // Background Objects
-        GFX_CANDLE,
-        GFX_TORCH_1,
-        GFX_TORCH_2,
-        GFX_SPIKE,
-        GFX_WATER_1,
-        GFX_WATER_2,
-        GFX_WATER_3,
-        GFX_WATER_4,
-        GFX_RAPID,
-        GFX_FLOWER_1,
-        GFX_FLOWER_2,
+        GFX_ANIMATED_TILES,
 
         GFX_WEAPON,
 

@@ -539,7 +539,7 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
             if (m_dungeonPosition.x == x && m_dungeonPosition.y == y)
             {
                 srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_CURRENT_LOCATION];
-                basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, INSTRUMENT_FPS);
+                basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, INSTRUMENT_FPS, Engine::getInstance().paused());
             }
 
         }
@@ -811,7 +811,7 @@ void Inventory::drawInstruments(SDL_Renderer* renderer) noexcept
         case Instrument::THUNDER_DRUM:
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_0 + (i-1)];
             dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_0 + (i-1)];
-            basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 0, 0, INSTRUMENTS_FRAME, INSTRUMENT_FPS);
+            basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 0, 0, INSTRUMENTS_FRAME, INSTRUMENT_FPS, Engine::getInstance().paused());
             break;
         default:
             // If we don't have the instrument yet

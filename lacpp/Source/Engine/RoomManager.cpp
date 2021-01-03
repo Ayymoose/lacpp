@@ -2,6 +2,8 @@
 #include "Peahat.h"
 #include "Gibdo.h"
 #include "Shyguy.h"
+#include "AnimatedObject.h"
+
 
 namespace Zelda
 {
@@ -42,15 +44,43 @@ RoomManager::RoomManager()
         {},
         {},
         {},
+        {
+            new AnimatedObject(AnimatedClass::AN_TORCH,144,32,0,90),
+            new AnimatedObject(AnimatedClass::AN_TORCH,144,80,0,90),
+        },
+        { 
+            new ShyGuy(64,64),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
+        },
+        {
+            new AnimatedObject(AnimatedClass::AN_CANDLE,48,16,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,96,16,0,0),
+        },
         {},
-        { new ShyGuy(64,64)},
         {},
         {},
-        {},
-        {},
-        {},
-        { new Gibdo(32,32), new Gibdo(64,32) },
-        { new Peahat(32,32), new Peahat(64,32), new Peahat(80,80)/* Starting room Tail Cave*/},
+        {
+            new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,80,16,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,80,96,0,0),
+        },
+        { 
+            new Gibdo(32,32), 
+            new Gibdo(64,32),
+            new AnimatedObject(AnimatedClass::AN_TORCH,0,32,0,-90),
+            new AnimatedObject(AnimatedClass::AN_TORCH,0,80,0,-90)
+        },
+        { 
+            new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,128,16,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
+            new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
+            new Peahat(32,32), 
+            new Peahat(64,32), 
+            new Peahat(80,80)/* Starting room Tail Cave*/
+        },
         {},
         {},
         {}
@@ -81,12 +111,10 @@ void RoomManager::roomObjects(RoomAction action, size_t roomIndex) noexcept
         assert(roomObject);
         if (action == RoomAction::ROOM_LOAD)
         {
-            std::cout << "[ROOM_MANAGER] Adding " << roomObject->name() << " at index " << roomIndex << "\n";
             Renderer::getInstance().addRenderable(roomObject);
         }
         else
         {
-            std::cout << "[ROOM_MANAGER] Removing " << roomObject->name() << " at index " << roomIndex << "\n";
             Renderer::getInstance().removeRenderable(roomObject);
         }
     }

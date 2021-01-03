@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Engine\AnimatedObject.cpp" />
     <ClCompile Include="Source\Engine\RoomManager.cpp" />
     <ClCompile Include="Source\Enemy\BuzzBlob.cpp" />
     <ClCompile Include="Source\Enemy\FileSelect.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="Source\Engine\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\AnimatedObject.h" />
     <ClInclude Include="Source\Engine\RoomManager.h" />
     <ClInclude Include="Source\Enemy\BuzzBlob.h" />
     <ClInclude Include="Source\Enemy\FileSelect.h" />
