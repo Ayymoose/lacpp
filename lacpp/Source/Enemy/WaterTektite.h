@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class WaterTektite : public Enemy, public Renderable
+class WaterTektite : public Renderable, public Enemy
 {
 public:
     WaterTektite() : m_strideLength(0), m_strided(0), m_stride(false)

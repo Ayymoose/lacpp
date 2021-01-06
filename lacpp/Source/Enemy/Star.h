@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Star : public Enemy, public Renderable
+class Star : public Renderable, public Enemy
 {
 public:
-    Star() = default;
     Star(float x, float y);
 
     // Renderable overrides

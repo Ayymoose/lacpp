@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class LikeLike : public Enemy, public Renderable
+class LikeLike : public Renderable, public Enemy
 {
 public:
-    LikeLike() = default;
     LikeLike(float x, float y);
 
     // Renderable overrides

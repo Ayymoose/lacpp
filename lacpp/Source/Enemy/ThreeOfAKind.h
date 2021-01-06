@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class ThreeOfAKind : public Enemy, public Renderable
+class ThreeOfAKind :public Renderable, public Enemy
 {
 public:
     ThreeOfAKind() : m_steps(0)

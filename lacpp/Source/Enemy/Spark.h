@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Spark : public Enemy, public Renderable
+class Spark : public Renderable, public Enemy
 {
 public:
-    Spark() = default;
     Spark(float x, float y);
 
     // Renderable overrides

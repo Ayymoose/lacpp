@@ -6,7 +6,6 @@
 class Beamos : public Enemy, public Renderable
 {
 public:
-    Beamos() = default;
     Beamos(float x, float y);
 
     // Renderable overrides

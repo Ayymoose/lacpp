@@ -3,10 +3,10 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class GopongaFlower : public Renderable, public Enemy
+class Pairodd : public Renderable, public Enemy
 {
 public:
-    GopongaFlower(float x, float y);
+    Pairodd(float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;
@@ -18,4 +18,10 @@ public:
     // Enemy overrides
     void attack() noexcept override;
     void die() noexcept override;
+
+private:
+    bool m_idle;
+    SDL_RendererFlip m_flip;
+    bool m_disappear;
+    bool m_appear;
 };

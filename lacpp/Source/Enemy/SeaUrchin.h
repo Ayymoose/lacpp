@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class SeaUrchin : public Enemy, public Renderable
+class SeaUrchin : public Renderable, public Enemy
 {
 public:
-    SeaUrchin() = default;
     SeaUrchin(float x, float y);
 
     // Renderable overrides

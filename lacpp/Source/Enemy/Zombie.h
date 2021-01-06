@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Zombie : public Enemy, public Renderable
+class Zombie : public Renderable, public Enemy
 {
 public:
     Zombie() : m_emerging(false), m_burrowing(false)

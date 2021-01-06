@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class BladeTrap : public Enemy, public Renderable
+class BladeTrap : public Renderable, public Enemy
 {
 public:
     BladeTrap() : m_range(0), m_attack(false), m_moved(false), m_retreat(false), m_retreatSpeed(0)

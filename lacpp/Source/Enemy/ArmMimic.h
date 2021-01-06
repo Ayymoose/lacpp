@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class ArmMimic : public Enemy, public Renderable
+class ArmMimic : public Renderable, public Enemy
 {
 public:
-    ArmMimic() = default;
     ArmMimic(float x, float y);
 
     // Renderable overrides

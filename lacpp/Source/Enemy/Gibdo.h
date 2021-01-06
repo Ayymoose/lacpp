@@ -6,7 +6,6 @@
 class Gibdo : public Renderable, public Enemy
 {
 public:
-    Gibdo() = default;
     Gibdo(float x, float y);
 
     // Renderable overrides

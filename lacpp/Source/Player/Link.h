@@ -211,68 +211,68 @@ private:
     {
         // TODO: Add x and y offset to this
        // x   y startFrame endFrame,    animationFPS,     orientation,  flip
-        {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_LEFT 
-        {96  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_RIGHT
-        {64  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_UP
-        {32  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_DOWN
-        {0   ,16 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_LEFT_SMALL_SHIELD
-        {96  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_RIGHT_SMALL_SHIELD
-        {64  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_UP_SMALL_SHIELD
-        {32  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_DOWN_SMALL_SHIELD
-        {0   ,32 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_LEFT_BIG_SHIELD
-        {96  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_RIGHT_BIG_SHIELD
-        {64  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_UP_BIG_SHIELD
-        {32  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_WALK_DOWN_BIG_SHIELD
-        {0   ,48 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_HOLD_LEFT
-        {96  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_HOLD_RIGHT
-        {64  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_HOLD_UP
-        {32  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_HOLD_DOWN
-        {0   ,64 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_LEFT_SMALL_SHIELD
-        {96  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_RIGHT_SMALL_SHIELD
-        {64  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_UP_SMALL_SHIELD
-        {32  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_DOWN_SMALL_SHIELD
-        {0   ,80 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_LEFT_BIG_SHIELD
-        {96  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_RIGHT_BIG_SHIELD
-        {64  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_UP_BIG_SHIELD
-        {32  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_BLOCK_DOWN_BIG_SHIELD
-        {0   ,96 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_PUSH_LEFT
-        {96  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_PUSH_RIGHT
-        {64  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_PUSH_UP
-        {32  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},    // LINK_PUSH_DOWN
-        {0   ,112 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWIM_LEFT
-        {96  ,112 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWIM_RIGHT
-        {64  ,112 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWIM_UP
-        {32  ,112 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWIM_DOWN
-        {0   ,128 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_PULL_LEFT
-        {96  ,128 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_PULL_RIGHT
-        {64  ,128 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_PULL_UP
-        {32  ,128 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_PULL_DOWN
-        {0   ,144 ,  0,          2,     LINK_FALL_FPS,           0,         SDL_FLIP_NONE},   // LINK_FALL
-        {64  ,144 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_PRIZE_ONE_HAND
-        {80  ,144 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_PRIZE_TWO_HAND
-        {96  ,144 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_SLEEPING
-        {112 ,144 ,  0,          0,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_AWAKE
-        {0   ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_LEFT
-        {96  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_RIGHT
-        {64  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_UP
-        {32  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIG_DOWN
-        {0   ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_LEFT
-        {96  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_RIGHT
-        {64  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_UP
-        {32  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS,    0, SDL_FLIP_NONE},   // LINK_HOOK_DOWN
-        {0   ,192 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_LEFT
-        {48  ,192 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_RIGHT
-        {0   ,208 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_UP
-        {48  ,208 ,  0,          2,     SWORD_ATTACK_FPS,    0,         SDL_FLIP_NONE},   // LINK_SWORD_DOWN
-        {0   ,224 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_LEFT
-        {0   ,240 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_RIGHT
-        {64  ,224 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_UP
-        {64  ,240 ,  0,          3,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_JUMP_DOWN
-        {0   ,256 ,  0,          4,     PLAYER_ANIMATION_FPS,    0,         SDL_FLIP_NONE},   // LINK_DIE
-        {80  ,256 ,  0,          1,     LINK_DROWN_FPS,          0,         SDL_FLIP_NONE},   // LINK_DROWN
-        {96  ,192 ,  0,          1,     LINK_DROWN_FPS,          0,         SDL_FLIP_NONE},   // LINK_PLAY_INSTRUMENT
-        {96  ,208 ,  0,          1,     LINK_DROWN_FPS,          0,         SDL_FLIP_HORIZONTAL},   // LINK_DIVE_LEFT_OR_UP
-        {96  ,208 ,  0,          1,     LINK_DROWN_FPS,          0,         SDL_FLIP_NONE},   // LINK_DIVE_RIGHT_OR_DOWN
+        {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_LEFT 
+        {96  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_RIGHT
+        {64  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_UP
+        {32  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_DOWN
+        {0   ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_LEFT_SMALL_SHIELD
+        {96  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_RIGHT_SMALL_SHIELD
+        {64  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_UP_SMALL_SHIELD
+        {32  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_DOWN_SMALL_SHIELD
+        {0   ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_LEFT_BIG_SHIELD
+        {96  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_RIGHT_BIG_SHIELD
+        {64  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_UP_BIG_SHIELD
+        {32  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_WALK_DOWN_BIG_SHIELD
+        {0   ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_HOLD_LEFT
+        {96  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_HOLD_RIGHT
+        {64  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_HOLD_UP
+        {32  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_HOLD_DOWN
+        {0   ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_LEFT_SMALL_SHIELD
+        {96  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_RIGHT_SMALL_SHIELD
+        {64  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_UP_SMALL_SHIELD
+        {32  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_DOWN_SMALL_SHIELD
+        {0   ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_LEFT_BIG_SHIELD
+        {96  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_RIGHT_BIG_SHIELD
+        {64  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_UP_BIG_SHIELD
+        {32  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_BLOCK_DOWN_BIG_SHIELD
+        {0   ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_PUSH_LEFT
+        {96  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_PUSH_RIGHT
+        {64  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_PUSH_UP
+        {32  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},    // LINK_PUSH_DOWN
+        {0   ,112 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_SWIM_LEFT
+        {96  ,112 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_SWIM_RIGHT
+        {64  ,112 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_SWIM_UP
+        {32  ,112 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_SWIM_DOWN
+        {0   ,128 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_PULL_LEFT
+        {96  ,128 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_PULL_RIGHT
+        {64  ,128 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_PULL_UP
+        {32  ,128 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_PULL_DOWN
+        {0   ,144 ,  0,          2,     LINK_FALL_FPS},   // LINK_FALL
+        {64  ,144 ,  0,          0,     PLAYER_ANIMATION_FPS},   // LINK_PRIZE_ONE_HAND
+        {80  ,144 ,  0,          0,     PLAYER_ANIMATION_FPS},   // LINK_PRIZE_TWO_HAND
+        {96  ,144 ,  0,          0,     PLAYER_ANIMATION_FPS},   // LINK_SLEEPING
+        {112 ,144 ,  0,          0,     PLAYER_ANIMATION_FPS},   // LINK_AWAKE
+        {0   ,160 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_DIG_LEFT
+        {96  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_DIG_RIGHT
+        {64  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_DIG_UP
+        {32  ,160 ,  0,          1,     PLAYER_ANIMATION_FPS},   // LINK_DIG_DOWN
+        {0   ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS},   // LINK_HOOK_LEFT
+        {96  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS},   // LINK_HOOK_RIGHT
+        {64  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS},   // LINK_HOOK_UP
+        {32  ,176 ,  0,          0,     LINK_FLAME_ROD_ANIMATION_FPS},   // LINK_HOOK_DOWN
+        {0   ,192 ,  0,          2,     SWORD_ATTACK_FPS},   // LINK_SWORD_LEFT
+        {48  ,192 ,  0,          2,     SWORD_ATTACK_FPS},   // LINK_SWORD_RIGHT
+        {0   ,208 ,  0,          2,     SWORD_ATTACK_FPS},   // LINK_SWORD_UP
+        {48  ,208 ,  0,          2,     SWORD_ATTACK_FPS},   // LINK_SWORD_DOWN
+        {0   ,224 ,  0,          3,     PLAYER_ANIMATION_FPS},   // LINK_JUMP_LEFT
+        {0   ,240 ,  0,          3,     PLAYER_ANIMATION_FPS},   // LINK_JUMP_RIGHT
+        {64  ,224 ,  0,          3,     PLAYER_ANIMATION_FPS},   // LINK_JUMP_UP
+        {64  ,240 ,  0,          3,     PLAYER_ANIMATION_FPS},   // LINK_JUMP_DOWN
+        {0   ,256 ,  0,          4,     PLAYER_ANIMATION_FPS},   // LINK_DIE
+        {80  ,256 ,  0,          1,     LINK_DROWN_FPS},   // LINK_DROWN
+        {96  ,192 ,  0,          1,     LINK_DROWN_FPS},   // LINK_PLAY_INSTRUMENT
+        {96  ,208 ,  0,          1,     LINK_DROWN_FPS},   // LINK_DIVE_LEFT_OR_UP
+        {96  ,208 ,  0,          1,     LINK_DROWN_FPS},   // LINK_DIVE_RIGHT_OR_DOWN
     };
 
 };

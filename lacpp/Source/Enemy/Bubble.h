@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Bubble : public Enemy, public Renderable
+class Bubble : public Renderable, public Enemy
 {
 public:
-    Bubble() = default;
     Bubble(float x, float y);
 
     // Renderable overrides

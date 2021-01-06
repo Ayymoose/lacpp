@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class HardhatBeetle : public Enemy, public Renderable
+class HardhatBeetle : public Renderable, public Enemy
 {
 public:
-    HardhatBeetle() = default;
     HardhatBeetle(float x, float y);
 
     // Renderable overrides

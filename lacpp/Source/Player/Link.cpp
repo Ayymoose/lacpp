@@ -196,14 +196,11 @@ void Link::render(SDL_Renderer* renderer) noexcept
     // Max frame controlled by the state
     m_endFrame = m_animations[m_state].endFrame;
 
-    // Sprite orientation
-    m_orientation = m_animations[m_state].orientation;
-
     // Select correct animation
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_animations[m_state].flip), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
 
     // Drawing bounding boxes for testing

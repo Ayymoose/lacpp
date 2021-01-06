@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class BuzzBlob : public Enemy, public Renderable
+class BuzzBlob : public Renderable, public Enemy
 {
 public:
     BuzzBlob() : m_bigEyes(false)

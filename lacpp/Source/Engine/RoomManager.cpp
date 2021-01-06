@@ -1,5 +1,5 @@
 #include "RoomManager.h"
-#include "Peahat.h"
+#include "Pairodd.h"
 #include "Gibdo.h"
 #include "Shyguy.h"
 #include "AnimatedObject.h"
@@ -73,18 +73,19 @@ RoomManager::RoomManager()
             new AnimatedObject(AnimatedClass::AN_TORCH,0,80,0,-90)
         },
         { 
+            // Better yet, one allocation with variable arguments of positions
             new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
-            new Peahat(32,32), 
-            new Peahat(64,32), 
-            new Peahat(80,80)/* Starting room Tail Cave*/
+            new Pairodd(80,80)/* Starting room Tail Cave*/
         },
         {},
         {},
         {}
     };
+
+    auto x = sizeof(AnimatedObject);
 
     m_rooms[RM_TAIL_CAVE] = tc;
 }

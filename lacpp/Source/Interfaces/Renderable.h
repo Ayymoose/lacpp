@@ -19,8 +19,6 @@ struct Animation
     int startFrame;        // Start frame in this animation
     int endFrame;          // End frame number for this animation
     float animationFPS;    // Animation rate in FPS
-    float orientation;     // Rotation
-    SDL_RendererFlip flip; // Flip sprite (horizontal or vertical)
 };
 
 class Renderable

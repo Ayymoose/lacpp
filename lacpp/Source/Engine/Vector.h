@@ -67,6 +67,14 @@ namespace Zelda
             return !operator==(other);
         }
 
+        // Distance between two vectors
+        static constexpr float distanceBetween(const Vector& v1, const Vector& v2)
+        {
+            const auto dx = v1.x - v2.x;
+            const auto dy = v1.y - v2.y;
+            return std::sqrt(dx * dx + dy * dy);
+        }
+
         // Cross product of 2 2D vectors
         static constexpr T cross(const Vector& v1, const Vector& v2) noexcept
         {

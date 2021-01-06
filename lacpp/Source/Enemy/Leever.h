@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Leever : public Enemy, public Renderable
+class Leever : public Renderable, public Enemy
 {
 public:
     Leever() : m_emerging(false), m_burrowing(false)

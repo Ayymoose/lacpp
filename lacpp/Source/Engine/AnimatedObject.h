@@ -33,10 +33,21 @@ namespace Zelda
     class AnimatedObject : public Renderable
     {
     public:
+        // TODO: repeatAcross and repeatDown
         AnimatedObject(AnimatedClass animatedClass, int x, int y, int repeatAcross, float orientation);
         
         // Renderable overrides
         void render(SDL_Renderer* renderer) noexcept override;
+
+
+        // Use variadic constructor to take positions (x,y) to construct animated tiles with one new instance 
+        // instead of many
+        // e.g new AnimatedObject(AnimatedClass::AN_CANDLE, 0, {16,16},{32,32},{64,64},{90,90});
+        /*template<typename ...Positions>
+        AnimatedObject(AnimatedClass animatedClass, float orientation, const Positions ...positions) : m_repeatAcross(0), m_positions(positions...)
+        {
+
+        }*/
 
     private:
         int m_repeatAcross;

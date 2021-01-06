@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class IronMask : public Enemy, public Renderable
+class IronMask : public Renderable, public Enemy
 {
 public:
     IronMask() : m_exposed(false), m_steps(0)

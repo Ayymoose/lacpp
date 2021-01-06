@@ -155,10 +155,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Enemy\Pairodd.cpp" />
     <ClCompile Include="Source\Engine\AnimatedObject.cpp" />
     <ClCompile Include="Source\Engine\RoomManager.cpp" />
     <ClCompile Include="Source\Enemy\BuzzBlob.cpp" />
-    <ClCompile Include="Source\Enemy\FileSelect.cpp" />
+    <ClCompile Include="Source\Player\FileSelect.cpp" />
     <ClCompile Include="Source\Enemy\Peahat.cpp" />
     <ClCompile Include="Source\Enemy\SandCrab.cpp" />
     <ClCompile Include="Source\Enemy\Leever.cpp" />
@@ -201,10 +202,11 @@
     <ClCompile Include="Source\Engine\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Enemy\Pairodd.h" />
     <ClInclude Include="Source\Engine\AnimatedObject.h" />
     <ClInclude Include="Source\Engine\RoomManager.h" />
     <ClInclude Include="Source\Enemy\BuzzBlob.h" />
-    <ClInclude Include="Source\Enemy\FileSelect.h" />
+    <ClInclude Include="Source\Player\FileSelect.h" />
     <ClInclude Include="Source\Enemy\Peahat.h" />
     <ClInclude Include="Source\Enemy\SandCrab.h" />
     <ClInclude Include="Source\Enemy\Leever.h" />

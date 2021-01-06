@@ -5,7 +5,7 @@
 
 constexpr int MAX_VACUUMS = 8;
 
-class Vacuum : public Enemy, public Renderable
+class Vacuum : public Renderable, public Enemy
 {
 public:
     Vacuum() : m_vacuums(0) {};

@@ -5,6 +5,9 @@
 
 // Common functionality shared across
 
+namespace Zelda
+{
+
 // Could think of a better name
 inline void toggleItem(bool& toggle, Timer& clock, float time)
 {
@@ -31,4 +34,6 @@ inline int random(int start, int end)
     std::mt19937 gen(rd()); // seed the generator
     std::uniform_int_distribution<> distr(start, end); // define the range
     return distr(gen);
+}
+
 }

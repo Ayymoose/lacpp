@@ -158,9 +158,6 @@
     <ClCompile Include="Source\Player\Worldmap.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy\FileSelect.cpp">
-      <Filter>Source Files\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Engine\Tilemap.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -172,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="Source\Engine\AnimatedObject.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\Pairodd.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\FileSelect.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,9 +337,6 @@
     <ClInclude Include="Source\Player\Worldmap.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy\FileSelect.h">
-      <Filter>Header Files\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Engine\Tilemap.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
@@ -348,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="Source\Engine\AnimatedObject.h">
       <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Pairodd.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\FileSelect.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

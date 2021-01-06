@@ -3,10 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class SandCrab : public Enemy, public Renderable
+class SandCrab : public Renderable, public Enemy
 {
 public:
-    SandCrab() = default;
     SandCrab(float x, float y);
 
     // Renderable overrides
