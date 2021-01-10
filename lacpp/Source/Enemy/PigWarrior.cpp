@@ -1,8 +1,8 @@
-#include "Octorok.h"
+#include "PigWarrior.h"
 #include "Common.h"
 
-Octorok::Octorok(EnemyType enemyType, float x, float y) :
-    Renderable("Octorok", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+PigWarrior::PigWarrior(EnemyType enemyType, float x, float y) :
+    Renderable("Pig Warrior", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_type(enemyType),
     m_steps(0)
@@ -16,10 +16,10 @@ Octorok::Octorok(EnemyType enemyType, float x, float y) :
     m_health = 2;
     m_speed = 0.5f;
 }
-void Octorok::render(SDL_Renderer* renderer) noexcept
+void PigWarrior::render(SDL_Renderer* renderer) noexcept
 {
     // TODO: Render wings if winged octorok and change behaviour when Link close
-    auto animation = m_enemy[ENEMY_OCTOROK];
+    auto animation = m_enemy[ENEMY_PIG_WARRIOR];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;
@@ -61,17 +61,17 @@ void Octorok::render(SDL_Renderer* renderer) noexcept
     }
 }
 
-float Octorok::health() const noexcept
+float PigWarrior::health() const noexcept
 {
     return m_health;
 }
 
-Vector<float> Octorok::position() const noexcept
+Vector<float> PigWarrior::position() const noexcept
 {
     return m_positionVector;
 }
 
-void Octorok::attack() noexcept
+void PigWarrior::attack() noexcept
 {
     // Move's randomly in 4 directions only
 
@@ -133,6 +133,6 @@ void Octorok::attack() noexcept
     }
 }
 
-void Octorok::die() noexcept
+void PigWarrior::die() noexcept
 {
 }

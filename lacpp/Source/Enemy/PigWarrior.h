@@ -3,10 +3,10 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
-class Octorok : public Renderable, public Enemy
+class PigWarrior : public Renderable, public Enemy
 {
 public:
-    Octorok(EnemyType enemyType, float x, float y);
+    PigWarrior(EnemyType enemyType, float x, float y);
 
     // Renderable overrides
     void render(SDL_Renderer* renderer) noexcept override;

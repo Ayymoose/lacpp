@@ -5,8 +5,6 @@ Spark::Spark(float x, float y) :
     Renderable("Spark", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
-    m_direction = Direction::DIRECTION_DOWN;
-
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;

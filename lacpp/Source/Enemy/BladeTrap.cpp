@@ -10,8 +10,6 @@ BladeTrap::BladeTrap(float x, float y) :
     m_moved(0),
     m_retreatSpeed(0)
 {
-    m_direction = Direction::DIRECTION_DOWN;
-
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;

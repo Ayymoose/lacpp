@@ -29,6 +29,7 @@
 #include "BuzzBlob.h"
 #include "Zombie.h"
 #include "Peahat.h"
+#include "PigWarrior.h"
 
 
 namespace Zelda
@@ -104,8 +105,9 @@ RoomManager::RoomManager()
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
-            new Octorok(OctorokType::Basic,80,80),
-            new IronMask(64,64)
+            new Octorok(EnemyType::Basic,80,80),
+            new IronMask(64,64),
+            new PigWarrior(EnemyType::Basic, 48,32)
         },
         {},
         {},

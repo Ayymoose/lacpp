@@ -6,8 +6,6 @@ BuzzBlob::BuzzBlob(float x, float y) :
     Enemy(x, y),
     m_bigEyes(true)
 {
-    m_direction = Direction::DIRECTION_DOWN;
-
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;

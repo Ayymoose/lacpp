@@ -16,7 +16,7 @@ enum EnemySprite
     ENEMY_ARMOS,                // NOT DONE
     ENEMY_BEETLE,               // NOT DONE
     ENEMY_WATER_TEKTITE,
-    ENEMY_BOARBLIN,             // NOT DONE
+    ENEMY_PIG_WARRIOR,         
     ENEMY_BUZZ_BLOB,
     ENEMY_CROW,                 // NOT DONE
     ENEMY_DACTO,                // NOT DONE
@@ -79,6 +79,19 @@ enum EnemySprite
     ENEMY_BOO_BUDDY,            // NOT DONE
     ENEMY_BLAZING_BAT,          // NOT DONE
     ENEMY_COUNT
+};
+
+// Applies to 
+// TODO: Octorok
+// Shrouded Stalfos
+// Moblin
+// Pig Warrior
+// Darknut
+enum class EnemyType
+{
+    Basic,
+    Winged,
+    Armed
 };
 
 // TODO: constexpr floatify
@@ -191,7 +204,7 @@ protected:
         {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_ARMOS 
         {96  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_BEETLE
         {128 ,96,   0,          1,     ENEMY_WATER_TEKTITE_FPS},   // ENEMY_WATER_TEKTITE
-        {32  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_BOARBLIN
+        {0  ,48 ,   0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PIG_WARRIOR
         {96   ,144 ,  0,          1,     ENEMY_BUZZ_BLOB_FPS},     // ENEMY_BUZZ_BLOB
         {96  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_CROW
         {64  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_DACTO
@@ -203,7 +216,7 @@ protected:
         {0   ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MAD_BOMBER
         {96  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MINI_MOLDORM
         {64  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MOBLIN
-        {0  ,0 ,  0,          2,     ENEMY_OCTOROK_FPS},      // ENEMY_OCTOROK
+        {0  ,0 ,  0,          1,     ENEMY_OCTOROK_FPS},      // ENEMY_OCTOROK
         {0   ,144 ,  0,          1,     ENEMY_LEEVER_FPS},         // ENEMY_LEEVER
         {96  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PINCER
         {64  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PIRANHA

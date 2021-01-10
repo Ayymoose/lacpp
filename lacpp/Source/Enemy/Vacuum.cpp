@@ -7,8 +7,6 @@ Vacuum::Vacuum(float x, float y) :
     Enemy(x, y),
     m_vacuums(0)
 {
-    m_direction = Direction::DIRECTION_DOWN;
-
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;
