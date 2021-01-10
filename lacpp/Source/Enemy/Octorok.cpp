@@ -1,10 +1,10 @@
-#include "IronMask.h"
+#include "Octorok.h"
 #include "Common.h"
 
-IronMask::IronMask(float x, float y) : 
-    Renderable("Iron Mask", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+Octorok::Octorok(OctorokType octorokType, float x, float y) :
+    Renderable("Octorok", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
-    m_exposed(false),
+    m_type(octorokType),
     m_steps(0)
 {
     m_direction = Direction::DIRECTION_DOWN;
@@ -13,18 +13,13 @@ IronMask::IronMask(float x, float y) :
     m_width = 16;
     m_height = 16;
 
-    m_health = 5;
-    m_moving = false;
-    m_speed = 1;
-
-    // Set it off in a random direction
-    m_directionVector = { 0, m_speed };
-
+    m_health = 2;
+    m_speed = 0.5f;
 }
-
-void IronMask::render(SDL_Renderer* renderer) noexcept
+void Octorok::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[ENEMY_IRON_MASK];
+    // TODO: Render wings if winged octorok and change behaviour when Link close
+    auto animation = m_enemy[ENEMY_OCTOROK];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;
@@ -66,32 +61,25 @@ void IronMask::render(SDL_Renderer* renderer) noexcept
     }
 }
 
-float IronMask::health() const noexcept
+float Octorok::health() const noexcept
 {
-    // TODO: Return -1 for enemys that can't be killed
     return m_health;
 }
 
-Vector<float> IronMask::position() const noexcept
+Vector<float> Octorok::position() const noexcept
 {
-    return m_positionVector;
+    return Vector<float>();
 }
 
-void IronMask::die() noexcept
-{
-
-
-}
-
-void IronMask::attack() noexcept
+void Octorok::attack() noexcept
 {
     // Move's randomly in 4 directions only
-    
+
     // Basic AI movement
     // Walks in one direction for a random amount of steps
     // Then thinks for a while
     // Then repeats
-    
+
     if (m_enemyTimer.elapsed(0.5f) && !m_moving)
     {
         // Try to change direction
@@ -101,43 +89,27 @@ void IronMask::attack() noexcept
             auto dir = random(0, 3);
             const Direction dirs[4] =
             {
-                Direction::DIRECTION_UP, 
-                Direction::DIRECTION_DOWN, 
-                Direction::DIRECTION_LEFT, 
-                Direction::DIRECTION_RIGHT
+                Direction::DIRECTION_UP, Direction::DIRECTION_DOWN, Direction::DIRECTION_LEFT, Direction::DIRECTION_RIGHT
             };
 
-            if (!m_exposed)
+            switch (dirs[dir])
             {
-                switch (dirs[dir])
-                {
-                case Direction::DIRECTION_DOWN: 
-                    m_auxiliaryFrame = 0; 
-                    m_directionVector = { 0, m_speed };
-                    break;
-                case Direction::DIRECTION_UP: 
-                    m_auxiliaryFrame = 2; 
-                    m_directionVector = { 0, -m_speed };
-                    break;
-                case Direction::DIRECTION_LEFT: 
-                    m_auxiliaryFrame = 4; 
-                    m_directionVector = { -m_speed, 0 };
-                    break;
-                case Direction::DIRECTION_RIGHT: 
-                    m_auxiliaryFrame = 6; 
-                    m_directionVector = { m_speed, 0 };
-                    break;
-                }
-            }
-            else
-            {
-                // TODO: Pick a random direction
-                const Vector<float> dirs[4] =
-                {
-                    {m_speed, 0}, {0, m_speed}, {-m_speed, 0}, {0, -m_speed}
-                };
-                m_directionVector = dirs[dir];
-                m_auxiliaryFrame = 8;
+            case Direction::DIRECTION_DOWN:
+                m_auxiliaryFrame = 0;
+                m_directionVector = { 0, m_speed };
+                break;
+            case Direction::DIRECTION_UP:
+                m_auxiliaryFrame = 2;
+                m_directionVector = { 0, -m_speed };
+                break;
+            case Direction::DIRECTION_LEFT:
+                m_auxiliaryFrame = 4;
+                m_directionVector = { -m_speed, 0 };
+                break;
+            case Direction::DIRECTION_RIGHT:
+                m_auxiliaryFrame = 6;
+                m_directionVector = { m_speed, 0 };
+                break;
             }
             m_moving = true;
         }
@@ -157,4 +129,8 @@ void IronMask::attack() noexcept
             m_moving = false;
         }
     }
+}
+
+void Octorok::die() noexcept
+{
 }

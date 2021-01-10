@@ -1,9 +1,10 @@
 #include "Spark.h"
 #include "Common.h"
 
-Spark::Spark(float x, float y) : Enemy(x, y)
+Spark::Spark(float x, float y) : 
+    Renderable("Spark", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -16,14 +17,11 @@ Spark::Spark(float x, float y) : Enemy(x, y)
 
     // Set it off in a random direction
     m_directionVector = { 0, m_speed };
-
-    m_name = "Spark";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void Spark::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_SPARK)];
+    auto animation = m_enemy[ENEMY_SPARK];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

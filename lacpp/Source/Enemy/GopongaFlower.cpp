@@ -1,8 +1,9 @@
 #include "GopongaFlower.h"
 
-GopongaFlower::GopongaFlower(float x, float y) : Enemy(x, y)
+GopongaFlower::GopongaFlower(float x, float y) : 
+    Renderable("Goponga Flower", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -10,14 +11,11 @@ GopongaFlower::GopongaFlower(float x, float y) : Enemy(x, y)
     m_height = 16;
 
     m_health = 3;
-
-    m_name = "Goponga Flower";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void GopongaFlower::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_GOPONGA_FLOWER)];
+    auto animation = m_enemy[ENEMY_GOPONGA_FLOWER];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

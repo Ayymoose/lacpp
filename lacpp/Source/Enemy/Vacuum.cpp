@@ -1,8 +1,12 @@
 #include "Vacuum.h"
 
-Vacuum::Vacuum(float x, float y) : Enemy(x, y)
+// TODO: Boolean for suck or push Link in/away
+
+Vacuum::Vacuum(float x, float y) : 
+    Renderable("Vacuum", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y),
+    m_vacuums(0)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -11,14 +15,11 @@ Vacuum::Vacuum(float x, float y) : Enemy(x, y)
 
     m_health = 5;
 
-
-    m_name = "Vacuum";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void Vacuum::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_VACUUM)];
+    auto animation = m_enemy[ENEMY_VACUUM];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

@@ -6,9 +6,6 @@
 class IronMask : public Renderable, public Enemy
 {
 public:
-    IronMask() : m_exposed(false), m_steps(0)
-    {
-    }
     IronMask(float x, float y);
 
     // Renderable overrides

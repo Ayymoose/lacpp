@@ -15,7 +15,7 @@ Goomba::Goomba(float x, float y) :
 
 void Goomba::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_GOOMBA)];
+    auto animation = m_enemy[ENEMY_GOOMBA];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

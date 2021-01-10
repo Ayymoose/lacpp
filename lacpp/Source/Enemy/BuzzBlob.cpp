@@ -1,9 +1,11 @@
 #include "BuzzBlob.h"
 #include "Common.h"
 
-BuzzBlob::BuzzBlob(float x, float y) : Enemy(x, y)
+BuzzBlob::BuzzBlob(float x, float y) : 
+    Renderable("Buzz Blob", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y),
+    m_bigEyes(true)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -16,15 +18,12 @@ BuzzBlob::BuzzBlob(float x, float y) : Enemy(x, y)
 
     // Set it off in a random direction
     m_directionVector = { 0, m_speed };
-    m_bigEyes = true;
 
-    m_name = "Buzz Blob";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void BuzzBlob::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_BUZZ_BLOB)];
+    auto animation = m_enemy[ENEMY_BUZZ_BLOB];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

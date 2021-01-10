@@ -1,8 +1,9 @@
 #include "Bubble.h"
 
-Bubble::Bubble(float x, float y) : Enemy(x, y)
+Bubble::Bubble(float x, float y) : 
+    Renderable("Bubble", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -15,14 +16,11 @@ Bubble::Bubble(float x, float y) : Enemy(x, y)
 
     // Set it off in a random direction
     m_directionVector = { 1, 1 };
-
-    m_name = "Bubble";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void Bubble::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_BUBBLE)];
+    auto animation = m_enemy[ENEMY_BUBBLE];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

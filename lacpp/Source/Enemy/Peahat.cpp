@@ -19,7 +19,7 @@ Peahat::Peahat(float x, float y) :
 
 void Peahat::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_PEAHAT)];
+    auto animation = m_enemy[ENEMY_PEAHAT];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

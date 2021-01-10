@@ -1,9 +1,10 @@
 #include "SandCrab.h"
 #include "Common.h"
 
-SandCrab::SandCrab(float x, float y) : Enemy(x, y)
+SandCrab::SandCrab(float x, float y) : 
+    Renderable("Sand Crab", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -17,14 +18,11 @@ SandCrab::SandCrab(float x, float y) : Enemy(x, y)
 
     // Set it off in a random direction
     m_directionVector = { 0, m_speed };
-
-    m_name = "Sand Crab";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void SandCrab::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_SAND_CRAB)];
+    auto animation = m_enemy[ENEMY_SAND_CRAB];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

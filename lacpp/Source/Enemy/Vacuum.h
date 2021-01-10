@@ -8,7 +8,6 @@ constexpr int MAX_VACUUMS = 8;
 class Vacuum : public Renderable, public Enemy
 {
 public:
-    Vacuum() : m_vacuums(0) {};
     Vacuum(float x, float y);
 
     // Renderable overrides

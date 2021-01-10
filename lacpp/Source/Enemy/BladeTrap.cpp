@@ -1,9 +1,15 @@
 #include "BladeTrap.h"
 #include "Link.h"
 
-BladeTrap::BladeTrap(float x, float y) : Enemy(x, y)
+BladeTrap::BladeTrap(float x, float y) : 
+    Renderable("Blade Trap", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y),
+    m_range(0),
+    m_attack(false),
+    m_retreat(false),
+    m_moved(0),
+    m_retreatSpeed(0)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -11,23 +17,15 @@ BladeTrap::BladeTrap(float x, float y) : Enemy(x, y)
     m_height = 16;
 
     m_health = 5;
-
     m_range = m_width * 3;
 
     m_speed = 1.5f;
     m_retreatSpeed = m_speed / 2;
-
-    m_attack = false;
-    m_retreat = false;
-    m_moved = 0;
-
-    m_name = "Blade Trap";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void BladeTrap::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_BLADETRAP)];
+    auto animation = m_enemy[ENEMY_BLADETRAP];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

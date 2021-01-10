@@ -1,9 +1,10 @@
 #include "HardhatBeetle.h"
 #include "Link.h"
 
-HardhatBeetle::HardhatBeetle(float x, float y) : Enemy(x, y)
+HardhatBeetle::HardhatBeetle(float x, float y) : 
+    Renderable("Hardhat Beetle", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -17,13 +18,11 @@ HardhatBeetle::HardhatBeetle(float x, float y) : Enemy(x, y)
     // Set it off in a random direction
     m_directionVector = { 0, m_speed };
 
-    m_name = "Hardhat Beetle";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void HardhatBeetle::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_HARDHAT_BEETLE)];
+    auto animation = m_enemy[ENEMY_HARDHAT_BEETLE];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

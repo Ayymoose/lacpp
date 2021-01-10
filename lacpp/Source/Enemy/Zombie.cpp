@@ -1,9 +1,12 @@
 #include "Zombie.h"
 #include "Common.h"
 
-Zombie::Zombie(float x, float y) : Enemy(x, y)
+Zombie::Zombie(float x, float y) : 
+    Renderable("Zombie", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y),
+    m_emerging(true),
+    m_burrowing(false)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -12,21 +15,15 @@ Zombie::Zombie(float x, float y) : Enemy(x, y)
 
     m_health = 5;
     m_speed = 0.75f;
-
     m_moving = true;
-    m_emerging = true;
-    m_burrowing = false;
 
     // Set it off in a random direction
     m_directionVector = { 0, m_speed };
-
-    m_name = "Zombie";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void Zombie::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_ZOMBIE)];
+    auto animation = m_enemy[ENEMY_ZOMBIE];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

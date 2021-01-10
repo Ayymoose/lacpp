@@ -20,7 +20,7 @@ Gibdo::Gibdo(float x, float y) :
 
 void Gibdo::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_GIBDO)];
+    auto animation = m_enemy[ENEMY_GIBDO];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

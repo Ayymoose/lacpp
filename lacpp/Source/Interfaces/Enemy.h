@@ -28,7 +28,7 @@ enum EnemySprite
     ENEMY_MAD_BOMBER,           // NOT DONE
     ENEMY_MINI_MOLDORM,         // NOT DONE
     ENEMY_MOBLIN,               // NOT DONE
-    ENEMY_OCTOROK,              // NOT DONE
+    ENEMY_OCTOROK,              
     ENEMY_LEEVER,
     ENEMY_PINCER,               // NOT DONE
     ENEMY_PIRANHA,              // NOT DONE
@@ -104,6 +104,7 @@ constexpr float ENEMY_ZOMBIE_FPS(1.0f / 4.0f);
 constexpr float ENEMY_PEAHAT_FPS(1.0f / 16.0f);
 constexpr float ENEMY_PAIRODD_FPS(1.0f / 6.0f);
 constexpr float ENEMY_GOOMBA_FPS(1.0f / 4.0f);
+constexpr float ENEMY_OCTOROK_FPS(1.0f / 4.0f);
 
 class Enemy : public BasicCharacter
 {
@@ -132,6 +133,7 @@ protected:
         // TODO: Fill out
     }
 
+    // Moves in random directions continuously
    /* void basicEnemyMovement() noexcept
     {
         // Move's randomly in 4 directions only
@@ -176,12 +178,14 @@ protected:
         m_positionVector += m_directionVector;
     }*/
 
+    // TODO: Common move function for Moblin, Shrouded Stalfos, Octorok etc
+
     // Generic timer
     Timer m_enemyTimer;
     int m_auxiliaryFrame;
     bool m_moving;
 
-    const Animation m_enemy[EnemySprite::ENEMY_COUNT] =
+    const Animation m_enemy[ENEMY_COUNT] =
     {
          //   x   y      startFrame  endFrame,    animationFPS,    
         {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_ARMOS 
@@ -199,7 +203,7 @@ protected:
         {0   ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MAD_BOMBER
         {96  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MINI_MOLDORM
         {64  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MOBLIN
-        {32  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_OCTOROK
+        {0  ,0 ,  0,          2,     ENEMY_OCTOROK_FPS},      // ENEMY_OCTOROK
         {0   ,144 ,  0,          1,     ENEMY_LEEVER_FPS},         // ENEMY_LEEVER
         {96  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PINCER
         {64  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PIRANHA

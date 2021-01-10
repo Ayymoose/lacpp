@@ -1,9 +1,10 @@
 #include "ArmMimic.h"
 #include "Common.h"
 
-ArmMimic::ArmMimic(float x, float y) : Enemy(x, y)
+ArmMimic::ArmMimic(float x, float y) : 
+    Renderable("Arm Mimic", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -12,14 +13,11 @@ ArmMimic::ArmMimic(float x, float y) : Enemy(x, y)
 
     m_health = 5;
     m_speed = 1;
-
-    m_name = "Arm Mimic";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void ArmMimic::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_ARM_MIMIC)];
+    auto animation = m_enemy[ENEMY_ARM_MIMIC];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

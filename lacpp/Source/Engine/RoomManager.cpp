@@ -1,11 +1,14 @@
 #include "RoomManager.h"
+
+#include "AnimatedObject.h"
+
+// All enemies
 #include "Pairodd.h"
 #include "Gibdo.h"
 #include "Shyguy.h"
-#include "AnimatedObject.h"
-#include "Goomba.h"
-
-/*#include "ArmMimic.h"
+//#include "Goomba.h"
+#include "Octorok.h"
+#include "ArmMimic.h"
 #include "SeaUrchin.h"
 #include "Beamos.h"
 #include "GopongaFlower.h"
@@ -20,12 +23,12 @@
 #include "WaterTektite.h"
 #include "IronMask.h"
 #include "ThreeOfAKind.h"
-#include "Spark.h"
+//#include "Spark.h"
 #include "Leever.h"
 #include "SandCrab.h"
 #include "BuzzBlob.h"
 #include "Zombie.h"
-#include "Peahat.h"*/
+#include "Peahat.h"
 
 
 namespace Zelda
@@ -95,13 +98,14 @@ RoomManager::RoomManager()
             new AnimatedObject(AnimatedClass::AN_TORCH,0,32,0,-90),
             new AnimatedObject(AnimatedClass::AN_TORCH,0,80,0,-90)
         },
-        { 
+        {   /* Starting room Tail Cave*/
             // Better yet, one allocation with variable arguments of positions
             new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
-            new Goomba(80,80)/* Starting room Tail Cave*/
+            new Octorok(OctorokType::Basic,80,80),
+            new IronMask(64,64)
         },
         {},
         {},
@@ -159,7 +163,18 @@ void RoomManager::transitionObjects(size_t roomIndex, int xTransition, int yTran
 
 RoomManager::~RoomManager()
 {
-    // TODO: Free object memory
+    // Free all newed objects in each room
+    for (auto const& [roomName, room] : m_rooms)
+    {
+        for (auto const& roomObjects : room)
+        {
+            for (auto const& roomObject : roomObjects)
+            {
+                delete roomObject;
+            }
+        }
+    }
+    // m_currentRoom is now dangling!
 }
 
 }

@@ -1,9 +1,10 @@
 #include "LikeLike.h"
 #include "Common.h"
 
-LikeLike::LikeLike(float x, float y) : Enemy(x, y)
+LikeLike::LikeLike(float x, float y) : 
+    Renderable("Like Like", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -17,14 +18,12 @@ LikeLike::LikeLike(float x, float y) : Enemy(x, y)
     // Set it off in a random direction
     m_directionVector = { 0, m_speed };
 
-    m_name = "Like Like";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 // Common functionality across all it seems
 void LikeLike::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_LIKE_LIKE)];
+    auto animation = m_enemy[ENEMY_LIKE_LIKE];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

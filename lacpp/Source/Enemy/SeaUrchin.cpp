@@ -1,8 +1,9 @@
 #include "SeaUrchin.h"
 
-SeaUrchin::SeaUrchin(float x, float y) : Enemy(x,y)
+SeaUrchin::SeaUrchin(float x, float y) : 
+    Renderable("Sea Urchin", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
@@ -10,14 +11,11 @@ SeaUrchin::SeaUrchin(float x, float y) : Enemy(x,y)
     m_height = 16;
  
     m_health = 3;
-
-    m_name = "Sea Urchin";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void SeaUrchin::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_SEA_URCHIN)];
+    auto animation = m_enemy[ENEMY_SEA_URCHIN];
     
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;

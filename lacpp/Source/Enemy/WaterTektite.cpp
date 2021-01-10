@@ -1,30 +1,26 @@
 #include "WaterTektite.h"
 #include "Common.h"
 
-WaterTektite::WaterTektite(float x, float y) : Enemy(x, y)
+WaterTektite::WaterTektite(float x, float y) : 
+    Renderable("Water Tektite", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y),
+    m_strideLength(48),
+    m_strided(0),
+    m_stride(false)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
     m_direction = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;
-
     m_health = 5;
-
     m_speed = 1;
-    m_strideLength = 48;
-    m_strided = 0;
-    m_stride = false;
     m_directionVector = { 1,-1 };
-
-    m_name = "Water Tektite";
-    m_depth = ZD_DEPTH_ENEMY;
 }
 
 void WaterTektite::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_WATER_TEKTITE)];
+    auto animation = m_enemy[ENEMY_WATER_TEKTITE];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;
