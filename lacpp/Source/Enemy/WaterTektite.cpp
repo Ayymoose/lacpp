@@ -108,7 +108,6 @@ void WaterTektite::attack() noexcept
             {
                 m_strided = m_strideLength;
             }
-            //m_enemyTimer.reset();
         }
         else
         {
@@ -116,7 +115,6 @@ void WaterTektite::attack() noexcept
             {
                 m_strided = 0;
                 m_stride = false;
-                //m_enemyTimer.reset();
             }
 
         }

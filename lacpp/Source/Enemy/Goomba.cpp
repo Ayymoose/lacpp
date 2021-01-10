@@ -1,30 +1,21 @@
-#include "SandCrab.h"
+#include "Goomba.h"
 #include "Common.h"
 
-SandCrab::SandCrab(float x, float y) : Enemy(x, y)
+Goomba::Goomba(float x, float y) : 
+    Renderable("Goomba", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Enemy(x, y)
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_ENEMY];
-    m_direction = Direction::DIRECTION_DOWN;
-
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;
 
-    m_health = 5;
-    m_speed = 1;
-
-    m_moving = true;
-
-    // Set it off in a random direction
-    m_directionVector = { 0, m_speed };
-
-    m_name = "Sand Crab";
-    m_depth = ZD_DEPTH_ENEMY;
+    m_health = 1;
+    m_speed = 0.5f;
 }
 
-void SandCrab::render(SDL_Renderer* renderer) noexcept
+void Goomba::render(SDL_Renderer* renderer) noexcept
 {
-    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_SAND_CRAB)];
+    auto animation = m_enemy[static_cast<size_t>(EnemySprite::ENEMY_GOOMBA)];
 
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;
@@ -33,7 +24,7 @@ void SandCrab::render(SDL_Renderer* renderer) noexcept
 
     m_srcRect =
     {
-        m_animateXPos + ((m_currentFrame + m_auxiliaryFrame) * m_width),
+        m_animateXPos + (m_currentFrame * m_width),
         m_animateYPos,
         m_width,
         m_height
@@ -42,8 +33,8 @@ void SandCrab::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_positionVector.x - m_xTransition - Camera::getInstance().getX(),
+        m_positionVector.y - m_yTransition - Camera::getInstance().getY(),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -63,29 +54,31 @@ void SandCrab::render(SDL_Renderer* renderer) noexcept
     }
 }
 
-float SandCrab::health() const noexcept
+float Goomba::health() const noexcept
 {
-    // TODO: Return -1 for enemys that can't be killed
     return m_health;
 }
 
-Vector<float> SandCrab::position() const noexcept
+Vector<float> Goomba::position() const noexcept
 {
     return m_positionVector;
 }
 
-void SandCrab::die() noexcept
+void Goomba::attack() noexcept
 {
+    // This enemy doesn't move and doesn't do anything except animate
 
+        // Move's randomly in 4 directions only
+    // Bouncing off objects
+    // Any attempt to move out of the camera will flip it's direction
+    // If pushed out the camera by Link, will reach the edge only
 
-}
+    // Basic AI movement
+    // Every second, if we hit 1/4 then change direction to a new direction
+    // The new direction must not be the same direction and can't be the opposite of the last direction 
 
-void SandCrab::attack() noexcept
-{
-    // Moves in 4 directions only
-    // Moves fast when moving sideways but moves half the speed when up/down
-
-    if (m_enemyTimer.elapsed(0.5f))
+    // BUG: The enemy can still get stuck at the border between the camera edge it seems and "vibrate"
+    if (m_enemyTimer.elapsed(0.25f))
     {
         // Try to change direction
         auto chance = random(1, 3);
@@ -94,7 +87,7 @@ void SandCrab::attack() noexcept
             auto dir = random(0, 3);
             const Vector<float> dirs[4] =
             {
-                {m_speed,0}, {-m_speed, 0}, {0, -m_speed / 2.0f}, {0, m_speed / 2.0f}
+                {m_speed,0}, {-m_speed, 0}, {0, -m_speed}, {0, m_speed}
             };
             m_directionVector = dirs[dir];
         }
@@ -107,4 +100,10 @@ void SandCrab::attack() noexcept
     }
 
     m_positionVector += m_directionVector;
+}
+
+void Goomba::die() noexcept
+{
+    // TODO: If stepped on turn into flat sprite
+
 }

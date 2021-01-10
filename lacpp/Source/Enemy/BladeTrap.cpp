@@ -375,7 +375,6 @@ void BladeTrap::attack() noexcept
             // Start the cooldown period
             // The current problem with the Timer object is that elapsed() will return true immediately on the first call unless reset() 
             // is called as it uses the creation time of the object to compare the time to. Must fix asap
-            ////m_enemyTimer.reset();
         }
         else
         {

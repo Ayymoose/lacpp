@@ -138,7 +138,6 @@ void IronMask::attack() noexcept
             }
             m_moving = true;
         }
-        //m_enemyTimer.reset();
     }
     else if (m_moving)
     {
@@ -148,7 +147,6 @@ void IronMask::attack() noexcept
         {
             m_positionVector += m_directionVector;
             m_steps++;
-            //m_enemyTimer.reset();
         }
         else
         {

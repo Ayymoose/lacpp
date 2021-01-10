@@ -15,14 +15,12 @@ inline void toggleItem(bool& toggle, Timer& clock, float time)
     {
         // Toggle the item in question!
         toggle = true;
-        //clock.reset();
     }
     else
     {
         if (clock.elapsed(time))
         {
             toggle = false;
-            //clock.reset();
         }
     }
 }

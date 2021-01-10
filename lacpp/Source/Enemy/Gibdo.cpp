@@ -11,7 +11,7 @@ Gibdo::Gibdo(float x, float y) :
     m_width = 16;
     m_height = 16;
 
-    m_health = 5;
+    m_health = 6;
     m_speed = 0.5f;
 
     // Set it off in a random direction
@@ -101,7 +101,6 @@ void Gibdo::attack() noexcept
             };
             m_directionVector = dirs[dir];
         }
-        //m_enemyTimer.reset();
     }
 
     // If attempt to move out of view, flip direction

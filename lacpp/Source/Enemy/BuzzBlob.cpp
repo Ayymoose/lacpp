@@ -126,7 +126,6 @@ void BuzzBlob::attack() noexcept
             };
             m_directionVector = dirs[dir];
         }
-        ////m_enemyTimer.reset();
     }
 
     // If attempt to move out of view, flip direction

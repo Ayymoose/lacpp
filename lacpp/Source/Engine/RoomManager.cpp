@@ -3,6 +3,29 @@
 #include "Gibdo.h"
 #include "Shyguy.h"
 #include "AnimatedObject.h"
+#include "Goomba.h"
+
+/*#include "ArmMimic.h"
+#include "SeaUrchin.h"
+#include "Beamos.h"
+#include "GopongaFlower.h"
+#include "Gibdo.h"
+#include "LikeLike.h"
+#include "HardhatBeetle.h"
+#include "Bubble.h"
+#include "Star.h"
+#include "Vacuum.h"
+#include "BladeTrap.h"
+#include "ShyGuy.h"
+#include "WaterTektite.h"
+#include "IronMask.h"
+#include "ThreeOfAKind.h"
+#include "Spark.h"
+#include "Leever.h"
+#include "SandCrab.h"
+#include "BuzzBlob.h"
+#include "Zombie.h"
+#include "Peahat.h"*/
 
 
 namespace Zelda
@@ -78,7 +101,7 @@ RoomManager::RoomManager()
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
-            new Pairodd(80,80)/* Starting room Tail Cave*/
+            new Goomba(80,80)/* Starting room Tail Cave*/
         },
         {},
         {},

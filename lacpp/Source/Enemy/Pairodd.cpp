@@ -5,7 +5,6 @@ Pairodd::Pairodd(float x, float y) :
     Renderable("Pairodd", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_idle(true),
-    m_flip(SDL_RendererFlip::SDL_FLIP_NONE),
     m_disappear(false),
     m_appear(false)
 {

@@ -9,7 +9,6 @@ SeaUrchin::SeaUrchin(float x, float y) : Enemy(x,y)
     m_width = 16;
     m_height = 16;
  
-    m_endFrame = 3;
     m_health = 3;
 
     m_name = "Sea Urchin";

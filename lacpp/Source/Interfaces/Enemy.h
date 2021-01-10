@@ -71,6 +71,7 @@ enum EnemySprite
     ENEMY_STALFOS,              // NOT DONE
     ENEMY_ORB_MONSTER,          // NOT DONE
     ENEMY_PAIRODD,              
+    ENEMY_GOOMBA,
     ENEMY_CAMO_GOBLIN,          // NOT DONE
     ENEMY_BONE_PUTTER,          // NOT DONE
     ENEMY_BATTLE_BAT,           // NOT DONE
@@ -102,7 +103,7 @@ constexpr float ENEMY_BUZZ_BLOB_FPS(1.0f / 6.0f);
 constexpr float ENEMY_ZOMBIE_FPS(1.0f / 4.0f);
 constexpr float ENEMY_PEAHAT_FPS(1.0f / 16.0f);
 constexpr float ENEMY_PAIRODD_FPS(1.0f / 6.0f);
-
+constexpr float ENEMY_GOOMBA_FPS(1.0f / 4.0f);
 
 class Enemy : public BasicCharacter
 {
@@ -125,10 +126,55 @@ protected:
         m_positionVector.y = y;
     }
 
-    void basicEnemyRender() noexcept
+    // Basic enemy animation 1,2,3 -> 1,2,3 -> 1,2,3 ...
+    void basicEnemyAnimate() noexcept
     {
         // TODO: Fill out
     }
+
+   /* void basicEnemyMovement() noexcept
+    {
+        // Move's randomly in 4 directions only
+        // Bouncing off objects
+        // Any attempt to move out of the camera will flip it's direction
+        // If pushed out the camera by Link, will reach the edge only
+
+        // Basic AI movement
+        // Every second, if we hit 1/4 then change direction to a new direction
+        // The new direction must not be the same direction and can't be the opposite of the last direction 
+
+        // BUG: The enemy can still get stuck at the border between the camera edge it seems and "vibrate"
+        static Timer moveTimer;
+        if (moveTimer.elapsed(0.25f))
+        {
+            // Try to change direction
+            auto chance = random(1, 3);
+            if (chance == 2)
+            {
+                auto dir = random(0, 3);
+                const Vector<float> dirs[4] =
+                {
+                    {m_speed,0}, {-m_speed, 0}, {0, -m_speed}, {0, m_speed}
+                };
+                m_directionVector = dirs[dir];
+            }
+        }
+
+        // If attempt to move out of view, flip direction
+        if (!Camera::getInstance().visible(
+            { 
+                m_positionVector.x, 
+                m_positionVector.y, 
+                static_cast<float>(m_width), 
+                static_cast<float>(m_height)
+            }
+        ))
+        {
+            m_directionVector = -m_directionVector;
+        }
+
+        m_positionVector += m_directionVector;
+    }*/
 
     // Generic timer
     Timer m_enemyTimer;
@@ -197,6 +243,7 @@ protected:
         {160 ,80 ,  0,          1,     ENEMY_VACUUM_FPS},          // ENEMY_STALFOS
         {64  ,64 ,  0,          0,     0},                         // ENEMY_ORB_MONSTER
         {0   ,192 ,  0,          3,     ENEMY_PAIRODD_FPS},      // ENEMY_PAIRODD
+        {96   ,176 ,  0,          1,     ENEMY_GOOMBA_FPS},      // ENEMY_GOOMBA
         {0   ,112 ,  0,         1,     ENEMY_SHY_GUY_FPS},         // ENEMY_CAMO_GOBLIN
         {0   ,128 ,  0,         1,     ENEMY_IRON_MASK_FPS},       // ENEMY_BONE_PUTTER
         {128   ,112 ,  0,       3,     ENEMY_THREE_OF_A_KIND_FPS}, // ENEMY_BATTLE_BAT

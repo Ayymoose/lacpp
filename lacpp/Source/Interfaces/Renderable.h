@@ -90,7 +90,8 @@ public:
     }
 private:
 
-
+    // pause is to have the animation keep running or not when the engine is paused
+    // gap is the number of pixels between each sprite in sheet (usually 0 and should be :|)
     void basicAnimateHelper(SDL_Rect& srcRect, int gap, int startFrame, int frameCount, float fps, bool pause) noexcept
     {
         static Timer animationTimer;
@@ -162,7 +163,6 @@ protected:
     int m_currentFrame;
     int m_endFrame;
     float m_orientation;
-
-    // TODO: Flip probably isn't needed at all
     SDL_RendererFlip m_flip;
+
 };

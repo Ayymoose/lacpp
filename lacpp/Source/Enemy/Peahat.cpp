@@ -105,7 +105,6 @@ void Peahat::attack() noexcept
                 m_moving = true;
                 m_risen = 0;
             }
-            //m_enemyTimer.reset();
         }
     }
     else if (m_moving)
@@ -130,7 +129,6 @@ void Peahat::attack() noexcept
                 };
                 m_directionVector = dirs[dir];
             }
-            //m_enemyTimer.reset();
         }
 
         // If attempt to move out of view, flip direction
@@ -162,7 +160,6 @@ void Peahat::attack() noexcept
                 m_coolDown = false;
                 m_risen = 0;
             }
-            //m_enemyTimer.reset();
         }
     }
 
