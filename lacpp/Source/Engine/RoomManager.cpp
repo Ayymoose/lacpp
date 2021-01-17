@@ -31,6 +31,7 @@
 #include "Peahat.h"
 #include "PigWarrior.h"
 #include "Moblin.h"
+#include "Darknut.h"
 
 namespace Zelda
 {
@@ -109,6 +110,7 @@ RoomManager::RoomManager()
             new IronMask(64,64),
             new PigWarrior(EnemyType::Basic, 48,32),
             new Moblin(EnemyType::Basic, 48,32),
+            new Darknut(EnemyType::Basic, 64,64),
         },
         {},
         {},

@@ -20,7 +20,7 @@ enum EnemySprite
     ENEMY_BUZZ_BLOB,
     ENEMY_CROW,                 // NOT DONE
     ENEMY_DACTO,                // NOT DONE
-    ENEMY_DARKNUT,              // NOT DONE
+    ENEMY_DARKNUT,              
     ENEMY_GHINI,                // NOT DONE
     ENEMY_GIANT_GOPONGA_FLOWER, // NOT DONE
     ENEMY_GOPONGA_FLOWER,
@@ -120,6 +120,7 @@ constexpr float ENEMY_GOOMBA_FPS(1.0f / 4.0f);
 constexpr float ENEMY_OCTOROK_FPS(1.0f / 4.0f);
 constexpr float ENEMY_PIG_WARRIOR_FPS(1.0f / 6.0f);
 constexpr float ENEMY_MOBLIN_FPS(1.0f / 6.0f);
+constexpr float ENEMY_DARKNUT_FPS(1.0f / 6.0f);
 
 class Enemy : public BasicCharacter
 {
@@ -210,7 +211,7 @@ protected:
         {96   ,144 ,  0,          1,     ENEMY_BUZZ_BLOB_FPS},     // ENEMY_BUZZ_BLOB
         {96  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_CROW
         {64  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_DACTO
-        {32  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_DARKNUT
+        {0  ,16 ,  0,          1,     ENEMY_DARKNUT_FPS},      // ENEMY_DARKNUT
         {0   ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_GHINI
         {96  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_GIANT_GOPONGA_FLOWER
         {176  ,48 ,  0,          1,     ENEMY_GOPONGA_FLOWER_FPS}, // ENEMY_GOPONGA_FLOWER
