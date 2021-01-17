@@ -34,7 +34,7 @@ enum EnemySprite
     ENEMY_PIRANHA,              // NOT DONE
     ENEMY_POKEY,                // NOT DONE
     ENEMY_SEA_URCHIN,
-    ENEMY_SHROUDED_STALFOS,     // NOT DONE
+    ENEMY_SHROUDED_STALFOS,     
     ENEMY_SPINY_BEETLE,         // NOT DONE
     ENEMY_SWORD_STALFOS,        // NOT DONE
     ENEMY_WINGED_OCTOROK,       // NOT DONE
@@ -121,6 +121,7 @@ constexpr float ENEMY_OCTOROK_FPS(1.0f / 4.0f);
 constexpr float ENEMY_PIG_WARRIOR_FPS(1.0f / 6.0f);
 constexpr float ENEMY_MOBLIN_FPS(1.0f / 6.0f);
 constexpr float ENEMY_DARKNUT_FPS(1.0f / 6.0f);
+constexpr float ENEMY_SHROUDED_STALFOS_FPS(1.0f / 6.0f);
 
 class Enemy : public BasicCharacter
 {
@@ -225,7 +226,7 @@ protected:
         {64  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PIRANHA
         {32  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_POKEY
         {0   ,64 ,  0,          3,     ENEMY_SEA_URCHIN_FPS},      // ENEMY_SEA_URCHIN
-        {96  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_SHROUDED_STALFOS
+        {0  ,208 ,  0,          1,     ENEMY_SHROUDED_STALFOS_FPS},// ENEMY_SHROUDED_STALFOS
         {64  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_SPINY_BEETLE
         {32  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_SWORD_STALFOS
         {0   ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_WINGED_OCTOROK
