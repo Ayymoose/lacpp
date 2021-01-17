@@ -30,7 +30,7 @@
 #include "Zombie.h"
 #include "Peahat.h"
 #include "PigWarrior.h"
-
+#include "Moblin.h"
 
 namespace Zelda
 {
@@ -107,7 +107,8 @@ RoomManager::RoomManager()
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
             new Octorok(EnemyType::Basic,80,80),
             new IronMask(64,64),
-            new PigWarrior(EnemyType::Basic, 48,32)
+            new PigWarrior(EnemyType::Basic, 48,32),
+            new Moblin(EnemyType::Basic, 48,32),
         },
         {},
         {},

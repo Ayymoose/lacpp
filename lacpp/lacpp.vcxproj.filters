@@ -185,6 +185,9 @@
     <ClCompile Include="Source\Enemy\PigWarrior.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy\Moblin.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Player\FlameRod.h">
@@ -371,6 +374,9 @@
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy\PigWarrior.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\Moblin.h">
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

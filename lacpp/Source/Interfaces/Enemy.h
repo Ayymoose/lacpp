@@ -118,6 +118,8 @@ constexpr float ENEMY_PEAHAT_FPS(1.0f / 16.0f);
 constexpr float ENEMY_PAIRODD_FPS(1.0f / 6.0f);
 constexpr float ENEMY_GOOMBA_FPS(1.0f / 4.0f);
 constexpr float ENEMY_OCTOROK_FPS(1.0f / 4.0f);
+constexpr float ENEMY_PIG_WARRIOR_FPS(1.0f / 6.0f);
+constexpr float ENEMY_MOBLIN_FPS(1.0f / 6.0f);
 
 class Enemy : public BasicCharacter
 {
@@ -204,7 +206,7 @@ protected:
         {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_ARMOS 
         {96  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_BEETLE
         {128 ,96,   0,          1,     ENEMY_WATER_TEKTITE_FPS},   // ENEMY_WATER_TEKTITE
-        {0  ,48 ,   0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PIG_WARRIOR
+        {0  ,48 ,   0,          1,     ENEMY_PIG_WARRIOR_FPS},      // ENEMY_PIG_WARRIOR
         {96   ,144 ,  0,          1,     ENEMY_BUZZ_BLOB_FPS},     // ENEMY_BUZZ_BLOB
         {96  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_CROW
         {64  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_DACTO
@@ -215,7 +217,7 @@ protected:
         {144  ,48 ,  0,          1,     ENEMY_LIKE_LIKE_FPS},      // ENEMY_LIKE_LIKE
         {0   ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MAD_BOMBER
         {96  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MINI_MOLDORM
-        {64  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MOBLIN
+        {0  ,32 ,  0,          1,     ENEMY_MOBLIN_FPS},      // ENEMY_MOBLIN
         {0  ,0 ,  0,          1,     ENEMY_OCTOROK_FPS},      // ENEMY_OCTOROK
         {0   ,144 ,  0,          1,     ENEMY_LEEVER_FPS},         // ENEMY_LEEVER
         {96  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PINCER

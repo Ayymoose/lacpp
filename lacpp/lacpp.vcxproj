@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Enemy\Moblin.cpp" />
     <ClCompile Include="Source\Enemy\PigWarrior.cpp" />
     <ClCompile Include="Source\Enemy\Octorok.cpp" />
     <ClCompile Include="Source\Enemy\Goomba.cpp" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Source\Engine\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Enemy\Moblin.h" />
     <ClInclude Include="Source\Enemy\PigWarrior.h" />
     <ClInclude Include="Source\Enemy\Octorok.h" />
     <ClInclude Include="Source\Enemy\Goomba.h" />
