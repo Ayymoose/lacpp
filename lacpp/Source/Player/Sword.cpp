@@ -4,6 +4,9 @@
 #include "ZD_Assert.h"
 #include "Link.h"
 
+namespace Zelda
+{
+
 Sword::Sword()
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
@@ -144,4 +147,6 @@ void Sword::render(SDL_Renderer* renderer) noexcept
 void Sword::setPosition(Vector<float> position)
 {
     m_positionVector = position;
+}
+
 }

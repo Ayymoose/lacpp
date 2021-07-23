@@ -1,6 +1,9 @@
 #include "PigWarrior.h"
 #include "Common.h"
 
+namespace Zelda
+{
+
 PigWarrior::PigWarrior(EnemyType enemyType, float x, float y) :
     Renderable("Pig Warrior", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
@@ -135,4 +138,6 @@ void PigWarrior::attack() noexcept
 
 void PigWarrior::die() noexcept
 {
+}
+
 }

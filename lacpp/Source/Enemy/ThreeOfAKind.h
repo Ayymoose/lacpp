@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class ThreeOfAKind :public Renderable, public Enemy
 {
 public:
@@ -24,3 +27,5 @@ public:
 private:
     int m_steps;
 };
+
+}

@@ -2,7 +2,8 @@
 #include <iostream>
 #include <assert.h>
 
-using namespace Zelda;
+namespace Zelda
+{
 
 Keyboard::Keyboard()
 {
@@ -42,7 +43,7 @@ bool Keyboard::keyPushed(int key) const noexcept
     return m_keyStatePushed[key];
 }
 
-bool Zelda::Keyboard::keyPressed(int key) noexcept
+bool Keyboard::keyPressed(int key) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     // Next round, if the key we recorded pressed was still pressed, return false until it is released
@@ -61,7 +62,7 @@ bool Zelda::Keyboard::keyPressed(int key) noexcept
     }
 }
 
-bool Zelda::Keyboard::keyReleased(int key) noexcept
+bool Keyboard::keyReleased(int key) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     if (m_keyStateReleased[key])
@@ -73,8 +74,10 @@ bool Zelda::Keyboard::keyReleased(int key) noexcept
     return m_keyStateReleased[key];
 }
 
-int Zelda::Keyboard::operator[](int key) noexcept
+int Keyboard::operator[](int key) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     return m_keyStatePushed[key];
+}
+
 }

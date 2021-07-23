@@ -1,6 +1,9 @@
 #include "Beamos.h"
 
-Beamos::Beamos(float x, float y) : 
+namespace Zelda
+{
+
+Beamos::Beamos(float x, float y) :
     Renderable("Beamos", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -71,4 +74,6 @@ void Beamos::attack() noexcept
 void Beamos::die() noexcept
 {
     // This enemy can't die
+}
+
 }

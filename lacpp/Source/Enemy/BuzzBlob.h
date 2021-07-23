@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class BuzzBlob : public Renderable, public Enemy
 {
 public:
@@ -24,3 +27,5 @@ public:
 private:
     bool m_bigEyes;
 };
+
+}

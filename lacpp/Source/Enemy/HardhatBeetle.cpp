@@ -1,7 +1,10 @@
 #include "HardhatBeetle.h"
 #include "Link.h"
 
-HardhatBeetle::HardhatBeetle(float x, float y) : 
+namespace Zelda
+{
+
+HardhatBeetle::HardhatBeetle(float x, float y) :
     Renderable("Hardhat Beetle", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -81,7 +84,7 @@ void HardhatBeetle::attack() noexcept
     // Moves towards Link
     Vector<float> linkPositionVector = Link::getInstance().position();
     m_directionVector = linkPositionVector - m_positionVector;
-    
+
     // Can't remember what this 0.01 was for
     // Ah yes, prevent division by 0 if they are at the same position
     if (m_directionVector.length() > 0.01f)
@@ -89,4 +92,6 @@ void HardhatBeetle::attack() noexcept
         m_directionVector.normalise();
     }
     m_positionVector += m_directionVector * m_speed;
+}
+
 }

@@ -1,7 +1,10 @@
 #include "ThreeOfAKind.h"
 #include "Common.h"
 
-ThreeOfAKind::ThreeOfAKind(float x, float y) : 
+namespace Zelda
+{
+
+ThreeOfAKind::ThreeOfAKind(float x, float y) :
     Renderable("Three Of A Kind", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -131,4 +134,6 @@ void ThreeOfAKind::attack() noexcept
             m_moving = false;
         }
     }
+}
+
 }

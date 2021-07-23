@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 constexpr int MAX_VACUUMS = 8;
 
 class Vacuum : public Renderable, public Enemy
@@ -23,3 +26,5 @@ public:
 private:
     int m_vacuums;
 };
+
+}

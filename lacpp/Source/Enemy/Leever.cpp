@@ -1,7 +1,10 @@
 #include "Leever.h"
 #include "Common.h"
 
-Leever::Leever(float x, float y) : 
+namespace Zelda
+{
+
+Leever::Leever(float x, float y) :
     Renderable("Leever", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_emerging(true),
@@ -89,7 +92,7 @@ void Leever::attack() noexcept
 {
     // Emerges from the ground from a random place and moves towards Link for a while
     // Then burrows back in and appears at a random place again
-    
+
     if (m_emerging)
     {
         // If emerging, we will play the emerging frame for 2 frames
@@ -107,7 +110,7 @@ void Leever::attack() noexcept
             m_burrowing = true;
         }
     }
-    
+
     if (m_burrowing)
     {
         m_auxiliaryFrame = 4;
@@ -143,4 +146,6 @@ void Leever::attack() noexcept
             m_positionVector += m_directionVector * m_speed;
         }
     }
+}
+
 }

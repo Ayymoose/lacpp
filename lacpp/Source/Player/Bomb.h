@@ -19,6 +19,9 @@ constexpr float BOMB_START_TIME = 1.5f;
 constexpr float BOMB_EXPLODE_TIME = 0.1f;
 constexpr float BOMB_ANIMATION_TIME = (1.0f / 12.0f);
 
+namespace Zelda
+{
+
 class Bomb : public Weapon, public CullableChild
 {
 public:
@@ -34,3 +37,5 @@ private:
     bool m_flashBomb;
     int m_flashCount;
 };
+
+}

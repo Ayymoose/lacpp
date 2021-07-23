@@ -1,6 +1,9 @@
 #include "Octorok.h"
 #include "Common.h"
 
+namespace Zelda
+{
+
 Octorok::Octorok(EnemyType enemyType, float x, float y) :
     Renderable("Octorok", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
@@ -135,4 +138,6 @@ void Octorok::attack() noexcept
 
 void Octorok::die() noexcept
 {
+}
+
 }

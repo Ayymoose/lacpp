@@ -1,7 +1,10 @@
 #include "SandCrab.h"
 #include "Common.h"
 
-SandCrab::SandCrab(float x, float y) : 
+namespace Zelda
+{
+
+SandCrab::SandCrab(float x, float y) :
     Renderable("Sand Crab", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -105,4 +108,7 @@ void SandCrab::attack() noexcept
     }
 
     m_positionVector += m_directionVector;
+}
+
+
 }

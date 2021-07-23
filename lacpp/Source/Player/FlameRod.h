@@ -3,6 +3,9 @@
 #include "Weapon.h"
 #include <iostream>
 
+namespace Zelda
+{
+
 class FlameRod : public Weapon
 {
 public:
@@ -19,3 +22,5 @@ private:
     int m_flameRodOrientation;
     bool m_display;
 };
+
+}

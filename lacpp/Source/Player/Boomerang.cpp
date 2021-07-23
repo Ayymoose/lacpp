@@ -4,6 +4,9 @@
 #include "ZD_Assert.h"
 #include "Link.h"
 
+namespace Zelda
+{
+
 Boomerang::Boomerang()
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
@@ -98,5 +101,7 @@ void Boomerang::setPosition(Vector<float> position)
     case Direction::DIRECTION_DOWN: m_positionVector.y += m_height; break;
     case Direction::DIRECTION_UP: m_positionVector.y -= m_height; break;
     }
+
+}
 
 }

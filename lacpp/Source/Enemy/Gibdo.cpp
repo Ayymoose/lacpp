@@ -1,6 +1,9 @@
 #include "Gibdo.h"
 #include "Common.h"
 
+namespace Zelda
+{
+
 Gibdo::Gibdo(float x, float y) :
     Renderable("Gibdo", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
@@ -72,7 +75,7 @@ Vector<float> Gibdo::position() const noexcept
 
 void Gibdo::die() noexcept
 {
-    
+
 
 }
 
@@ -110,4 +113,6 @@ void Gibdo::attack() noexcept
     }
 
     m_positionVector += m_directionVector;
+}
+
 }

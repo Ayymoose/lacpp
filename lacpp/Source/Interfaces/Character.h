@@ -3,9 +3,10 @@
 #include "Vector.h"
 #include "BasicCharacter.h"
 
-using namespace Zelda;
-
 // Defines a base class for which NPC, Boss, enemies inherit from
+
+namespace Zelda
+{
 
 class Character : public BasicCharacter
 {
@@ -23,3 +24,5 @@ protected:
     // Move
     virtual void move() = 0;
 };
+
+}

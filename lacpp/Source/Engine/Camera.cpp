@@ -9,9 +9,10 @@
 #include "Drawing.h"
 
 
-using namespace Zelda;
+namespace Zelda
+{
 
-Camera::Camera() : 
+Camera::Camera() :
     Renderable("Camera", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
     m_scrollX(0),
     m_scrollY(0),
@@ -46,7 +47,7 @@ void Camera::setPosition(int x, int y) noexcept
     m_y = y;
 }
 
-void Zelda::Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture* srcTexture, uint16_t roomIndex) noexcept
+void Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture* srcTexture, uint16_t roomIndex) noexcept
 {
     // Get the room tiles for the current room index
     // Calculate index into room array from co-ordinates
@@ -69,7 +70,7 @@ void Zelda::Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_
             auto srcTileX = TILE_WIDTH * (tileID % TILE_MAP_TILES_ACROSS);
             auto srcTileY = TILE_HEIGHT * (tileID / TILE_MAP_TILES_ACROSS);
 
-            SDL_Rect srcTile = { srcTileX , srcTileY ,TILE_WIDTH, TILE_HEIGHT};
+            SDL_Rect srcTile = { srcTileX , srcTileY ,TILE_WIDTH, TILE_HEIGHT };
             SDL_Rect dstTile = { tileX * TILE_WIDTH, tileY * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
 
             // Paste tile from tilemap
@@ -159,7 +160,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         m_swapY = -m_height;
 
     }
-    else if (y > m_scrollY + CAMERA_HEIGHT - HUD_HEIGHT - SCROLL_DOWN_EDGE  && !m_scrollDown)
+    else if (y > m_scrollY + CAMERA_HEIGHT - HUD_HEIGHT - SCROLL_DOWN_EDGE && !m_scrollDown)
     {
         // -HUD height because its on the bottom
 
@@ -211,16 +212,16 @@ void Camera::render(SDL_Renderer* renderer) noexcept
             m_x -= CAMERA_WIDTH;
 
 
-           // m_screenX -= CAMERA_WIDTH;
-            
-            // Reset initial positions
+            // m_screenX -= CAMERA_WIDTH;
+
+             // Reset initial positions
             m_screenX = 0;
             m_screenY = 0;
             m_scrollX = 0;
             m_scrollY = 0;
             // Reset Link position
             player->setPosition(CAMERA_WIDTH + player->position().x, player->position().y);
-            
+
 
             // Put swap canvas out of view
             m_swapX = m_width;
@@ -324,7 +325,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 
             roomIndex += m_tilemap.roomsAcross();
             m_y += CAMERA_HEIGHT;
-           
+
             //m_screenY += CAMERA_HEIGHT;
 
             // Reset initial positions
@@ -356,7 +357,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
         {
             m_scrollY -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-            
+
             // More hacky code to assure the player is 1 pixel above the HUD
             player->addPosition(0, -0.40625f);
 
@@ -376,7 +377,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 
             roomIndex -= m_tilemap.roomsAcross();
             m_y -= CAMERA_HEIGHT;
-            
+
             //m_screenY -= CAMERA_HEIGHT;
 
 
@@ -408,7 +409,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
     // if roomsDown > 9 then we'll get assertion failure
     int dy = (DUNGEON_MAX_BLOCKS_Y - m_tilemap.roomsDown()) + (roomIndex / m_tilemap.roomsAcross());
 
-    player->setDungeonMarkerLocation(dx,dy);
+    player->setDungeonMarkerLocation(dx, dy);
 
     // Render the main view
     SDL_Rect dstRect = { m_screenX - m_scrollX, m_screenY - m_scrollY, m_width, m_height };
@@ -420,7 +421,7 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 }
 
 // Set the tilemap to use
-void Zelda::Camera::setTileMap(RoomName roomname) noexcept
+void Camera::setTileMap(RoomName roomname) noexcept
 {
     // Set the internal map to use
     m_tilemap.setTileMap(roomname);
@@ -472,17 +473,19 @@ int Camera::getY() const noexcept
     return m_scrollY;
 }
 
-int Zelda::Camera::offScrollX() const noexcept
+int Camera::offScrollX() const noexcept
 {
     return m_offScrollX;
 }
 
-int Zelda::Camera::offScrollY() const noexcept
+int Camera::offScrollY() const noexcept
 {
     return m_offScrollY;
 }
 
-Vector<float> Zelda::Camera::position() const noexcept
+Vector<float> Camera::position() const noexcept
 {
     return Vector<float>(m_scrollX, m_scrollY);
+}
+
 }

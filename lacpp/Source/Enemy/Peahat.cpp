@@ -2,6 +2,9 @@
 #include "Common.h"
 #include "Drawing.h"
 
+namespace Zelda
+{
+
 Peahat::Peahat(float x, float y) :
     Renderable("Peahat", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
@@ -118,9 +121,9 @@ void Peahat::attack() noexcept
                 auto dir = random(0, 7);
                 const Vector<float> dirs[8] =
                 {
-                    {m_speed,0}, 
-                    {-m_speed, 0}, 
-                    {0, -m_speed}, 
+                    {m_speed,0},
+                    {-m_speed, 0},
+                    {0, -m_speed},
                     {0, m_speed},
                     {m_speed,m_speed},
                     {-m_speed, m_speed},
@@ -138,7 +141,7 @@ void Peahat::attack() noexcept
         }
 
         m_positionVector += m_directionVector;
-        
+
         if (m_cooldownTimer.elapsed(8.0f))
         {
             m_coolDown = true;
@@ -162,5 +165,7 @@ void Peahat::attack() noexcept
             }
         }
     }
+
+}
 
 }

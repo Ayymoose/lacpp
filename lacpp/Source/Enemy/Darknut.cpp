@@ -1,6 +1,9 @@
 #include "Darknut.h"
 #include "Common.h"
 
+namespace Zelda
+{
+
 Darknut::Darknut(EnemyType enemyType, float x, float y) :
     Renderable("Darknut", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
@@ -136,4 +139,6 @@ void Darknut::attack() noexcept
 
 void Darknut::die() noexcept
 {
+}
+
 }

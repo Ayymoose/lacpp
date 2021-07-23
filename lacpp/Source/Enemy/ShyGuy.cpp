@@ -1,7 +1,10 @@
 #include "ShyGuy.h"
 #include "Common.h"
 
-ShyGuy::ShyGuy(float x, float y) : 
+namespace Zelda
+{
+
+ShyGuy::ShyGuy(float x, float y) :
     Renderable("Shy Guy", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -118,4 +121,7 @@ void ShyGuy::attack() noexcept
         }
         m_positionVector += m_directionVector * m_speed;
     }
+}
+
+
 }

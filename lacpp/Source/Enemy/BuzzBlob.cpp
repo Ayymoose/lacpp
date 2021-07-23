@@ -1,7 +1,10 @@
 #include "BuzzBlob.h"
 #include "Common.h"
 
-BuzzBlob::BuzzBlob(float x, float y) : 
+namespace Zelda
+{
+
+BuzzBlob::BuzzBlob(float x, float y) :
     Renderable("Buzz Blob", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_bigEyes(true)
@@ -11,7 +14,7 @@ BuzzBlob::BuzzBlob(float x, float y) :
     m_height = 16;
 
     m_health = 5;
-    
+
     m_speed = 0.5f;
 
     // Set it off in a random direction
@@ -45,7 +48,7 @@ void BuzzBlob::render(SDL_Renderer* renderer) noexcept
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect,0 , nullptr, m_flip), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, 0, nullptr, m_flip), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -112,9 +115,9 @@ void BuzzBlob::attack() noexcept
             auto dir = random(0, 7);
             const Vector<float> dirs[8] =
             {
-                {m_speed,0}, 
-                {-m_speed, 0}, 
-                {0, -m_speed}, 
+                {m_speed,0},
+                {-m_speed, 0},
+                {0, -m_speed},
                 {0, m_speed},
                 {m_speed,m_speed},
                 {-m_speed, m_speed},
@@ -132,4 +135,6 @@ void BuzzBlob::attack() noexcept
     }
 
     m_positionVector += m_directionVector;
+}
+
 }

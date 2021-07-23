@@ -1,20 +1,23 @@
 #include "SeaUrchin.h"
 
-SeaUrchin::SeaUrchin(float x, float y) : 
+namespace Zelda
+{
+
+SeaUrchin::SeaUrchin(float x, float y) :
     Renderable("Sea Urchin", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;
- 
+
     m_health = 3;
 }
 
 void SeaUrchin::render(SDL_Renderer* renderer) noexcept
 {
     auto animation = m_enemy[ENEMY_SEA_URCHIN];
-    
+
     m_animateXPos = animation.x;
     m_animateYPos = animation.y;
     m_endFrame = animation.endFrame;
@@ -69,4 +72,6 @@ void SeaUrchin::attack() noexcept
 
 void SeaUrchin::die() noexcept
 {
+}
+
 }

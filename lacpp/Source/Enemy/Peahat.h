@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class Peahat : public Renderable, public Enemy
 {
 public:
@@ -24,3 +27,5 @@ private:
     float m_risen;
     Timer m_cooldownTimer;
 };
+
+}

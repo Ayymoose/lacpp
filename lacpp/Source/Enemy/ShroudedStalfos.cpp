@@ -1,6 +1,9 @@
 #include "ShroudedStalfos.h"
 #include "Common.h"
 
+namespace Zelda
+{
+
 ShroudedStalfos::ShroudedStalfos(EnemyType enemyType, float x, float y) :
     Renderable("Shrouded Stalfos", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
@@ -135,4 +138,6 @@ void ShroudedStalfos::attack() noexcept
 
 void ShroudedStalfos::die() noexcept
 {
+}
+
 }

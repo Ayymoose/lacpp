@@ -1,6 +1,9 @@
 #include "Star.h"
 
-Star::Star(float x, float y) : 
+namespace Zelda
+{
+
+Star::Star(float x, float y) :
     Renderable("Star", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -98,4 +101,6 @@ void Star::attack() noexcept
     }
 
     m_positionVector += m_directionVector * m_speed;
+}
+
 }

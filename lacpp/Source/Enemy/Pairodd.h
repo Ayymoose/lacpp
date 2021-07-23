@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class Pairodd : public Renderable, public Enemy
 {
 public:
@@ -24,3 +27,5 @@ private:
     bool m_disappear;
     bool m_appear;
 };
+
+}

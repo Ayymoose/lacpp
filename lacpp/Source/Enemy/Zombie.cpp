@@ -1,7 +1,10 @@
 #include "Zombie.h"
 #include "Common.h"
 
-Zombie::Zombie(float x, float y) : 
+namespace Zelda
+{
+
+Zombie::Zombie(float x, float y) :
     Renderable("Zombie", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_emerging(true),
@@ -142,4 +145,6 @@ void Zombie::attack() noexcept
             m_positionVector += m_directionVector * m_speed;
         }
     }
+}
+
 }

@@ -1,6 +1,9 @@
 #include "Moblin.h"
 #include "Common.h"
 
+namespace Zelda
+{
+
 Moblin::Moblin(EnemyType enemyType, float x, float y) :
     Renderable("Moblin", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
@@ -135,4 +138,6 @@ void Moblin::attack() noexcept
 
 void Moblin::die() noexcept
 {
+}
+
 }

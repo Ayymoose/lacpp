@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class Leever : public Renderable, public Enemy
 {
 public:
@@ -26,3 +29,5 @@ private:
     bool m_burrowing;
     Timer m_emergeTimer;
 };
+
+}

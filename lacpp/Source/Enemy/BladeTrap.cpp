@@ -1,7 +1,10 @@
 #include "BladeTrap.h"
 #include "Link.h"
 
-BladeTrap::BladeTrap(float x, float y) : 
+namespace Zelda
+{
+
+BladeTrap::BladeTrap(float x, float y) :
     Renderable("Blade Trap", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_range(0),
@@ -84,7 +87,7 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
     SDL_ASSERT(SDL_RenderDrawPoint(renderer, b1.x, b1.y), SDL_ERROR_MESSAGE);
     SDL_ASSERT(SDL_RenderDrawPoint(renderer, b2.x, b2.y), SDL_ERROR_MESSAGE);
     SDL_ASSERT(SDL_RenderDrawPoint(renderer, b3.x, b3.y), SDL_ERROR_MESSAGE);
-    
+
 
     auto linkPositionVector = Link::getInstance().position() - Camera::getInstance().position();
     auto p0 = linkPositionVector;
@@ -104,11 +107,11 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
     SDL_ASSERT(SDL_RenderDrawPoint(renderer, p1.x, p1.y), SDL_ERROR_MESSAGE);
     SDL_ASSERT(SDL_RenderDrawPoint(renderer, p2.x, p2.y), SDL_ERROR_MESSAGE);
     SDL_ASSERT(SDL_RenderDrawPoint(renderer, p3.x, p3.y), SDL_ERROR_MESSAGE);
-    
+
     auto b2b3mid = (b2 + b3) / 2;
     SDL_ASSERT(SDL_RenderDrawPoint(renderer, b2b3mid.x, b2b3mid.y), SDL_ERROR_MESSAGE);
     */
-    
+
     // SDL_RenderDrawLine
 }
 
@@ -135,7 +138,7 @@ void BladeTrap::attack() noexcept
 
     auto b1 = positionVector;
     b1.x += m_width;
-    
+
     auto b2 = positionVector;
     b2.x += m_width;
     b2.y += m_height;
@@ -314,7 +317,7 @@ void BladeTrap::attack() noexcept
                 }
             }
         }
-        else if (pointIsBetweenPoints(false,p1,b0,b3) || pointIsBetweenPoints(false, p2, b0, b3))
+        else if (pointIsBetweenPoints(false, p1, b0, b3) || pointIsBetweenPoints(false, p2, b0, b3))
         {
             // Link is right of the trap with p1 or p2 in view
             if ((p1.x <= b0.x || p2.x <= b0.x))
@@ -400,4 +403,6 @@ void BladeTrap::attack() noexcept
 void BladeTrap::die() noexcept
 {
     // Can't remember if it dies or not
+}
+
 }

@@ -11,14 +11,14 @@ constexpr int MAIN_WINDOW_HEIGHT = 144 * 4;
 
 namespace Zelda
 {
-    class Window
-    {
-    public:
-        Window() : m_mainWindow(nullptr) {};
-        ~Window();
-        void createWindow(const char* title, const int width, const int height) noexcept;
-        SDL_Window* getWindowHandle() const noexcept;
-    private:
-        SDL_Window* m_mainWindow;
-    };
+class Window
+{
+public:
+    Window() : m_mainWindow(nullptr) {};
+    ~Window();
+    void createWindow(const char* title, const int width, const int height) noexcept;
+    SDL_Window* getWindowHandle() const noexcept;
+private:
+    SDL_Window* m_mainWindow;
+};
 }

@@ -1,4 +1,4 @@
-#pragma once
+# pragma once
 
 #include "Vector.h"
 #include "BasicCharacter.h"
@@ -10,34 +10,35 @@
 #include "Engine.h"
 #include "Link.h"
 
+namespace Zelda
+{
+
 enum EnemySprite
 {
     ENEMY_NONE = -1,
     ENEMY_ARMOS,                // NOT DONE
     ENEMY_BEETLE,               // NOT DONE
     ENEMY_WATER_TEKTITE,
-    ENEMY_PIG_WARRIOR,         
+    ENEMY_PIG_WARRIOR,
     ENEMY_BUZZ_BLOB,
     ENEMY_CROW,                 // NOT DONE
     ENEMY_DACTO,                // NOT DONE
-    ENEMY_DARKNUT,              
+    ENEMY_DARKNUT,
     ENEMY_GHINI,                // NOT DONE
     ENEMY_GIANT_GOPONGA_FLOWER, // NOT DONE
     ENEMY_GOPONGA_FLOWER,
     ENEMY_LIKE_LIKE,
     ENEMY_MAD_BOMBER,           // NOT DONE
     ENEMY_MINI_MOLDORM,         // NOT DONE
-    ENEMY_MOBLIN,               // NOT DONE
-    ENEMY_OCTOROK,              
+    ENEMY_MOBLIN,
+    ENEMY_OCTOROK,
     ENEMY_LEEVER,
     ENEMY_PINCER,               // NOT DONE
     ENEMY_PIRANHA,              // NOT DONE
     ENEMY_POKEY,                // NOT DONE
     ENEMY_SEA_URCHIN,
-    ENEMY_SHROUDED_STALFOS,     
+    ENEMY_SHROUDED_STALFOS,
     ENEMY_SPINY_BEETLE,         // NOT DONE
-    ENEMY_SWORD_STALFOS,        // NOT DONE
-    ENEMY_WINGED_OCTOROK,       // NOT DONE
     ENEMY_ZIRRO,                // NOT DONE
     ENEMY_ZOMBIE,
     ENEMY_ZORA,                 // NOT DONE
@@ -61,8 +62,7 @@ enum EnemySprite
     ENEMY_POLS_VOICE,           // NOT DONE
     ENEMY_BALL_AND_CHAIN,       // NOT DONE
     ENEMY_KIRBY,                // NOT DONE
-    ENEMY_RED_BOMBITE,          // NOT DONE
-    ENEMY_GREEN_BOMBITE,        // NOT DONE
+    ENEMY_BOMBITE,              // NOT DONE
     ENEMY_KEESE,                // NOT DONE
     ENEMY_ZOL,                  // NOT DONE
     ENEMY_GEL,                  // NOT DONE
@@ -70,7 +70,7 @@ enum EnemySprite
     ENEMY_MOUTH_VIRE,           // NOT DONE
     ENEMY_STALFOS,              // NOT DONE
     ENEMY_ORB_MONSTER,          // NOT DONE
-    ENEMY_PAIRODD,              
+    ENEMY_PAIRODD,
     ENEMY_GOOMBA,
     ENEMY_CAMO_GOBLIN,          // NOT DONE
     ENEMY_BONE_PUTTER,          // NOT DONE
@@ -94,7 +94,6 @@ enum class EnemyType
     Armed
 };
 
-// TODO: constexpr floatify
 // Enemy frames
 constexpr float ENEMY_SEA_URCHIN_FPS(1.0f / 4.0f);
 constexpr float ENEMY_BEAMOS_FPS(1.0f / 4.0f);
@@ -160,7 +159,7 @@ protected:
 
         // Basic AI movement
         // Every second, if we hit 1/4 then change direction to a new direction
-        // The new direction must not be the same direction and can't be the opposite of the last direction 
+        // The new direction must not be the same direction and can't be the opposite of the last direction
 
         // BUG: The enemy can still get stuck at the border between the camera edge it seems and "vibrate"
         static Timer moveTimer;
@@ -181,10 +180,10 @@ protected:
 
         // If attempt to move out of view, flip direction
         if (!Camera::getInstance().visible(
-            { 
-                m_positionVector.x, 
-                m_positionVector.y, 
-                static_cast<float>(m_width), 
+            {
+                m_positionVector.x,
+                m_positionVector.y,
+                static_cast<float>(m_width),
                 static_cast<float>(m_height)
             }
         ))
@@ -204,73 +203,75 @@ protected:
 
     const Animation m_enemy[ENEMY_COUNT] =
     {
-         //   x   y      startFrame  endFrame,    animationFPS,    
-        {0   ,0,    0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_ARMOS 
-        {96  ,0 ,   0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_BEETLE
-        {128 ,96,   0,          1,     ENEMY_WATER_TEKTITE_FPS},   // ENEMY_WATER_TEKTITE
-        {0  ,48 ,   0,          1,     ENEMY_PIG_WARRIOR_FPS},      // ENEMY_PIG_WARRIOR
-        {96   ,144 ,  0,          1,     ENEMY_BUZZ_BLOB_FPS},     // ENEMY_BUZZ_BLOB
-        {96  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_CROW
-        {64  ,16 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_DACTO
-        {0  ,16 ,  0,          1,     ENEMY_DARKNUT_FPS},      // ENEMY_DARKNUT
-        {0   ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_GHINI
-        {96  ,32 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_GIANT_GOPONGA_FLOWER
-        {176  ,48 ,  0,          1,     ENEMY_GOPONGA_FLOWER_FPS}, // ENEMY_GOPONGA_FLOWER
-        {144  ,48 ,  0,          1,     ENEMY_LIKE_LIKE_FPS},      // ENEMY_LIKE_LIKE
-        {0   ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MAD_BOMBER
-        {96  ,48 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MINI_MOLDORM
-        {0  ,32 ,  0,          1,     ENEMY_MOBLIN_FPS},      // ENEMY_MOBLIN
-        {0  ,0 ,  0,          1,     ENEMY_OCTOROK_FPS},      // ENEMY_OCTOROK
-        {0   ,144 ,  0,          1,     ENEMY_LEEVER_FPS},         // ENEMY_LEEVER
-        {96  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PINCER
-        {64  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_PIRANHA
-        {32  ,64 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_POKEY
-        {0   ,64 ,  0,          3,     ENEMY_SEA_URCHIN_FPS},      // ENEMY_SEA_URCHIN
-        {0  ,208 ,  0,          1,     ENEMY_SHROUDED_STALFOS_FPS},// ENEMY_SHROUDED_STALFOS
-        {64  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_SPINY_BEETLE
-        {32  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_SWORD_STALFOS
-        {0   ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_WINGED_OCTOROK
-        {96  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_ZIRRO
-        {0  ,160 ,  0,          1,     ENEMY_ZOMBIE_FPS},          // ENEMY_ZOMBIE
-        {32  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_ZORA
-        {80  ,64 ,  0,          7,     ENEMY_BEAMOS_FPS},          // ENEMY_BEAMOS
-        {0   ,80 ,  0,          1,     ENEMY_GIBDO_FPS},           // ENEMY_GIBDO
-        {32  ,80 ,  0,          1,     ENEMY_HARDHAT_BEETLE_FPS},  // ENEMY_HARDHAT_BEETLE
-        {64  ,80 ,  0,          1,     ENEMY_BUBBLE_FPS},          // ENEMY_BUBBLE
-        {96  ,80 ,  0,          3,     ENEMY_STAR_FPS},            // ENEMY_STAR
-        {160 ,80 ,  0,          1,     ENEMY_VACUUM_FPS},          // ENEMY_VACUUM
-        {64  ,64 ,  0,          0,     0},                         // ENEMY_BLADETRAP
-        {0   ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_ARM_MIMIC
-        {0   ,112 ,  0,         1,     ENEMY_SHY_GUY_FPS},         // ENEMY_SHY_GUY
-        {0   ,128 ,  0,         1,     ENEMY_IRON_MASK_FPS},       // ENEMY_IRON_MASK
-        {128   ,112 ,  0,       3,     ENEMY_THREE_OF_A_KIND_FPS}, // ENEMY_THREE_OF_A_KIND
-        {160   ,96 ,  0,          1,     ENEMY_SPARK_FPS},         // ENEMY_SPARK
-        {160   ,128 ,  0,          1,     ENEMY_SAND_CRAB_FPS},    // ENEMY_SANDCRAB
-        {96   ,160 ,  0,          1,     ENEMY_PEAHAT_FPS},         // ENEMY_PEAHAT
+        //   x   y      startFrame  endFrame,    animationFPS,    
+            {0   ,0,    0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_ARMOS 
+            {96  ,0 ,   0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_BEETLE
+            {128 ,96,   0,          1,           ENEMY_WATER_TEKTITE_FPS},       // ENEMY_WATER_TEKTITE
+            {0   ,48 ,  0,          1,           ENEMY_PIG_WARRIOR_FPS},         // ENEMY_PIG_WARRIOR
+            {96  ,144 , 0,          1,           ENEMY_BUZZ_BLOB_FPS},           // ENEMY_BUZZ_BLOB
+            {96  ,16 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_CROW
+            {64  ,16 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_DACTO
+            {0   ,16 ,  0,          1,           ENEMY_DARKNUT_FPS},             // ENEMY_DARKNUT
+            {0   ,32 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_GHINI
+            {96  ,32 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_GIANT_GOPONGA_FLOWER
+            {176 ,48 ,  0,          1,           ENEMY_GOPONGA_FLOWER_FPS},      // ENEMY_GOPONGA_FLOWER
+            {144 ,48 ,  0,          1,           ENEMY_LIKE_LIKE_FPS},           // ENEMY_LIKE_LIKE
+            {0   ,48 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_MAD_BOMBER
+            {96  ,48 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_MINI_MOLDORM
+            {0   ,32 ,  0,          1,           ENEMY_MOBLIN_FPS},              // ENEMY_MOBLIN
+            {0   ,0 ,   0,          1,           ENEMY_OCTOROK_FPS},             // ENEMY_OCTOROK
+            {0   ,144 , 0,          1,           ENEMY_LEEVER_FPS},              // ENEMY_LEEVER
+            {96  ,64 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_PINCER
+            {64  ,64 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_PIRANHA
+            {32  ,64 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_POKEY
+            {0   ,64 ,  0,          3,           ENEMY_SEA_URCHIN_FPS},          // ENEMY_SEA_URCHIN
+            {0   ,208 , 0,          1,           ENEMY_SHROUDED_STALFOS_FPS},    // ENEMY_SHROUDED_STALFOS
+            {64  ,80 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_SPINY_BEETLE
+            {32  ,80 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_SWORD_STALFOS
+            {0   ,96 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_WINGED_OCTOROK
+            {96  ,96 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_ZIRRO
+            {0   ,160 , 0,          1,           ENEMY_ZOMBIE_FPS},              // ENEMY_ZOMBIE
+            {32  ,96 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_ZORA
+            {80  ,64 ,  0,          7,           ENEMY_BEAMOS_FPS},              // ENEMY_BEAMOS
+            {0   ,80 ,  0,          1,           ENEMY_GIBDO_FPS},               // ENEMY_GIBDO
+            {32  ,80 ,  0,          1,           ENEMY_HARDHAT_BEETLE_FPS},      // ENEMY_HARDHAT_BEETLE
+            {64  ,80 ,  0,          1,           ENEMY_BUBBLE_FPS},              // ENEMY_BUBBLE
+            {96  ,80 ,  0,          3,           ENEMY_STAR_FPS},                // ENEMY_STAR
+            {160 ,80 ,  0,          1,           ENEMY_VACUUM_FPS},              // ENEMY_VACUUM
+            {64  ,64 ,  0,          0,           0},                             // ENEMY_BLADETRAP
+            {0   ,96 ,  0,          1,           PLAYER_ANIMATION_FPS},          // ENEMY_ARM_MIMIC
+            {0   ,112 , 0,          1,           ENEMY_SHY_GUY_FPS},             // ENEMY_SHY_GUY
+            {0   ,128 , 0,          1,           ENEMY_IRON_MASK_FPS},           // ENEMY_IRON_MASK
+            {128 ,112 , 0,          3,           ENEMY_THREE_OF_A_KIND_FPS},     // ENEMY_THREE_OF_A_KIND
+            {160 ,96 ,  0,          1,           ENEMY_SPARK_FPS},               // ENEMY_SPARK
+            {160 ,128 , 0,          1,           ENEMY_SAND_CRAB_FPS},           // ENEMY_SANDCRAB
+            {96  ,160 , 0,          1,           ENEMY_PEAHAT_FPS},              // ENEMY_PEAHAT
 
-        {0   ,64 ,  0,          3,     ENEMY_SEA_URCHIN_FPS},      // ENEMY_ROPE
-        {96  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_MONKEY
-        {64  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_TEKTIKE
-        {32  ,80 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_POLS_VOICE
-        {0   ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_BALL_AND_CHAIN
-        {96  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_KIRBY
-        {0  ,160 ,  0,          1,     ENEMY_ZOMBIE_FPS},          // ENEMY_RED_BOMBITE
-        {32  ,96 ,  0,          1,     PLAYER_ANIMATION_FPS},      // ENEMY_GREEN_BOMBITE
-        {80  ,64 ,  0,          7,     ENEMY_BEAMOS_FPS},          // ENEMY_KEESE
-        {0   ,80 ,  0,          1,     ENEMY_GIBDO_FPS},           // ENEMY_ZOL
-        {32  ,80 ,  0,          1,     ENEMY_HARDHAT_BEETLE_FPS},  // ENEMY_GEL
-        {64  ,80 ,  0,          1,     ENEMY_BUBBLE_FPS},          // ENEMY_WIZZROBE
-        {96  ,80 ,  0,          3,     ENEMY_STAR_FPS},            // ENEMY_MOUTH_VIRE
-        {160 ,80 ,  0,          1,     ENEMY_VACUUM_FPS},          // ENEMY_STALFOS
-        {64  ,64 ,  0,          0,     0},                         // ENEMY_ORB_MONSTER
-        {0   ,192 ,  0,          3,     ENEMY_PAIRODD_FPS},      // ENEMY_PAIRODD
-        {96   ,176 ,  0,          1,     ENEMY_GOOMBA_FPS},      // ENEMY_GOOMBA
-        {0   ,112 ,  0,         1,     ENEMY_SHY_GUY_FPS},         // ENEMY_CAMO_GOBLIN
-        {0   ,128 ,  0,         1,     ENEMY_IRON_MASK_FPS},       // ENEMY_BONE_PUTTER
-        {128   ,112 ,  0,       3,     ENEMY_THREE_OF_A_KIND_FPS}, // ENEMY_BATTLE_BAT
-        {160   ,96 ,  0,          1,     ENEMY_SPARK_FPS},         // ENEMY_SPIKED_BEETLE
-        {160   ,128 ,  0,          1,     ENEMY_SAND_CRAB_FPS},    // ENEMY_BOO_BUDDY
-        {96   ,160 ,  0,          1,     ENEMY_PEAHAT_FPS}         // ENEMY_BLAZING_BAT
+            {0   ,64 ,  0,          3,           ENEMY_SEA_URCHIN_FPS},         // ENEMY_ROPE
+            {96  ,80 ,  0,          1,           PLAYER_ANIMATION_FPS},         // ENEMY_MONKEY
+            {64  ,80 ,  0,          1,           PLAYER_ANIMATION_FPS},         // ENEMY_TEKTIKE
+            {32  ,80 ,  0,          1,           PLAYER_ANIMATION_FPS},         // ENEMY_POLS_VOICE
+            {0   ,96 ,  0,          1,           PLAYER_ANIMATION_FPS},         // ENEMY_BALL_AND_CHAIN
+            {96  ,96 ,  0,          1,           PLAYER_ANIMATION_FPS},         // ENEMY_KIRBY
+            {0   ,160 , 0,          1,           ENEMY_ZOMBIE_FPS},             // ENEMY_RED_BOMBITE
+            {32  ,96 ,  0,          1,           PLAYER_ANIMATION_FPS},         // ENEMY_GREEN_BOMBITE
+            {80  ,64 ,  0,          7,           ENEMY_BEAMOS_FPS},             // ENEMY_KEESE
+            {0   ,80 ,  0,          1,           ENEMY_GIBDO_FPS},              // ENEMY_ZOL
+            {32  ,80 ,  0,          1,           ENEMY_HARDHAT_BEETLE_FPS},     // ENEMY_GEL
+            {64  ,80 ,  0,          1,           ENEMY_BUBBLE_FPS},             // ENEMY_WIZZROBE
+            {96  ,80 ,  0,          3,           ENEMY_STAR_FPS},               // ENEMY_MOUTH_VIRE
+            {160 ,80 ,  0,          1,           ENEMY_VACUUM_FPS},             // ENEMY_STALFOS
+            {64  ,64 ,  0,          0,           0},                            // ENEMY_ORB_MONSTER
+            {0   ,192 , 0,          3,           ENEMY_PAIRODD_FPS},            // ENEMY_PAIRODD
+            {96  ,176 , 0,          1,           ENEMY_GOOMBA_FPS},             // ENEMY_GOOMBA
+            {0   ,112 , 0,          1,           ENEMY_SHY_GUY_FPS},            // ENEMY_CAMO_GOBLIN
+            {0   ,128 , 0,          1,           ENEMY_IRON_MASK_FPS},          // ENEMY_BONE_PUTTER
+            {128 ,112 , 0,          3,           ENEMY_THREE_OF_A_KIND_FPS},    // ENEMY_BATTLE_BAT
+            //{160 ,96 ,  0,          1,           ENEMY_SPARK_FPS},              // ENEMY_SPIKED_BEETLE
+            //{160 ,128 , 0,          1,           ENEMY_SAND_CRAB_FPS},          // ENEMY_BOO_BUDDY
+            //{96  ,160 , 0,          1,           ENEMY_PEAHAT_FPS}              // ENEMY_BLAZING_BAT
     };
 
 };
+
+}

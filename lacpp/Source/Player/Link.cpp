@@ -9,8 +9,10 @@
 #include "ZD_Assert.h"
 #include "Keyboard.h"
 #include "Engine.h"
-
 #include <set>
+
+namespace Zelda
+{
 
 void Link::setDungeonMarkerLocation(int x, int y) noexcept
 {
@@ -1214,4 +1216,6 @@ void Link::animate()
             m_animationComplete = false;
         }
     }
+}
+
 }

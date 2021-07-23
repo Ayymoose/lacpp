@@ -1,7 +1,10 @@
 #include "Goomba.h"
 #include "Common.h"
 
-Goomba::Goomba(float x, float y) : 
+namespace Zelda
+{
+
+Goomba::Goomba(float x, float y) :
     Renderable("Goomba", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -105,5 +108,7 @@ void Goomba::attack() noexcept
 void Goomba::die() noexcept
 {
     // TODO: If stepped on turn into flat sprite
+
+}
 
 }

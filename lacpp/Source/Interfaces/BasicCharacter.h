@@ -3,7 +3,8 @@
 #include "Vector.h"
 #include "Depth.h"
 
-using namespace Zelda;
+namespace Zelda
+{
 
 enum class Direction
 {
@@ -39,3 +40,5 @@ protected:
     // Direction vector
     Vector<float> m_directionVector;
 };
+
+}

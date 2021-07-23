@@ -1,6 +1,9 @@
 #include "Pairodd.h"
 #include "Common.h"
 
+namespace Zelda
+{
+
 Pairodd::Pairodd(float x, float y) :
     Renderable("Pairodd", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
@@ -41,7 +44,7 @@ void Pairodd::render(SDL_Renderer* renderer) noexcept
     };
 
 
-    
+
     // Draw the second part of the vanish
     if ((!m_idle && m_currentFrame == 2) || (m_appear == true && m_currentFrame == 2))
     {
@@ -148,4 +151,6 @@ void Pairodd::attack() noexcept
 
 void Pairodd::die() noexcept
 {
+}
+
 }

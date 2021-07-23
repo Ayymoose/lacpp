@@ -4,6 +4,9 @@
 #include "ZD_Assert.h"
 #include "Link.h"
 
+namespace Zelda
+{
+
 FlameRod::FlameRod()
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
@@ -53,7 +56,7 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
 
     // The flame rod
     if (m_display)
-    SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
 
     // Animate the flame rod
@@ -81,7 +84,7 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
             m_flameRodPosition.y -= m_height;
             m_flameRodPosition.x -= m_width;
             break;
-        }      
+        }
     }
     else if (m_currentFrame > 1)
     {
@@ -91,7 +94,7 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
 
     // Throw the flame
     m_positionVector += m_dirVec;
-    
+
     // TODO: How to make it that the flamerod stays when the flame goes out?
     // TODO: Use player position for offset
 }
@@ -145,5 +148,7 @@ void FlameRod::setPosition(Vector<float> position)
         m_flameRodPosition.x += m_width;
         break;
     }
+
+}
 
 }

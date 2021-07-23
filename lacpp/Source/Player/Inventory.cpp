@@ -11,7 +11,8 @@
 #include "Engine.h"
 #include "Common.h"
 
-using namespace Zelda;
+namespace Zelda
+{
 
 Inventory::Inventory() : 
     Renderable("Inventory", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, INVENTORY_WIDTH, INVENTORY_HEIGHT), ZD_DEPTH_INVENTORY),
@@ -351,7 +352,7 @@ WEAPON Inventory::weaponB() const noexcept
     return m_weaponB;
 }
 
-void Zelda::Inventory::setDungeonLocationMarker(int x, int y) noexcept
+void Inventory::setDungeonLocationMarker(int x, int y) noexcept
 {
     assert(x < DUNGEON_MAX_BLOCKS_X && x >= 0 && y >= 0 && y < DUNGEON_MAX_BLOCKS_Y);
     m_dungeonPosition.x = x;
@@ -1283,4 +1284,6 @@ void Inventory::drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture,
     case WPN_FLAME_ROD:
         break;
     }
+}
+
 }

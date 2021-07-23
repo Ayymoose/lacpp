@@ -3,6 +3,10 @@
 #include "Weapon.h"
 #include <iostream>
 
+
+namespace Zelda
+{
+
 constexpr float BOOMERANG_ROTATION_FPS = (1.0f / 12.0f);
 
 class Boomerang : public Weapon
@@ -19,3 +23,5 @@ private:
     int m_speed;
 
 };
+
+}

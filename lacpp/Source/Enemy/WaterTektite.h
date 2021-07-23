@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class WaterTektite : public Renderable, public Enemy
 {
 public:
@@ -27,3 +30,5 @@ private:
     float m_strided;
     bool m_stride;
 };
+
+}

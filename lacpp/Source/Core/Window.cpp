@@ -8,6 +8,9 @@
 #include "Link.h"
 #include "ZD_Assert.h"
 
+namespace Zelda
+{
+
 Window::~Window()
 {
     SDL_DestroyWindow(m_mainWindow);
@@ -22,4 +25,6 @@ void Window::createWindow(const char* title, const int width, const int height) 
 SDL_Window* Window::getWindowHandle() const noexcept
 {
     return m_mainWindow;
+}
+
 }

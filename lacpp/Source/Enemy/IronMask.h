@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class IronMask : public Renderable, public Enemy
 {
 public:
@@ -22,3 +25,5 @@ private:
     bool m_exposed;
     int m_steps;
 };
+
+}

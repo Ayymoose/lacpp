@@ -24,6 +24,9 @@
 
 */
 
+namespace Zelda
+{
+
 #define SPRITE_SPACING 2
 
 enum WeaponSprites
@@ -88,3 +91,5 @@ protected:
     };
 
 };
+
+}

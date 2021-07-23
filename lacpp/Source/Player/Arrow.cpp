@@ -3,6 +3,9 @@
 #include "Resource.h"
 #include "ZD_Assert.h"
 
+namespace Zelda
+{
+
 Arrow::Arrow()
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
@@ -67,4 +70,6 @@ void Arrow::render(SDL_Renderer* renderer) noexcept
 void Arrow::setPosition(Vector<float> position)
 {
     m_positionVector = position;
+}
+
 }

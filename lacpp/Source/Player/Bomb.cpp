@@ -4,6 +4,9 @@
 #include "ZD_Assert.h"
 #include "Link.h"
 
+namespace Zelda
+{
+
 Bomb::Bomb()
 {
     m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
@@ -68,7 +71,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
 
         m_boundingBox.w = 28;
         m_boundingBox.h = 24;
-    break;
+        break;
     case BOMB_SPRITE_EXPLOSION:
 
         // Center the explosion
@@ -87,7 +90,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
 
         m_boundingBox.w = 32;
         m_boundingBox.h = 32;
-    break;
+        break;
     case BOMB_SPRITE_AFTER_SMOKE:
 
         // Center the explosion
@@ -106,10 +109,10 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
 
         m_boundingBox.w = 32;
         m_boundingBox.h = 32;
-    break;
+        break;
     }
 
-    SDL_Rect boundingRect = 
+    SDL_Rect boundingRect =
     {
         m_boundingBox.x,
         m_boundingBox.y,
@@ -158,7 +161,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         // Explode!
         if (m_animationTimer.elapsed(BOMB_ANIMATION_TIME))
         {
-            if (m_currentFrame < BOMB_FRAMES-1)
+            if (m_currentFrame < BOMB_FRAMES - 1)
             {
                 m_currentFrame++;
             }
@@ -191,5 +194,7 @@ bool Bomb::exploded() const
 
 bool Bomb::cull() noexcept
 {
-    return m_exploded || !Camera::getInstance().visible({m_positionVector.x, m_positionVector.y, static_cast<float>(m_width), static_cast<float>(m_height)});
+    return m_exploded || !Camera::getInstance().visible({ m_positionVector.x, m_positionVector.y, static_cast<float>(m_width), static_cast<float>(m_height) });
+}
+
 }

@@ -1,7 +1,10 @@
 #include "IronMask.h"
 #include "Common.h"
 
-IronMask::IronMask(float x, float y) : 
+namespace Zelda
+{
+
+IronMask::IronMask(float x, float y) :
     Renderable("Iron Mask", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_exposed(false),
@@ -86,12 +89,12 @@ void IronMask::die() noexcept
 void IronMask::attack() noexcept
 {
     // Move's randomly in 4 directions only
-    
+
     // Basic AI movement
     // Walks in one direction for a random amount of steps
     // Then thinks for a while
     // Then repeats
-    
+
     if (m_enemyTimer.elapsed(0.5f) && !m_moving)
     {
         // Try to change direction
@@ -101,9 +104,9 @@ void IronMask::attack() noexcept
             auto dir = random(0, 3);
             const Direction dirs[4] =
             {
-                Direction::DIRECTION_UP, 
-                Direction::DIRECTION_DOWN, 
-                Direction::DIRECTION_LEFT, 
+                Direction::DIRECTION_UP,
+                Direction::DIRECTION_DOWN,
+                Direction::DIRECTION_LEFT,
                 Direction::DIRECTION_RIGHT
             };
 
@@ -111,20 +114,20 @@ void IronMask::attack() noexcept
             {
                 switch (dirs[dir])
                 {
-                case Direction::DIRECTION_DOWN: 
-                    m_auxiliaryFrame = 0; 
+                case Direction::DIRECTION_DOWN:
+                    m_auxiliaryFrame = 0;
                     m_directionVector = { 0, m_speed };
                     break;
-                case Direction::DIRECTION_UP: 
-                    m_auxiliaryFrame = 2; 
+                case Direction::DIRECTION_UP:
+                    m_auxiliaryFrame = 2;
                     m_directionVector = { 0, -m_speed };
                     break;
-                case Direction::DIRECTION_LEFT: 
-                    m_auxiliaryFrame = 4; 
+                case Direction::DIRECTION_LEFT:
+                    m_auxiliaryFrame = 4;
                     m_directionVector = { -m_speed, 0 };
                     break;
-                case Direction::DIRECTION_RIGHT: 
-                    m_auxiliaryFrame = 6; 
+                case Direction::DIRECTION_RIGHT:
+                    m_auxiliaryFrame = 6;
                     m_directionVector = { m_speed, 0 };
                     break;
                 }
@@ -157,4 +160,6 @@ void IronMask::attack() noexcept
             m_moving = false;
         }
     }
+}
+
 }

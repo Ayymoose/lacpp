@@ -3,6 +3,8 @@
 #include "Weapon.h"
 #include <iostream>
 
+namespace Zelda
+{
 
 class Arrow : public Weapon
 {
@@ -16,3 +18,5 @@ private:
     int m_speed;
 
 };
+
+}

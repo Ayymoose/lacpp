@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class Bubble : public Renderable, public Enemy
 {
 public:
@@ -19,3 +22,5 @@ public:
     void attack() noexcept override;
     void die() noexcept override;
 };
+
+}

@@ -3,12 +3,15 @@
 #include "Drawing.h"
 #include "Dialogue.h"
 
-Zelda::Worldmap::Worldmap() : 
+namespace Zelda
+{
+
+Worldmap::Worldmap() :
     Renderable("Worldmap", ResourceManager::getInstance()[Graphic::GFX_WORLD_MAP], ZD_DEPTH_WORLDMAP),
     Controllable(m_name),
-    m_scopeX(WORLDMAP_INITIAL_POS_X), 
-    m_scopeY(WORLDMAP_INITIAL_POS_Y), 
-    m_show(false), 
+    m_scopeX(WORLDMAP_INITIAL_POS_X),
+    m_scopeY(WORLDMAP_INITIAL_POS_Y),
+    m_show(false),
     m_scopeSelect(false),
     m_worldX(WORLDMAP_INITIAL_POS_X),
     m_worldY(WORLDMAP_INITIAL_POS_Y)
@@ -16,7 +19,7 @@ Zelda::Worldmap::Worldmap() :
     Renderer::getInstance().addRenderable(this);
 }
 
-void Zelda::Worldmap::control() noexcept
+void Worldmap::control() noexcept
 {
     // TODO: Fix key press overlaps between inventory and worldmap
     if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
@@ -30,7 +33,7 @@ void Zelda::Worldmap::control() noexcept
     // Move scope around map if the area is visited
     if (Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
     {
-        if (m_worldmapLocation[(m_scopeX+1) % WORLDMAP_MAX_X][m_scopeY].visited)
+        if (m_worldmapLocation[(m_scopeX + 1) % WORLDMAP_MAX_X][m_scopeY].visited)
         {
             m_scopeX = (m_scopeX + 1) % WORLDMAP_MAX_X;
             assert(m_scopeX >= 0 && m_scopeX < WORLDMAP_MAX_X);
@@ -38,7 +41,7 @@ void Zelda::Worldmap::control() noexcept
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_LEFT))
     {
-        if (m_worldmapLocation[(uint8_t)(m_scopeX-1) % WORLDMAP_MAX_X][m_scopeY].visited)
+        if (m_worldmapLocation[(uint8_t)(m_scopeX - 1) % WORLDMAP_MAX_X][m_scopeY].visited)
         {
             m_scopeX = (uint8_t)(m_scopeX - 1) % WORLDMAP_MAX_X;
             assert(m_scopeX >= 0 && m_scopeX < WORLDMAP_MAX_X);
@@ -46,15 +49,15 @@ void Zelda::Worldmap::control() noexcept
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_UP))
     {
-        if (m_worldmapLocation[m_scopeX][(uint8_t)(m_scopeY-1) % WORLDMAP_MAX_Y].visited)
+        if (m_worldmapLocation[m_scopeX][(uint8_t)(m_scopeY - 1) % WORLDMAP_MAX_Y].visited)
         {
-            m_scopeY = (uint8_t)(m_scopeY-1) % WORLDMAP_MAX_Y;
+            m_scopeY = (uint8_t)(m_scopeY - 1) % WORLDMAP_MAX_Y;
             assert(m_scopeY >= 0 && m_scopeY < WORLDMAP_MAX_Y);
         }
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_DOWN))
     {
-        if (m_worldmapLocation[m_scopeX][(uint8_t)(m_scopeY+1) % WORLDMAP_MAX_Y].visited)
+        if (m_worldmapLocation[m_scopeX][(uint8_t)(m_scopeY + 1) % WORLDMAP_MAX_Y].visited)
         {
             m_scopeY = (uint8_t)(m_scopeY + 1) % WORLDMAP_MAX_Y;
             assert(m_scopeY >= 0 && m_scopeY < WORLDMAP_MAX_Y);
@@ -222,7 +225,7 @@ void Zelda::Worldmap::control() noexcept
     }
 }
 
-void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
+void Worldmap::render(SDL_Renderer* renderer) noexcept
 {
     if (m_show)
     {
@@ -307,7 +310,7 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
         srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE];
         dstRect = { (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5 , 16, 16 };
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-   
+
 
         toggleItem(m_scopeSelect, m_scopeSelectTimer, WORLDMAP_SELECTOR_FPS);
 
@@ -338,12 +341,14 @@ void Zelda::Worldmap::render(SDL_Renderer* renderer) noexcept
     }
 }
 
-void Zelda::Worldmap::open() noexcept
+void Worldmap::open() noexcept
 {
     m_show = true;
 }
 
-void Zelda::Worldmap::close() noexcept
+void Worldmap::close() noexcept
 {
     m_show = false;
+}
+
 }

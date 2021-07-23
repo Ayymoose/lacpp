@@ -1,7 +1,10 @@
 #include "Spark.h"
 #include "Common.h"
 
-Spark::Spark(float x, float y) : 
+namespace Zelda
+{
+
+Spark::Spark(float x, float y) :
     Renderable("Spark", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -79,5 +82,7 @@ void Spark::attack() noexcept
 void Spark::die() noexcept
 {
 
+
+}
 
 }

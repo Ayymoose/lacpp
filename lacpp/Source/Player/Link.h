@@ -16,8 +16,10 @@
 #include "Sword.h"
 #include "Cullable.h"
 #include "Worldmap.h"
-
 #include <memory>
+
+namespace Zelda
+{
 
 enum PlayerState
 {
@@ -93,7 +95,7 @@ enum PlayerState
     LINK_JUMP_RIGHT,
     LINK_JUMP_UP,
     LINK_JUMP_DOWN,
-    
+
     LINK_DIE,
     LINK_DROWN,
     LINK_PLAY_INSTRUMENT,
@@ -141,10 +143,10 @@ public:
 
     // CullableParent overrides
     void cull() noexcept override;
- 
+
     void resetAnimation() noexcept;
     void replenish(float hearts) noexcept;
-    
+
     void addPosition(float x, float y) noexcept;
     void setPosition(float x, float y) noexcept;
 
@@ -276,3 +278,5 @@ private:
     };
 
 };
+
+}

@@ -1,7 +1,10 @@
 #include "WaterTektite.h"
 #include "Common.h"
 
-WaterTektite::WaterTektite(float x, float y) : 
+namespace Zelda
+{
+
+WaterTektite::WaterTektite(float x, float y) :
     Renderable("Water Tektite", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_strideLength(48),
@@ -94,11 +97,11 @@ void WaterTektite::attack() noexcept
         {
             // Keep within camera region
             auto nextPositionVector = m_positionVector + m_directionVector * m_speed;
-            if (Camera::getInstance().visible({ nextPositionVector.x, nextPositionVector.y, static_cast<float>(m_width), static_cast<float>(m_height)}))
+            if (Camera::getInstance().visible({ nextPositionVector.x, nextPositionVector.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
             {
                 m_positionVector += m_directionVector * m_speed;
                 m_strided += (m_directionVector * m_speed).length();
-                
+
             }
             else
             {
@@ -115,4 +118,6 @@ void WaterTektite::attack() noexcept
 
         }
     }
+}
+
 }

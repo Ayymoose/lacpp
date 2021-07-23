@@ -1,7 +1,10 @@
 #include "LikeLike.h"
 #include "Common.h"
 
-LikeLike::LikeLike(float x, float y) : 
+namespace Zelda
+{
+
+LikeLike::LikeLike(float x, float y) :
     Renderable("Like Like", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -111,4 +114,6 @@ void LikeLike::attack() noexcept
     }
 
     m_positionVector += m_directionVector;
+}
+
 }

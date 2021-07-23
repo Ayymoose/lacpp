@@ -8,7 +8,9 @@
 #include "RoomManager.h"
 #include "Tilemap.h"
 
-void Zelda::Engine::init() noexcept
+namespace Zelda
+{
+void Engine::init() noexcept
 {
     // TODO: Add monitor VSync + 60Hz check here
 
@@ -32,7 +34,7 @@ void Zelda::Engine::init() noexcept
     Keyboard::getInstance();
 
     RoomManager::getInstance();
-    
+
     // Initialise the camera
     Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
 
@@ -40,7 +42,7 @@ void Zelda::Engine::init() noexcept
     engineTest();
 }
 
-void Zelda::Engine::run() noexcept
+void Engine::run() noexcept
 {
     m_engineRunning = true;
 
@@ -55,26 +57,26 @@ void Zelda::Engine::run() noexcept
         // Render objects
         renderObjects();
     }
- 
+
 }
 
-void Zelda::Engine::stop() const noexcept
+void Engine::stop() const noexcept
 {
     // Cleanup
     SDL_Quit();
 }
 
-void Zelda::Engine::pause(bool pause) noexcept
+void Engine::pause(bool pause) noexcept
 {
     m_enginePaused = pause;
 }
 
-bool Zelda::Engine::paused() const noexcept
+bool Engine::paused() const noexcept
 {
     return m_enginePaused;
 }
 
-void Zelda::Engine::processEvents() noexcept
+void Engine::processEvents() noexcept
 {
     SDL_Event eventHandler;
     if (SDL_PollEvent(&eventHandler))
@@ -97,7 +99,7 @@ void Zelda::Engine::processEvents() noexcept
     }
 }
 
-void Zelda::Engine::processInput() noexcept
+void Engine::processInput() noexcept
 {
     // Handles input from the user and designates it to the Controller
     Controllable* controller = Controller::getInstance().getController();
@@ -107,7 +109,7 @@ void Zelda::Engine::processInput() noexcept
     }
 }
 
-void Zelda::Engine::renderObjects() const noexcept
+void Engine::renderObjects() const noexcept
 {
     /*static*/ auto renderStartTime = SDL_GetTicks();
     static auto renderedFrames = 0;
@@ -165,7 +167,7 @@ void Zelda::Engine::renderObjects() const noexcept
 
     // Represent to the screen
     SDL_RenderPresent(renderer);
-    
+
     renderedFrames++;
 
     auto lx = Link::getInstance().position().x;
@@ -224,7 +226,20 @@ void Engine::engineTest()
     static Zombie zombie(64, 64);
     static Peahat peahat(64, 64);*/
 
+    // 18/02/2021 - Update
 
+    /*
+    Too many things are broken here and I'm too lazy to work on this anymore
+
+    1) Frame rate will be dependant on the users VSync refresh rate either 60Hz, 75Hz or 120Hz
+    2) Not entirely sure how to do the corner cutting and Link collisions
+    3) Need to create GUI tool to allow me to place solid tiles and auto-generate collision maps
+    4) Software timers are kind of broken
+    5) Animation
+    6) Keyboard input
+    7) Graphics loading
+
+    * /
 
     /*
 
@@ -236,12 +251,13 @@ void Engine::engineTest()
         // 4. Collisions
         // 5. Enemies
         // 6. Sound
-        // 7. Objects 
+        // 7. Objects
         // 8. Fix timer classes
         // 9. Dialogue outstanding issues
         // 10. Engine pausing
 
 
     */
+}
 
 }

@@ -3,6 +3,9 @@
 #include "Weapon.h"
 #include <iostream>
 
+namespace Zelda
+{
+
 class Sword : public Weapon
 {
 public:
@@ -13,3 +16,5 @@ public:
 private:
 
 };
+
+}

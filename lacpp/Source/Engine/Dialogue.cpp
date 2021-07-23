@@ -9,9 +9,10 @@
 #include "InputControl.h"
 #include "Link.h"
 
-using namespace Zelda;
+namespace Zelda
+{
 
-Dialogue::Dialogue() : 
+Dialogue::Dialogue() :
     Renderable("Dialogue", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, DIALOGUE_WIDTH, DIALOGUE_HEIGHT), ZD_DEPTH_DIALOGUE),
     Controllable(m_name),
     m_dialoguePosX(DIALOGUE_POS_X),
@@ -38,7 +39,7 @@ Dialogue::Dialogue() :
 {
     assert(m_texture);
     assert(m_subTexture);
-    colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0,0,0));
+    colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0, 0, 0));
     colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
 }
 
@@ -55,7 +56,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
 
 #ifndef NDEBUG
     // Sanity tests
-    
+
     // Only the following characters allowed
     std::for_each(message.begin(), message.end(), [](const char c)
     {
@@ -177,7 +178,7 @@ bool Dialogue::question(const char* question, const std::string& choice1, const 
     return false;
 }
 
-void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
+void Dialogue::render(SDL_Renderer* renderer) noexcept
 {
     // Drawn on top or bottom depending on Link's position
     SDL_Rect dstRectDialogue =
@@ -268,7 +269,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
     };
 
     // If there is a message to display
-    
+
     if (m_currentChar != m_message.length())
     {
         if (m_textTimer.elapsed(TEXT_SPEED) && !m_scrollMessage)
@@ -282,7 +283,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
             // After that we move onto the next line
             if (m_currentChar != 0 && m_currentChar % MAX_CHAR_PER_LINE == 0 && !m_moreText)
             {
-                if (m_currentLine != MAX_LINE-1)
+                if (m_currentLine != MAX_LINE - 1)
                 {
                     m_currentLine++;
                     m_dstCharX = 0;
@@ -298,7 +299,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
 
                     m_dstCharX++;
                 }
-                else 
+                else
                 {
 
                     if (m_scrolledLines == 0)
@@ -364,7 +365,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
             if (m_dstCharY % LINE_HEIGHT != 0)
             {
                 // Scroll sub-texture box up
-                m_dstCharY+= SCROLL_SPEED;
+                m_dstCharY += SCROLL_SPEED;
             }
             else
             {
@@ -377,7 +378,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
 
                     // 3. Copy to a bottom half of texture to top half 
                     copyToTexture(renderer, m_subTexture, m_subTexture, &srcRectSubTextureLowerHalf, &dstRectSubTextureLowerHalf);
-                        
+
                     // Block out the what used to be the bottom line
                     colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
 
@@ -388,7 +389,7 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
                 }
                 else
                 {
-                    m_dstCharY+= SCROLL_SPEED;
+                    m_dstCharY += SCROLL_SPEED;
                 }
             }
 
@@ -431,21 +432,21 @@ void Zelda::Dialogue::render(SDL_Renderer* renderer) noexcept
         toggleItem(m_flashQuestion, m_questionTimer, INVENTORY_SELECTOR_FPS);
         if (m_flashQuestion && m_currentChar == m_message.length())
         {
-            SDL_Rect srcQuestionRect = {144,16, CHAR_WIDTH, CHAR_HEIGHT };
-            SDL_Rect dstQuestionRect = {m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
+            SDL_Rect srcQuestionRect = { 144,16, CHAR_WIDTH, CHAR_HEIGHT };
+            SDL_Rect dstQuestionRect = { m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
 
             SDL_ASSERT(SDL_RenderCopy(renderer, m_questionMarker, &srcQuestionRect, &dstQuestionRect), SDL_ERROR_MESSAGE);
         }
     }
 }
 
-void Zelda::Dialogue::control() noexcept
+void Dialogue::control() noexcept
 {
     if (m_continue && Keyboard::getInstance().keyPressed(BUTTON_B))
     {
         m_scrollMessage = true;
         m_continue = false;
-        m_scrolledLines = MAX_LINE-1;
+        m_scrolledLines = MAX_LINE - 1;
     }
     else if (m_currentChar == m_message.length() && Keyboard::getInstance().keyPressed(BUTTON_B))
     {
@@ -472,4 +473,6 @@ void Zelda::Dialogue::control() noexcept
             m_questionXPos -= (m_choice.length() + 2) * CHAR_WIDTH;
         }
     }
+}
+
 }

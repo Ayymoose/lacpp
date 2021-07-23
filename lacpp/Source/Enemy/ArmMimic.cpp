@@ -1,7 +1,10 @@
 #include "ArmMimic.h"
 #include "Common.h"
 
-ArmMimic::ArmMimic(float x, float y) : 
+namespace Zelda
+{
+
+ArmMimic::ArmMimic(float x, float y) :
     Renderable("Arm Mimic", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -94,22 +97,22 @@ void ArmMimic::attack() noexcept
     {
         switch (Link::getInstance().direction())
         {
-        case Direction::DIRECTION_DOWN: 
+        case Direction::DIRECTION_DOWN:
             m_auxiliaryFrame = 2;
             // Move up
             m_directionVector = { 0,-1 };
             break;
-        case Direction::DIRECTION_UP: 
+        case Direction::DIRECTION_UP:
             m_auxiliaryFrame = 0;
             // Move down
             m_directionVector = { 0,1 };
             break;
-        case Direction::DIRECTION_LEFT: 
+        case Direction::DIRECTION_LEFT:
             m_auxiliaryFrame = 6;
             // Move right
             m_directionVector = { 1,0 };
             break;
-        case Direction::DIRECTION_RIGHT: 
+        case Direction::DIRECTION_RIGHT:
             m_auxiliaryFrame = 4;
             // Move left
             m_directionVector = { -1,0 };
@@ -118,4 +121,6 @@ void ArmMimic::attack() noexcept
         }
         m_positionVector += m_directionVector * m_speed;
     }
+}
+
 }

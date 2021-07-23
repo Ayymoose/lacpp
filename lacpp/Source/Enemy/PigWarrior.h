@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class PigWarrior : public Renderable, public Enemy
 {
 public:
@@ -22,3 +25,5 @@ private:
     EnemyType m_type;
     int m_steps;
 };
+
+}

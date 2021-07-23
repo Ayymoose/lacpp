@@ -1,6 +1,9 @@
 #include "GopongaFlower.h"
 
-GopongaFlower::GopongaFlower(float x, float y) : 
+namespace Zelda
+{
+
+GopongaFlower::GopongaFlower(float x, float y) :
     Renderable("Goponga Flower", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -70,5 +73,7 @@ void GopongaFlower::attack() noexcept
 
 void GopongaFlower::die() noexcept
 {
-    
+
+}
+
 }

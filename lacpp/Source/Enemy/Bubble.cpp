@@ -1,6 +1,9 @@
 #include "Bubble.h"
 
-Bubble::Bubble(float x, float y) : 
+namespace Zelda
+{
+
+Bubble::Bubble(float x, float y) :
     Renderable("Bubble", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
@@ -94,6 +97,8 @@ void Bubble::attack() noexcept
     {
         m_directionVector.y = -m_directionVector.y;
     }
-    
+
     m_positionVector += m_directionVector * m_speed;
+}
+
 }

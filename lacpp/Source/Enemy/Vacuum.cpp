@@ -2,7 +2,10 @@
 
 // TODO: Boolean for suck or push Link in/away
 
-Vacuum::Vacuum(float x, float y) : 
+namespace Zelda
+{
+
+Vacuum::Vacuum(float x, float y) :
     Renderable("Vacuum", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_vacuums(0)
@@ -90,4 +93,6 @@ void Vacuum::attack() noexcept
 void Vacuum::die() noexcept
 {
     // Can't remember if it dies or not
+}
+
 }

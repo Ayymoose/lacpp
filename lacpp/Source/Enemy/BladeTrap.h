@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Renderable.h"
 
+namespace Zelda
+{
+
 class BladeTrap : public Renderable, public Enemy
 {
 public:
@@ -34,7 +37,7 @@ private:
 
     /*
 
-        Blade Trap uses pair-point detection method 
+        Blade Trap uses pair-point detection method
         to determine which side the player is on
 
         P0 is the position vector
@@ -48,3 +51,5 @@ private:
 
     */
 };
+
+}
