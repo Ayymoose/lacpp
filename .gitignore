@@ -5,6 +5,7 @@
 Project/Debug/*
 Project/Release/*
 Project/x64
+Project/.vs
 *.ilk
 *.log
 *.tlog
