@@ -2,12 +2,13 @@
 *.dll
 *.obj
 *.sarif
-Debug/*
-Release/*
-lacpp/.vs/*
+Project/Debug/*
+Project/Release/*
+Project/x64
 *.ilk
 *.log
 *.tlog
 *.idb
 *.pdb
 *.xml
+DLL
