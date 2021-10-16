@@ -7,13 +7,12 @@
 #include "Enemy.h"
 #include "RoomManager.h"
 #include "Tilemap.h"
+#include <thread>
 
 namespace Zelda
 {
 void Engine::init() noexcept
 {
-    // TODO: Add monitor VSync + 60Hz check here
-
     // Initialise SDL
     SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO), SDL_ERROR_MESSAGE);
 
@@ -26,44 +25,54 @@ void Engine::init() noexcept
     // Stretch the textures to the window size
     SDL_ASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + HUD_HEIGHT)), SDL_ERROR_MESSAGE);
 
+    // Needs to be separated
+
     // Load all resources (sound + graphics)
     ResourceManager::getInstance().loadGraphics();
-    ResourceManager::getInstance().loadSounds();
 
     // Initialise the keyboard
     Keyboard::getInstance();
 
+    // Room manager
     RoomManager::getInstance();
 
-    // Initialise the camera
-    Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
+    // Init camera
+    Camera::getInstance();
 
-    // Testing goes in here
-    engineTest();
+    // TODO: Move this somwhere
+    m_initialised = true;
+
+    std::cout << "Engine initialised\n";
 }
 
 void Engine::run() noexcept
 {
+    assert(m_initialised && "Engine is not initialised");
+
     m_engineRunning = true;
 
     // Main game loop
     while (m_engineRunning)
     {
-        // Process window/keyboard events
-        processEvents();
-        // Process input
-        processInput();
+        events();
+        update();
 
-        // Render objects
-        renderObjects();
+        preRenderTestFunction();
+
+        render();
+
+
     }
 
 }
 
-void Engine::stop() const noexcept
+void Engine::stop() noexcept
 {
     // Cleanup
-    SDL_Quit();
+    std::cout << "Engine has stopped running\n";
+    m_engineRunning = false;
+    m_preRenderTestFunction = nullptr;
+    m_renderTestFunction = nullptr;
 }
 
 void Engine::pause(bool pause) noexcept
@@ -76,7 +85,15 @@ bool Engine::paused() const noexcept
     return m_enginePaused;
 }
 
-void Engine::processEvents() noexcept
+Engine::~Engine()
+{
+    if (m_initialised)
+    {
+        SDL_Quit();
+    }
+}
+
+void Engine::events() noexcept
 {
     SDL_Event eventHandler;
     if (SDL_PollEvent(&eventHandler))
@@ -99,35 +116,49 @@ void Engine::processEvents() noexcept
     }
 }
 
-void Engine::processInput() noexcept
+void Engine::update() const noexcept
 {
-    // Handles input from the user and designates it to the Controller
-    Controllable* controller = Controller::getInstance().getController();
-    if (controller)
+    // TODO: Create an Updateable interface class and remove update() from Renderable
+    auto const renderables = Renderer::getInstance().getRenderSet();
+    for (const auto& renderable : renderables)
     {
-        controller->control();
+        assert(renderable);
+        renderable->update();
     }
 }
 
-void Engine::renderObjects() const noexcept
+void Engine::clearScreen() const noexcept
 {
-    /*static*/ auto renderStartTime = SDL_GetTicks();
-    static auto renderedFrames = 0;
-
-    SDL_Renderer* renderer = Renderer::getInstance().getRenderer();
-
     // Clear black
+    auto const renderer = Renderer::getInstance().getRenderer();
     SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0), SDL_ERROR_MESSAGE);
     SDL_ASSERT(SDL_RenderClear(renderer), SDL_ERROR_MESSAGE);
+}
+
+void Engine::renderScreen() const noexcept
+{
+    // Represent to the screen
+    auto const renderer = Renderer::getInstance().getRenderer();
+    SDL_RenderPresent(renderer);
+}
+
+void Engine::render() const noexcept
+{
+    static auto renderStartTime = SDL_GetTicks();
+    static auto renderedFrames = 0;
+
+    clearScreen();
 
     // Render any objects
-    auto renderSet = Renderer::getInstance().getRenderSet();
+    auto const renderables = Renderer::getInstance().getRenderSet();
 
-    for (const auto& renderable : renderSet)
+    for (const auto& renderable : renderables)
     {
         assert(renderable);
 
+        // This shouldn't be here
 
+        //////////////////////////////////////////////////
         // Cull any objects out of view
         auto cullable = dynamic_cast<CullableParent*>(renderable);
         if (cullable)
@@ -161,37 +192,45 @@ void Engine::renderObjects() const noexcept
             }
         }
 
-        renderable->render(renderer);
+        //////////////////////////////////////////////////
+
+        renderable->render();
 
     }
 
-    // Represent to the screen
-    SDL_RenderPresent(renderer);
+
+    renderTestFunction();
+
+    renderScreen();
 
     renderedFrames++;
 
-    auto lx = Link::getInstance().position().x;
-    auto ly = Link::getInstance().position().y;
+    //auto lx = Link::getInstance().position().x;
+    //auto ly = Link::getInstance().position().y;
+    //std::string windowTitle = MAIN_WINDOW_TITLE " - LX: " + std::to_string(lx) + " LY: " + std::to_string(ly);
+    //SDL_SetWindowTitle(m_mainWindow.getWindowHandle(), windowTitle.c_str());
 
-    std::string windowTitle = MAIN_WINDOW_TITLE " - LX: " + std::to_string(lx) + " LY: " + std::to_string(ly);
-    SDL_SetWindowTitle(m_mainWindow.getWindowHandle(), windowTitle.c_str());
+#if 0
 
-
-    /* auto elapsedTicks = SDL_GetTicks() - renderStartTime;
-    std::cout << "elapsed: " << elapsedTicks << "\n";
+    auto elapsedTicks = SDL_GetTicks() - renderStartTime;
+    //std::cout << "elapsed: " << elapsedTicks << "\n";
 
    if (elapsedTicks >= 1000)
     {
-        std::string windowTitle = MAIN_WINDOW_TITLE " - FPS: " + std::to_string((elapsedTicks / 1000.0f) * (float)renderedFrames);
+        std::string windowTitle = MAIN_WINDOW_TITLE " - FPS: " + std::to_string((elapsedTicks / 1000.0f) * (double)renderedFrames);
+        std::cout << "Rendererd frames in this second: " << renderedFrames << '\n';
         SDL_SetWindowTitle(m_mainWindow.getWindowHandle(), windowTitle.c_str());
         renderStartTime = SDL_GetTicks();
         renderedFrames = 0;
-    }*/
+    }
+#endif
 }
 
+#if 0
 void Engine::engineTest()
 {
     // Set camera position
+    Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
     Camera::getInstance().setPosition(480, 640);
     Camera::getInstance().setTileMap(RM_TAIL_CAVE);
 
@@ -259,5 +298,7 @@ void Engine::engineTest()
 
     */
 }
+
+#endif
 
 }

@@ -14,7 +14,8 @@ public:
     Vacuum(float x, float y);
 
     // Renderable overrides
-    void render(SDL_Renderer* renderer) noexcept override;
+    void render() noexcept override;
+    void update() noexcept override;
 
     // BasicCharacter overrides
     float health() const noexcept override;

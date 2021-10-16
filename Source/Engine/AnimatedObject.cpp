@@ -65,8 +65,8 @@ AnimatedObject::AnimatedObject(AnimatedClass animatedClass, int x, int y, int re
 
     m_width = 16;
     m_height = 16;
-    m_positionVector.x = x;
-    m_positionVector.y = y;
+    m_position.x = x;
+    m_position.y = y;
 
     m_dstRect = {0,0, static_cast<float>(m_width), static_cast<float>(m_height) };
     m_repeatAcross = repeatAcross;
@@ -74,14 +74,14 @@ AnimatedObject::AnimatedObject(AnimatedClass animatedClass, int x, int y, int re
     m_orientation = orientation;
 }
 
-void AnimatedObject::render(SDL_Renderer* renderer) noexcept
+void AnimatedObject::render() noexcept
 {
     SDL_FRect dstRect = m_dstRect;
-    dstRect.x = m_positionVector.x - m_xTransition - Camera::getInstance().getX();
-    dstRect.y = m_positionVector.y - m_yTransition - Camera::getInstance().getY();
+    dstRect.x = m_position.x - m_xTransition - Camera::getInstance().getX();
+    dstRect.y = m_position.y - m_yTransition - Camera::getInstance().getY();
     for (int i = 0; i <= m_repeatAcross; i++)
     {
-        basicAnimateExF(renderer, m_texture, m_srcRect, dstRect, 0, m_currentFrame, m_endFrame, m_animationFPS, m_orientation, Engine::getInstance().paused());
+        basicAnimateExF(Renderer::getInstance().getRenderer(), m_texture, m_srcRect, dstRect, 0, m_currentFrame, m_endFrame, m_animationFPS, m_orientation, Engine::getInstance().paused());
         dstRect.x += m_width;
     }
 }

@@ -58,7 +58,7 @@ public:
 
     Vector<float> position() const
     {
-        return m_positionVector;
+        return m_position;
     }
 
     void setDirection(Direction direction)
@@ -74,7 +74,7 @@ public:
     }
 
 protected:
-    Vector<float> m_positionVector;
+    Vector<float> m_position;
     Direction m_direction;
     Timer m_weaponTimer;
     BoundingBox m_boundingBox;

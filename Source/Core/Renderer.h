@@ -11,27 +11,33 @@
 
 // Singleton instance of the renderer for the main window
 
+namespace Zelda
+{
+
 class Renderer : public Singleton<Renderer>
 {
     friend class Singleton<Renderer>;
 public:
 
-    void createRenderer(SDL_Window* pWindow) noexcept
+    void createRenderer(SDL_Window* window) noexcept
     {
-        // Warning: This whole game relies entirely on VSync and the monitor refresh frame being 60Hz
-        // If VSync is off or the monitor refresh rate is not 60Hz, the game will be unplayable for the user
-        // I tried to base it off using timesteps at first but I couldn't get it to work without seeing some small jittering/stuttering on Link
-        // If someone else can get it to work then I'm down for adding it in - 03/01/2021
-        m_renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
-        assert(m_renderer != nullptr);
+        assert(window);
+
+        auto const flags = SDL_RENDERER_ACCELERATED |
+            SDL_RENDERER_PRESENTVSYNC |
+            SDL_RENDERER_TARGETTEXTURE;
+        m_renderer = SDL_CreateRenderer(window, -1, flags);
+        assert(m_renderer);
     }
 
-    SDL_Renderer* getRenderer() const noexcept
+    auto getRenderer() const noexcept
     {
+        assert(m_renderer);
         return m_renderer;
     }
     void setRenderer(SDL_Renderer* renderer) noexcept
     {
+        assert(renderer);
         m_renderer = renderer;
     }
 
@@ -47,9 +53,10 @@ public:
 
     void addRenderable(Renderable* renderable) noexcept
     {
+        assert(renderable);
         auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1)
-        { 
-            return r1 == renderable; 
+        {
+            return r1 == renderable;
         });
 
         if (iterator != m_renderables.end())
@@ -63,9 +70,10 @@ public:
 
     void removeRenderable(Renderable* renderable) noexcept
     {
+        assert(renderable);
         auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1)
-        { 
-            return r1 == renderable; 
+        {
+            return r1 == renderable;
         });
         if (iterator != m_renderables.end())
         {
@@ -94,8 +102,9 @@ private:
             return r1->depth() < r2->depth();
         }
     };
-  
+
     // Multiset of Renderable objects that will be drawn
     std::multiset<Renderable*, rendererComparator> m_renderables;
 
 };
+}

@@ -14,10 +14,7 @@ void Timer::reset()
 
 bool Timer::elapsed(float ticksMs)
 {
-    // This is untested with frame rates > 60FPS!
-    // Rounding up should stop the stuttering/jittery motion when it returns false because
-    // at 60fps, we have 16.7ms per frame
-    float elapsedTime =  ((SDL_GetTicks() - m_startTime) / 1000.0f) + 0.005f;
+    float elapsedTime =  ((SDL_GetTicks() - m_startTime) / 1000.0f);
     if (elapsedTime > ticksMs)
     {
         m_startTime = SDL_GetTicks();

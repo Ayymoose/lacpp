@@ -22,7 +22,7 @@ void ResourceManager::loadGraphics() noexcept
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_TEXT, loadTexture(ResourceMiscPath + "dialogue.png", TRANSPARENCY_COLOUR)));
     m_resources.emplace(std::pair<Graphic, SDL_Texture*>(Graphic::GFX_ENEMY, loadTexture(ResourceEnemyPath + "enemy.png", TRANSPARENCY_COLOUR)));
 
-    std::cout << "Loaded " << m_resources.size() << " resources\n";
+    //std::cout << "Loaded " << m_resources.size() << " resources\n";
 }
 
 void ResourceManager::loadSounds() noexcept
@@ -50,7 +50,7 @@ SDL_Texture* ResourceManager::loadTexture(const std::string& path, uint32_t tran
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
     if (loadedSurface == nullptr)
     {
-        SDL_ASSERT(true, "Failed to load image: " << path.c_str() << '\n' << IMG_GetError());
+        SDL_ASSERT(true, "Failed to load image: " << path.c_str() << " because " << IMG_GetError());
     }
     else
     {

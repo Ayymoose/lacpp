@@ -18,7 +18,7 @@ Vacuum::Vacuum(float x, float y) :
 
 }
 
-void Vacuum::render(SDL_Renderer* renderer) noexcept
+void Vacuum::render() noexcept
 {
     auto animation = m_enemy[ENEMY_VACUUM];
 
@@ -38,13 +38,13 @@ void Vacuum::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_vacuums < MAX_VACUUMS)
     {
@@ -73,6 +73,10 @@ void Vacuum::render(SDL_Renderer* renderer) noexcept
 
 }
 
+void Vacuum::update() noexcept
+{
+}
+
 float Vacuum::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -81,7 +85,7 @@ float Vacuum::health() const noexcept
 
 Vector<float> Vacuum::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void Vacuum::attack() noexcept

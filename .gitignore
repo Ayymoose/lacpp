@@ -1,9 +1,11 @@
 Screens
 Video
-Project/.vs/
-Project/Debug/
-Project/Release/
-Project/x64/
-Project/x86/
+Project/.vs
+Project/lacpp/Debug
+Project/lacpp/.vs
+Project/lacpp/Release
+Project/lacpp tests/Debug
+Project/lacpp tests/.vs
+Project/lacpp tests/Release
 *.exe
 *.xml

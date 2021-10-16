@@ -44,13 +44,13 @@ Link::Link() :
     m_width = 16;
     m_height = 16;
 
-    m_positionVector.x = 72;
-    m_positionVector.y = 32;
-    m_boundingBox = { (int)m_positionVector.x,(int)m_positionVector.y, PLAYER_BOUNDING_BOX_WIDTH, PLAYER_BOUNDING_BOX_HEIGHT };
+    m_position.x = 72;
+    m_position.y = 32;
+    m_boundingBox = { (int)m_position.x,(int)m_position.y, PLAYER_BOUNDING_BOX_WIDTH, PLAYER_BOUNDING_BOX_HEIGHT };
 
     m_health = 3;
     m_speed = 1;
-    m_direction = Direction::DIRECTION_DOWN;
+    m_dir = Direction::DIRECTION_DOWN;
 
     // Set to Tail cave entrace
     /*
@@ -63,6 +63,7 @@ Link::Link() :
 
     m_upDownSpeedLimiter = 1;
 
+    m_lerpPrevious = m_position;
 }
 
 float Link::health() const noexcept
@@ -166,7 +167,71 @@ bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexce
 #endif
 }
 
-void Link::render(SDL_Renderer* renderer) noexcept
+
+void Link::update() noexcept
+{
+    // TODO: Fixed step update goes here
+    if (m_currentTime == 0)
+    {
+        m_currentTime = SDL_GetTicks();
+    }
+
+    // TODO: Even this doesn't work although CPed from the example on FixedTimestep
+    // It's inconsistent and jittery still
+    auto const timeNow = SDL_GetTicks();
+    auto frameTime = timeNow - m_currentTime;
+    if (frameTime > m_maxFrameTime)
+    {
+        frameTime = m_maxFrameTime;
+    }
+
+    m_currentTime = timeNow;
+    m_accumulator += frameTime;
+
+
+    static float xSpeed = 0.5;
+    static float ySpeed = 0;
+
+    while (m_accumulator >= m_dt)
+    {
+        // Lerp
+        m_lerpPrevious = m_position;
+
+        if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
+        {
+            m_position.x -= 0.75;
+        }
+        if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
+        {
+            m_position.x += 0.75;
+        }
+        if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
+        {
+            m_position.y += 0.75;
+        }
+        if (Keyboard::getInstance().keyPushed(BUTTON_UP))
+        {
+            m_position.y -= 0.75;
+        }
+
+
+        m_accumulator -= m_dt;
+    }
+
+    m_alphaTime = m_accumulator / m_dt;
+
+    // (A * alpha) + B * (1.0 - alpha)
+
+    //auto v = (m_lerpPrevious * m_alphaTime) + (m_position * (1.0 - m_alphaTime));
+
+    m_drawPosition = Vector<float>::lerp(m_lerpPrevious, m_position, m_alphaTime);
+
+    //std::cout << '(' << m_position.x << ',' << m_position.y << ')' << '\n';
+    
+
+}
+
+void Link::render() noexcept
 {
 
     // The render loop calls render() every frame
@@ -186,14 +251,17 @@ void Link::render(SDL_Renderer* renderer) noexcept
         m_height
     };
 
+    
+
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - Camera::getInstance().getX(),
-        m_positionVector.y - Camera::getInstance().getY(),
+        m_drawPosition.x - Camera::getInstance().getX(),
+        m_drawPosition.y - Camera::getInstance().getY(),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
+
 
     // Max frame controlled by the state
     m_endFrame = m_animations[m_state].endFrame;
@@ -202,7 +270,7 @@ void Link::render(SDL_Renderer* renderer) noexcept
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
 
     // Drawing bounding boxes for testing
@@ -266,8 +334,27 @@ void Link::cull() noexcept
     
 }
 
-void Link::control() noexcept
+void Link::control(double ts) noexcept
 {
+
+   /* if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
+    {
+        m_position.x += 64.0 * (ts / 1000.0);
+    }
+    if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
+    {
+        m_position.x -= 64.0 * (ts / 1000.0);
+    }
+    if (Keyboard::getInstance().keyPushed(BUTTON_UP))
+    {
+        m_position.y -= 64.0 * (ts / 1000.0);
+    }
+    if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
+    {
+        m_position.y += 64.0 * (ts / 1000.0);
+    }*/
+
+#if 0
     // Open the inventory
     if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
     {
@@ -365,24 +452,24 @@ void Link::control() noexcept
     // Link attack
     // Only attack if a key is actually pressed
     attack();
-    
+#endif
 }
 
 void Link::attack() noexcept
 {
     if (Keyboard::getInstance()[BUTTON_A])
     {
-        useWeapon(m_inventory.weaponA());
+        useWeapon(m_inventory.weaponA().first);
     }
     if (Keyboard::getInstance()[BUTTON_B])
     {
-        useWeapon(m_inventory.weaponB());
+        useWeapon(m_inventory.weaponB().first);
     }
 
 
     if (Keyboard::getInstance().keyReleased(BUTTON_A))
     {
-        if (m_inventory.weaponA() == WPN_SHIELD)
+        if (m_inventory.weaponA().first == WPN_SHIELD)
         {
             m_useShield = false;
             updateState();
@@ -390,7 +477,7 @@ void Link::attack() noexcept
     }
     if (Keyboard::getInstance().keyReleased(BUTTON_B))
     {
-        if (m_inventory.weaponB() == WPN_SHIELD)
+        if (m_inventory.weaponB().first == WPN_SHIELD)
         {
             m_useShield = false;
             updateState();
@@ -410,27 +497,24 @@ void Link::resetAnimation() noexcept
 
 Vector<float> Link::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void Link::addPosition(float x, float y) noexcept
 {
-    m_positionVector.x += x;
-    m_positionVector.y += y;
+    m_position.x += x;
+    m_position.y += y;
 }
 
 void Link::setPosition(float x, float y) noexcept
 {
-    m_positionVector.x = x;
-    m_positionVector.y = y;
+    m_position.x = x;
+    m_position.y = y;
 }
 
 void Link::replenish(float hearts) noexcept
 {
-    if (m_health + hearts <= m_healthMax)
-    {
-        m_health += hearts;
-    }
+    m_health = std::min(m_health + hearts, m_healthMax);
 }
 
 // Link control
@@ -448,7 +532,7 @@ void Link::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
@@ -476,18 +560,18 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_RIGHT;
             }
-            m_direction = Direction::DIRECTION_RIGHT;
+            m_dir = Direction::DIRECTION_RIGHT;
         }
 
         if (!handleStaticCollisions(m_speedX, 0))
         {
-            m_positionVector.x += m_speedX;
+            m_position.x += m_speedX;
         }
         else
         {
             // If collision with wall
             m_state = LINK_PUSH_RIGHT;
-            m_direction = Direction::DIRECTION_RIGHT;
+            m_dir = Direction::DIRECTION_RIGHT;
         }
     }
     else
@@ -497,7 +581,7 @@ void Link::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
@@ -511,7 +595,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_RIGHT;
             }
-            m_direction = Direction::DIRECTION_RIGHT;
+            m_dir = Direction::DIRECTION_RIGHT;
         }
     }
 
@@ -526,7 +610,7 @@ void Link::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
@@ -554,17 +638,17 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_LEFT;
             }
-            m_direction = Direction::DIRECTION_LEFT;
+            m_dir = Direction::DIRECTION_LEFT;
         }
         if (!handleStaticCollisions(m_speedX, 0))
         {
-            m_positionVector.x += m_speedX;
+            m_position.x += m_speedX;
         }
         else
         {
             // If collision with wall
             m_state = LINK_PUSH_LEFT;
-            m_direction = Direction::DIRECTION_LEFT;
+            m_dir = Direction::DIRECTION_LEFT;
         }
     }
     else
@@ -574,7 +658,7 @@ void Link::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_LEFT_SMALL_SHIELD;
@@ -588,7 +672,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_LEFT;
             }
-            m_direction = Direction::DIRECTION_LEFT;
+            m_dir = Direction::DIRECTION_LEFT;
         }
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_UP))
@@ -601,7 +685,7 @@ void Link::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
@@ -629,18 +713,18 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_UP;
             }
-            m_direction = Direction::DIRECTION_UP;
+            m_dir = Direction::DIRECTION_UP;
         }
 
         if (!handleStaticCollisions(0, m_speedY))
         {
-            m_positionVector.y += m_speedY;
+            m_position.y += m_speedY;
         }
         else
         {
             // If collision with wall
             m_state = LINK_PUSH_UP;
-            m_direction = Direction::DIRECTION_UP;
+            m_dir = Direction::DIRECTION_UP;
         }
     }
     else
@@ -650,7 +734,7 @@ void Link::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_UP_SMALL_SHIELD;
@@ -664,7 +748,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_UP;
             }
-            m_direction = Direction::DIRECTION_UP;
+            m_dir = Direction::DIRECTION_UP;
         }
     }
     if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
@@ -677,7 +761,7 @@ void Link::move() noexcept
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     if (m_useShield)
@@ -705,18 +789,18 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_DOWN;
             }
-            m_direction = Direction::DIRECTION_DOWN;
+            m_dir = Direction::DIRECTION_DOWN;
         }
 
         if (!handleStaticCollisions(0, m_speedY))
         {
-            m_positionVector.y += m_speedY;
+            m_position.y += m_speedY;
         }
         else
         {
             // If collision with wall
             m_state = LINK_PUSH_DOWN;
-            m_direction = Direction::DIRECTION_DOWN;
+            m_dir = Direction::DIRECTION_DOWN;
         }
     }
     else
@@ -725,7 +809,7 @@ void Link::move() noexcept
         {
             if (m_inventory.shieldEquipped())
             {
-                WeaponLevel shieldLevel = m_inventory.shieldLevel();
+                WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_DOWN_SMALL_SHIELD;
@@ -739,7 +823,7 @@ void Link::move() noexcept
             {
                 m_state = LINK_WALK_DOWN;
             }
-            m_direction = Direction::DIRECTION_DOWN;
+            m_dir = Direction::DIRECTION_DOWN;
         }
     }
 }
@@ -748,7 +832,7 @@ void Link::move() noexcept
 void Link::updateState() noexcept
 {
     bool shieldEquipped = m_inventory.shieldEquipped();
-    WeaponLevel shieldLevel = m_inventory.shieldLevel();
+    WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
 
     switch (m_state)
     {
@@ -940,12 +1024,12 @@ bool Link::moving() const noexcept
 
 Direction Link::direction() const noexcept
 {
-    return m_direction;
+    return m_dir;
 }
 
-void Link::useWeapon(WEAPON weapon) noexcept
+void Link::useWeapon(WeaponItem weapon) noexcept
 {
-    WeaponLevel shieldLevel = m_inventory.shieldLevel();
+    WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
 
     switch (weapon)
     {
@@ -985,8 +1069,8 @@ void Link::useWeapon(WEAPON weapon) noexcept
         if (m_sword == nullptr)
         {
             m_sword = std::make_unique<Sword>();
-            m_sword->setDirection(m_direction);
-            m_sword->setPosition(m_positionVector);
+            m_sword->setDirection(m_dir);
+            m_sword->setPosition(m_position);
             m_usingSword = true;
         }
         
@@ -1096,11 +1180,11 @@ void Link::useWeapon(WEAPON weapon) noexcept
         // For arrows it will get removed when it goes out of view
 
 
-            if (m_inventory.bowAndArrowAvailable() && m_canUseArrow)
+            if (m_inventory.arrows() && m_canUseArrow)
             {
                 auto arrow = std::make_unique<Arrow>();
-                arrow->setDirection(m_direction);
-                arrow->setPosition(m_positionVector);
+                arrow->setDirection(m_dir);
+                arrow->setPosition(m_position);
                 m_inventory.useBowAndArrow();
                 m_quiver.emplace_back(std::move(arrow));
                 m_canUseArrow = false;
@@ -1119,8 +1203,8 @@ void Link::useWeapon(WEAPON weapon) noexcept
         if (m_boomerang == nullptr)
         {
             m_boomerang = new Boomerang();
-            m_boomerang->setDirection(m_direction);
-            m_boomerang->setPosition(m_positionVector);
+            m_boomerang->setDirection(m_dir);
+            m_boomerang->setPosition(m_position);
         }
         
         break;
@@ -1130,11 +1214,11 @@ void Link::useWeapon(WEAPON weapon) noexcept
 
         if (m_bomb == nullptr)
         {
-            if (m_inventory.bombsAvailable())
+            if (m_inventory.bombs())
             {
                 m_bomb = std::make_unique<Bomb>();
-                m_bomb->setDirection(m_direction);
-                m_bomb->setPosition(m_positionVector);
+                m_bomb->setDirection(m_dir);
+                m_bomb->setPosition(m_position);
                 m_inventory.useBombs();
             }
 
@@ -1143,8 +1227,7 @@ void Link::useWeapon(WEAPON weapon) noexcept
         
         
         break;
-    case WPN_POWER_BRACELET_1: break;
-    case WPN_POWER_BRACELET_2: break;
+    case WPN_POWER_BRACELET: break;
     case WPN_ROC_FEATHER: break;
     case WPN_HOOKSHOT: break;
     case WPN_OCARINA: break;
@@ -1155,8 +1238,8 @@ void Link::useWeapon(WEAPON weapon) noexcept
         if (m_flameRod == nullptr)
         {
             m_flameRod = new FlameRod();
-            m_flameRod->setDirection(m_direction);
-            m_flameRod->setPosition(m_positionVector);
+            m_flameRod->setDirection(m_dir);
+            m_flameRod->setPosition(m_position);
 
             switch (m_state)
             {

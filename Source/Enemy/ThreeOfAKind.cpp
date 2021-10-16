@@ -8,7 +8,7 @@ ThreeOfAKind::ThreeOfAKind(float x, float y) :
     Renderable("Three Of A Kind", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
-    m_direction = Direction::DIRECTION_DOWN;
+    m_dir = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
     m_width = 16;
@@ -18,11 +18,11 @@ ThreeOfAKind::ThreeOfAKind(float x, float y) :
     m_moving = false;
     m_speed = 1;
     // Set it off in a random direction
-    m_directionVector = { 0, m_speed };
+    m_direction = { 0, m_speed };
 
 }
 
-void ThreeOfAKind::render(SDL_Renderer* renderer) noexcept
+void ThreeOfAKind::render() noexcept
 {
     auto animation = m_enemy[ENEMY_THREE_OF_A_KIND];
 
@@ -42,13 +42,13 @@ void ThreeOfAKind::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_flip), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_flip), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -75,6 +75,10 @@ void ThreeOfAKind::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void ThreeOfAKind::update() noexcept
+{
+}
+
 float ThreeOfAKind::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -83,7 +87,7 @@ float ThreeOfAKind::health() const noexcept
 
 Vector<float> ThreeOfAKind::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void ThreeOfAKind::die() noexcept
@@ -114,7 +118,7 @@ void ThreeOfAKind::attack() noexcept
             {
                 {m_speed, 0}, {0, m_speed}, {-m_speed, 0}, {0, -m_speed}
             };
-            m_directionVector = dirs[dir];
+            m_direction = dirs[dir];
 
             m_moving = true;
         }
@@ -125,7 +129,7 @@ void ThreeOfAKind::attack() noexcept
         static auto steps = random(48, 96);
         if (m_steps < steps)
         {
-            m_positionVector += m_directionVector;
+            m_position += m_direction;
             m_steps++;
         }
         else

@@ -10,7 +10,7 @@ PigWarrior::PigWarrior(EnemyType enemyType, float x, float y) :
     m_type(enemyType),
     m_steps(0)
 {
-    m_direction = Direction::DIRECTION_DOWN;
+    m_dir = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
     m_width = 16;
@@ -19,7 +19,7 @@ PigWarrior::PigWarrior(EnemyType enemyType, float x, float y) :
     m_health = 2;
     m_speed = 0.5f;
 }
-void PigWarrior::render(SDL_Renderer* renderer) noexcept
+void PigWarrior::render() noexcept
 {
     // TODO: Render wings if winged octorok and change behaviour when Link close
     auto animation = m_enemy[ENEMY_PIG_WARRIOR];
@@ -40,13 +40,13 @@ void PigWarrior::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -64,6 +64,10 @@ void PigWarrior::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void PigWarrior::update() noexcept
+{
+}
+
 float PigWarrior::health() const noexcept
 {
     return m_health;
@@ -71,7 +75,7 @@ float PigWarrior::health() const noexcept
 
 Vector<float> PigWarrior::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void PigWarrior::attack() noexcept
@@ -101,19 +105,19 @@ void PigWarrior::attack() noexcept
             {
             case Direction::DIRECTION_DOWN:
                 m_auxiliaryFrame = 2;
-                m_directionVector = { 0, m_speed };
+                m_direction = { 0, m_speed };
                 break;
             case Direction::DIRECTION_UP:
                 m_auxiliaryFrame = 4;
-                m_directionVector = { 0, -m_speed };
+                m_direction = { 0, -m_speed };
                 break;
             case Direction::DIRECTION_LEFT:
                 m_auxiliaryFrame = 0;
-                m_directionVector = { -m_speed, 0 };
+                m_direction = { -m_speed, 0 };
                 break;
             case Direction::DIRECTION_RIGHT:
                 m_auxiliaryFrame = 6;
-                m_directionVector = { m_speed, 0 };
+                m_direction = { m_speed, 0 };
                 break;
             }
             m_moving = true;
@@ -125,7 +129,7 @@ void PigWarrior::attack() noexcept
         static auto steps = random(16, 48);
         if (m_steps < steps)
         {
-            m_positionVector += m_directionVector;
+            m_position += m_direction;
             m_steps++;
         }
         else

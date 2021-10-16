@@ -23,7 +23,7 @@ protected:
 
     Singleton()
     {
-        std::cout << "Creating " << typeid(*this).name() << '\n';
+        //std::cout << "Creating " << typeid(*this).name() << '\n';
     }
     virtual ~Singleton() = default;
 };

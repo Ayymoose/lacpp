@@ -43,8 +43,8 @@ class Camera : public Renderable, public Singleton<Camera>
 public:
     void setPosition(int x, int y) noexcept;
     void setScrollSpeed(int scrollSpeed) noexcept;
-    void render(SDL_Renderer* renderer) noexcept override;
-
+    void render() noexcept override;
+    void update() noexcept override;
     void setTileMap(RoomName tilemap) noexcept;
 
     // Returns true whether a rect is visible in the camera region

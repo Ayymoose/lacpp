@@ -5,12 +5,17 @@
 #include <iostream>
 #include <assert.h>
 #include "ZD_Assert.h"
+#include "..\Engine\Vector.h"
+
 
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
 // A texture is provided to use for the object
 
 // A Renderable can also be animated too
+
+namespace Zelda
+{
 
 struct Animation
 {
@@ -26,8 +31,8 @@ class Renderable
 public:
 
     virtual ~Renderable() = default;
-    // Can't be const* because the library takes non-const pointer
-    virtual void render(SDL_Renderer* renderer) noexcept = 0;
+    virtual void render() noexcept = 0;
+    virtual void update() noexcept = 0;
 
     int depth() const noexcept
     {
@@ -63,12 +68,13 @@ public:
         m_orientation(0.0f),
         m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
     {
+        assert(texture);
         m_texture = texture;
         SDL_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height), SDL_ERROR_MESSAGE);
         m_depth = depth;
     }
 
-    Renderable() : 
+    Renderable() :
         m_texture(nullptr),
         m_width(0),
         m_height(0),
@@ -165,4 +171,14 @@ protected:
     float m_orientation;
     SDL_RendererFlip m_flip;
 
+    // Updateable
+    static constexpr double m_dt = 1000.0 / (double)60;
+    double m_currentTime = 0;
+    double m_accumulator = 0;
+    static constexpr double m_maxFrameTime = 60;
+    double m_alphaTime = 0;
+    Vector<float> m_lerpPrevious;
+
 };
+
+}

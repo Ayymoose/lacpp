@@ -16,10 +16,10 @@ Bubble::Bubble(float x, float y) :
     m_speed = 1;
 
     // Set it off in a random direction
-    m_directionVector = { 1, 1 };
+    m_direction = { 1, 1 };
 }
 
-void Bubble::render(SDL_Renderer* renderer) noexcept
+void Bubble::render() noexcept
 {
     auto animation = m_enemy[ENEMY_BUBBLE];
 
@@ -39,13 +39,13 @@ void Bubble::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -60,6 +60,10 @@ void Bubble::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void Bubble::update() noexcept
+{
+}
+
 float Bubble::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -68,7 +72,7 @@ float Bubble::health() const noexcept
 
 Vector<float> Bubble::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void Bubble::die() noexcept
@@ -80,25 +84,25 @@ void Bubble::attack() noexcept
 {
     // Bounces diagonally off the walls/screen
     // Change direction as if bouncing off a wall
-    if (m_positionVector.x < 0)
+    if (m_position.x < 0)
     {
-        m_directionVector.x = -m_directionVector.x;
+        m_direction.x = -m_direction.x;
     }
-    else if (m_positionVector.x > (Camera::getInstance().getX() + CAMERA_WIDTH) - m_width)
+    else if (m_position.x > (Camera::getInstance().getX() + CAMERA_WIDTH) - m_width)
     {
-        m_directionVector.x = -m_directionVector.x;
-    }
-
-    if (m_positionVector.y < 0)
-    {
-        m_directionVector.y = -m_directionVector.y;
-    }
-    else if (m_positionVector.y > (Camera::getInstance().getY() + CAMERA_HEIGHT) - m_height)
-    {
-        m_directionVector.y = -m_directionVector.y;
+        m_direction.x = -m_direction.x;
     }
 
-    m_positionVector += m_directionVector * m_speed;
+    if (m_position.y < 0)
+    {
+        m_direction.y = -m_direction.y;
+    }
+    else if (m_position.y > (Camera::getInstance().getY() + CAMERA_HEIGHT) - m_height)
+    {
+        m_direction.y = -m_direction.y;
+    }
+
+    m_position += m_direction * m_speed;
 }
 
 }

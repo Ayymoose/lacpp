@@ -17,62 +17,82 @@ public:
         this->y = y;
     }
 
-    Vector<T> operator/(float div) const noexcept
+    Vector operator/(double scalar) const noexcept
     {
-        assert(div != 0);
-        return Vector<T>(x / div, y / div);
+        assert(scalar != 0);
+        return Vector(x / scalar, y / scalar);
     }
 
-    Vector<T> operator+(Vector<T> other) noexcept
+    Vector operator+(Vector other) const noexcept
     {
-        return Vector<T>(x + other.x, y + other.y);
+        return Vector(x + other.x, y + other.y);
     }
 
-    Vector<T> operator*(float scalar) const noexcept
+    Vector operator*(double scalar) const noexcept
     {
-        return Vector<T>(x * scalar, y * scalar);
+        return Vector(x * scalar, y * scalar);
     }
 
-    Vector<T> operator-() const noexcept
+    Vector operator*=(double scalar) noexcept
     {
-        return Vector<T>(-x, -y);
+        x *= scalar;
+        y *= scalar;
+        return *this;
     }
 
-    Vector<T> operator+=(Vector<T> other) noexcept
+    Vector operator/=(double scalar) noexcept
+    {
+        assert(scalar != 0);
+        x /= scalar;
+        y /= scalar;
+        return *this;
+    }
+
+    Vector operator-() const noexcept
+    {
+        return Vector(-x, -y);
+    }
+
+    Vector operator+=(Vector other) noexcept
     {
         x += other.x;
         y += other.y;
         return *this;
     }
 
-    Vector<T> operator=(Vector<T> other) noexcept
+    Vector operator-=(Vector other) noexcept
+    {
+        return operator+=(-other);
+    }
+
+    Vector operator=(Vector other) noexcept
     {
         x = other.x;
         y = other.y;
         return *this;
     }
 
-    Vector<T> operator-(Vector<T> other) const noexcept
+    Vector operator-(Vector other) const noexcept
     {
-        return Vector<T>(x - other.x, y - other.y);
+        return Vector(x - other.x, y - other.y);
     }
 
-    bool operator==(Vector<T> other) const noexcept
+    bool operator==(Vector other) const noexcept
     {
-        return (x == other.x && y == other.y);
+        return ((x == other.x) && (y == other.y));
     }
 
-    bool operator!=(Vector<T> other) const noexcept
+    bool operator!=(Vector other) const noexcept
     {
         return !operator==(other);
     }
 
     // Distance between two vectors
-    static constexpr float distanceBetween(const Vector& v1, const Vector& v2)
+    static constexpr auto distanceBetween(const Vector& v1, const Vector& v2)
     {
         const auto dx = v1.x - v2.x;
         const auto dy = v1.y - v2.y;
-        return std::sqrt(dx * dx + dy * dy);
+        return std::sqrt((dx * dx) + (dy * dy));
     }
 
     // Cross product of 2 2D vectors
@@ -84,21 +104,22 @@ public:
     // Dot product of 2 2D vectors 
     static constexpr T dot(const Vector& v1, const Vector& v2) noexcept
     {
-        return v1.x * v2.x + v1.y * v2.y;
+        return (v1.x * v2.x) + (v1.y * v2.y);
     }
 
-    static constexpr Vector<T> normalise(const Vector& v) noexcept
+    static constexpr Vector normalise(const Vector& v) noexcept
     {
-        float len = v.length();
+        auto len = v.length();
         // TODO: Double/float epsilon comparison
         assert(len != 0);
-        return Vector<T>(v.x / len, v.y / len);
+        return Vector(v.x / len, v.y / len);
     }
 
     // Normalise a vector
+    // Note this will only work for float and double 
     void normalise() noexcept
     {
-        float len = length();
+        auto len = length();
         // TODO: Double/float epsilon comparison
         assert(len != 0);
 
@@ -106,10 +127,30 @@ public:
         y /= len;
     }
 
-    // Vector length
-    constexpr float length() const noexcept
+    // Get the normal for this vector
+    Vector normal() const noexcept
     {
-        return static_cast<float>(std::sqrt(x * x + y * y));
+        Vector vNormal = *this;
+        auto len = length();
+        // TODO: Double/float epsilon comparison
+        assert(len != 0);
+
+        return vNormal / len;
+    }
+
+    // Vector length
+    constexpr auto length() const noexcept
+    {
+        return std::sqrt((x * x) + (y * y));
+    }
+
+    // Linear interpolate between two vectors
+    static constexpr Vector lerp(const Vector& A, const Vector& B, double alpha) noexcept
+    {
+        // A* t + B * (1.f - t);
+        assert(alpha >= 0.0 && alpha <= 1.0);
+        return Vector((1.0 - alpha) * A.x + alpha * B.x,
+            (1.0 - alpha) * A.y + alpha * B.y);
     }
 
     T x;

@@ -54,6 +54,8 @@ constexpr int INVENTORY_B = 168;
 constexpr int BOMBS_MAX = 50;
 constexpr int MAGIC_POWDER_MAX = 50;
 constexpr int ARROWS_MAX = 30;
+
+// Except for this
 constexpr int RUPPEES_MAX = 999;
 
 // The width/height of the weapon level sprite
@@ -67,19 +69,18 @@ constexpr int WEAPON_LEVEL_HEIGHT = 8;
 // Subscreen constants
 constexpr int SELECT_SUBSCREEN_WIDTH = 80;
 constexpr int SELECT_SUBSCREEN_HEIGHT = 32;
-    
+
 // Hearts per row
 constexpr int HEARTS_PER_ROW = 7;
 constexpr int HEARTS_PIECE_MAX = 4;
-    
+
 // Maximum photographs we are allowed
 constexpr int MAX_PHOTOGRAPHS = 12;
-    
+
 // Animation stuff
 constexpr int INSTRUMENTS_FRAME = 12;
 
 // Dungeon map
-constexpr int MAX_DUNGEONS = 9;
 constexpr int DUNGEON_MAX_BLOCKS_X = 9;
 constexpr int DUNGEON_MAX_BLOCKS_Y = 9;
 
@@ -87,7 +88,8 @@ constexpr float INVENTORY_SELECTOR_FPS = (1.0f / 4.0f);
 constexpr float INSTRUMENT_FPS = (1.0f / 6.0f);
 constexpr float PUSH_SELECTOR_FPS = (1.0f / 2.0f);
 
-enum WEAPON
+// The order of these items matters as we use them to index the sprite src rect from the sprite sheet
+enum WeaponItem
 {
     WPN_NONE = -1,
     WPN_SWORD = 0,
@@ -96,8 +98,8 @@ enum WEAPON
     WPN_BOOMERANG,
     WPN_MAGIC_POWDER,
     WPN_BOMBS,
-    WPN_POWER_BRACELET_1,
-    WPN_POWER_BRACELET_2, // The power bracelet level 2 has a different sprite
+    WPN_POWER_BRACELET,
+    // 
     WPN_ROC_FEATHER,
     WPN_HOOKSHOT,
     WPN_OCARINA,
@@ -107,7 +109,7 @@ enum WEAPON
     WPN_COUNT
 };
 
-enum class WeaponLevel
+enum WeaponLevel
 {
     WPN_LEVEL_NONE = -1,
     WPN_LEVEL_1 = 1,
@@ -126,7 +128,7 @@ enum class OcarinaSong
 
 enum InventorySprites
 {
-    INVENTORY_DIVIDER_H = WPN_COUNT,
+    INVENTORY_DIVIDER_H = WPN_COUNT + 1, // +1 because I removed the power-bracelet 2
     INVENTORY_DIVIDER_V,
     INVENTORY_B_BUTTON,
     INVENTORY_A_BUTTON,
@@ -216,7 +218,7 @@ enum InventorySprites
     INVENTORY_COUNT
 };
 
-enum class Instrument
+enum Instrument
 {
     INSTRUMENT_NONE = -1,
     FULL_MOON_CELLO,
@@ -259,7 +261,7 @@ enum class Tunic
     TUNIC_COUNT
 };
 
-enum class HeartPieces
+enum HeartPiece
 {
     HEART_NONE = -1,
     HEART_ZERO = 0,
@@ -270,7 +272,7 @@ enum class HeartPieces
     HEART_COUNT
 };
 
-enum class Dungeon
+enum Dungeon
 {
     DUNGEON_NONE = -1,
     DUNGEON_COLOUR_DUNGEON,
@@ -285,33 +287,117 @@ enum class Dungeon
     DUNGEON_COUNT
 };
 
+enum DungeonKey
+{
+    KEY_NONE = -1,
+    KEY_TAIL,
+    KEY_SLIME,
+    KEY_ANGLER,
+    KEY_FACE,
+    KEY_BIRD,
+    KEY_COUNT
+};
+
+enum class DungeonItem
+{
+    ITEM_KEY,
+    ITEM_COMPASS,
+    ITEM_MAP,
+    ITEM_NIGHTMARE_KEY,
+    ITEM_OWL_BEAK
+};
+
+enum class DungeonRoomItem
+{
+    ITEM_NONE = -1,
+    ITEM_CHEST_CLOSED,
+    ITEM_CHEST_OPEN,
+    ITEM_NIGHTMARE_KEY
+};
+
+
+enum InventoryMiscItem
+{
+    ITEM_RED_POTION,
+    ITEM_FLIPPERS
+};
+
+struct DungeonMapEntry
+{
+    uint8_t roomType;
+    bool visited;
+    DungeonRoomItem roomItem;
+};
+
+enum Ruppee
+{
+    RUPPEE_ONE = 1,
+    RUPPEE_FIVE = 5,
+    RUPPEE_TEN = 10,
+    RUPPEE_TWENTY = 20,
+    RUPPEE_FIFTY = 50,
+    RUPPEE_HUNDRED = 100,
+    RUPPEE_TWO_HUNDRED = 200
+};
+
 #define TRADE_ITEM_SPRITE(ITEM) (INVENTORY_DOLL + ITEM)
+
+using InventoryWeapon = std::pair<WeaponItem, WeaponLevel>;
 
 class Inventory : public Renderable, public Controllable
 {
 public:
     Inventory();
-    void control() noexcept override;
-    void render(SDL_Renderer* renderer) noexcept override;
+    void control(double ts) noexcept override;
+    void render() noexcept override;
+    void update() noexcept override;
     void open() noexcept;
     void close() noexcept;
 
-    bool magicPowderAvailabe() const noexcept;
-    bool bowAndArrowAvailable() const noexcept;
-    bool bombsAvailable() const noexcept;
+    bool magicPowder() const noexcept;
+    bool arrows() const noexcept;
+    bool bombs() const noexcept;
+
+    void addItemQuantity(WeaponItem item, int quantity) noexcept;
+    void addItem(const InventoryWeapon& inventoryWeapon) noexcept;
+    void addItem(DungeonKey dungeonKey) noexcept;
+    void addItem(DungeonItem dungeonItem) noexcept;
+    void addItem(TradeItem tradeItem) noexcept;
+    void addItem(InventoryMiscItem inventoryMiscItem) noexcept;
+    void addItem(Instrument instrument) noexcept;
+    void addItem(Ruppee ruppees) noexcept;
+    void addItem(Tunic tunic) noexcept;
+    void addItem(HeartPiece heartPiece) noexcept;
+    void addItem(int photograph) noexcept;
+
+    void useItem(DungeonItem dungeonItem) noexcept;
+    void useItem(InventoryMiscItem inventoryMiscItem) noexcept;
+
+    void removeItem(const InventoryWeapon& inventoryWeapon) noexcept;
+    WeaponLevel itemLevel(WeaponItem item) const noexcept;
+
+    void inDungeon(bool inside) noexcept;
 
     void useMagicPowder() noexcept;
     void useBowAndArrow() noexcept;
     void useBombs() noexcept;
 
     bool shieldEquipped() const noexcept;
-    WeaponLevel shieldLevel() const noexcept;
 
-    WEAPON weaponA() const noexcept;
-    WEAPON weaponB() const noexcept;
+    InventoryWeapon weaponA() const noexcept;
+    InventoryWeapon weaponB() const noexcept;
 
     // Set position of current location marker for dungeon
     void setDungeonLocationMarker(int x, int y) noexcept;
+    void getDungeonMap(Dungeon dungeon, DungeonMapEntry(&dungeonMapEntry)[DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y]) const noexcept;
+    void setDungeonMapEntry(const int x, const int y, const DungeonMapEntry& dungeonMapEntry) noexcept;
+
+
+    void drawSubscreen() const noexcept;
+    void moveSelectorRight() noexcept;
+    void moveSelectorUp() noexcept;
+    void moveSelectorDown() noexcept;
+    void moveSelectorLeft() noexcept;
 
 private:
 
@@ -325,50 +411,59 @@ private:
     void drawInventoryWeapons(SDL_Renderer* renderer) noexcept;
     void drawSelector(SDL_Renderer* renderer) noexcept;
     void drawInventoryDividers(SDL_Renderer* renderer) noexcept;
-    void drawTopHUD(SDL_Renderer* renderer) noexcept;
+    void drawHUD(SDL_Renderer* renderer) noexcept;
+    
 
-    void drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept;
-    void drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept;
+    void drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) const noexcept;
+    void drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WeaponItem weapon, SDL_Rect* dstRect) noexcept;
 
     SDL_Texture* m_subscreen;   // The select status at the bottom of the screen
     TradeItem m_tradeItem;      // Current trade item
 
+
+    // TODO: Golden leaves in Kanalet castle
+    // TODO: Flashing instrument background
+    // TODO: Dungeon map hidden room connections when discovered
+    // TODO: Ocarina song selection window
+    // TODO: Chest and nightmare locations for each dungeon map
+    // TODO: Every other dungeon map layout
+    // TODO: Transition the subscreen
+    // TODO: Inventory whiteout
+
+
     bool m_open;
 
     // Dungeon related items
-    bool m_inDungeon;    // Are we in a dungeon?
-    uint8_t m_dungeonKeys[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];  // Number of dungeon keys
-    bool m_compass[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];       // Dungeon compass
-    bool m_dungeonMap[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];   // Dungeon map
-    bool m_nightmareKey[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)]; // Nightmare boss key
-    bool m_owlBeak[static_cast<uint8_t>(Dungeon::DUNGEON_COUNT)];      // Owl beak
+    bool m_inDungeon;    // Are we in a dungeon? 
 
-    // Dungeon keys
-    bool m_tailKey;
-    bool m_slimeKey;
-    bool m_anglerKey;
-    bool m_faceKey;
-    bool m_birdKey;
+    // The keys used to open dungeon entrances
+    DungeonKey m_dungeonEntraceKeys[KEY_COUNT];
+
+    // Dungeon items
+    int m_dungeonKeys[DUNGEON_COUNT];  // Number of dungeon keys (small ones)
+    bool m_compass[DUNGEON_COUNT];       // Dungeon compass
+    bool m_dungeonMap[DUNGEON_COUNT];   // Dungeon map
+    bool m_nightmareKey[DUNGEON_COUNT]; // Nightmare boss key
+    bool m_owlBeak[DUNGEON_COUNT];      // Owl beak
 
     // Inventory related variables
     int m_arrows;         // Number of arrows
     int m_bombs;          // Number of bombs
     int m_magicPowder;    // Number of magic powder
-    WeaponLevel m_swordLevel;     // Sword Level 1 or 2
-    WeaponLevel m_shieldLevel;    // Shield Level 1 or 2
-    WeaponLevel m_braceletLevel;  // Bracelet Level 1 or 2
     OcarinaSong m_ocarinaSong;    // Ocarina song level
     int m_seashells;      // Number of Seashells
     bool m_flippers;          // Flippers
     bool m_potion;            // Red potion bottle
     Tunic m_tunic;            // Tunic
     int m_heartPieces;    // Heart pieces (0 to 4)
-    int m_goldleaf;       // Golden leaves
+    int m_goldleafs;       // Golden leaves (Shown in Kanalet castle only)
     int m_photographs;
 
+    int m_ruppees;
+
     // Weapon A and B
-    WEAPON m_weaponA;
-    WEAPON m_weaponB;
+    InventoryWeapon m_weaponA;
+    InventoryWeapon m_weaponB;
 
     // Selector position 
     int m_selectorX;
@@ -381,10 +476,17 @@ private:
     Timer m_selectorTimer;
 
     // Weapons
-    WEAPON m_items[INVENTORY_MAX_WEAPONS];
+    InventoryWeapon m_weaponItems[INVENTORY_MAX_WEAPONS];
+    bool itemExists(const InventoryWeapon& inventoryWeapon) const noexcept;
+    bool itemExists(WeaponItem item) const noexcept;
+    bool itemExists(DungeonKey dungeonKey) const noexcept;
+
+    // Return the source rect for the given item
+    auto inventoryWeaponSpriteSrc(const InventoryWeapon& item) const noexcept;
+
 
     // Instruments
-    Instrument m_instruments[static_cast<int>(Instrument::INSTRUMENT_COUNT)];
+    Instrument m_instruments[INSTRUMENT_COUNT];
 
     Timer m_instrumentTimer;
     Timer m_pushSelectTimer;
@@ -444,111 +546,117 @@ private:
 
     */
 
+
+    // Current dungeon we are in
     Dungeon m_dungeon;
 
-    uint8_t m_dungeonMaps[MAX_DUNGEONS][DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y] =
+    static_assert(DUNGEON_MAX_BLOCKS_X == DUNGEON_MAX_BLOCKS_Y);
+
+    DungeonMapEntry m_dungeonMaps[DUNGEON_COUNT][DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y] =
     {
         {   // Lvl 0 - Colour dungeon
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
-            {0,0,0,0,0,0,0,0,1},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NIGHTMARE_KEY},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_CHEST_CLOSED}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         },
         {   // Lvl 1 - Tail Cave
             // TODO: Never thought about where the dungeon marker is when Link is in the side-scrolling part of dungeon
             // Maybe it stays at the last point when we are side scrolling
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            { 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            { 0, 0, 0, 0, 0, 0,12, 0, 1},
-            { 0, 5,11, 6, 0, 0, 4, 0, 1},
-            {12, 0,17, 3, 8,12,19, 0, 1},
-            {19, 5,17,10,10,10,15, 0, 1},
-            {13, 0,14,11,15, 0, 0, 0, 1},
-            { 0, 5,20,18, 0, 0, 0, 0, 1},
+            
+            // TODO: Add the treasure remaininng treeassure cheests
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {19,false,DungeonRoomItem::ITEM_NIGHTMARE_KEY},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_CHEST_CLOSED}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
             // Rooms start at the bottom left of the map here (0,8)
         },
         {   // Lvl 2 - Bottle Grotto
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_NONE}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         },
         {   // Lvl 3 - Key Cavern
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_NONE}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         },
         {   // Lvl 4 - Angler Tunnel
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_NONE}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         },
         {   // Lvl 5 - Catfish Maw
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_NONE}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         },
         {   // Lvl 6 - Face Shrine
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_NONE}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         },
         {   // Lvl 7 - Eagle Tower
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_NONE}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         },
         {   // Lvl 8 - Turtle Rock
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
+            { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE}, {6,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {4,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {12,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {3,false,DungeonRoomItem::ITEM_NONE}, {8,false,DungeonRoomItem::ITEM_NONE}, {12,false,DungeonRoomItem::ITEM_NONE},{19,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
+            { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
         }
     };
 
@@ -561,8 +669,8 @@ private:
         {130,20,8,16},  // WPN_BOOMERANG
         {20,20,8,16},   // WPN_MAGIC_POWDER
         {70,20,8,16},   // WPN_BOMBS
-        {40,20,8,16},   // WPN_POWER_BRACELET_1
-        {80,20,8,16},   // WPN_POWER_BRACELET_2
+        {40,20,8,16},   // WPN_POWER_BRACELET Level 1
+        {80,20,8,16},   // WPN_POWER_BRACELET Level 2
         {30,20,8,16},   // WPN_ROC_FEATHER
         {120,20,8,16},  // WPN_HOOKSHOT
         {110,20,8,16},  // WPN_OCARINA

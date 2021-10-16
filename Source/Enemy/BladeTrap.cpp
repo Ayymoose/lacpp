@@ -24,7 +24,7 @@ BladeTrap::BladeTrap(float x, float y) :
     m_retreatSpeed = m_speed / 2;
 }
 
-void BladeTrap::render(SDL_Renderer* renderer) noexcept
+void BladeTrap::render() noexcept
 {
     auto animation = m_enemy[ENEMY_BLADETRAP];
 
@@ -44,13 +44,13 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -67,7 +67,7 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
     /*SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255), SDL_ERROR_MESSAGE);
 
     // Position on screen
-    auto positionVector = m_positionVector - Camera::getInstance().position();
+    auto positionVector = m_position - Camera::getInstance().position();
 
     // Define points on the trap
     auto b0 = positionVector;
@@ -115,6 +115,10 @@ void BladeTrap::render(SDL_Renderer* renderer) noexcept
     // SDL_RenderDrawLine
 }
 
+void BladeTrap::update() noexcept
+{
+}
+
 float BladeTrap::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -123,7 +127,7 @@ float BladeTrap::health() const noexcept
 
 Vector<float> BladeTrap::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void BladeTrap::attack() noexcept
@@ -131,7 +135,7 @@ void BladeTrap::attack() noexcept
     // Attacks when Link comes into range by sliding range pixels out
 
     // Position on screen
-    auto positionVector = m_positionVector - Camera::getInstance().position();
+    auto positionVector = m_position - Camera::getInstance().position();
 
     // Define points on the trap
     auto b0 = positionVector;
@@ -160,7 +164,7 @@ void BladeTrap::attack() noexcept
     auto p3 = linkPositionVector;
     p3.y += m_height;
 
-    auto distanceToLink = (Link::getInstance().position() - m_positionVector).length();
+    auto distanceToLink = (Link::getInstance().position() - m_position).length();
 
     // Returns true if p0 is between p1 and p2
     // p1 and p2 must be co-linear
@@ -189,7 +193,7 @@ void BladeTrap::attack() noexcept
                 // Attack down
                 //std::cout << "Attacking right 1\n";
                 m_attack = true;
-                m_directionVector = { 1,0 };
+                m_direction = { 1,0 };
             }
             else if (pointIsBetweenPoints(false, p0, b1, b2))
             {
@@ -200,12 +204,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(false, p0, b1, (b1 + b2) / 2))
                 {
                     //std::cout << "Attacking right 2\n";
-                    m_directionVector = { 1,0 };
+                    m_direction = { 1,0 };
                 }
                 else
                 {
                     //std::cout << "Attacking down 1\n";
-                    m_directionVector = { 0,1 };
+                    m_direction = { 0,1 };
                 }
             }
             else if (pointIsBetweenPoints(false, p3, b1, b2))
@@ -217,12 +221,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(false, p3, b1, (b1 + b2) / 2))
                 {
                     //std::cout << "Attacking up 1\n";
-                    m_directionVector = { 0,-1 };
+                    m_direction = { 0,-1 };
                 }
                 else
                 {
                     //std::cout << "Attacking right 3\n";
-                    m_directionVector = { 1,0 };
+                    m_direction = { 1,0 };
                 }
             }
         }
@@ -235,7 +239,7 @@ void BladeTrap::attack() noexcept
                 // Attack down
                 //std::cout << "Attacking down 2\n";
                 m_attack = true;
-                m_directionVector = { 0,1 };
+                m_direction = { 0,1 };
             }
             else if (pointIsBetweenPoints(true, p1, b3, b2))
             {
@@ -246,12 +250,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(true, p1, b3, (b2 + b3) / 2))
                 {
                     //std::cout << "Attacking left 1\n";
-                    m_directionVector = { -1,0 };
+                    m_direction = { -1,0 };
                 }
                 else
                 {
                     //std::cout << "Attacking down 3\n";
-                    m_directionVector = { 0,1 };
+                    m_direction = { 0,1 };
                 }
             }
             else if (pointIsBetweenPoints(true, p0, b3, b2))
@@ -263,12 +267,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(true, p0, b3, (b2 + b3) / 2))
                 {
                     //std::cout << "Attacking down 4\n";
-                    m_directionVector = { 0,1 };
+                    m_direction = { 0,1 };
                 }
                 else
                 {
                     //std::cout << "Attacking right 4\n";
-                    m_directionVector = { 1,0 };
+                    m_direction = { 1,0 };
                 }
             }
         }
@@ -280,7 +284,7 @@ void BladeTrap::attack() noexcept
                 // Attack up
                 m_attack = true;
                 //std::cout << "Attacking up 2\n";
-                m_directionVector = { 0,-1 };
+                m_direction = { 0,-1 };
             }
             else if (pointIsBetweenPoints(true, p3, b0, b1))
             {
@@ -291,12 +295,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(true, p3, b0, (b0 + b1) / 2))
                 {
                     //std::cout << "Attacking up 3\n";
-                    m_directionVector = { 0,-1 };
+                    m_direction = { 0,-1 };
                 }
                 else
                 {
                     //std::cout << "Attacking right 5\n";
-                    m_directionVector = { 1,0 };
+                    m_direction = { 1,0 };
                 }
             }
             else if (pointIsBetweenPoints(true, p2, b3, b2))
@@ -308,12 +312,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(true, p2, b0, (b0 + b1) / 2))
                 {
                     //std::cout << "Attacking left 2\n";
-                    m_directionVector = { -1,0 };
+                    m_direction = { -1,0 };
                 }
                 else
                 {
                     //std::cout << "Attacking up 4\n";
-                    m_directionVector = { 0,-1 };
+                    m_direction = { 0,-1 };
                 }
             }
         }
@@ -325,7 +329,7 @@ void BladeTrap::attack() noexcept
                 // Attack left
                 m_attack = true;
                 //std::cout << "Attacking left 3\n";
-                m_directionVector = { -1,0 };
+                m_direction = { -1,0 };
             }
             else if (pointIsBetweenPoints(false, p1, b0, b3))
             {
@@ -336,12 +340,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(false, p1, b0, (b0 + b3) / 2))
                 {
                     //std::cout << "Attacking left 4\n";
-                    m_directionVector = { -1,0 };
+                    m_direction = { -1,0 };
                 }
                 else
                 {
                     //std::cout << "Attacking down 5\n";
-                    m_directionVector = { 0,1 };
+                    m_direction = { 0,1 };
                 }
             }
             else if (pointIsBetweenPoints(false, p2, b0, b3))
@@ -353,12 +357,12 @@ void BladeTrap::attack() noexcept
                 if (pointIsBetweenPoints(false, p2, b0, (b0 + b3) / 2))
                 {
                     //std::cout << "Attacking left 5\n";
-                    m_directionVector = { -1,0 };
+                    m_direction = { -1,0 };
                 }
                 else
                 {
                     //std::cout << "Attacking up 5\n";
-                    m_directionVector = { 0,-1 };
+                    m_direction = { 0,-1 };
                 }
             }
         }
@@ -368,7 +372,7 @@ void BladeTrap::attack() noexcept
         // Slide out to the player
         if (m_moved < m_range)
         {
-            m_positionVector += m_directionVector * m_speed;
+            m_position += m_direction * m_speed;
             m_moved += m_speed;
 
             // Start the cooldown period
@@ -389,7 +393,7 @@ void BladeTrap::attack() noexcept
     {
         if (m_moved < m_range)
         {
-            m_positionVector += -m_directionVector * m_retreatSpeed;
+            m_position += -m_direction * m_retreatSpeed;
             m_moved += m_retreatSpeed;
         }
         else

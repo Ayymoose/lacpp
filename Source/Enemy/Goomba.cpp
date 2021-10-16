@@ -16,7 +16,7 @@ Goomba::Goomba(float x, float y) :
     m_speed = 0.5f;
 }
 
-void Goomba::render(SDL_Renderer* renderer) noexcept
+void Goomba::render() noexcept
 {
     auto animation = m_enemy[ENEMY_GOOMBA];
 
@@ -36,13 +36,13 @@ void Goomba::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - Camera::getInstance().getX(),
-        m_positionVector.y - m_yTransition - Camera::getInstance().getY(),
+        m_position.x - m_xTransition - Camera::getInstance().getX(),
+        m_position.y - m_yTransition - Camera::getInstance().getY(),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -57,6 +57,10 @@ void Goomba::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void Goomba::update() noexcept
+{
+}
+
 float Goomba::health() const noexcept
 {
     return m_health;
@@ -64,7 +68,7 @@ float Goomba::health() const noexcept
 
 Vector<float> Goomba::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void Goomba::attack() noexcept
@@ -92,17 +96,17 @@ void Goomba::attack() noexcept
             {
                 {m_speed,0}, {-m_speed, 0}, {0, -m_speed}, {0, m_speed}
             };
-            m_directionVector = dirs[dir];
+            m_direction = dirs[dir];
         }
     }
 
     // If attempt to move out of view, flip direction
-    if (!Camera::getInstance().visible({ m_positionVector.x, m_positionVector.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
+    if (!Camera::getInstance().visible({ m_position.x, m_position.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
     {
-        m_directionVector = -m_directionVector;
+        m_direction = -m_direction;
     }
 
-    m_positionVector += m_directionVector;
+    m_position += m_direction;
 }
 
 void Goomba::die() noexcept

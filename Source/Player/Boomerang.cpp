@@ -19,23 +19,23 @@ Boomerang::Boomerang()
     m_return = false;
 }
 
-void Boomerang::render(SDL_Renderer* renderer) noexcept
+void Boomerang::render() noexcept
 {
 
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG];
 
     SDL_Rect dstRect =
     {
-        m_positionVector.x - Camera::getInstance().getX(),
-        m_positionVector.y - Camera::getInstance().getY(),
+        m_position.x - Camera::getInstance().getX(),
+        m_position.y - Camera::getInstance().getY(),
         m_width,
         m_height
     };
 
-    SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
-    m_boundingBox.x = m_positionVector.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_positionVector.y - Camera::getInstance().getY();
+    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
+    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
 
     // Bounding Box rect
     // SDL_ASSERT(SDL_RenderDrawRect(renderer, &dstRect), SDL_ERROR_MESSAGE);
@@ -45,17 +45,17 @@ void Boomerang::render(SDL_Renderer* renderer) noexcept
     {
         // Get vector from player to here and repeatedly add position till we return to player
         Vector<float> positionVector = Link::getInstance().position();
-        Vector<float> returnVector = positionVector - m_positionVector;
+        Vector<float> returnVector = positionVector - m_position;
         if (returnVector.length() > 0.01f)
         {
             returnVector.normalise();
         }
-        m_positionVector += returnVector * m_speed;
+        m_position += returnVector * m_speed;
     }
     else
     {
         // Throw the boomerang
-        m_positionVector += m_dirVec;
+        m_position += m_dirVec;
     }
 
     // Rotate the boomerang
@@ -71,6 +71,10 @@ void Boomerang::render(SDL_Renderer* renderer) noexcept
     // TODO: Collisions with walls
     // TODO: Correct positioning
     // TODO: Collision with player after moving screen
+}
+
+void Boomerang::update() noexcept
+{
 }
 
 /*void Boomerang::useWeapon()
@@ -92,14 +96,14 @@ void Boomerang::returnToPlayer()
 
 void Boomerang::setPosition(Vector<float> position)
 {
-    m_positionVector = position;
+    m_position = position;
 
     switch (m_direction)
     {
-    case Direction::DIRECTION_LEFT: m_positionVector.x -= m_width; break;
-    case Direction::DIRECTION_RIGHT: m_positionVector.x += m_width * 2; break;
-    case Direction::DIRECTION_DOWN: m_positionVector.y += m_height; break;
-    case Direction::DIRECTION_UP: m_positionVector.y -= m_height; break;
+    case Direction::DIRECTION_LEFT: m_position.x -= m_width; break;
+    case Direction::DIRECTION_RIGHT: m_position.x += m_width * 2; break;
+    case Direction::DIRECTION_DOWN: m_position.y += m_height; break;
+    case Direction::DIRECTION_UP: m_position.y -= m_height; break;
     }
 
 }

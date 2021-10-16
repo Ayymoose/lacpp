@@ -23,21 +23,21 @@ FlameRod::FlameRod()
     m_display = true;
 }
 
-void FlameRod::render(SDL_Renderer* renderer) noexcept
+void FlameRod::render() noexcept
 {
 
     SDL_Rect flameSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME];
 
     SDL_Rect flameDstRect =
     {
-        m_positionVector.x - Camera::getInstance().getX(),
-        m_positionVector.y - Camera::getInstance().getY(),
+        m_position.x - Camera::getInstance().getX(),
+        m_position.y - Camera::getInstance().getY(),
         m_width,
         m_height
     };
 
     // The flame
-    SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
 
     SDL_Rect flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
@@ -51,12 +51,12 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
     };
 
 
-    m_boundingBox.x = m_positionVector.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_positionVector.y - Camera::getInstance().getY();
+    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
+    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
 
     // The flame rod
     if (m_display)
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
 
     // Animate the flame rod
@@ -93,10 +93,14 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
 
 
     // Throw the flame
-    m_positionVector += m_dirVec;
+    m_position += m_dirVec;
 
     // TODO: How to make it that the flamerod stays when the flame goes out?
     // TODO: Use player position for offset
+}
+
+void FlameRod::update() noexcept
+{
 }
 
 /*void FlameRod::useWeapon()
@@ -113,13 +117,13 @@ void FlameRod::render(SDL_Renderer* renderer) noexcept
 
 void FlameRod::setPosition(Vector<float> position)
 {
-    m_positionVector = position;
+    m_position = position;
     m_flameRodPosition = position;
 
     switch (m_direction)
     {
     case Direction::DIRECTION_LEFT:
-        m_positionVector.x -= m_width;
+        m_position.x -= m_width;
 
         m_flameRodOrientation = 0;
         m_flameRodPosition.x -= (m_flameRodWidth / 2) - 4;
@@ -127,14 +131,14 @@ void FlameRod::setPosition(Vector<float> position)
 
         break;
     case Direction::DIRECTION_RIGHT:
-        m_positionVector.x += m_width;
+        m_position.x += m_width;
 
         m_flameRodOrientation = 0;
         m_flameRodPosition.x += (m_flameRodHeight / 2);
         m_flameRodPosition.y -= m_flameRodHeight - 2;
         break;
     case Direction::DIRECTION_DOWN:
-        m_positionVector.y += m_height;
+        m_position.y += m_height;
 
         m_flameRodOrientation = 270;
         m_flameRodPosition.x -= m_flameRodWidth;
@@ -142,7 +146,7 @@ void FlameRod::setPosition(Vector<float> position)
 
         break;
     case Direction::DIRECTION_UP:
-        m_positionVector.y -= m_height;
+        m_position.y -= m_height;
 
         m_flameRodOrientation = 90;
         m_flameRodPosition.x += m_width;

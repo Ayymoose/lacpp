@@ -16,7 +16,7 @@ public:
     {
         std::cout << "Controllable deconstructor called" << std::endl;
     }
-    virtual void control() noexcept = 0;
+    virtual void control(double ts) noexcept = 0;
     std::string name() const noexcept
     {
         assert(!m_controllableName.empty());

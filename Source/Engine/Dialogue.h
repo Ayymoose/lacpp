@@ -44,9 +44,9 @@ public:
     void message(const std::string& message, float yPos) noexcept;
     bool question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
     bool question(const char* question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
-    void render(SDL_Renderer* renderer) noexcept override;
-
-    void control() noexcept override;
+    void render() noexcept override;
+    void update() noexcept override;
+    void control(double ts) noexcept override;
 private:
     Dialogue();
 

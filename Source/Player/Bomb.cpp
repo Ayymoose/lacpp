@@ -22,15 +22,15 @@ Bomb::Bomb()
     m_flashCount = 0;
 }
 
-void Bomb::render(SDL_Renderer* renderer) noexcept
+void Bomb::render() noexcept
 {
     SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOMB];
     srcRect.x = m_animateXPos + (m_currentFrame * (m_width + SPRITE_SPACING));
 
     SDL_Rect dstRect =
     {
-        m_positionVector.x - Camera::getInstance().getX(),
-        m_positionVector.y - Camera::getInstance().getY(),
+        m_position.x - Camera::getInstance().getX(),
+        m_position.y - Camera::getInstance().getY(),
         m_width,
         m_height
     };
@@ -42,8 +42,8 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
     // 3 - Explosion
     // 4 - After smoke
 
-    m_boundingBox.x = m_positionVector.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_positionVector.y - Camera::getInstance().getY();
+    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
+    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
 
     // Draw the exploding parts superimposed on top
     switch (m_currentFrame)
@@ -51,7 +51,7 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
 
     case BOMB_SPRITE_INERT:
     case BOMB_SPRITE_FLASHING:
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         break;
     case BOMB_SPRITE_INITIAL_CLOUD:
 
@@ -61,13 +61,13 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         m_boundingBox.x -= 4;
         m_boundingBox.y -= 4;
 
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 12;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.y += 8;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x -= 12;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 28;
         m_boundingBox.h = 24;
@@ -80,13 +80,13 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         m_boundingBox.x -= 6;
         m_boundingBox.y -= 6;
 
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 16;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_HORIZONTAL), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_HORIZONTAL), SDL_ERROR_MESSAGE);
         dstRect.y += 16;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, 270, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, 270, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
         dstRect.x -= 16;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 32;
         m_boundingBox.h = 32;
@@ -99,13 +99,13 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
         m_boundingBox.x -= 6;
         m_boundingBox.y -= 6;
 
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 16;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.y += 16;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x -= 16;
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 32;
         m_boundingBox.h = 32;
@@ -173,16 +173,20 @@ void Bomb::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void Bomb::update() noexcept
+{
+}
+
 void Bomb::setPosition(Vector<float> position)
 {
-    m_positionVector = position;
+    m_position = position;
 
     switch (m_direction)
     {
-    case Direction::DIRECTION_LEFT: m_positionVector.x -= m_width; break;
-    case Direction::DIRECTION_RIGHT: m_positionVector.x += m_width * 2; break;
-    case Direction::DIRECTION_DOWN: m_positionVector.y += m_height; break;
-    case Direction::DIRECTION_UP: m_positionVector.y -= m_height; break;
+    case Direction::DIRECTION_LEFT: m_position.x -= m_width; break;
+    case Direction::DIRECTION_RIGHT: m_position.x += m_width * 2; break;
+    case Direction::DIRECTION_DOWN: m_position.y += m_height; break;
+    case Direction::DIRECTION_UP: m_position.y -= m_height; break;
     }
 
 }
@@ -194,7 +198,7 @@ bool Bomb::exploded() const
 
 bool Bomb::cull() noexcept
 {
-    return m_exploded || !Camera::getInstance().visible({ m_positionVector.x, m_positionVector.y, static_cast<float>(m_width), static_cast<float>(m_height) });
+    return m_exploded || !Camera::getInstance().visible({ m_position.x, m_position.y, static_cast<float>(m_width), static_cast<float>(m_height) });
 }
 
 }

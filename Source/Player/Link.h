@@ -112,7 +112,6 @@ enum PlayerState
     LINK_COUNT
 };
 
-#define PLAYER_MAX_HEALTH 14.0
 #define PLAYER_BOUNDING_BOX_WIDTH_OFFSET 3
 #define PLAYER_BOUNDING_BOX_WIDTH 10
 #define PLAYER_BOUNDING_BOX_HEIGHT 8
@@ -124,12 +123,18 @@ constexpr float LINK_FLAME_ROD_ANIMATION_FPS = 1.0f / 4.0f;
 constexpr float SWORD_ATTACK_FPS = 1.0f / 30.0f;
 constexpr float LINK_DROWN_FPS = 1.0f / 3.0f;
 
+
+
+constexpr float LINK_MAX_HEARTS = 16.0;
+constexpr float LINK_MIN_HEARTS = 3.0;
+
 class Link : public Renderable, public Controllable, public Character, public Singleton<Link>, public CullableParent
 {
     friend class Singleton<Link>;
 public:
     // Renderable overrides
-    void render(SDL_Renderer* renderer) noexcept override;
+    void render() noexcept override;
+    void update() noexcept override;
 
     // Character overrides
     float health() const noexcept override;
@@ -139,7 +144,7 @@ public:
     void move() noexcept override;
 
     // Controllable overrides
-    void control() noexcept override;
+    void control(double ts) noexcept override;
 
     // CullableParent overrides
     void cull() noexcept override;
@@ -150,6 +155,17 @@ public:
     void addPosition(float x, float y) noexcept;
     void setPosition(float x, float y) noexcept;
 
+
+    void setCurrentHealth(float health) noexcept
+    {
+        assert(health >= 0.0 && health <= LINK_MAX_HEARTS);
+        m_health = health;
+    }
+    void setMaxHealth(float maxHealth) noexcept
+    {
+        assert(maxHealth >= LINK_MIN_HEARTS && maxHealth <= LINK_MAX_HEARTS);
+        m_healthMax = maxHealth;
+    }
 
     float maxHealth() const noexcept;
     void updateState() noexcept;
@@ -176,7 +192,7 @@ private:
     Worldmap m_worldmap;
 
     bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept;
-    void useWeapon(WEAPON weapon) noexcept;
+    void useWeapon(WeaponItem weapon) noexcept;
 
     bool m_useShield;
 
@@ -208,6 +224,8 @@ private:
     bool m_usingWeapon;
     void animate();
     Timer m_clockAnimation;
+
+    Vector<float> m_drawPosition;
 
     const Animation m_animations[LINK_COUNT] =
     {

@@ -26,7 +26,8 @@ class Bomb : public Weapon, public CullableChild
 {
 public:
     Bomb();
-    void render(SDL_Renderer* renderer) noexcept override;
+    void render() noexcept override;
+    void update() noexcept override;
     void setPosition(Vector<float> position) override;
     bool exploded() const;
 

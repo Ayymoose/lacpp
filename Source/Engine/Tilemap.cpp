@@ -539,7 +539,7 @@ void Tilemap::setTileMap(RoomName tilemap) noexcept
 TileRoom Tilemap::getRoomTiles(size_t roomIndex) const noexcept
 {
 	// Check room index is within bounds
-	assert(roomIndex < (m_currentTileMap.roomsAcross* m_currentTileMap.roomsDown));
+	assert(roomIndex < (size_t)(m_currentTileMap.roomsAcross* m_currentTileMap.roomsDown));
 	// Check if there is a room
 	assert(m_currentTileMap.rooms.size());
 

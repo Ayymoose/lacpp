@@ -20,28 +20,21 @@ Inventory::Inventory() :
     m_subscreen(SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, SELECT_SUBSCREEN_WIDTH, SELECT_SUBSCREEN_HEIGHT)),
     m_tradeItem(ITEM_NONE),
     m_open(false),
-    m_inDungeon(true),
-    m_tailKey(true),
-    m_slimeKey(true),
-    m_anglerKey(true),
-    m_faceKey(true),
-    m_birdKey(true),
-    m_arrows(60),
-    m_bombs(60),
-    m_magicPowder(60),
-    m_swordLevel(WeaponLevel::WPN_LEVEL_1),
-    m_shieldLevel(WeaponLevel::WPN_LEVEL_2),
-    m_braceletLevel(WeaponLevel::WPN_LEVEL_1),
+    m_inDungeon(false),
+    m_arrows(0),
+    m_bombs(0),
+    m_magicPowder(0),
     m_ocarinaSong(OcarinaSong::SNG_FISH),
     m_seashells(0),
     m_flippers(false),
     m_potion(false),
-    m_tunic(Tunic::TUNIC_BLUE),
-    m_heartPieces(static_cast<int>(HeartPieces::HEART_HALF)),
-    m_goldleaf(0),
+    m_tunic(Tunic::TUNIC_GREEN),
+    m_heartPieces(HEART_ZERO),
+    m_goldleafs(0),
     m_photographs(0),
-    m_weaponA(WEAPON::WPN_BOW),
-    m_weaponB(WEAPON::WPN_SWORD),
+    m_ruppees(0),
+    m_weaponA(std::pair(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE)),
+    m_weaponB(std::pair(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE)),
     m_selectorX(SELECTOR_INITIAL_X),
     m_selectorY(SELECTOR_INITIAL_Y),
     m_selectorIndex(0),
@@ -61,57 +54,43 @@ Inventory::Inventory() :
     // 7 -> 39 x increases of 32
     // 27 -> 50 y increases by 23
 
+    // Initialise inventory
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
-        m_items[i] = WPN_NONE;
+        m_weaponItems[i] = InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE);
     }
 
-    for (int i = 0; i < static_cast<int>(Instrument::INSTRUMENT_COUNT); i++)
+    for (int i = 0; i < INSTRUMENT_COUNT; i++)
     {
-        m_instruments[i] = Instrument::INSTRUMENT_NONE;
+        m_instruments[i] = INSTRUMENT_NONE;
     }
 
-    m_instruments[0] = Instrument::FULL_MOON_CELLO;
-    m_instruments[1] = Instrument::CONCH_HORN;
-    m_instruments[2] = Instrument::SEA_LILY_BELL;
-    m_instruments[3] = Instrument::SURF_HARP;
-    m_instruments[4] = Instrument::WIND_MARIMBA;
-    m_instruments[5] = Instrument::CORAL_TRIANGLE;
-    m_instruments[6] = Instrument::ORGAN_OF_EVENING_CALM;
-    m_instruments[7] = Instrument::THUNDER_DRUM;
-
-    m_items[0] = WPN_SHOVEL;
-    m_items[1] = WPN_HOOKSHOT;
-    m_items[2] = WPN_SHIELD;
-    m_items[3] = WPN_BOMBS;
-    m_items[4] = WPN_MAGIC_POWDER;
-    m_items[5] = WPN_POWER_BRACELET_1;
-    m_items[6] = WPN_POWER_BRACELET_2;
-    m_items[7] = WPN_ROC_FEATHER;
-    m_items[8] = WPN_BOOMERANG;
-    m_items[9] = WPN_OCARINA;
-
-    for (uint8_t i = 0; i < static_cast<uint8_t>(Dungeon::DUNGEON_COUNT); i++)
+    for (int i = 0; i < KEY_COUNT; i++)
     {
-        m_dungeonKeys[i] = 1;
-        m_compass[i] = true;
-        m_dungeonMap[i] = true;
-        m_nightmareKey[i] = true;
-        m_owlBeak[i] = true;
+        m_dungeonEntraceKeys[i] = KEY_NONE;
+    }
+
+    for (uint8_t i = 0; i < DUNGEON_COUNT; i++)
+    {
+        m_dungeonKeys[i] = 0;
+        m_compass[i] = false;
+        m_dungeonMap[i] = false;
+        m_nightmareKey[i] = false;
+        m_owlBeak[i] = false;
     }
 
     Renderer::getInstance().addRenderable(this);
 }
 
-void Inventory::control() noexcept
+void Inventory::control(double ts) noexcept
 {
     if (Keyboard::getInstance().keyPressed(BUTTON_A))
     {
-       std::swap(m_weaponA, m_items[m_selectorIndex]);
+       std::swap(m_weaponA, m_weaponItems[m_selectorIndex]);
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_B))
     {
-       std::swap(m_weaponB, m_items[m_selectorIndex]);
+       std::swap(m_weaponB, m_weaponItems[m_selectorIndex]);
     }
 
     // Show the subscreen only when the select key is pushed
@@ -150,85 +129,19 @@ void Inventory::control() noexcept
     // This code controls the selector through arrow keys
     if (Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
     {
-        if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
-        {
-            m_selectorX = SELECTOR_INITIAL_X;
-            // If not the bottom right of the inventory
-            if (m_selectorY != SELECTOR_INITIAL_Y + 4*SELECTOR_INCREASE_Y)
-            {
-                m_selectorY += SELECTOR_INCREASE_Y;
-                m_selectorIndex++;
-            }
-            else
-            {
-                m_selectorY = SELECTOR_INITIAL_Y;
-                m_selectorIndex = 0;
-            }
-        }
-        else
-        {
-            m_selectorX += SELECTOR_INCREASE_X;
-            m_selectorIndex++;
-        }
+        moveSelectorRight();
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_LEFT))
     {
-        if (m_selectorX == SELECTOR_INITIAL_X)
-        {
-            m_selectorX = SELECTOR_INITIAL_X + SELECTOR_INCREASE_X;
-            // If not the top left of the inventory
-            if (m_selectorY != SELECTOR_INITIAL_Y)
-            {
-                m_selectorY -= SELECTOR_INCREASE_Y;
-                m_selectorIndex--;
-            }
-            else
-            {
-                m_selectorY = SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y;
-                m_selectorIndex = INVENTORY_MAX_WEAPONS - 1;
-            }
-        }
-        else
-        {
-            m_selectorX -= SELECTOR_INCREASE_X;
-            m_selectorIndex--;
-        }
+        moveSelectorLeft();
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_UP))
     {
-        if (m_selectorY == SELECTOR_INITIAL_Y)
-        {
-            if (m_selectorX == SELECTOR_INITIAL_X)
-            {
-                m_selectorX += SELECTOR_INCREASE_X;
-            }
-            m_selectorY = SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y;
-            m_selectorIndex = INVENTORY_MAX_WEAPONS - 1;
-        }
-        else
-        {
-            m_selectorIndex -= 2;
-            m_selectorY -= SELECTOR_INCREASE_Y;
-        }
-
+        moveSelectorUp();
     }
     if (Keyboard::getInstance().keyPressed(BUTTON_DOWN))
     {
-        if (m_selectorY == SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y)
-        {
-            if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
-            {
-                m_selectorX -= SELECTOR_INCREASE_X;
-            }
-            m_selectorIndex = 0;
-            m_selectorY = SELECTOR_INITIAL_Y;
-        }
-        else
-        {
-            m_selectorY += SELECTOR_INCREASE_Y;
-            // Change by 2 because of the way we index the array (see above)
-            m_selectorIndex += 2;
-        }
+        moveSelectorDown();
     }
     assert(m_selectorIndex < INVENTORY_MAX_WEAPONS);
 
@@ -248,7 +161,7 @@ void Inventory::control() noexcept
     }
 }
 
-void Inventory::render(SDL_Renderer* renderer) noexcept
+void Inventory::render() noexcept
 {
     // if inventory closed
     // render top 16 pixels at bottom of screen
@@ -268,29 +181,54 @@ void Inventory::render(SDL_Renderer* renderer) noexcept
 
     // Render the inventory background
     SDL_Rect dstRect = { 0, renderY, m_width , m_height };
-    SDL_ASSERT(SDL_RenderCopy(renderer, m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
-    colourTexture(renderer, m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
+    colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
-    drawTopHUD(renderer);
+    drawHUD(Renderer::getInstance().getRenderer());
 
     // If the inventory is open
     if (m_open)
     {
-        drawInventoryDividers(renderer);
-        drawInventoryWeapons(renderer);
-        drawSelector(renderer);
+        drawInventoryDividers(Renderer::getInstance().getRenderer());
+        drawInventoryWeapons(Renderer::getInstance().getRenderer());
+        drawSelector(Renderer::getInstance().getRenderer());
         if (m_inDungeon)
         {
-            drawDungeonItems(renderer);
+            drawDungeonItems(Renderer::getInstance().getRenderer());
         }
         else
         {
-            drawInventoryItems(renderer);
+            drawInventoryItems(Renderer::getInstance().getRenderer());
         }
-        drawMiscItems(renderer);
-        drawSelectStatus(renderer);
+        drawMiscItems(Renderer::getInstance().getRenderer());
+
+        if (!m_selectPressed)
+        {
+            drawSelectStatus(Renderer::getInstance().getRenderer());
+        }
+        else
+        {
+            drawSubscreen();
+        }
     }
 
+}
+
+void Inventory::getDungeonMap(Dungeon dungeon, DungeonMapEntry (&dungeonMapEntry)[DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y]) const noexcept
+{
+    assert(dungeon > DUNGEON_NONE && dungeon < DUNGEON_COUNT);
+    std::memcpy(&dungeonMapEntry, m_dungeonMaps[dungeon], sizeof(m_dungeonMaps[dungeon]));
+}
+
+void Inventory::setDungeonMapEntry(const int x, const int y, const DungeonMapEntry& dungeonMapEntry) noexcept
+{
+    assert(x >= 0 && x < DUNGEON_MAX_BLOCKS_X && y >= 0 && y < DUNGEON_MAX_BLOCKS_Y);
+    m_dungeonMaps[m_dungeon][y][x] = dungeonMapEntry;
+
+}
+
+void Inventory::update() noexcept
+{
 }
 
 void Inventory::open() noexcept
@@ -303,19 +241,234 @@ void Inventory::close() noexcept
     m_open = false;
 }
 
-bool Inventory::magicPowderAvailabe() const noexcept
+bool Inventory::magicPowder() const noexcept
 {
     return m_magicPowder;
 }
 
-bool Inventory::bowAndArrowAvailable() const noexcept
+bool Inventory::arrows() const noexcept
 {
     return m_arrows;
 }
 
-bool Inventory::bombsAvailable() const noexcept
+bool Inventory::bombs() const noexcept
 {
     return m_bombs;
+}
+
+void Inventory::addItemQuantity(WeaponItem item, int quantity) noexcept
+{
+    switch (item)
+    {
+    case WPN_BOMBS:
+        m_bombs = std::min(m_bombs + quantity, BOMBS_MAX);
+        break;
+    case WPN_BOW:
+        m_arrows = std::min(m_arrows + quantity, ARROWS_MAX);
+        break;
+    case WPN_MAGIC_POWDER:
+        m_magicPowder = std::min(m_magicPowder + quantity, MAGIC_POWDER_MAX);
+        break;
+    default:
+        assert(false);
+    }
+}
+
+void Inventory::addItem(const InventoryWeapon& inventoryWeapon) noexcept
+{
+    assert(itemExists(inventoryWeapon) == false);
+
+    // Find an empty space in the inventory
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
+    {
+        if (m_weaponItems[i] == InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE))
+        {
+            m_weaponItems[i] = inventoryWeapon;
+            return;
+        }
+    }
+
+    // Otherwise weapon A or B
+    if (m_weaponA == InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE))
+    {
+        m_weaponA = inventoryWeapon;
+    }
+    else if (m_weaponB == InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE))
+    {
+        m_weaponB = inventoryWeapon;
+    }
+    else
+    {
+        assert(false && "Can't add item to full inventory");
+    }
+}
+
+void Inventory::addItem(DungeonKey dungeonKey) noexcept
+{
+    assert(itemExists(dungeonKey) == false);
+    for (int i = 0; i < KEY_COUNT; i++)
+    {
+        if (m_dungeonEntraceKeys[i] == KEY_NONE)
+        {
+            m_dungeonEntraceKeys[i] = dungeonKey;
+            break;
+        }
+    }
+}
+
+void Inventory::addItem(DungeonItem dungeonItem) noexcept
+{
+    switch (dungeonItem)
+    {
+    case DungeonItem::ITEM_KEY: 
+        // Add a small key
+        m_dungeonKeys[m_dungeon]++;
+        break;
+    // These can only be added once 
+    case DungeonItem::ITEM_COMPASS:
+        assert(m_compass[m_dungeon] == false);
+        m_compass[m_dungeon] = true;
+        break;
+    case DungeonItem::ITEM_MAP:
+        assert(m_dungeonMap[m_dungeon] == false);
+        m_dungeonMap[m_dungeon] = true;
+        break;
+    case DungeonItem::ITEM_NIGHTMARE_KEY:
+        assert(m_nightmareKey[m_dungeon] == false);
+        m_nightmareKey[m_dungeon] = true;
+        break;
+    case DungeonItem::ITEM_OWL_BEAK:
+        assert(m_owlBeak[m_dungeon] == false);
+        m_owlBeak[m_dungeon] = true;
+        break;
+    default:
+        assert(false);
+    }
+}
+
+void Inventory::addItem(TradeItem tradeItem) noexcept
+{
+    // We can only trade upwards
+    assert(tradeItem > m_tradeItem);
+    assert(tradeItem > ITEM_NONE && tradeItem < ITEM_COUNT);
+    m_tradeItem = tradeItem;
+}
+
+void Inventory::addItem(InventoryMiscItem inventoryMiscItem) noexcept
+{
+    switch (inventoryMiscItem)
+    {
+    case ITEM_RED_POTION:
+        assert(m_potion == false);
+        m_potion = true;
+    break;
+    case ITEM_FLIPPERS:
+        assert(m_flippers == false);
+        m_flippers = true;
+    break;
+    default:
+        assert(false);
+
+    }
+}
+
+void Inventory::addItem(Instrument instrument) noexcept
+{
+    assert(instrument > INSTRUMENT_NONE && instrument < INSTRUMENT_COUNT);
+    for (int i = 0; i < INSTRUMENT_COUNT; i++)
+    {
+        if (m_instruments[i] == INSTRUMENT_NONE)
+        {
+            m_instruments[i] = instrument;
+            break;
+        }
+    }
+}
+
+void Inventory::addItem(Ruppee ruppees) noexcept
+{
+    // I think 200 is the maximum single ruppee amount you can get
+    assert(ruppees == RUPPEE_ONE || ruppees == RUPPEE_FIVE || ruppees == RUPPEE_TEN ||
+        ruppees == RUPPEE_TWENTY || ruppees == RUPPEE_FIFTY || ruppees == RUPPEE_HUNDRED ||
+        ruppees == RUPPEE_TWO_HUNDRED);
+
+    m_ruppees = std::min(m_ruppees + ruppees, RUPPEES_MAX);
+
+    // The ruppees are added 1 by 1 on a timer
+}
+
+void Inventory::addItem(Tunic tunic) noexcept
+{
+    assert(tunic > Tunic::TUNIC_NONE && tunic < Tunic::TUNIC_COUNT);
+    m_tunic = tunic;
+}
+
+void Inventory::addItem(HeartPiece heartPiece) noexcept
+{
+    // A Piece of Heart is 1/4 so we can only add this
+    assert(heartPiece == HEART_ONE_QUARTER);
+    m_heartPieces += heartPiece;
+}
+
+void Inventory::addItem(int photograph) noexcept
+{
+    m_photographs = std::min(m_photographs + photograph, MAX_PHOTOGRAPHS);
+}
+
+void Inventory::useItem(DungeonItem dungeonItem) noexcept
+{
+    switch (dungeonItem)
+    {
+    case DungeonItem::ITEM_KEY:
+        assert(m_dungeonKeys[m_dungeon] > 0);
+        m_dungeonKeys[m_dungeon]--;
+    break;
+    default:
+        assert(false);
+    }
+}
+
+void Inventory::useItem(InventoryMiscItem inventoryMiscItem) noexcept
+{
+    switch (inventoryMiscItem)
+    {
+    case ITEM_RED_POTION:
+        assert(m_potion == true);
+        m_potion = false;
+        break;
+    default:
+        assert(false && "Only red potion is usable");
+
+    }
+}
+
+void Inventory::removeItem(const InventoryWeapon& inventoryWeapon) noexcept
+{
+    assert(itemExists(inventoryWeapon) == true);
+
+    // Remove weapon
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
+    {
+        if (m_weaponItems[i] == inventoryWeapon)
+        {
+            m_weaponItems[i] = InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE);
+            return;
+        }
+    }
+
+    // Otherwise weapon A or B
+    if (m_weaponA == inventoryWeapon)
+    {
+        m_weaponA = InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE);
+    }
+    else if (m_weaponB == inventoryWeapon)
+    {
+        m_weaponB = InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE);
+    }
+    else
+    {
+        assert(false && "Removing an item failed");
+    }
 }
 
 void Inventory::useMagicPowder() noexcept
@@ -342,12 +495,12 @@ void Inventory::useBombs() noexcept
     }
 }
 
-WEAPON Inventory::weaponA() const noexcept
+InventoryWeapon Inventory::weaponA() const noexcept
 {
     return m_weaponA;
 }
 
-WEAPON Inventory::weaponB() const noexcept
+InventoryWeapon Inventory::weaponB() const noexcept
 {
     return m_weaponB;
 }
@@ -355,18 +508,55 @@ WEAPON Inventory::weaponB() const noexcept
 void Inventory::setDungeonLocationMarker(int x, int y) noexcept
 {
     assert(x < DUNGEON_MAX_BLOCKS_X && x >= 0 && y >= 0 && y < DUNGEON_MAX_BLOCKS_Y);
+
+    // Must be a place we can actually access
+    assert(m_dungeonMaps[m_dungeon][y][x].roomType > 1  && "Index shouldn't be accessible in dungeon map");
+
     m_dungeonPosition.x = x;
     m_dungeonPosition.y = y;
+
+    // Mark as visited
+    m_dungeonMaps[m_dungeon][y][x].visited = true;
+}
+
+auto Inventory::inventoryWeaponSpriteSrc(const InventoryWeapon& item) const noexcept
+{
+    // Any item we have, add it to the texture at the right position
+    // srcRect is the position on the spritesheet of the item
+
+    // The power-bracelet has a different sprite for Level-2 for some reason!
+    SDL_Rect srcRect;
+
+    if (item.first == WeaponItem::WPN_POWER_BRACELET)
+    {
+        if (item.second == WeaponLevel::WPN_LEVEL_1)
+        {
+            srcRect = m_inventorySpritesSrc[item.first];
+        }
+        else
+        {
+            srcRect = m_inventorySpritesSrc[item.first + 1];
+        }
+    }
+    else if (item.first < WeaponItem::WPN_POWER_BRACELET)
+    {
+        srcRect = m_inventorySpritesSrc[item.first];
+    }
+    else if (item.first > WeaponItem::WPN_POWER_BRACELET)
+    {
+        srcRect = m_inventorySpritesSrc[item.first + 1];
+    }
+    else
+    {
+        assert(false);
+        return SDL_Rect();
+    }
+    return srcRect;
 }
 
 bool Inventory::shieldEquipped() const noexcept
 {
-    return (m_weaponA == WPN_SHIELD || m_weaponB == WPN_SHIELD);
-}
-
-WeaponLevel Inventory::shieldLevel() const noexcept
-{
-    return m_shieldLevel;
+    return (m_weaponA.first == WPN_SHIELD || m_weaponB.first == WPN_SHIELD);
 }
 
 void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
@@ -419,11 +609,9 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
 
     // Draw dungeon map level
     SDL_Rect dstRectMapLevel = {72,64,8,8};
-    drawNumber(renderer, m_texture, true, true, 0, static_cast<int>(m_dungeon), &dstRectMapLevel);
+    drawNumber(renderer, m_texture, true, true, 0, m_dungeon, &dstRectMapLevel);
 
     // Draw the dungeon map
-
-    // TODO: Show the nightmare and chest locations if they have the compass
     
     // Without a map, all the paths are not drawn
     // Unvisited areas are marked with a grey block
@@ -432,106 +620,152 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
         for (int y = 0; y < DUNGEON_MAX_BLOCKS_Y; y++)
         {
             // Don't display anything if dungeon map not present
-            if (m_dungeonMap)
+            if (m_dungeonMap[m_dungeon])
             {
-                // TODO: enum these magic values
-                switch (m_dungeonMaps[static_cast<int>(m_dungeon)][y][x])
+                // Show the room in the map if we visited it already
+                if (m_dungeonMaps[m_dungeon][y][x].visited)
                 {
-                case 0: // INVENTORY_AREA_EMPTY
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
-                    break;
-                case 1: // Inventory space
-                    continue;
-                case 2: // INVENTORY_AREA_UNVISITED
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_UNVISITED];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_UNVISITED];
-                    break;
-                case 3: // INVENTORY_AREA_TREASURE
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_TREASURE];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_TREASURE];
-                    break;
-                case 4: // INVENTORY_AREA_NIGHTMARE
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
-                    break;
-                case 5: // INVENTORY_AREA_EXIT_RIGHT
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT];
-                    break;
-                case 6: // INVENTORY_AREA_EXIT_LEFT
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT];
-                    break;
-                case 7: // INVENTORY_AREA_EXIT_RIGHT_DOWN
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT_DOWN];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT_DOWN];
-                    break;
-                case 8: // INVENTORY_AREA_EXIT_LEFT_DOWN
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN];
-                    break;
-                case 9: // INVENTORY_AREA_EXIT_NONE
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_NONE];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_NONE];
-                    break;
-                case 10: // INVENTORY_AREA_EXIT_LEFT_UP_RIGHT
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
-                    break;
-                case 11: // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
-                    break;
-                case 12: // INVENTORY_AREA_EXIT_DOWN
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_DOWN];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_DOWN];
-                    break;
-                case 13: // INVENTORY_AREA_EXIT_UP
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP];
-                    break;
-                case 14: // INVENTORY_AREA_EXIT_UP_RIGHT
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT];
-                    break;
-                case 15: // INVENTORY_AREA_EXIT_LEFT_UP
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP];
-                    break;
-                case 16: // INVENTORY_AREA_EXIT_ALL
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_ALL];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_ALL];
-                    break;
-                case 17: // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
-                    break;
-                case 18: // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
-                    break;
-                case 19: // INVENTORY_AREA_EXIT_UP_DOWN
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_DOWN];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_DOWN];
-                    break;
-                case 20: // INVENTORY_AREA_EXIT_LEFT_RIGHT
-                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_RIGHT];
-                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_RIGHT];
-                    break;
-                default:
-                    assert(false);
+
+                    // TODO: Hidden rooms are not connected on the map until they are explored
+                    // This will probably be the most tricky one to implement
+
+                    // TODO: enum these magic values
+                    switch (m_dungeonMaps[m_dungeon][y][x].roomType)
+                    {
+                    case 0: // INVENTORY_AREA_EMPTY
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
+                        break;
+                    case 1: // Inventory space
+                        continue;
+                    case 2: // INVENTORY_AREA_UNVISITED
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_UNVISITED];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_UNVISITED];
+                        break;
+                    case 3: // INVENTORY_AREA_TREASURE
+                        // Shown when we have the compass
+                        assert(false && "Treasure chest can't exist in map array");
+                        break;
+                    case 4: // INVENTORY_AREA_NIGHTMARE
+                        // Shown when we have the compass
+                        assert(false && "Nightmare key can't exist in map array");
+                        break;
+                    case 5: // INVENTORY_AREA_EXIT_RIGHT
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT];
+                        break;
+                    case 6: // INVENTORY_AREA_EXIT_LEFT
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT];
+                        break;
+                    case 7: // INVENTORY_AREA_EXIT_RIGHT_DOWN
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_RIGHT_DOWN];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_RIGHT_DOWN];
+                        break;
+                    case 8: // INVENTORY_AREA_EXIT_LEFT_DOWN
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN];
+                        break;
+                    case 9: // INVENTORY_AREA_EXIT_NONE
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_NONE];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_NONE];
+                        break;
+                    case 10: // INVENTORY_AREA_EXIT_LEFT_UP_RIGHT
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP_RIGHT];
+                        break;
+                    case 11: // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT];
+                        break;
+                    case 12: // INVENTORY_AREA_EXIT_DOWN
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_DOWN];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_DOWN];
+                        break;
+                    case 13: // INVENTORY_AREA_EXIT_UP
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP];
+                        break;
+                    case 14: // INVENTORY_AREA_EXIT_UP_RIGHT
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT];
+                        break;
+                    case 15: // INVENTORY_AREA_EXIT_LEFT_UP
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_UP];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_UP];
+                        break;
+                    case 16: // INVENTORY_AREA_EXIT_ALL
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_ALL];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_ALL];
+                        break;
+                    case 17: // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_RIGHT_DOWN];
+                        break;
+                    case 18: // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_LEFT_DOWN];
+                        break;
+                    case 19: // INVENTORY_AREA_EXIT_UP_DOWN
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_UP_DOWN];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_UP_DOWN];
+                        break;
+                    case 20: // INVENTORY_AREA_EXIT_LEFT_RIGHT
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EXIT_LEFT_RIGHT];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EXIT_LEFT_RIGHT];
+                        break;
+                    default:
+                        assert(false && "Unknown map entry");
+                    }
+                }
+                else
+                {
+                    if (m_dungeonMaps[m_dungeon][y][x].roomType > 1)
+                    {
+                        // Display a "unvisited" square
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_UNVISITED];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_UNVISITED];
+                    }
+                    else if (m_dungeonMaps[m_dungeon][y][x].roomType == 1)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
+                    }
+
                 }
             }
             else
             {
-                // Hide map
-                if (m_dungeonMaps[static_cast<int>(m_dungeon)][y][x] != 1)
+                // Add empty square
+                if (m_dungeonMaps[m_dungeon][y][x].roomType != 1)
                 {
                     srcRect = m_inventorySpritesSrc[INVENTORY_AREA_EMPTY];
                     dstRect = m_inventorySpritesDst[INVENTORY_AREA_EMPTY];
                 }
             }
+
+            // If we have the compass, show the nightmare and treasure chests
+            if (m_compass[m_dungeon])
+            {
+                if (m_dungeonMaps[m_dungeon][y][x].roomItem == DungeonRoomItem::ITEM_NIGHTMARE_KEY)
+                {
+                    srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
+                    dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
+                }
+                else
+                {
+                    if (m_dungeonMaps[m_dungeon][y][x].roomItem == DungeonRoomItem::ITEM_CHEST_CLOSED)
+                    {
+                        srcRect = m_inventorySpritesSrc[INVENTORY_AREA_TREASURE];
+                        dstRect = m_inventorySpritesDst[INVENTORY_AREA_TREASURE];
+                    }
+                }
+            }
+
             dstRect.x += x * srcRect.w;
             dstRect.y += y * srcRect.w;
             SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
@@ -552,107 +786,24 @@ void Inventory::drawSelectStatus(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
-    if (!m_selectPressed)
+    // Draw two red arrows
+    srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
+    dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+
+    dstRect.x += 73;
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+
+    srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
+    dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
+
+    toggleItem(m_flashSelect, m_pushSelectTimer, PUSH_SELECTOR_FPS);
+
+    // Draw "PUSH SELECT"
+    if (m_flashSelect)
     {
-        // Draw two red arrows
-        srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
-        dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-
-        dstRect.x += 73;
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-
-        srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
-        dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
-
-        toggleItem(m_flashSelect, m_pushSelectTimer, PUSH_SELECTOR_FPS);
-
-        // Draw "PUSH SELECT"
-        if (m_flashSelect)
-        {
-            SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        }
+        SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
-    else
-    {
-        // TODO: Transition the subscreen
-        dstRect = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
-        SDL_ASSERT(SDL_RenderCopy(renderer, m_subscreen, nullptr, &dstRect), SDL_ERROR_MESSAGE);
-
-        auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-        SDL_ASSERT(SDL_SetRenderTarget(renderer, m_subscreen), SDL_ERROR_MESSAGE);
-
-
-        // Tunic
-        srcRect = m_inventorySpritesSrc[INVENTORY_TUNIC];
-        switch (m_tunic)
-        {
-        case Tunic::TUNIC_GREEN:
-            break;
-        case Tunic::TUNIC_BLUE:
-            srcRect.x += srcRect.w + 2;
-        break;
-        case Tunic::TUNIC_RED:
-            srcRect.x = 2 * (srcRect.w + 2);
-        break;
-
-        }
-        dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-
-        // Heart pieces
-        srcRect = m_inventorySpritesSrc[INVENTORY_HEART_PIECES];
-        dstRect = m_inventorySpritesDst[INVENTORY_HEART_PIECES];
-
-        switch (static_cast<HeartPieces>(m_heartPieces))
-        {
-        case HeartPieces::HEART_ZERO:
-            break;
-        case HeartPieces::HEART_ONE_QUARTER:
-            srcRect.x += srcRect.w + 2;
-            break;
-        case HeartPieces::HEART_HALF:
-            srcRect.x += 2 * (srcRect.w + 2);
-            break;
-        case HeartPieces::HEART_THREE_QUARTER:
-            srcRect.x += 3 * (srcRect.w + 2);
-            break;
-        case HeartPieces::HEART_FULL:
-            // Will this ever be used?
-            srcRect.x += 4 * (srcRect.w + 2);
-            break;
-        }
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-
-        // Photographs
-        srcRect = m_inventorySpritesSrc[INVENTORY_PHOTOGRAPHS];
-        dstRect = m_inventorySpritesDst[INVENTORY_PHOTOGRAPHS];
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-
-        // Inventory "/"
-        srcRect = m_inventorySpritesSrc[INVENTORY_SLASH];
-        dstRect = m_inventorySpritesDst[INVENTORY_SLASH];
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        dstRect.x = 64; dstRect.y = 8;
-        SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        
-        // Draw how many heart pieces we have (out of 4)
-        dstRect = {56,7,8,8};
-        drawNumber(renderer, m_subscreen, false, false, 0, m_heartPieces, &dstRect);
-        dstRect = { 72,7,8,8 };
-        drawNumber(renderer, m_subscreen, false, false, 0, HEARTS_PIECE_MAX, &dstRect);
-
-        // Draw number of photographs
-        dstRect = { 24,23,8,8 };
-        drawNumber(renderer, m_subscreen, false, false, 1, m_photographs, &dstRect);
-        dstRect = { 48,23,8,8 };
-        drawNumber(renderer, m_subscreen, false, false, 1, MAX_PHOTOGRAPHS, &dstRect);
-
-        // Remember! This resets the drawing target to the screen
-        SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
-
-    }
-
 }
 
 void Inventory::drawMiscItems(SDL_Renderer* renderer) noexcept
@@ -698,35 +849,35 @@ void Inventory::drawInventoryItems(SDL_Renderer* renderer) noexcept
     SDL_Rect srcRect, dstRect;
 
     // Draw any keys we have
-    if (m_tailKey)
+    if (itemExists(KEY_TAIL))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_TAIL_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_TAIL_KEY];
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
-    if (m_slimeKey)
+    if (itemExists(KEY_SLIME))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_SLIME_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_SLIME_KEY];
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
-    if (m_anglerKey)
+    if (itemExists(KEY_ANGLER))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_ANGLER_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_ANGLER_KEY];
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
     
-    if (m_faceKey)
+    if (itemExists(KEY_FACE))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_FACE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_FACE_KEY];
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
-    if (m_birdKey)
+    if (itemExists(KEY_FACE))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_BIRD_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_BIRD_KEY];
@@ -740,28 +891,28 @@ void Inventory::drawDungeonItems(SDL_Renderer* renderer) noexcept
 {
     SDL_Rect srcRect, dstRect;
 
-    if (m_compass[static_cast<uint8_t>(m_dungeon)])
+    if (m_compass[m_dungeon])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
         dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
-    if (m_nightmareKey[static_cast<uint8_t>(m_dungeon)])
+    if (m_nightmareKey[m_dungeon])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
-    if (m_owlBeak[static_cast<uint8_t>(m_dungeon)])
+    if (m_owlBeak[m_dungeon])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
         dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
-    if (m_dungeonMap[static_cast<uint8_t>(m_dungeon)])
+    if (m_dungeonMap[m_dungeon])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
         dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
@@ -778,7 +929,7 @@ void Inventory::drawDungeonItems(SDL_Renderer* renderer) noexcept
     SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    drawNumber(renderer, m_texture, false, true, 0, m_dungeonKeys[static_cast<uint8_t>(m_dungeon)], &dstRect);
+    drawNumber(renderer, m_texture, false, true, 0, m_dungeonKeys[m_dungeon], &dstRect);
 
 
 
@@ -834,45 +985,6 @@ void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
     int wholeHearts = (int)currentHealth;
     float quarterHearts = currentHealth - (int)currentHealth;
     int emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-#ifdef TEST
-    assert(wholeHearts == 1);
-    assert(quarterHearts == 0.75);
-    assert(emptyHearts == 1);
-
-    healthMax = 3;
-    currentHealth = 0;
-
-    wholeHearts = (int)currentHealth;
-    quarterHearts = currentHealth - (int)currentHealth;
-    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-    assert(wholeHearts == 0);
-    assert(quarterHearts == 0);
-    assert(emptyHearts == 3);
-
-    healthMax = 3;
-    currentHealth = 3;
-
-    wholeHearts = (int)currentHealth;
-    quarterHearts = currentHealth - (int)currentHealth;
-    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-    assert(wholeHearts == 3);
-    assert(quarterHearts == 0);
-    assert(emptyHearts == 0);
-
-    healthMax = 3;
-    currentHealth = 0.25;
-
-    wholeHearts = (int)currentHealth;
-    quarterHearts = currentHealth - (int)currentHealth;
-    emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-    assert(wholeHearts == 0);
-    assert(quarterHearts == 0.25);
-    assert(emptyHearts == 2);
-#endif // TEST
 
     // draw whole hearts
     // draw quarter hear
@@ -960,11 +1072,9 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
 
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
-        if (m_items[i] != WPN_NONE)
+        if (m_weaponItems[i] != InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE))
         {
-            // Any item we have, add it to the texture at the right position
-            // srcRect is the position on the spritesheet of the item
-            srcRect = m_inventorySpritesSrc[m_items[i]];
+            srcRect = inventoryWeaponSpriteSrc(m_weaponItems[i]);
 
             // dstRect is the position on the internal inventory lhs
             // This correctly positions the item
@@ -984,7 +1094,7 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
 
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
-        if (m_items[i] != WPN_NONE)
+        if (m_weaponItems[i] != InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE))
         {
             dstRect =
             {
@@ -994,7 +1104,7 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
                 WEAPON_LEVEL_HEIGHT
             };
 
-            drawWeaponLevel(renderer, m_texture, m_items[i], &dstRect);
+            drawWeaponLevel(renderer, m_texture, m_weaponItems[i].first, &dstRect);
         }
     }
   
@@ -1057,7 +1167,7 @@ void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
     SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
-void Inventory::drawTopHUD(SDL_Renderer* renderer) noexcept 
+void Inventory::drawHUD(SDL_Renderer* renderer) noexcept 
 {
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
     SDL_ASSERT(SDL_SetRenderTarget(renderer, m_texture), SDL_ERROR_MESSAGE);
@@ -1092,34 +1202,115 @@ void Inventory::drawTopHUD(SDL_Renderer* renderer) noexcept
     drawHealth(renderer);
 
     // Draw weapon A
-    if (m_weaponA != WPN_NONE)
+    if (m_weaponA != InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE))
     {
         // Draw the actual weapon
-        srcRect = m_inventorySpritesSrc[m_weaponA];
+        srcRect = inventoryWeaponSpriteSrc(m_weaponA);
         dstRect = {48,0, srcRect.w, srcRect.h };
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
 
         // Draw the weapon level
         dstRect = { 56,8, 8, 8 };
-        drawWeaponLevel(renderer, m_texture, m_weaponA, &dstRect);
+        drawWeaponLevel(renderer, m_texture, m_weaponA.first, &dstRect);
     }
 
     // Draw weapon B
-    if (m_weaponB != WPN_NONE)
+    if (m_weaponB != InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE))
     {
-        srcRect = m_inventorySpritesSrc[m_weaponB];
+        srcRect = inventoryWeaponSpriteSrc(m_weaponB);
         dstRect = { 8,0, srcRect.w, srcRect.h };
         SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         dstRect = { 16,8, 8, 8 };
-        drawWeaponLevel(renderer, m_texture, m_weaponB, &dstRect);
+        drawWeaponLevel(renderer, m_texture, m_weaponB.first, &dstRect);
     }
 
     // Draw current ruppees
     dstRect = { 80,8,8,8 };
-    drawNumber(renderer, m_texture, false, true, 2, 10, &dstRect);
+    drawNumber(renderer, m_texture, false, true, 2, m_ruppees, &dstRect);
 
     // Pop rendering target
     SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
+}
+
+void Inventory::drawSubscreen() const noexcept
+{
+
+    // TODO: Transition the subscreen
+    SDL_Rect dstRect = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, &dstRect), SDL_ERROR_MESSAGE);
+
+    auto currentRenderingTarget = SDL_GetRenderTarget(Renderer::getInstance().getRenderer());
+    SDL_ASSERT(SDL_SetRenderTarget(Renderer::getInstance().getRenderer(), m_subscreen), SDL_ERROR_MESSAGE);
+
+    // Tunic
+    SDL_Rect srcRect = m_inventorySpritesSrc[INVENTORY_TUNIC];
+    switch (m_tunic)
+    {
+    case Tunic::TUNIC_GREEN:
+        break;
+    case Tunic::TUNIC_BLUE:
+        srcRect.x += srcRect.w + 2;
+        break;
+    case Tunic::TUNIC_RED:
+        srcRect.x = 2 * (srcRect.w + 2);
+        break;
+
+    }
+    dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+
+    // Heart pieces
+    srcRect = m_inventorySpritesSrc[INVENTORY_HEART_PIECES];
+    dstRect = m_inventorySpritesDst[INVENTORY_HEART_PIECES];
+
+    switch (m_heartPieces)
+    {
+    case HEART_ZERO:
+        break;
+    case HEART_ONE_QUARTER:
+        srcRect.x += srcRect.w + 2;
+        break;
+    case HEART_HALF:
+        srcRect.x += 2 * (srcRect.w + 2);
+        break;
+    case HEART_THREE_QUARTER:
+        srcRect.x += 3 * (srcRect.w + 2);
+        break;
+    case HEART_FULL:
+        // Will this ever be used?
+        srcRect.x += 4 * (srcRect.w + 2);
+        break;
+    default:
+        assert(false && "Unknown heart piece quantity");
+    }
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+
+    // Photographs
+    srcRect = m_inventorySpritesSrc[INVENTORY_PHOTOGRAPHS];
+    dstRect = m_inventorySpritesDst[INVENTORY_PHOTOGRAPHS];
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+
+    // Inventory "/"
+    srcRect = m_inventorySpritesSrc[INVENTORY_SLASH];
+    dstRect = m_inventorySpritesDst[INVENTORY_SLASH];
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+    dstRect.x = 64; dstRect.y = 8;
+    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+
+    // Draw how many heart pieces we have (out of 4)
+    dstRect = { 56,7,8,8 };
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 0, m_heartPieces, &dstRect);
+    dstRect = { 72,7,8,8 };
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 0, HEARTS_PIECE_MAX, &dstRect);
+
+    // Draw number of photographs
+    dstRect = { 24,23,8,8 };
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 1, m_photographs, &dstRect);
+    dstRect = { 48,23,8,8 };
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 1, MAX_PHOTOGRAPHS, &dstRect);
+
+    // Remember! This resets the drawing target to the screen
+    SDL_ASSERT(SDL_SetRenderTarget(Renderer::getInstance().getRenderer(), currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
 // Draw a number or level onto a texture
@@ -1129,11 +1320,13 @@ void Inventory::drawTopHUD(SDL_Renderer* renderer) noexcept
 // 09
 // 320
 
-void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) noexcept
+void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) const noexcept
 {
     // drawLevel      = Draw the "L-" text next to the number
     // useNormalFont  = Use the normal digit text or text with black background
     // trailingDigits = Number of trailing digits to append to the LHS of the number (e.g 1 01 001)
+
+    assert(number >= 0);
 
     // Save the current renderering target
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
@@ -1250,19 +1443,30 @@ void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool
     SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
-void Inventory::drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WEAPON weapon, SDL_Rect* dstRect) noexcept
+void Inventory::drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WeaponItem weapon, SDL_Rect* dstRect) noexcept
 {
     switch (weapon)
     {
     case WPN_SHIELD:
-        drawNumber(renderer, srcTexture, true, true, 0, (int)m_shieldLevel, dstRect);
+    {
+        auto const shieldLevel = (int)itemLevel(WPN_SHIELD);
+        assert(shieldLevel != WPN_LEVEL_NONE);
+        drawNumber(renderer, srcTexture, true, true, 0, shieldLevel, dstRect);
+    }
         break;
     case WPN_SWORD:
-        drawNumber(renderer, srcTexture, true, true, 0, (int)m_swordLevel, dstRect);
+    {
+        auto const swordLevel = (int)itemLevel(WPN_SWORD);
+        assert(swordLevel != WPN_LEVEL_NONE);
+        drawNumber(renderer, srcTexture, true, true, 0, swordLevel, dstRect);
+    }
         break;
-    case WPN_POWER_BRACELET_1:
-    case WPN_POWER_BRACELET_2:
-        drawNumber(renderer, srcTexture, true, true, 0, (int)m_braceletLevel, dstRect);
+    case WPN_POWER_BRACELET:
+    {
+        auto const braceletLevel = (int)itemLevel(WPN_POWER_BRACELET);
+        assert(braceletLevel != WPN_LEVEL_NONE);
+        drawNumber(renderer, srcTexture, true, true, 0, braceletLevel, dstRect);
+    }
         break;
     case WPN_BOMBS:
         drawNumber(renderer, srcTexture, false, true, 1, m_bombs, dstRect);
@@ -1285,5 +1489,163 @@ void Inventory::drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture,
         break;
     }
 }
+
+void Inventory::moveSelectorRight() noexcept
+{
+    if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
+    {
+        m_selectorX = SELECTOR_INITIAL_X;
+        // If not the bottom right of the inventory
+        if (m_selectorY != SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y)
+        {
+            m_selectorY += SELECTOR_INCREASE_Y;
+            m_selectorIndex++;
+        }
+        else
+        {
+            m_selectorY = SELECTOR_INITIAL_Y;
+            m_selectorIndex = 0;
+        }
+    }
+    else
+    {
+        m_selectorX += SELECTOR_INCREASE_X;
+        m_selectorIndex++;
+    }
+}
+
+void Inventory::moveSelectorUp() noexcept
+{
+    if (m_selectorY == SELECTOR_INITIAL_Y)
+    {
+        if (m_selectorX == SELECTOR_INITIAL_X)
+        {
+            m_selectorX += SELECTOR_INCREASE_X;
+        }
+        m_selectorY = SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y;
+        m_selectorIndex = INVENTORY_MAX_WEAPONS - 1;
+    }
+    else
+    {
+        m_selectorIndex -= 2;
+        m_selectorY -= SELECTOR_INCREASE_Y;
+    }
+}
+
+void Inventory::moveSelectorDown() noexcept
+{
+    if (m_selectorY == SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y)
+    {
+        if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
+        {
+            m_selectorX -= SELECTOR_INCREASE_X;
+        }
+        m_selectorIndex = 0;
+        m_selectorY = SELECTOR_INITIAL_Y;
+    }
+    else
+    {
+        m_selectorY += SELECTOR_INCREASE_Y;
+        // Change by 2 because of the way we index the array (see above)
+        m_selectorIndex += 2;
+    }
+}
+
+void Inventory::moveSelectorLeft() noexcept
+{
+    if (m_selectorX == SELECTOR_INITIAL_X)
+    {
+        m_selectorX = SELECTOR_INITIAL_X + SELECTOR_INCREASE_X;
+        // If not the top left of the inventory
+        if (m_selectorY != SELECTOR_INITIAL_Y)
+        {
+            m_selectorY -= SELECTOR_INCREASE_Y;
+            m_selectorIndex--;
+        }
+        else
+        {
+            m_selectorY = SELECTOR_INITIAL_Y + 4 * SELECTOR_INCREASE_Y;
+            m_selectorIndex = INVENTORY_MAX_WEAPONS - 1;
+        }
+    }
+    else
+    {
+        m_selectorX -= SELECTOR_INCREASE_X;
+        m_selectorIndex--;
+    }
+}
+
+bool Inventory::itemExists(const InventoryWeapon& inventoryWeapon) const noexcept
+{
+    if (m_weaponA == inventoryWeapon || m_weaponB == inventoryWeapon)
+    {
+        return true;
+    }
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
+    {
+        if (m_weaponItems[i] == inventoryWeapon)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Inventory::itemExists(WeaponItem item) const noexcept
+{
+    if (m_weaponA.first == item || m_weaponB.first == item)
+    {
+        return true;
+    }
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
+    {
+        if (m_weaponItems[i].first == item)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Inventory::itemExists(DungeonKey dungeonKey) const noexcept
+{
+    for (int i = 0; i < KEY_COUNT; i++)
+    {
+        if (m_dungeonEntraceKeys[i] == dungeonKey)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+WeaponLevel Inventory::itemLevel(WeaponItem item) const noexcept
+{
+    assert(itemExists(item) == true);
+    if (m_weaponA.first == item)
+    {
+        return m_weaponA.second;
+    }
+    if (m_weaponB.first == item)
+    {
+        return m_weaponB.second;
+    }
+    for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
+    {
+        if (m_weaponItems[i].first == item)
+        {
+            return m_weaponItems[i].second;
+        }
+    }
+
+    assert(false);
+    return WeaponLevel();
+}
+
+void Inventory::inDungeon(bool inside) noexcept
+{
+    m_inDungeon = inside;
+}
+
 
 }

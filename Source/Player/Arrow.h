@@ -10,7 +10,8 @@ class Arrow : public Weapon
 {
 public:
     Arrow();
-    void render(SDL_Renderer* renderer) noexcept override;
+    void render() noexcept override;
+    void update() noexcept override;
     void setPosition(Vector<float> position) override;
 
 private:

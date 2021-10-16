@@ -139,8 +139,8 @@ protected:
     }
     Enemy(float x, float y) : m_auxiliaryFrame(0), m_moving(true)
     {
-        m_positionVector.x = x;
-        m_positionVector.y = y;
+        m_position.x = x;
+        m_position.y = y;
     }
 
     // Basic enemy animation 1,2,3 -> 1,2,3 -> 1,2,3 ...
@@ -181,8 +181,8 @@ protected:
         // If attempt to move out of view, flip direction
         if (!Camera::getInstance().visible(
             {
-                m_positionVector.x,
-                m_positionVector.y,
+                m_position.x,
+                m_position.y,
                 static_cast<float>(m_width),
                 static_cast<float>(m_height)
             }
@@ -191,7 +191,7 @@ protected:
             m_directionVector = -m_directionVector;
         }
 
-        m_positionVector += m_directionVector;
+        m_position += m_directionVector;
     }*/
 
     // TODO: Common move function for Moblin, Shrouded Stalfos, Octorok etc

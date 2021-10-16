@@ -17,7 +17,7 @@ Pairodd::Pairodd(float x, float y) :
     m_health = 3;
 }
 
-void Pairodd::render(SDL_Renderer* renderer) noexcept
+void Pairodd::render() noexcept
 {
     auto animation = m_enemy[EnemySprite::ENEMY_PAIRODD];
 
@@ -37,8 +37,8 @@ void Pairodd::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -49,15 +49,15 @@ void Pairodd::render(SDL_Renderer* renderer) noexcept
     if ((!m_idle && m_currentFrame == 2) || (m_appear == true && m_currentFrame == 2))
     {
         m_dstRect.x -= 8;
-        SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         m_dstRect.x += 16;
-        SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_HORIZONTAL), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_HORIZONTAL), SDL_ERROR_MESSAGE);
     }
     else
     {
         if (!m_disappear || m_appear)
         {
-            SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, 0, nullptr, m_flip), SDL_ERROR_MESSAGE);
+            SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, m_flip), SDL_ERROR_MESSAGE);
         }
         else
         {
@@ -67,8 +67,8 @@ void Pairodd::render(SDL_Renderer* renderer) noexcept
 
                 // TODO: Appear at random place alligned to 16 by 16
                 // Appear at place 32 pixels away from Link usually on other side
-                m_positionVector.x = random(0, CAMERA_WIDTH);
-                m_positionVector.y = random(0, CAMERA_HEIGHT);
+                m_position.x = random(0, CAMERA_WIDTH);
+                m_position.y = random(0, CAMERA_HEIGHT);
 
                 // TODO: Fire something at Link
             }
@@ -126,11 +126,15 @@ void Pairodd::render(SDL_Renderer* renderer) noexcept
     }
 
     // TODO: Check what distance 
-    float distToLink = Vector<float>::distanceBetween(m_positionVector, Link::getInstance().position());
+    float distToLink = Vector<float>::distanceBetween(m_position, Link::getInstance().position());
     if (distToLink < 32)
     {
         m_idle = false;
     }
+}
+
+void Pairodd::update() noexcept
+{
 }
 
 float Pairodd::health() const noexcept
@@ -141,7 +145,7 @@ float Pairodd::health() const noexcept
 
 Vector<float> Pairodd::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void Pairodd::attack() noexcept

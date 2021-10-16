@@ -12,11 +12,11 @@
 namespace Zelda
 {
 
-const std::string ResourceDungeonsPath = R"(Resources\Background\Dungeon\)";
-const std::string ResourceSpriteLinkPath = R"(Resources\Sprite\Link\)";
-const std::string ResourceObjectsPath = R"(Resources\Sprite\Object\)";
-const std::string ResourceMiscPath = R"(Resources\Background\Misc\)";
-const std::string ResourceEnemyPath = R"(Resources\Sprite\Enemy\)";
+const std::string ResourceDungeonsPath = R"(..\..\Resources\Background\Dungeon\)";
+const std::string ResourceSpriteLinkPath = R"(..\..\Resources\Sprite\Link\)";
+const std::string ResourceObjectsPath = R"(..\..\Resources\Sprite\Object\)";
+const std::string ResourceMiscPath = R"(..\..\Resources\Background\Misc\)";
+const std::string ResourceEnemyPath = R"(..\..\Resources\Sprite\Enemy\)";
 
 enum class Graphic
 {

@@ -83,7 +83,7 @@ void Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture
     SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
 }
 
-void Camera::render(SDL_Renderer* renderer) noexcept
+void Camera::render() noexcept
 {
     // We will only ever track the player
     Link* player = &Link::getInstance();
@@ -413,11 +413,15 @@ void Camera::render(SDL_Renderer* renderer) noexcept
 
     // Render the main view
     SDL_Rect dstRect = { m_screenX - m_scrollX, m_screenY - m_scrollY, m_width, m_height };
-    renderTileMap(renderer, dstRect, m_texture, roomIndex);
+    renderTileMap(Renderer::getInstance().getRenderer(), dstRect, m_texture, roomIndex);
 
     // Render the swap canvas out of view 
     SDL_Rect dstSwapRect = { (m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY, m_width, m_height };
-    renderTileMap(renderer, dstSwapRect, m_swapCanvas, m_nextRoomIndex);
+    renderTileMap(Renderer::getInstance().getRenderer(), dstSwapRect, m_swapCanvas, m_nextRoomIndex);
+}
+
+void Camera::update() noexcept
+{
 }
 
 // Set the tilemap to use

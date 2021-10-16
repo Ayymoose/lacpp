@@ -36,7 +36,7 @@ public:
     AnimatedObject(AnimatedClass animatedClass, int x, int y, int repeatAcross, float orientation);
         
     // Renderable overrides
-    void render(SDL_Renderer* renderer) noexcept override;
+    void render() noexcept override;
 
 
     // Use variadic constructor to take positions (x,y) to construct animated tiles with one new instance 
@@ -50,6 +50,6 @@ public:
 
 private:
     int m_repeatAcross;
-    Vector<float> m_positionVector;
+    Vector<float> m_position;
 };
 }

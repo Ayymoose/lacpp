@@ -10,7 +10,7 @@ Leever::Leever(float x, float y) :
     m_emerging(true),
     m_burrowing(false)
 {
-    m_direction = Direction::DIRECTION_DOWN;
+    m_dir = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
     m_width = 16;
@@ -22,10 +22,10 @@ Leever::Leever(float x, float y) :
     m_moving = true;
 
     // Set it off in a random direction
-    m_directionVector = { 0, m_speed };
+    m_direction = { 0, m_speed };
 }
 
-void Leever::render(SDL_Renderer* renderer) noexcept
+void Leever::render() noexcept
 {
     auto animation = m_enemy[ENEMY_LEEVER];
 
@@ -45,15 +45,15 @@ void Leever::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
     if (m_emerging || m_moving || m_burrowing)
     {
-        SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
         if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
         {
@@ -71,6 +71,10 @@ void Leever::render(SDL_Renderer* renderer) noexcept
 
 }
 
+void Leever::update() noexcept
+{
+}
+
 float Leever::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -79,7 +83,7 @@ float Leever::health() const noexcept
 
 Vector<float> Leever::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void Leever::die() noexcept
@@ -126,8 +130,8 @@ void Leever::attack() noexcept
         if (m_emergeTimer.elapsed(8.0f))
         {
             // Appear at a random place within sand area only!
-            m_positionVector.x = random(0, CAMERA_WIDTH) - Camera::getInstance().getX();
-            m_positionVector.y = random(0, CAMERA_HEIGHT - m_height) - Camera::getInstance().getY();
+            m_position.x = random(0, CAMERA_WIDTH) - Camera::getInstance().getX();
+            m_position.y = random(0, CAMERA_HEIGHT - m_height) - Camera::getInstance().getY();
 
             m_emerging = true;
             m_moving = true;
@@ -137,13 +141,13 @@ void Leever::attack() noexcept
     if (m_moving && !m_emerging && !m_burrowing)
     {
         Vector<float> linkPositionVector = Link::getInstance().position();
-        m_directionVector = linkPositionVector - m_positionVector;
+        m_direction = linkPositionVector - m_position;
         // Can't remember what this 0.01 was for
         // Ah yes, prevent division by 0 if they are at the same position
-        if (m_directionVector.length() > 0.1f)
+        if (m_direction.length() > 0.1f)
         {
-            m_directionVector.normalise();
-            m_positionVector += m_directionVector * m_speed;
+            m_direction.normalise();
+            m_position += m_direction * m_speed;
         }
     }
 }

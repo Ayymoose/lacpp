@@ -14,7 +14,7 @@ GopongaFlower::GopongaFlower(float x, float y) :
     m_health = 3;
 }
 
-void GopongaFlower::render(SDL_Renderer* renderer) noexcept
+void GopongaFlower::render() noexcept
 {
     auto animation = m_enemy[ENEMY_GOPONGA_FLOWER];
 
@@ -34,13 +34,13 @@ void GopongaFlower::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - Camera::getInstance().getX(),
-        m_positionVector.y - m_yTransition - Camera::getInstance().getY(),
+        m_position.x - m_xTransition - Camera::getInstance().getX(),
+        m_position.y - m_yTransition - Camera::getInstance().getY(),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -55,6 +55,10 @@ void GopongaFlower::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void GopongaFlower::update() noexcept
+{
+}
+
 float GopongaFlower::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -63,7 +67,7 @@ float GopongaFlower::health() const noexcept
 
 Vector<float> GopongaFlower::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void GopongaFlower::attack() noexcept

@@ -12,7 +12,7 @@ Peahat::Peahat(float x, float y) :
     m_coolDown(false),
     m_risen(0)
 {
-    m_direction = Direction::DIRECTION_DOWN;
+    m_dir = Direction::DIRECTION_DOWN;
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;
@@ -20,7 +20,7 @@ Peahat::Peahat(float x, float y) :
     m_speed = 0.5f;
 }
 
-void Peahat::render(SDL_Renderer* renderer) noexcept
+void Peahat::render() noexcept
 {
     auto animation = m_enemy[ENEMY_PEAHAT];
 
@@ -47,13 +47,13 @@ void Peahat::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -71,6 +71,10 @@ void Peahat::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void Peahat::update() noexcept
+{
+}
+
 float Peahat::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -79,7 +83,7 @@ float Peahat::health() const noexcept
 
 Vector<float> Peahat::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void Peahat::die() noexcept
@@ -100,7 +104,7 @@ void Peahat::attack() noexcept
             if (m_risen < 8)
             {
                 m_risen++;
-                m_positionVector.y--;
+                m_position.y--;
             }
             else
             {
@@ -130,17 +134,17 @@ void Peahat::attack() noexcept
                     {m_speed, -m_speed},
                     {-m_speed, -m_speed}
                 };
-                m_directionVector = dirs[dir];
+                m_direction = dirs[dir];
             }
         }
 
         // If attempt to move out of view, flip direction
-        if (!Camera::getInstance().visible({ m_positionVector.x, m_positionVector.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
+        if (!Camera::getInstance().visible({ m_position.x, m_position.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
         {
-            m_directionVector = -m_directionVector;
+            m_direction = -m_direction;
         }
 
-        m_positionVector += m_directionVector;
+        m_position += m_direction;
 
         if (m_cooldownTimer.elapsed(8.0f))
         {
@@ -156,7 +160,7 @@ void Peahat::attack() noexcept
             if (m_risen < 8)
             {
                 m_risen++;
-                m_positionVector.y++;
+                m_position.y++;
             }
             else
             {

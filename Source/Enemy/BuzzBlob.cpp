@@ -18,11 +18,11 @@ BuzzBlob::BuzzBlob(float x, float y) :
     m_speed = 0.5f;
 
     // Set it off in a random direction
-    m_directionVector = { 0, m_speed };
+    m_direction = { 0, m_speed };
 
 }
 
-void BuzzBlob::render(SDL_Renderer* renderer) noexcept
+void BuzzBlob::render() noexcept
 {
     auto animation = m_enemy[ENEMY_BUZZ_BLOB];
 
@@ -42,13 +42,13 @@ void BuzzBlob::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyExF(renderer, m_texture, &m_srcRect, &m_dstRect, 0, nullptr, m_flip), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, m_flip), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -77,6 +77,10 @@ void BuzzBlob::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void BuzzBlob::update() noexcept
+{
+}
+
 float BuzzBlob::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -85,7 +89,7 @@ float BuzzBlob::health() const noexcept
 
 Vector<float> BuzzBlob::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void BuzzBlob::die() noexcept
@@ -124,17 +128,17 @@ void BuzzBlob::attack() noexcept
                 {m_speed, -m_speed},
                 {m_speed, m_speed}
             };
-            m_directionVector = dirs[dir];
+            m_direction = dirs[dir];
         }
     }
 
     // If attempt to move out of view, flip direction
-    if (!Camera::getInstance().visible({ m_positionVector.x, m_positionVector.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
+    if (!Camera::getInstance().visible({ m_position.x, m_position.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
     {
-        m_directionVector = -m_directionVector;
+        m_direction = -m_direction;
     }
 
-    m_positionVector += m_directionVector;
+    m_position += m_direction;
 }
 
 }

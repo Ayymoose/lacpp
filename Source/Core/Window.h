@@ -4,10 +4,11 @@
 #include "Resource.h"
 #include "Renderer.h"
 #include "Camera.h"
+#include "Jenkins.h"
 
 constexpr int MAIN_WINDOW_WIDTH = 160 * 4;
 constexpr int MAIN_WINDOW_HEIGHT = 144 * 4;
-#define MAIN_WINDOW_TITLE "Link's Awakening"
+#define MAIN_WINDOW_TITLE "Link's Awakening - " LACPP_BUILD " " LACPP_BUILD_DATE
 
 namespace Zelda
 {

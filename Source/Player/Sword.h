@@ -10,7 +10,8 @@ class Sword : public Weapon
 {
 public:
     Sword();
-    void render(SDL_Renderer* renderer) noexcept override;
+    void render() noexcept override;
+    void update() noexcept override;
     void setPosition(Vector<float> position) override;
 
 private:

@@ -74,36 +74,36 @@ RoomManager::RoomManager()
         {},
         {},
         {
-            new AnimatedObject(AnimatedClass::AN_TORCH,144,32,0,90),
-            new AnimatedObject(AnimatedClass::AN_TORCH,144,80,0,90),
+           // new AnimatedObject(AnimatedClass::AN_TORCH,144,32,0,90),
+           // new AnimatedObject(AnimatedClass::AN_TORCH,144,80,0,90),
         },
         { 
-            new ShyGuy(64,64),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
+           // new ShyGuy(64,64),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
         },
         {
-            new AnimatedObject(AnimatedClass::AN_CANDLE,48,16,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,96,16,0,0),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,48,16,0,0),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,96,16,0,0),
         },
         {},
         {},
         {},
         {
-            new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,80,16,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,80,96,0,0),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,80,16,0,0),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
+           // new AnimatedObject(AnimatedClass::AN_CANDLE,80,96,0,0),
         },
         { 
-            new Gibdo(32,32), 
-            new Gibdo(64,32),
-            new AnimatedObject(AnimatedClass::AN_TORCH,0,32,0,-90),
-            new AnimatedObject(AnimatedClass::AN_TORCH,0,80,0,-90)
+           // new Gibdo(32,32), 
+           // new Gibdo(64,32),
+           // new AnimatedObject(AnimatedClass::AN_TORCH,0,32,0,-90),
+           // new AnimatedObject(AnimatedClass::AN_TORCH,0,80,0,-90)
         },
         {   /* Starting room Tail Cave*/
             // Better yet, one allocation with variable arguments of positions
-            new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
+           /* new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,16,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
             new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
@@ -112,7 +112,7 @@ RoomManager::RoomManager()
             new PigWarrior(EnemyType::Basic, 48,32),
             new Moblin(EnemyType::Basic, 48,32),
             new Darknut(EnemyType::Basic, 64,64),
-            new ShroudedStalfos(EnemyType::Basic, 64,64),
+            new ShroudedStalfos(EnemyType::Basic, 64,64),*/
         },
         {},
         {},

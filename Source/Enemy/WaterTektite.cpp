@@ -11,17 +11,17 @@ WaterTektite::WaterTektite(float x, float y) :
     m_strided(0),
     m_stride(false)
 {
-    m_direction = Direction::DIRECTION_DOWN;
+    m_dir = Direction::DIRECTION_DOWN;
 
     // Values likely to be different per enemy
     m_width = 16;
     m_height = 16;
     m_health = 5;
     m_speed = 1;
-    m_directionVector = { 1,-1 };
+    m_direction = { 1,-1 };
 }
 
-void WaterTektite::render(SDL_Renderer* renderer) noexcept
+void WaterTektite::render() noexcept
 {
     auto animation = m_enemy[ENEMY_WATER_TEKTITE];
 
@@ -41,13 +41,13 @@ void WaterTektite::render(SDL_Renderer* renderer) noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_positionVector.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
-        m_positionVector.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
+        m_position.x - m_xTransition - static_cast<float>(Camera::getInstance().getX()),
+        m_position.y - m_yTransition - static_cast<float>(Camera::getInstance().getY()),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyF(renderer, m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect), SDL_ERROR_MESSAGE);
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {
@@ -62,6 +62,10 @@ void WaterTektite::render(SDL_Renderer* renderer) noexcept
     }
 }
 
+void WaterTektite::update() noexcept
+{
+}
+
 float WaterTektite::health() const noexcept
 {
     // TODO: Return -1 for enemys that can't be killed
@@ -70,7 +74,7 @@ float WaterTektite::health() const noexcept
 
 Vector<float> WaterTektite::position() const noexcept
 {
-    return m_positionVector;
+    return m_position;
 }
 
 void WaterTektite::die() noexcept
@@ -88,7 +92,7 @@ void WaterTektite::attack() noexcept
         {
             {m_speed,m_speed}, {-m_speed, m_speed}, {m_speed, -m_speed}, {-m_speed, -m_speed}
         };
-        m_directionVector = dirs[dir];
+        m_direction = dirs[dir];
         m_stride = true;
     }
     else if (m_stride)
@@ -96,11 +100,11 @@ void WaterTektite::attack() noexcept
         if (m_strided < m_strideLength)
         {
             // Keep within camera region
-            auto nextPositionVector = m_positionVector + m_directionVector * m_speed;
+            auto nextPositionVector = m_position + m_direction * m_speed;
             if (Camera::getInstance().visible({ nextPositionVector.x, nextPositionVector.y, static_cast<float>(m_width), static_cast<float>(m_height) }))
             {
-                m_positionVector += m_directionVector * m_speed;
-                m_strided += (m_directionVector * m_speed).length();
+                m_position += m_direction * m_speed;
+                m_strided += (m_direction * m_speed).length();
 
             }
             else

@@ -23,22 +23,22 @@ public:
     virtual float health() const noexcept = 0;
     virtual Vector<float> position() const noexcept = 0;
 protected:
-    BasicCharacter() : m_direction(Direction::DIRECTION_NONE), m_health(0), m_speed(0)
+    BasicCharacter() : m_dir(Direction::DIRECTION_NONE), m_health(0), m_speed(0)
     {
     }
 
     // Character direction
-    Direction m_direction;
+    Direction m_dir;
 
     // Character health
     float m_health;
     float m_speed;
 
     // Position vector
-    Vector<float> m_positionVector;
+    Vector<float> m_position;
 
     // Direction vector
-    Vector<float> m_directionVector;
+    Vector<float> m_direction;
 };
 
 }
