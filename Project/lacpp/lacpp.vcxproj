@@ -173,6 +173,7 @@
     <ClCompile Include="..\..\Source\Engine\AnimatedObject.cpp" />
     <ClCompile Include="..\..\Source\Engine\RoomManager.cpp" />
     <ClCompile Include="..\..\Source\Enemy\BuzzBlob.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Sprite.cpp" />
     <ClCompile Include="..\..\Source\Player\FileSelect.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Peahat.cpp" />
     <ClCompile Include="..\..\Source\Enemy\SandCrab.cpp" />
@@ -225,8 +226,10 @@
     <ClInclude Include="..\..\Source\Enemy\Goomba.h" />
     <ClInclude Include="..\..\Source\Enemy\Pairodd.h" />
     <ClInclude Include="..\..\Source\Engine\AnimatedObject.h" />
+    <ClInclude Include="..\..\Source\Engine\Rect.h" />
     <ClInclude Include="..\..\Source\Engine\RoomManager.h" />
     <ClInclude Include="..\..\Source\Enemy\BuzzBlob.h" />
+    <ClInclude Include="..\..\Source\Engine\Sprite.h" />
     <ClInclude Include="..\..\Source\Player\FileSelect.h" />
     <ClInclude Include="..\..\Source\Enemy\Peahat.h" />
     <ClInclude Include="..\..\Source\Enemy\SandCrab.h" />

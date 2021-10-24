@@ -1,21 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="..\..\Source Files\Core">
-      <UniqueIdentifier>{4e90ed4f-cc8a-4400-93d0-ba741da3f75a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\..\Source Files\Engine">
-      <UniqueIdentifier>{e1ea2068-7b8e-4152-8aa1-3d8c95530f0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\..\Source Files\Player">
-      <UniqueIdentifier>{fe832444-0817-4160-88bb-3497562f56c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\..\Source Files\Interfaces">
-      <UniqueIdentifier>{99e0a906-0d7d-4970-ad41-29d779001162}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\..\Source Files\Enemy">
-      <UniqueIdentifier>{6df496c7-8bb6-466b-a9c4-8da2d5457c90}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{d12904e9-d4e4-4b8b-949b-67191b5f8645}</UniqueIdentifier>
     </Filter>
@@ -185,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Player\FileSelect.cpp">
       <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Sprite.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +373,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Core\Jenkins.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Sprite.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Rect.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
