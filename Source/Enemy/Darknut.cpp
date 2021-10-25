@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "Darknut.h"
 #include "Common.h"
 
@@ -146,3 +149,5 @@ void Darknut::die() noexcept
 }
 
 }
+
+#endif

@@ -26,26 +26,26 @@ FlameRod::FlameRod()
 void FlameRod::render() noexcept
 {
 
-    SDL_Rect flameSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME];
+    auto flameSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME];
 
-    SDL_Rect flameDstRect =
+    Rect<int> flameDstRect =
     {
-        m_position.x - Camera::getInstance().getX(),
-        m_position.y - Camera::getInstance().getY(),
+        static_cast<int>(m_position.x - Camera::getInstance().getX()),
+        static_cast<int>(m_position.y - Camera::getInstance().getY()),
         m_width,
         m_height
     };
 
     // The flame
-    SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    //m_texture.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
+    auto flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
 
-    SDL_Rect flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
-
-    SDL_Rect flameRodDstRect =
+    Rect<int> flameRodDstRect =
     {
-        m_flameRodPosition.x - Camera::getInstance().getX(),
-        m_flameRodPosition.y - Camera::getInstance().getY(),
+        static_cast<int>(m_flameRodPosition.x - Camera::getInstance().getX()),
+        static_cast<int>(m_flameRodPosition.y - Camera::getInstance().getY()),
         m_flameRodWidth,
         m_flameRodHeight
     };
@@ -56,8 +56,9 @@ void FlameRod::render() noexcept
 
     // The flame rod
     if (m_display)
-        SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
-
+    {
+        //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    }
 
     // Animate the flame rod
     if (m_weaponTimer.elapsed(1.0 / 8.0f) && m_currentFrame++ < 1)

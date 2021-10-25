@@ -33,9 +33,9 @@ Camera::Camera() :
     m_nextRoomIndex(0)
 {
     // TODO: Free textures on shutdown
-    assert(m_texture);
-    m_swapCanvas = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
-    assert(m_swapCanvas);
+    assert(m_texture.data());
+    m_swapCanvas = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_texture.width(), m_texture.height());
+    assert(m_swapCanvas.data());
     Renderer::getInstance().addRenderable(this);
 }
 
@@ -70,11 +70,12 @@ void Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture
             auto srcTileX = TILE_WIDTH * (tileID % TILE_MAP_TILES_ACROSS);
             auto srcTileY = TILE_HEIGHT * (tileID / TILE_MAP_TILES_ACROSS);
 
-            SDL_Rect srcTile = { srcTileX , srcTileY ,TILE_WIDTH, TILE_HEIGHT };
-            SDL_Rect dstTile = { tileX * TILE_WIDTH, tileY * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
+            Rect<int> srcTile = { srcTileX , srcTileY ,TILE_WIDTH, TILE_HEIGHT };
+            Rect<int> dstTile = { tileX * TILE_WIDTH, tileY * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
 
             // Paste tile from tilemap
-            SDL_ASSERT(SDL_RenderCopy(renderer, tilemapTexture, &srcTile, &dstTile), SDL_ERROR_MESSAGE);
+            tilemapTexture.drawSprite(renderer, srcTile, dstTile);
+            //SDL_ASSERT(SDL_RenderCopy(renderer, tilemapTexture, &srcTile, &dstTile), SDL_ERROR_MESSAGE);
         }
     }
     popRenderingTarget(renderer, target);
@@ -412,12 +413,12 @@ void Camera::render() noexcept
     player->setDungeonMarkerLocation(dx, dy);
 
     // Render the main view
-    SDL_Rect dstRect = { m_screenX - m_scrollX, m_screenY - m_scrollY, m_width, m_height };
-    renderTileMap(Renderer::getInstance().getRenderer(), dstRect, m_texture, roomIndex);
+    Rect<int> dstRect = { m_screenX - m_scrollX, m_screenY - m_scrollY, m_width, m_height };
+    //renderTileMap(Renderer::getInstance().getRenderer(), dstRect, m_texture, roomIndex);
 
     // Render the swap canvas out of view 
-    SDL_Rect dstSwapRect = { (m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY, m_width, m_height };
-    renderTileMap(Renderer::getInstance().getRenderer(), dstSwapRect, m_swapCanvas, m_nextRoomIndex);
+    Rect<int> dstSwapRect = { (m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY, m_width, m_height };
+    //renderTileMap(Renderer::getInstance().getRenderer(), dstSwapRect, m_swapCanvas, m_nextRoomIndex);
 }
 
 void Camera::update() noexcept

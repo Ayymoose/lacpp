@@ -229,9 +229,10 @@ void Worldmap::render() noexcept
 {
     if (m_show)
     {
-        SDL_Rect dstRect;
+        Rect<int> dstRect;
 
-        auto target = pushRenderingTarget(Renderer::getInstance().getRenderer(), m_texture);
+        auto const target = Renderer::getInstance().pushRenderingTarget(m_texture);
+        //auto target = pushRenderingTarget(Renderer::getInstance().getRenderer(), m_texture);
 
         for (int y = 0; y < WORLDMAP_MAX_Y; y++)
         {
@@ -241,28 +242,31 @@ void Worldmap::render() noexcept
                 WorldmapLocation wml = m_worldmapLocation[x][y];
                 if (!wml.visited)
                 {
-                    SDL_Rect srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED];
-                    dstRect = { WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7,7 };
-                    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+                    auto srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED];
+                    Rect<int> dstRect = { WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7,7 };
+                    
+                    ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
+                    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
                 }
             }
         }
 
-        popRenderingTarget(Renderer::getInstance().getRenderer(), target);
+        Renderer::getInstance().popRenderingTarget(target);
+        //popRenderingTarget(Renderer::getInstance().getRenderer(), target);
 
         // Render the worldmap
         dstRect = { 0, 0, m_width, m_height };
-        SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
+        //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
 
         // Draw current world location marker
-        SDL_Rect srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_LOCATION];
+        auto srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_LOCATION];
         dstRect = { (WORLDMAP_START_X + m_worldX * 8) - 1, (WORLDMAP_START_Y + m_worldY * 8) - 1, 8,8 };
-        basicAnimate(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, WORLDMAP_LOCATION_FPS, Engine::getInstance().paused());
+        //basicAnimate(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, WORLDMAP_LOCATION_FPS, Engine::getInstance().paused());
 
         // Draw the location if we hit upon one
         if (m_worldmapLocation[m_scopeX][m_scopeY].locationType != LT_NONE)
         {
-            SDL_Rect srcRectLocation;
+            Rect<int> srcRectLocation;
             switch (m_worldmapLocation[m_scopeX][m_scopeY].locationType)
             {
             case LT_SHOP:
@@ -303,14 +307,15 @@ void Worldmap::render() noexcept
             }
 
             dstRect = { sx,sy, 30,30 };
-            SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRectLocation, &dstRect), SDL_ERROR_MESSAGE);
+            ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRectLocation, dstRect);
+            //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRectLocation, &dstRect), SDL_ERROR_MESSAGE);
         }
 
         // Draw the "scope" we use to move around
         srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE];
         dstRect = { (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5 , 16, 16 };
-        SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-
+        //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
         toggleItem(m_scopeSelect, m_scopeSelectTimer, WORLDMAP_SELECTOR_FPS);
 
@@ -323,19 +328,19 @@ void Worldmap::render() noexcept
             dstRect.x += 4;
             dstRect.y -= 10;
             // Up arrow
-            SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+            //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
             // Right arrow
             dstRect.x += 15;
             dstRect.y += 14;
-            SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 90, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+            //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 90, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
             // Down arrow
             dstRect.x -= 15;
             dstRect.y += 15;
-            SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 180, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+            //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 180, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
             // Left arrow
             dstRect.x -= 15;
             dstRect.y -= 15;
-            SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 270, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+            //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 270, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         }
     }

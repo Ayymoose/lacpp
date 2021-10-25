@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "BladeTrap.h"
 #include "Link.h"
 
@@ -410,3 +413,5 @@ void BladeTrap::die() noexcept
 }
 
 }
+
+#endif

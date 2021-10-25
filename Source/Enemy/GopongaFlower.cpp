@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "GopongaFlower.h"
 
 namespace Zelda
@@ -81,3 +84,5 @@ void GopongaFlower::die() noexcept
 }
 
 }
+
+#endif

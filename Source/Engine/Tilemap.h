@@ -46,7 +46,7 @@ public:
     uint16_t roomsAcross() const noexcept;
 
     // Tilemap texture used
-    SDL_Texture* getTilemapTexture() const noexcept;
+    Sprite getTilemapTexture() const noexcept;
 
     Tilemap();
 private:

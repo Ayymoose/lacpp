@@ -7,6 +7,7 @@
 #include "Common.h"
 #include "Timer.h"
 #include <string>
+#include "Sprite.h"
 
 namespace Zelda
 {
@@ -66,8 +67,8 @@ private:
     int m_srcCharY;
     int m_dstCharX;
     int m_dstCharY;
-    SDL_Texture* m_text;
-    SDL_Texture* m_subTexture;
+    Sprite m_text;
+    Sprite m_subTexture;
     bool m_moreText;
 
     bool m_flashQuestion;
@@ -75,12 +76,12 @@ private:
     int m_questionXPos;
     int m_questionYPos;
     bool m_isQuestion;
-    SDL_Texture* m_questionMarker;
+    Sprite m_questionMarker;
 
     // Continue arrow
     Timer m_redArrowTimer;
     bool m_flashArrow;
-    SDL_Texture* m_redArrow;
+    Sprite m_redArrow;
     bool m_continue;
     bool m_scrollMessage;
     int m_scrolledLines;

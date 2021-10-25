@@ -1,8 +1,10 @@
-#include <SDL.h>
-#include "ZD_Assert.h"
+
 #include "Drawing.h"
 
 // Some handy drawing functions
+
+namespace Zelda
+{
 
 // NOT RECOMMENDED FOR TIGHT LOOPS AS PUSHING AND POPPING OFF THE RENDERING TARGET INCURS A PERFORMANCE PENALTY!
 // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
@@ -27,11 +29,6 @@ void colourTexture(SDL_Renderer* renderer, SDL_Texture* srcTexture, SDL_Rect* sr
     SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
-void palleteSwap(SDL_Renderer* renderer, SDL_Texture* srcTexture, const std::vector<std::pair<int, int>>& palletes)
-{
-    // TODO:
-}
-
 SDL_Texture* pushRenderingTarget(SDL_Renderer* renderer, SDL_Texture* dstTexture)
 {
     auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
@@ -42,4 +39,6 @@ SDL_Texture* pushRenderingTarget(SDL_Renderer* renderer, SDL_Texture* dstTexture
 void popRenderingTarget(SDL_Renderer* renderer, SDL_Texture* srcTexture)
 {
     SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture), SDL_ERROR_MESSAGE);
+}
+
 }

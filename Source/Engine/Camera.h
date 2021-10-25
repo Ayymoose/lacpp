@@ -100,7 +100,7 @@ private:
     // TODO: Fix player movement during scrolling
     Timer m_timerPlayerScroll;
 
-    SDL_Texture* m_swapCanvas;
+    Sprite m_swapCanvas;
     int m_nextRoomIndex;
 };
 }

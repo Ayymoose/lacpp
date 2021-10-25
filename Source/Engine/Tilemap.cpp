@@ -558,7 +558,7 @@ uint16_t Tilemap::roomsDown() const noexcept
 	return m_currentTileMap.roomsDown;
 }
 
-SDL_Texture* Tilemap::getTilemapTexture() const noexcept
+Sprite Tilemap::getTilemapTexture() const noexcept
 {
 	return ResourceManager::getInstance()[m_currentTileMap.tilemap];
 }

@@ -3,10 +3,10 @@
 #include <SDL_image.h>
 #include "Timer.h"
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include "ZD_Assert.h"
-#include "..\Engine\Vector.h"
-
+#include "Vector.h"
+#include "Sprite.h"
 
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
@@ -52,7 +52,7 @@ public:
         m_yTransition = yTransition;
     }
 
-    Renderable(const char* name, SDL_Texture* texture, int depth) :
+    Renderable(const char* name, const Sprite& texture, int depth) :
         m_srcRect({ 0,0,0,0 }),
         m_dstRect({ 0,0,0,0 }),
         m_xTransition(0),
@@ -68,9 +68,8 @@ public:
         m_orientation(0.0f),
         m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
     {
-        assert(texture);
+        assert(texture.data());
         m_texture = texture;
-        SDL_ASSERT(SDL_QueryTexture(m_texture, nullptr, nullptr, &m_width, &m_height), SDL_ERROR_MESSAGE);
         m_depth = depth;
     }
 
@@ -112,7 +111,7 @@ private:
 protected:
 
     // Default texture to render
-    SDL_Texture* m_texture;
+    Sprite m_texture;
 
     // Dimensions
     int m_width;

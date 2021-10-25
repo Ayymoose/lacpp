@@ -2,12 +2,9 @@
 
 #include "Singleton.h"
 #include "Renderable.h"
-#include <vector>
 #include <set>
-#include <functional>
 #include <SDL_image.h>
-#include <iostream>
-#include <algorithm>
+#include "Sprite.h"
 
 // Singleton instance of the renderer for the main window
 
@@ -62,7 +59,7 @@ public:
         if (iterator != m_renderables.end())
         {
             // No adding the same object to the render set
-            assert(false);
+            assert(false && "Can't add same object to render set");
         }
         //std::cout << "Adding renderable " << renderable->name() << std::endl;
         m_renderables.emplace(renderable);
@@ -77,14 +74,28 @@ public:
         });
         if (iterator != m_renderables.end())
         {
-            std::cout << "Removing renderable " << (*iterator)->name() << std::endl;
+            //std::cout << "Removing renderable " << (*iterator)->name() << std::endl;
             m_renderables.erase(iterator);
         }
         else
         {
             // Attempting to remove something that wasn't in the renderable set
-            assert(false);
+            assert(false && "Trying to remove non-existent renderable");
         }
+    }
+
+    SDL_Texture* pushRenderingTarget(const Sprite& dstTexture) const noexcept
+    {
+        assert(m_renderer);
+        auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
+        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, dstTexture.data()), SDL_ERROR_MESSAGE);
+        return currentRenderingTarget;
+    }
+
+    void popRenderingTarget(SDL_Texture* srcTexture)  const noexcept
+    {
+        assert(m_renderer);
+        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture), SDL_ERROR_MESSAGE);
     }
 
 private:

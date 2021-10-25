@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "Spark.h"
 #include "Common.h"
 
@@ -90,3 +93,5 @@ void Spark::die() noexcept
 }
 
 }
+
+#endif

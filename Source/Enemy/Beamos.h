@@ -1,3 +1,6 @@
+#if 0
+
+
 #pragma once
 
 #include "Enemy.h"
@@ -25,3 +28,5 @@ public:
 };
 
 }
+
+#endif

@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "HardhatBeetle.h"
 #include "Link.h"
 
@@ -99,3 +102,5 @@ void HardhatBeetle::attack() noexcept
 }
 
 }
+
+#endif

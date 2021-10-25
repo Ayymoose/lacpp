@@ -81,7 +81,7 @@ void AnimatedObject::render() noexcept
     dstRect.y = m_position.y - m_yTransition - Camera::getInstance().getY();
     for (int i = 0; i <= m_repeatAcross; i++)
     {
-        basicAnimateExF(Renderer::getInstance().getRenderer(), m_texture, m_srcRect, dstRect, 0, m_currentFrame, m_endFrame, m_animationFPS, m_orientation, Engine::getInstance().paused());
+        //basicAnimateExF(Renderer::getInstance().getRenderer(), m_texture, m_srcRect, dstRect, 0, m_currentFrame, m_endFrame, m_animationFPS, m_orientation, Engine::getInstance().paused());
         dstRect.x += m_width;
     }
 }

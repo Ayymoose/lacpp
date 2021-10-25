@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "Zombie.h"
 #include "Common.h"
 
@@ -152,3 +155,5 @@ void Zombie::attack() noexcept
 }
 
 }
+
+#endif

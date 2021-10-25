@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "LikeLike.h"
 #include "Common.h"
 
@@ -121,3 +124,5 @@ void LikeLike::attack() noexcept
 }
 
 }
+
+#endif

@@ -22,17 +22,18 @@ Boomerang::Boomerang()
 void Boomerang::render() noexcept
 {
 
-    SDL_Rect srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG];
+    auto srcRect = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG];
 
-    SDL_Rect dstRect =
+    Rect<int> dstRect =
     {
-        m_position.x - Camera::getInstance().getX(),
-        m_position.y - Camera::getInstance().getY(),
+        static_cast<int>(m_position.x - Camera::getInstance().getX()),
+        static_cast<int>(m_position.y - Camera::getInstance().getY()),
         m_width,
         m_height
     };
 
-    SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    m_texture.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
+    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();
     m_boundingBox.y = m_position.y - Camera::getInstance().getY();

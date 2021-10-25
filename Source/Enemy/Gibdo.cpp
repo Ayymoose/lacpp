@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "Gibdo.h"
 #include "Common.h"
 
@@ -120,3 +123,5 @@ void Gibdo::attack() noexcept
 }
 
 }
+
+#endif

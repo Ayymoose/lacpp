@@ -417,7 +417,7 @@ private:
     void drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) const noexcept;
     void drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WeaponItem weapon, SDL_Rect* dstRect) noexcept;
 
-    SDL_Texture* m_subscreen;   // The select status at the bottom of the screen
+    Sprite m_subscreen;   // The select status at the bottom of the screen
     TradeItem m_tradeItem;      // Current trade item
 
 
@@ -661,7 +661,7 @@ private:
     };
 
     // Inventory sprite positions (source Rect from the sprite sheet)
-    SDL_Rect m_inventorySpritesSrc[WPN_COUNT + INVENTORY_COUNT] =
+    Rect<int> m_inventorySpritesSrc[WPN_COUNT + INVENTORY_COUNT] =
     {
         {10,20,8,16},   // WPN_SWORD
         {0, 20,8,16},   // WPN_SHIELD
@@ -770,7 +770,7 @@ private:
 
     };
 
-    SDL_Rect m_inventorySpritesDst[sizeof(m_inventorySpritesSrc) / sizeof(m_inventorySpritesSrc[0])] =
+    Rect<int> m_inventorySpritesDst[sizeof(m_inventorySpritesSrc) / sizeof(m_inventorySpritesSrc[0])] =
     {
         {0,0,0,0},     // WPN_SWORD
         {0,0,0,0},     // WPN_SHIELD

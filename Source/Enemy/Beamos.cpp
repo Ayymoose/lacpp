@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "Beamos.h"
 
 namespace Zelda
@@ -81,3 +84,5 @@ void Beamos::die() noexcept
 }
 
 }
+
+#endif

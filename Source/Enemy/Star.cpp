@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "Star.h"
 
 namespace Zelda
@@ -108,3 +111,5 @@ void Star::attack() noexcept
 }
 
 }
+
+#endif

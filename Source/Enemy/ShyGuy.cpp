@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "ShyGuy.h"
 #include "Common.h"
 
@@ -129,3 +132,5 @@ void ShyGuy::attack() noexcept
 
 
 }
+
+#endif

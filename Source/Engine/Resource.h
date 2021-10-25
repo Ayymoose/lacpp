@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include <map>
 #include "Singleton.h"
+#include "Sprite.h"
 
 // A pinkish colour is used for transparency
 #define TRANSPARENCY_COLOUR (SDL_RGB(255,0,128))
@@ -121,25 +122,24 @@ class ResourceManager : public Singleton<ResourceManager>
     friend class Singleton<ResourceManager>;
 public:
 
-    SDL_Texture* operator[](Graphic resource) noexcept
+    Sprite operator[](Graphic resource) noexcept
     {
         assert(resource > Graphic::GFX_RESOURCE_NONE && resource < Graphic::GFX_RESOURCE_COUNT);
         auto graphic = m_resources[resource];
-        assert(graphic);
+        assert(graphic.data());
         return graphic;
     }
 
     void loadGraphics() noexcept;
-    void loadSounds() noexcept;
     virtual ~ResourceManager();
 
 private:
     ResourceManager() = default;
 
     // Load a texture and specify the transparent colour
-    SDL_Texture* loadTexture(const std::string& path, uint32_t transparency) noexcept;
+    Sprite loadSprite(const std::string& path, uint32_t transparency) noexcept;
 
     // Map between resources and pointer to all textures
-    std::map<Graphic, SDL_Texture*> m_resources;
+    std::map<Graphic, Sprite> m_resources;
 };
 }

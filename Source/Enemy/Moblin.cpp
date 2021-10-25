@@ -1,3 +1,6 @@
+#if 0
+
+
 #include "Moblin.h"
 #include "Common.h"
 
@@ -145,3 +148,5 @@ void Moblin::die() noexcept
 }
 
 }
+
+#endif

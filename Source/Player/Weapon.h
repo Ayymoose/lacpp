@@ -80,7 +80,7 @@ protected:
     BoundingBox m_boundingBox;
 
     // Weapon sprite sources
-    const SDL_Rect m_weaponSpritesSrc[WPN_SPRITE_COUNT] =
+    const Rect<int> m_weaponSpritesSrc[WPN_SPRITE_COUNT] =
     {
         {0,0,8,16},     // WPN_SPRITE_BOW
         {10,0,8,16},    // WPN_SPRITE_BOOMERANG

@@ -155,7 +155,7 @@ private:
     uint8_t m_worldX;
     uint8_t m_worldY;
 
-    SDL_Rect m_worldmapSrcSprites[8] =
+    Rect<int> m_worldmapSrcSprites[8] =
     {
         {110,162,7,7},   // WORLDMAP_AREA_UNVISITED
         {100,162,9,8},   // WORLDMAP_AREA_ARROW

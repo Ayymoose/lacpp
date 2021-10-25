@@ -37,10 +37,10 @@ Dialogue::Dialogue() :
     m_scrollMessage(false),
     m_scrolledLines(0)
 {
-    assert(m_texture);
-    assert(m_subTexture);
-    colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0, 0, 0));
-    colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
+    assert(m_texture.data());
+    assert(m_subTexture.data());
+    //colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0, 0, 0));
+    //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
 }
 
 void Dialogue::message(const std::string& message, float yPos) noexcept
@@ -109,7 +109,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
     m_continue = false;
     m_moreText = false;
 
-    colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
+    //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
 
     // TODO: Correct text colour
     // TODO: Add special characters (arrows, items etc)
@@ -181,7 +181,7 @@ bool Dialogue::question(const char* question, const std::string& choice1, const 
 void Dialogue::render() noexcept
 {
     // Drawn on top or bottom depending on Link's position
-    SDL_Rect dstRectDialogue =
+    Rect<int> dstRectDialogue =
     {
         m_dialoguePosX,
         m_dialoguePosY,
@@ -189,7 +189,7 @@ void Dialogue::render() noexcept
         m_height
     };
 
-    SDL_Rect srcRectArrow =
+    Rect<int> srcRectArrow =
     {
         136,
         16,
@@ -197,7 +197,7 @@ void Dialogue::render() noexcept
         CHAR_HEIGHT
     };
 
-    SDL_Rect dstRectArrow =
+    Rect<int> dstRectArrow =
     {
         m_dialoguePosX + ARROW_POS_X,
         m_dialoguePosY + ARROW_POS_Y,
@@ -205,7 +205,7 @@ void Dialogue::render() noexcept
         CHAR_HEIGHT
     };
 
-    SDL_Rect srcRectChar, dstRectChar = { 0,0,0,0 };
+    Rect<int> srcRectChar, dstRectChar = { 0,0,0,0 };
 
     // Copy each character onto the message box and display that,
     if (m_message[m_currentChar] >= 'A' && m_message[m_currentChar] <= 'Z')
@@ -349,7 +349,7 @@ void Dialogue::render() noexcept
                 m_height / 2
             };
             // 1. Hide the top half of the sub texture
-            colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcSubTextureHalf, SDL_RGB(0, 0, 0));
+            //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcSubTextureHalf, SDL_RGB(0, 0, 0));
 
 
             // Copy the bottom line of text to the top of the texture
@@ -377,10 +377,10 @@ void Dialogue::render() noexcept
                     dstRectSubTextureLowerHalf.y = m_dstCharY;
 
                     // 3. Copy to a bottom half of texture to top half 
-                    copyToTexture(Renderer::getInstance().getRenderer(), m_subTexture, m_subTexture, &srcRectSubTextureLowerHalf, &dstRectSubTextureLowerHalf);
+                    //copyToTexture(Renderer::getInstance().getRenderer(), m_subTexture, m_subTexture, &srcRectSubTextureLowerHalf, &dstRectSubTextureLowerHalf);
 
                     // Block out the what used to be the bottom line
-                    colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
+                    //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
 
                     m_currentLine = MAX_LINE - 1;
                     m_dstCharX = 0;
@@ -399,11 +399,11 @@ void Dialogue::render() noexcept
         assert(srcRectChar.x >= 0 && srcRectChar.y >= 0 && srcRectChar.w >= 0 && srcRectChar.h >= 0);
         assert(dstRectChar.x >= 0 && dstRectChar.y >= 0 && dstRectChar.w >= 0 && dstRectChar.h >= 0);
 
-        copyToTexture(Renderer::getInstance().getRenderer(), m_text, m_subTexture, &srcRectChar, &dstRectChar);
+        //copyToTexture(Renderer::getInstance().getRenderer(), m_text, m_subTexture, &srcRectChar, &dstRectChar);
 
     }
 
-    SDL_Rect dstRectSubTexture =
+    Rect<int> dstRectSubTexture =
     {
         0,
         -m_dstCharY,
@@ -412,15 +412,16 @@ void Dialogue::render() noexcept
     };
 
     // Copy sub texture to main textbox
-    copyToTexture(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, nullptr, &dstRectSubTexture);
+    //copyToTexture(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, nullptr, &dstRectSubTexture);
 
     // Display the textbox
-    SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRectDialogue), SDL_ERROR_MESSAGE);
+    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRectDialogue), SDL_ERROR_MESSAGE);
 
     // Flashing red arrow 
     if (m_flashArrow && m_continue)
     {
-        SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_redArrow, &srcRectArrow, &dstRectArrow), SDL_ERROR_MESSAGE);
+        m_redArrow.drawSprite(Renderer::getInstance().getRenderer(), srcRectArrow, dstRectArrow);
+        //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_redArrow, &srcRectArrow, &dstRectArrow), SDL_ERROR_MESSAGE);
     }
 
     // Flash the continue arrow
@@ -432,10 +433,12 @@ void Dialogue::render() noexcept
         toggleItem(m_flashQuestion, m_questionTimer, INVENTORY_SELECTOR_FPS);
         if (m_flashQuestion && m_currentChar == m_message.length())
         {
-            SDL_Rect srcQuestionRect = { 144,16, CHAR_WIDTH, CHAR_HEIGHT };
-            SDL_Rect dstQuestionRect = { m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
+            Rect<int> srcQuestionRect = { 144,16, CHAR_WIDTH, CHAR_HEIGHT };
+            Rect<int> dstQuestionRect = { m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
 
-            SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_questionMarker, &srcQuestionRect, &dstQuestionRect), SDL_ERROR_MESSAGE);
+            m_questionMarker.drawSprite(Renderer::getInstance().getRenderer(), srcQuestionRect, dstQuestionRect);
+
+            //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_questionMarker, &srcQuestionRect, &dstQuestionRect), SDL_ERROR_MESSAGE);
         }
     }
 }
