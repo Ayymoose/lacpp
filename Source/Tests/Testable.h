@@ -25,7 +25,7 @@ public:
 };
 
 
-#define EXPECT(ACTUAL, EXPECTED) do {if (!compare(ACTUAL,EXPECTED)) { std::cout << "Failed: " << __FILE__ << '(' << __LINE__ << ')' << " Expected " << EXPECTED << " but got " << ACTUAL << '\n'; }} while (0)
+#define EXPECT(ACTUAL, EXPECTED) do {if (!compare(ACTUAL,EXPECTED)) { std::cout << "Failed: " << __FILE__ << '(' << __LINE__ << ')' << " Expected " << (EXPECTED) << " but got " << (ACTUAL) << '\n'; }} while (0)
 
 // Provide some type safety
 template<typename E1, typename E2>

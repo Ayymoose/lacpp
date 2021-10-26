@@ -35,12 +35,12 @@ struct Rect
 
 // if RectType is Rect<int> then return SDL_Rect
 // if RectType is Rect<float> then return SDL_FRect
-inline SDL_Rect rectToSDLRect(const Rect<int>& rect)
+inline auto rectToSDLRect(const Rect<int>& rect) noexcept
 {
     return SDL_Rect{ rect.x, rect.y, rect.w, rect.h };
 }
 
-inline SDL_FRect rectToSDLRect(const Rect<float>& rect)
+inline auto rectToSDLRect(const Rect<float>& rect) noexcept
 {
     return SDL_FRect{ rect.x, rect.y, rect.w, rect.h };
 }

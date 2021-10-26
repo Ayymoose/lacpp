@@ -215,6 +215,7 @@
     <ClCompile Include="..\..\Source\Engine\Tilemap.cpp" />
     <ClCompile Include="..\..\Source\Tests\InventoryTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\Main.cpp" />
+    <ClCompile Include="..\..\Source\Tests\RectTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\VectorTests.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +287,7 @@
     <ClInclude Include="..\..\Source\Enemy\Spark.h" />
     <ClInclude Include="..\..\Source\Engine\Tilemap.h" />
     <ClInclude Include="..\..\Source\Tests\InventoryTests.h" />
+    <ClInclude Include="..\..\Source\Tests\RectTests.h" />
     <ClInclude Include="..\..\Source\Tests\Testable.h" />
     <ClInclude Include="..\..\Source\Tests\VectorTests.h" />
   </ItemGroup>
