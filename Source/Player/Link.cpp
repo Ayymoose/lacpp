@@ -276,7 +276,7 @@ void Link::render() noexcept
     // Drawing bounding boxes for testing
     //m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
     
-    SDL_Rect playerRect =
+    Rect<int> playerRect =
     {
         m_boundingBox.x - Camera::getInstance().getX(),
         m_boundingBox.y - Camera::getInstance().getY(),

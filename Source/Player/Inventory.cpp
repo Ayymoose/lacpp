@@ -4,7 +4,6 @@
 #include "Renderer.h"
 #include "Depth.h"
 #include "Camera.h"
-#include "Drawing.h"
 #include "Link.h"
 #include "ZD_Assert.h"
 #include "Keyboard.h"
@@ -49,7 +48,8 @@ Inventory::Inventory() :
     assert(m_subscreen.data());
     // m_texture is the main texture we draw ontoas
     assert(m_texture.data());
-    //colourTexture(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, SDL_RGB(0, 0, 0));
+    Rect<int> srcRect = { 0,0, m_subscreen.width(), m_subscreen.height() };    
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subscreen, srcRect, SDL_RGB(0, 0, 0));
 
     // 7 -> 39 x increases of 32
     // 27 -> 50 y increases by 23
@@ -180,11 +180,10 @@ void Inventory::render() noexcept
     }
 
     // Render the inventory background
-    Rect<int> dstRect = { 0, renderY, m_width , m_height };
-    Rect<int> srcRect = { 0, 0, m_width, m_height };
+    Rect<int> dstRect = { 0, renderY, m_texture.width() , m_texture.height() };
+    Rect<int> srcRect = { 0, 0,  m_texture.width() , m_texture.height() };
     m_texture.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
-    //colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_texture, srcRect, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
     drawHUD(Renderer::getInstance().getRenderer());
 
@@ -226,7 +225,6 @@ void Inventory::setDungeonMapEntry(const int x, const int y, const DungeonMapEnt
 {
     assert(x >= 0 && x < DUNGEON_MAX_BLOCKS_X && y >= 0 && y < DUNGEON_MAX_BLOCKS_Y);
     m_dungeonMaps[m_dungeon][y][x] = dungeonMapEntry;
-
 }
 
 void Inventory::update() noexcept
@@ -608,11 +606,10 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
     }
 
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
 
     // Draw dungeon map level
     Rect<int> dstRectMapLevel = {72,64,8,8};
-    //drawNumber(renderer, m_texture, true, true, 0, m_dungeon, &dstRectMapLevel);
+    drawNumber(renderer, m_texture, true, true, 0, m_dungeon, dstRectMapLevel);
 
     // Draw the dungeon map
     
@@ -773,13 +770,12 @@ void Inventory::drawDungeonMap(SDL_Renderer* renderer) noexcept
             dstRect.y += y * srcRect.w;
 
             ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-            //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
 
             // Draw current location flashing
             if (m_dungeonPosition.x == x && m_dungeonPosition.y == y)
             {
                 srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_CURRENT_LOCATION];
-                //basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, INSTRUMENT_FPS, Engine::getInstance().paused());
+                basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, INSTRUMENT_FPS, Engine::getInstance().paused());
             }
 
         }
@@ -796,10 +792,8 @@ void Inventory::drawSelectStatus(SDL_Renderer* renderer) noexcept
     dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
 
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
 
     dstRect.x += 73;
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
     srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
@@ -811,7 +805,6 @@ void Inventory::drawSelectStatus(SDL_Renderer* renderer) noexcept
     if (m_flashSelect)
     {
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 }
 
@@ -824,7 +817,6 @@ void Inventory::drawMiscItems(SDL_Renderer* renderer) noexcept
         srcRect = m_inventorySpritesSrc[INVENTORY_FLIPPERS];
         dstRect = m_inventorySpritesDst[INVENTORY_FLIPPERS];
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     if (m_potion)
@@ -832,17 +824,16 @@ void Inventory::drawMiscItems(SDL_Renderer* renderer) noexcept
         srcRect = m_inventorySpritesSrc[INVENTORY_POTION];
         dstRect = m_inventorySpritesDst[INVENTORY_POTION];
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     // Draw number of seashells
     srcRect = m_inventorySpritesSrc[INVENTORY_SEASHELLS];
     dstRect = m_inventorySpritesDst[INVENTORY_SEASHELLS];
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    //drawNumber(renderer, m_texture, false, true, 1, m_seashells, &dstRect);
+    drawNumber(renderer, m_texture, false, true, 1, m_seashells, dstRect);
 
     // Draw currently traded item (if any)
     if (m_tradeItem != ITEM_NONE)
@@ -850,7 +841,6 @@ void Inventory::drawMiscItems(SDL_Renderer* renderer) noexcept
         srcRect = m_inventorySpritesSrc[TRADE_ITEM_SPRITE(m_tradeItem)];
         dstRect = m_inventorySpritesDst[TRADE_ITEM_SPRITE(m_tradeItem)];
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 }
 
@@ -867,7 +857,6 @@ void Inventory::drawInventoryItems(SDL_Renderer* renderer) noexcept
         srcRect = m_inventorySpritesSrc[INVENTORY_TAIL_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_TAIL_KEY];
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     if (itemExists(KEY_SLIME))
@@ -875,34 +864,27 @@ void Inventory::drawInventoryItems(SDL_Renderer* renderer) noexcept
         srcRect = m_inventorySpritesSrc[INVENTORY_SLIME_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_SLIME_KEY];
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     if (itemExists(KEY_ANGLER))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_ANGLER_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_ANGLER_KEY];
-
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
     
     if (itemExists(KEY_FACE))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_FACE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_FACE_KEY];
-
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     if (itemExists(KEY_FACE))
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_BIRD_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_BIRD_KEY];
-
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     drawInstruments(renderer);
@@ -916,38 +898,29 @@ void Inventory::drawDungeonItems(SDL_Renderer* renderer) noexcept
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
         dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
-
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     if (m_nightmareKey[m_dungeon])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
         dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
-
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     if (m_owlBeak[m_dungeon])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
         dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
-
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     if (m_dungeonMap[m_dungeon])
     {
         srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
         dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
-
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
-
 
     // Draw the dungeon map
     drawDungeonMap(renderer);
@@ -956,14 +929,10 @@ void Inventory::drawDungeonItems(SDL_Renderer* renderer) noexcept
     srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_KEY];
     dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_KEY];
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    //drawNumber(renderer, m_texture, false, true, 0, m_dungeonKeys[m_dungeon], &dstRect);
-
-
-
+    drawNumber(renderer, m_texture, false, true, 0, m_dungeonKeys[m_dungeon], dstRect);
 }
 
 void Inventory::drawInstruments(SDL_Renderer* renderer) noexcept
@@ -994,18 +963,16 @@ void Inventory::drawInstruments(SDL_Renderer* renderer) noexcept
         case Instrument::THUNDER_DRUM:
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_0 + (i-1)];
             dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_0 + (i-1)];
-            //basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 0, 0, INSTRUMENTS_FRAME, INSTRUMENT_FPS, Engine::getInstance().paused());
+            basicAnimate(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 0, 0, INSTRUMENTS_FRAME, INSTRUMENT_FPS, Engine::getInstance().paused());
             break;
         default:
             // If we don't have the instrument yet
             srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_BACK_0];
             dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK_0 + i - 1];
             ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-            //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-            
-            
+        
             dstRect.x += 8; dstRect.y += 8; dstRect.w = 8; dstRect.h = 8;
-            //drawNumber(renderer, m_texture, false, true, 0, i, &dstRect);
+            drawNumber(renderer, m_texture, false, true, 0, i, dstRect);
             break;
         }
     }
@@ -1016,90 +983,58 @@ void Inventory::drawHealth(SDL_Renderer* renderer) noexcept
     float currentHealth = Link::getInstance().health();
     float healthMax =  Link::getInstance().maxHealth();
 
-    int wholeHearts = (int)currentHealth;
-    float quarterHearts = currentHealth - (int)currentHealth;
-    int emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
-
-    // draw whole hearts
-    // draw quarter hear
-    /// draw empty hearts
+    const int wholeHearts = (int)currentHealth;
+    const float quarterHearts = currentHealth - (int)currentHealth;
+    const int emptyHearts = (currentHealth - (int)currentHealth > 0 ? healthMax - std::ceil(currentHealth) : healthMax - wholeHearts);
 
     auto srcRect = m_inventorySpritesSrc[INVENTORY_HEART_WHOLE];
     auto dstRect = m_inventorySpritesDst[INVENTORY_HEART_WHOLE];
     int drawnHearts = 0;
 
+    auto drawHeart = [&]() noexcept
+    {
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
+        dstRect.x += srcRect.w;
+
+        // Append to new row of hearts
+        drawnHearts++;
+        if (drawnHearts == HEARTS_PER_ROW)
+        {
+            dstRect.y += srcRect.h;
+            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+        }
+    };
+
     // Draw whole hearts
     for (int i = 0; i < wholeHearts; i++)
     {
-        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-        if (drawnHearts == HEARTS_PER_ROW)
-        {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
-        }
+        drawHeart();
     }
 
+    assert(quarterHearts == 0.0 || quarterHearts == 0.25 || quarterHearts == 0.5 || quarterHearts == 0.75);
     // Draw any quarter hearts
-    if (quarterHearts == 0.25)
+    if (quarterHearts > 0)
     {
-        srcRect.x = (srcRect.w + 2) * 3;
-        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-        if (drawnHearts == HEARTS_PER_ROW)
+        if (quarterHearts == 0.25)
         {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+            srcRect.x = (srcRect.w + 2) * 3;
         }
-    }
-    else if (quarterHearts == 0.5)
-    {
-        srcRect.x = (srcRect.w + 2) * 2;
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-        if (drawnHearts == HEARTS_PER_ROW)
+        else if (quarterHearts == 0.5)
         {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+            srcRect.x = (srcRect.w + 2) * 2;
         }
-    }
-    else if (quarterHearts == 0.75)
-    {
-        srcRect.x = (srcRect.w + 2) * 1;
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-        if (drawnHearts == HEARTS_PER_ROW)
+        else if (quarterHearts == 0.75)
         {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
+            srcRect.x = (srcRect.w + 2) * 1;
         }
+        drawHeart();
     }
-
+    
     // Draw empty hearts
     srcRect.x = (srcRect.w + 2) * 4;
     for (int i = 0; i < emptyHearts; i++)
     {
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        
-        dstRect.x += srcRect.w;
-        drawnHearts++;
-        if (drawnHearts == HEARTS_PER_ROW)
-        {
-            dstRect.y += srcRect.h;
-            dstRect.x = m_inventorySpritesDst[INVENTORY_HEART_WHOLE].x;
-        }
+        drawHeart();
     }
 }
 
@@ -1110,8 +1045,6 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
     // Instead of creating an object for each item we have
     // We just render the items we have to a single texture
     // and render that instead
-    //auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, m_texture), SDL_ERROR_MESSAGE);
     auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
 
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
@@ -1131,12 +1064,10 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
             };
             // Draw the inventory items onto the internal inventory
             ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-            //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         }
     }
 
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
@@ -1150,7 +1081,7 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
                 WEAPON_LEVEL_HEIGHT
             };
 
-            //drawWeaponLevel(renderer, m_texture, m_weaponItems[i].first, &dstRect);
+            drawWeaponLevel(renderer, m_texture, m_weaponItems[i].first, dstRect);
         }
     }
   
@@ -1159,8 +1090,6 @@ void Inventory::drawInventoryWeapons(SDL_Renderer* renderer) noexcept
 
 void Inventory::drawSelector(SDL_Renderer* renderer) noexcept
 {
-    //auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, m_texture), SDL_ERROR_MESSAGE);
     auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
 
     Rect<int> srcRect, dstRect;
@@ -1174,9 +1103,7 @@ void Inventory::drawSelector(SDL_Renderer* renderer) noexcept
         srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
         dstRect = { m_selectorX, m_selectorY, srcRect.w , srcRect.h };
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
 
 }
@@ -1184,12 +1111,10 @@ void Inventory::drawSelector(SDL_Renderer* renderer) noexcept
 void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
 {
     Rect<int> srcRect, dstRect;
-    //auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, m_texture), SDL_ERROR_MESSAGE);
     auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
 
-
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
+
     // Draw horizontal divider
     for (int i = 0; i < (INVENTORY_WIDTH / INVENTORY_DIVIDER_WIDTH_H)-2; i++)
     {
@@ -1201,7 +1126,6 @@ void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
             INVENTORY_DIVIDER_HEIGHT_H
         };
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
     // Draw vertical divider
@@ -1215,49 +1139,38 @@ void Inventory::drawInventoryDividers(SDL_Renderer* renderer) noexcept
             INVENTORY_DIVIDER_HEIGHT_V
         };
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     }
 
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
 void Inventory::drawHUD(SDL_Renderer* renderer) noexcept 
 {
     auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
-
-    //auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, m_texture), SDL_ERROR_MESSAGE);
-
     Rect<int> srcRect, dstRect;
 
     // Copy "B" 
     srcRect = m_inventorySpritesSrc[INVENTORY_B_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_B_BUTTON];
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
 
     // Copy "A"
     srcRect = m_inventorySpritesSrc[INVENTORY_A_BUTTON];
     dstRect = m_inventorySpritesDst[INVENTORY_A_BUTTON];
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
 
     // Copy selector
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_1];
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
 
     srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_2];
     dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_2];
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
 
     // Ruppee icon
     srcRect = m_inventorySpritesSrc[INVENTORY_RUPPEE];
     dstRect = m_inventorySpritesDst[INVENTORY_RUPPEE];
-    //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
 
     // Draw health
@@ -1269,12 +1182,11 @@ void Inventory::drawHUD(SDL_Renderer* renderer) noexcept
         // Draw the actual weapon
         srcRect = inventoryWeaponSpriteSrc(m_weaponA);
         dstRect = {48,0, srcRect.w, srcRect.h };
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
 
         // Draw the weapon level
         dstRect = { 56,8, 8, 8 };
-        //drawWeaponLevel(renderer, m_texture, m_weaponA.first, &dstRect);
+        drawWeaponLevel(renderer, m_texture, m_weaponA.first, dstRect);
     }
 
     // Draw weapon B
@@ -1282,19 +1194,17 @@ void Inventory::drawHUD(SDL_Renderer* renderer) noexcept
     {
         srcRect = inventoryWeaponSpriteSrc(m_weaponB);
         dstRect = { 8,0, srcRect.w, srcRect.h };
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, dstRect);
 
         dstRect = { 16,8, 8, 8 };
-        //drawWeaponLevel(renderer, m_texture, m_weaponB.first, &dstRect);
+        drawWeaponLevel(renderer, m_texture, m_weaponB.first, dstRect);
     }
 
     // Draw current ruppees
     dstRect = { 80,8,8,8 };
-    //drawNumber(renderer, m_texture, false, true, 2, m_ruppees, &dstRect);
+    drawNumber(renderer, m_texture, false, true, 2, m_ruppees, dstRect);
 
     // Pop rendering target
-    //SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
 
 }
@@ -1306,11 +1216,6 @@ void Inventory::drawSubscreen() const noexcept
     auto dstRect = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
     Rect<int> srcRect = { 0,0,dstRect.w, dstRect.h };
     m_subscreen.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_subscreen, nullptr, &dstRect), SDL_ERROR_MESSAGE);
-
-    //auto currentRenderingTarget = SDL_GetRenderTarget(Renderer::getInstance().getRenderer());
-    //SDL_ASSERT(SDL_SetRenderTarget(Renderer::getInstance().getRenderer(), m_subscreen), SDL_ERROR_MESSAGE);
     auto currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_subscreen);
 
     // Tunic
@@ -1329,65 +1234,42 @@ void Inventory::drawSubscreen() const noexcept
     }
     dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
 
     // Heart pieces
     srcRect = m_inventorySpritesSrc[INVENTORY_HEART_PIECES];
     dstRect = m_inventorySpritesDst[INVENTORY_HEART_PIECES];
 
-    switch (m_heartPieces)
-    {
-    case HEART_ZERO:
-        break;
-    case HEART_ONE_QUARTER:
-        srcRect.x += srcRect.w + 2;
-        break;
-    case HEART_HALF:
-        srcRect.x += 2 * (srcRect.w + 2);
-        break;
-    case HEART_THREE_QUARTER:
-        srcRect.x += 3 * (srcRect.w + 2);
-        break;
-    case HEART_FULL:
-        // Will this ever be used?
-        srcRect.x += 4 * (srcRect.w + 2);
-        break;
-    default:
-        assert(false && "Unknown heart piece quantity");
-    }
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+    assert(m_heartPieces > HEART_NONE && m_heartPieces < HEART_COUNT);
+    srcRect.x += (m_heartPieces * (srcRect.w + 2));
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
     // Photographs
     srcRect = m_inventorySpritesSrc[INVENTORY_PHOTOGRAPHS];
     dstRect = m_inventorySpritesDst[INVENTORY_PHOTOGRAPHS];
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
     // Inventory "/"
     srcRect = m_inventorySpritesSrc[INVENTORY_SLASH];
     dstRect = m_inventorySpritesDst[INVENTORY_SLASH];
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
+    
     dstRect.x = 64; dstRect.y = 8;
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
     // Draw how many heart pieces we have (out of 4)
     dstRect = { 56,7,8,8 };
-    //drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 0, m_heartPieces, &dstRect);
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 0, m_heartPieces, dstRect);
     dstRect = { 72,7,8,8 };
-    //drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 0, HEARTS_PIECE_MAX, &dstRect);
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 0, HEARTS_PIECE_MAX, dstRect);
 
     // Draw number of photographs
     dstRect = { 24,23,8,8 };
-    //drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 1, m_photographs, &dstRect);
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 1, m_photographs, dstRect);
     dstRect = { 48,23,8,8 };
-    //drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 1, MAX_PHOTOGRAPHS, &dstRect);
+    drawNumber(Renderer::getInstance().getRenderer(), m_subscreen, false, false, 1, MAX_PHOTOGRAPHS, dstRect);
 
     // Remember! This resets the drawing target to the screen
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
-    //SDL_ASSERT(SDL_SetRenderTarget(Renderer::getInstance().getRenderer(), currentRenderingTarget), SDL_ERROR_MESSAGE);
 }
 
 // Draw a number or level onto a texture
@@ -1397,7 +1279,7 @@ void Inventory::drawSubscreen() const noexcept
 // 09
 // 320
 
-void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) const noexcept
+void Inventory::drawNumber(SDL_Renderer* renderer, const Sprite& srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const noexcept
 {
     // drawLevel      = Draw the "L-" text next to the number
     // useNormalFont  = Use the normal digit text or text with black background
@@ -1406,17 +1288,17 @@ void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool
     assert(number >= 0);
 
     // Save the current renderering target
-    auto currentRenderingTarget = SDL_GetRenderTarget(renderer);
-    SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture), SDL_ERROR_MESSAGE);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(srcTexture);
 
     Rect<int> srcRect;
+    auto rectDst = dstRect;
 
     // Draw level
     if (drawLevel)
     {
         // Draw the "L-"
         srcRect = m_inventorySpritesSrc[INVENTORY_LEVEL];
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect), SDL_ERROR_MESSAGE);
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, rectDst);
 
         if (useNormalFont)
         {
@@ -1428,8 +1310,8 @@ void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool
         }
 
         srcRect.x += 2 * number + srcRect.w * number;
-        dstRect->x += srcRect.w;
-        //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect), SDL_ERROR_MESSAGE);
+        rectDst.x += srcRect.w;
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, rectDst);
     }
     else
     {
@@ -1477,8 +1359,8 @@ void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool
         // Add any trailing digits if needed in front of the number
         for (int i = 0; i < (number == 0 ? trailingDigits : trailingDigits+1 - numberLength); i++)
         {
-            //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect), SDL_ERROR_MESSAGE);
-            dstRect->x += srcRect.w;
+            ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, rectDst);
+            rectDst.x += srcRect.w;
         }
 
         // Just draw a standard number with or without trailing digits
@@ -1495,8 +1377,8 @@ void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool
             }
 
             srcRect.x += 2 * (number % 10) + srcRect.w * (number % 10);
-            //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect), SDL_ERROR_MESSAGE);
-            dstRect->x += srcRect.w;
+            ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, rectDst);
+            rectDst.x += srcRect.w;
             number /= 10;
         } while (number != 0);
 
@@ -1512,15 +1394,15 @@ void Inventory::drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool
         // Draw any reversed number whose 0 was lost
         for (int i = 0; i < trailingZeros; i++)
         {
-            //SDL_ASSERT(SDL_RenderCopy(renderer, ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, dstRect), SDL_ERROR_MESSAGE);
-            dstRect->x += srcRect.w;
+            ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(renderer, srcRect, rectDst);
+            rectDst.x += srcRect.w;
         }
     }
     // Restore "pop" the target backk
-    SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
+    Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
 }
 
-void Inventory::drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WeaponItem weapon, SDL_Rect* dstRect) noexcept
+void Inventory::drawWeaponLevel(SDL_Renderer* renderer, const Sprite& srcTexture, WeaponItem weapon, const Rect<int>& dstRect) noexcept
 {
     switch (weapon)
     {
@@ -1564,6 +1446,8 @@ void Inventory::drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture,
     case WPN_SHOVEL:
     case WPN_FLAME_ROD:
         break;
+    default:
+        assert(false);
     }
 }
 

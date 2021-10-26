@@ -23,7 +23,7 @@ Sword::Sword()
 
 void Sword::render() noexcept
 {
-    SDL_Rect srcRect =
+    Rect<int> srcRect =
     {
         m_animateXPos + (m_currentFrame * m_width),
         m_animateYPos,
@@ -31,10 +31,10 @@ void Sword::render() noexcept
         m_height
     };
 
-    SDL_Rect dstRect =
+    Rect<int> dstRect =
     {
-        m_position.x - Camera::getInstance().getX(),
-        m_position.y - Camera::getInstance().getY(),
+        static_cast<int>(m_position.x - Camera::getInstance().getX()),
+        static_cast<int>(m_position.y - Camera::getInstance().getY()),
         m_width,
         m_height
     };

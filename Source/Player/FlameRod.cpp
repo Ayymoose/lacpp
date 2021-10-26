@@ -38,7 +38,7 @@ void FlameRod::render() noexcept
 
     // The flame
     //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
-    //m_texture.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
+    m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
     auto flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
 
@@ -57,6 +57,7 @@ void FlameRod::render() noexcept
     // The flame rod
     if (m_display)
     {
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_flameRodOrientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
     }
 

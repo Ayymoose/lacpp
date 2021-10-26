@@ -76,7 +76,7 @@ AnimatedObject::AnimatedObject(AnimatedClass animatedClass, int x, int y, int re
 
 void AnimatedObject::render() noexcept
 {
-    SDL_FRect dstRect = m_dstRect;
+    auto dstRect = m_dstRect;
     dstRect.x = m_position.x - m_xTransition - Camera::getInstance().getX();
     dstRect.y = m_position.y - m_yTransition - Camera::getInstance().getY();
     for (int i = 0; i <= m_repeatAcross; i++)

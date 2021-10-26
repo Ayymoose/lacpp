@@ -17,6 +17,16 @@ struct Rect
         this->h = h;
     }
 
+    bool operator==(const Rect& other) const noexcept
+    {
+        return (other.x == x) && (other.y == y) && (other.w == w) && (other.h == h);
+    }
+
+    bool operator!=(const Rect& other) const noexcept
+    {
+        return !operator==(other);
+    }
+
     T x;
     T y;
     T w;

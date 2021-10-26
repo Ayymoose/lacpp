@@ -6,7 +6,6 @@
 #include "Depth.h"
 #include "ZD_Assert.h"
 #include "Engine.h"
-#include "Drawing.h"
 
 
 namespace Zelda
@@ -56,7 +55,7 @@ void Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture
     // Get texture used
     auto tilemapTexture = m_tilemap.getTilemapTexture();
 
-    auto target = pushRenderingTarget(renderer, srcTexture);
+    auto const target = Renderer::getInstance().pushRenderingTarget(srcTexture);
 
     // Start painting the canvas with tiles
     for (int tileY = 0; tileY < ROOM_TILES_DOWN; tileY++)
@@ -75,10 +74,10 @@ void Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture
 
             // Paste tile from tilemap
             tilemapTexture.drawSprite(renderer, srcTile, dstTile);
-            //SDL_ASSERT(SDL_RenderCopy(renderer, tilemapTexture, &srcTile, &dstTile), SDL_ERROR_MESSAGE);
         }
     }
-    popRenderingTarget(renderer, target);
+
+    Renderer::getInstance().popRenderingTarget(target);
 
     // Finally render the canvas
     SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
@@ -466,8 +465,6 @@ void Camera::setScrollSpeed(int scrollSpeed) noexcept
     SDL_ASSERT(CAMERA_HEIGHT % scrollSpeed, "scrollSpeed not multiple of CAMERA_HEIGHT");
     m_scrollSpeed = scrollSpeed;
 }
-
-
 
 int Camera::getX() const noexcept
 {

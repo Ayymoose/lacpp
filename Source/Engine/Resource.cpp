@@ -2,7 +2,6 @@
 #include "Renderer.h"
 #include "Singleton.h"
 #include "ZD_Assert.h"
-#include "Drawing.h"
 
 namespace Zelda
 {
@@ -57,8 +56,6 @@ Sprite ResourceManager::loadSprite(const std::string& path, uint32_t transparenc
         // Below sets the SDL_TEXTUREACCESS_TARGET access to our texture as we can't set it on a surface it seems
         // So we must copy every texture created from surface to a new one.
         // A limitation of SDL
-       // int textureWidth, textureHeight;
-        //SDL_ASSERT(SDL_QueryTexture(newTexture, nullptr, nullptr, &textureWidth, &textureHeight), SDL_ERROR_MESSAGE);
         Sprite srcSprite(newTexture);
         auto texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, srcSprite.width(), srcSprite.height());
         Sprite destSprite(texture);

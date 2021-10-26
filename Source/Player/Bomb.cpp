@@ -51,6 +51,7 @@ void Bomb::render() noexcept
 
     case BOMB_SPRITE_INERT:
     case BOMB_SPRITE_FLASHING:
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         break;
     case BOMB_SPRITE_INITIAL_CLOUD:
@@ -60,13 +61,17 @@ void Bomb::render() noexcept
         dstRect.y -= 4;
         m_boundingBox.x -= 4;
         m_boundingBox.y -= 4;
-
+        
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 12;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.y += 8;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x -= 12;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 28;
@@ -80,12 +85,16 @@ void Bomb::render() noexcept
         m_boundingBox.x -= 6;
         m_boundingBox.y -= 6;
 
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 16;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_HORIZONTAL);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_HORIZONTAL), SDL_ERROR_MESSAGE);
         dstRect.y += 16;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 270, SpriteFlip::FLIP_VERTICAL);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, 270, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
         dstRect.x -= 16;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_VERTICAL);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_VERTICAL), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 32;
@@ -99,12 +108,16 @@ void Bomb::render() noexcept
         m_boundingBox.x -= 6;
         m_boundingBox.y -= 6;
 
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x += 16;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.y += 16;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
         dstRect.x -= 16;
+        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
         m_boundingBox.w = 32;
@@ -112,17 +125,13 @@ void Bomb::render() noexcept
         break;
     }
 
-    SDL_Rect boundingRect =
+    Rect<int> boundingRect =
     {
         m_boundingBox.x,
         m_boundingBox.y,
         m_boundingBox.w,
         m_boundingBox.h
     };
-
-    // Bounding Box rect
-    // SDL_ASSERT(SDL_RenderDrawRect(renderer, &boundingRect), SDL_ERROR_MESSAGE);
-
 
     // When a bomb is placed
     // It is initially inert for 1 second then starts to flash then explodes

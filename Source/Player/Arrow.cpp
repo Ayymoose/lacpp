@@ -57,6 +57,7 @@ void Arrow::render() noexcept
         break;
     }
 
+    m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
     //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
 
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();

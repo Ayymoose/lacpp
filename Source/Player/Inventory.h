@@ -414,8 +414,8 @@ private:
     void drawHUD(SDL_Renderer* renderer) noexcept;
     
 
-    void drawNumber(SDL_Renderer* renderer, SDL_Texture* srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, SDL_Rect* dstRect) const noexcept;
-    void drawWeaponLevel(SDL_Renderer* renderer, SDL_Texture* srcTexture, WeaponItem weapon, SDL_Rect* dstRect) noexcept;
+    void drawNumber(SDL_Renderer* renderer, const Sprite& srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const noexcept;
+    void drawWeaponLevel(SDL_Renderer* renderer, const Sprite& srcTexture, WeaponItem weapon, const Rect<int>& dstRect) noexcept;
 
     Sprite m_subscreen;   // The select status at the bottom of the screen
     TradeItem m_tradeItem;      // Current trade item

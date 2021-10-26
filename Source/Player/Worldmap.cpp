@@ -1,6 +1,5 @@
 #include "Worldmap.h"
 #include "Common.h"
-#include "Drawing.h"
 #include "Dialogue.h"
 
 namespace Zelda

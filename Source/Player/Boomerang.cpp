@@ -38,9 +38,6 @@ void Boomerang::render() noexcept
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();
     m_boundingBox.y = m_position.y - Camera::getInstance().getY();
 
-    // Bounding Box rect
-    // SDL_ASSERT(SDL_RenderDrawRect(renderer, &dstRect), SDL_ERROR_MESSAGE);
-
     // Return to the player
     if (m_return)
     {

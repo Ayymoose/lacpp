@@ -53,6 +53,8 @@ public:
     }
 
     Renderable(const char* name, const Sprite& texture, int depth) :
+        m_width(0),
+        m_height(0),
         m_srcRect({ 0,0,0,0 }),
         m_dstRect({ 0,0,0,0 }),
         m_xTransition(0),
@@ -97,7 +99,8 @@ private:
 
     // pause is to have the animation keep running or not when the engine is paused
     // gap is the number of pixels between each sprite in sheet (usually 0 and should be :|)
-    void basicAnimateHelper(SDL_Rect& srcRect, int gap, int startFrame, int frameCount, float fps, bool pause) noexcept
+    template<typename R>
+    void basicAnimateHelper(Rect<R>& srcRect, int gap, int startFrame, int frameCount, float fps, bool pause) noexcept
     {
         static Timer animationTimer;
         static int frameCounter = 0;
@@ -118,8 +121,8 @@ protected:
     int m_height;
 
     // For sprite
-    SDL_Rect m_srcRect;
-    SDL_FRect m_dstRect;
+    Rect<int> m_srcRect;
+    Rect<float> m_dstRect;
 
     int m_xTransition;
     int m_yTransition;
@@ -133,17 +136,19 @@ protected:
     // Animation
 
     // Basic horizontal strip animation
-    void basicAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps, bool pause)
+    template<typename R1, typename R2>
+    void basicAnimate(SDL_Renderer* renderer, const Sprite& texture, Rect<R1> srcRect, Rect<R2> dstRect, int gap, int startFrame, int frameCount, float fps, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        SDL_ASSERT(SDL_RenderCopy(renderer, texture, &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+        texture.drawSprite(renderer, srcRect, dstRect);
     }
 
-    // Note: Takes an SDL_FRect for dstRect
-    void basicAnimateExF(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect srcRect, SDL_FRect dstRect, int gap, int startFrame, int frameCount, float fps, float orientation, bool pause)
+    // Extended animation
+    template<typename R1, typename R2>
+    void basicAnimateEx(SDL_Renderer* renderer, const Sprite& texture, const Rect<R1>& srcRect, const Rect<R2>& dstRect, int gap, int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        SDL_ASSERT(SDL_RenderCopyExF(renderer, texture, &srcRect, &dstRect, orientation, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        texture.drawSpriteEx(renderer, srcRect, dstRect, angle, SpriteFlip::FLIP_NONE);
     }
 
     // TODO: When the animation finishes, reverse the animation

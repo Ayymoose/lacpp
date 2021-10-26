@@ -1,7 +1,6 @@
 #include "Dialogue.h"
 #include "Depth.h"
 #include "Renderer.h"
-#include "Drawing.h"
 #include "Camera.h"
 #include "ZD_Assert.h"
 #include "Resource.h"
@@ -341,7 +340,7 @@ void Dialogue::render() noexcept
         else if (m_scrollMessage)
         {
             // Scrolls the message and continues on to the next
-            SDL_Rect srcSubTextureHalf =
+            Rect<int> srcSubTextureHalf =
             {
                 0,
                 0,
@@ -353,7 +352,7 @@ void Dialogue::render() noexcept
 
 
             // Copy the bottom line of text to the top of the texture
-            SDL_Rect srcRectSubTextureLowerHalf =
+            Rect<int> srcRectSubTextureLowerHalf =
             {
                 0,
                 m_dstCharY,
@@ -372,7 +371,7 @@ void Dialogue::render() noexcept
                 if (m_dstCharY != 0)
                 {
 
-                    SDL_Rect dstRectSubTextureLowerHalf = srcRectSubTextureLowerHalf;
+                    auto dstRectSubTextureLowerHalf = srcRectSubTextureLowerHalf;
                     m_dstCharY = 0;
                     dstRectSubTextureLowerHalf.y = m_dstCharY;
 

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <type_traits>
 
+// TODO: Rename to SDL_Assert.h
+
 #define SDL_ERROR_MESSAGE "SDL Error: " << SDL_GetError()
 // Custom assert to display message
 

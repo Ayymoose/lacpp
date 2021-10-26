@@ -17,6 +17,7 @@ SDL_Texture* Sprite::data() const noexcept
     return m_sprite;
 }
 
+// SDL_Texture assignment operator
 Sprite& Sprite::operator=(SDL_Texture* texture) noexcept
 {
     m_sprite = texture; 
@@ -37,10 +38,26 @@ int Sprite::height() const noexcept
     return m_height;
 }
 
-void Sprite::free() const noexcept
+void Sprite::free() noexcept
 {
     SDL_DestroyTexture(m_sprite);
+    m_sprite = nullptr;
 }
 
+SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip) noexcept
+{
+    switch (flip)
+    {
+    case SpriteFlip::FLIP_HORIZONTAL: 
+        return SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+    case SpriteFlip::FLIP_VERTICAL:
+        return SDL_RendererFlip::SDL_FLIP_VERTICAL;
+    case SpriteFlip::FLIP_NONE:
+        return SDL_RendererFlip::SDL_FLIP_NONE;
+    default:
+        assert(false && "Unknown flip");
+        return SDL_RendererFlip::SDL_FLIP_NONE;
+    }
+}
 
 }
