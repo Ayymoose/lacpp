@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL_rect.h>
+#include <type_traits>
 
 namespace Zelda
 {
@@ -8,6 +9,8 @@ namespace Zelda
 template<typename T>
 struct Rect
 {
+    static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "Invalid template type");
+
     constexpr Rect() : x(0), y(0), w(0), h(0) {};
     constexpr Rect(T x, T y, T w, T h)
     {

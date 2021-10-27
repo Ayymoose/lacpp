@@ -9,17 +9,26 @@
 // Higher depth = Rendered later on (on top of everything else)
 // Lower depth  = Renderer earlier on (everything is renderer on top of this)
 
+namespace Zelda
+{
+
+enum ZOrdering
+{
 // Background tiles
-#define ZD_DEPTH_BACKGROUND 1
+ZD_DEPTH_BACKGROUND = 1,
 // Background objects
-#define ZD_DEPTH_BACKGROUND_OBJECT (ZD_DEPTH_BACKGROUND+1)
+ZD_DEPTH_BACKGROUND_OBJECT,
 // Enemies
-#define ZD_DEPTH_ENEMY (ZD_DEPTH_BACKGROUND_OBJECT+1)
+ZD_DEPTH_ENEMY,
 // Player
-#define ZD_DEPTH_PLAYER (ZD_DEPTH_ENEMY+1)
+ZD_DEPTH_PLAYER,
 // Inventory
-#define ZD_DEPTH_INVENTORY (ZD_DEPTH_PLAYER+1)
+ZD_DEPTH_INVENTORY,
 // Worldmap
-#define ZD_DEPTH_WORLDMAP (ZD_DEPTH_INVENTORY+1)
+ZD_DEPTH_WORLDMAP,
 // Dialogue
-#define ZD_DEPTH_DIALOGUE (ZD_DEPTH_WORLDMAP+1)
+ZD_DEPTH_DIALOGUE
+};
+
+
+}

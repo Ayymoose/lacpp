@@ -421,6 +421,7 @@ void Inventory::useItem(DungeonItem dungeonItem) noexcept
     {
     case DungeonItem::ITEM_KEY:
         assert(m_dungeonKeys[m_dungeon] > 0);
+        assert(m_dungeon > DUNGEON_NONE && m_dungeon < DUNGEON_COUNT);
         m_dungeonKeys[m_dungeon]--;
     break;
     default:

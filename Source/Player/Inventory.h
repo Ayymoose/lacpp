@@ -4,6 +4,7 @@
 #include "Renderable.h"
 #include "Vector.h"
 #include "Camera.h"
+#include <array>
 
 namespace Zelda
 {
