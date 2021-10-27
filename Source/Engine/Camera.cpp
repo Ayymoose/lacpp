@@ -12,7 +12,7 @@ namespace Zelda
 {
 
 Camera::Camera() :
-    Renderable("Camera", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
+    Renderable("Camera", Sprite(Renderer::getInstance().getRenderer(),CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
     m_scrollX(0),
     m_scrollY(0),
     m_offScrollX(0),
@@ -33,7 +33,7 @@ Camera::Camera() :
 {
     // TODO: Free textures on shutdown
     assert(m_texture.data());
-    m_swapCanvas = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_texture.width(), m_texture.height());
+    m_swapCanvas = Sprite(Renderer::getInstance().getRenderer(), m_texture.width(), m_texture.height());
     assert(m_swapCanvas.data());
     Renderer::getInstance().addRenderable(this);
 }

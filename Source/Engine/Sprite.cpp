@@ -12,6 +12,16 @@ Sprite::Sprite(SDL_Texture* texture) : m_sprite(texture), m_width(0), m_height(0
     SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height), SDL_ERROR_MESSAGE);
 }
 
+Sprite::Sprite(SDL_Renderer* renderer, int width, int height) :
+    m_sprite(SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, width, height)),
+    m_width(width),
+    m_height(height)
+{
+    assert(width);
+    assert(height);
+    assert(m_sprite);
+}
+
 SDL_Texture* Sprite::data() const noexcept
 {
     return m_sprite;

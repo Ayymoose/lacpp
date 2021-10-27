@@ -57,7 +57,7 @@ Sprite ResourceManager::loadSprite(const std::string& path, uint32_t transparenc
         // So we must copy every texture created from surface to a new one.
         // A limitation of SDL
         Sprite srcSprite(newTexture);
-        auto texture = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, srcSprite.width(), srcSprite.height());
+        auto texture = Sprite(Renderer::getInstance().getRenderer(), srcSprite.width(), srcSprite.height());
         Sprite destSprite(texture);
         Rect<int> spriteSize = { 0,0,srcSprite.width(), srcSprite.height() };
         Sprite::copySprite(Renderer::getInstance().getRenderer(), srcSprite, destSprite, spriteSize, spriteSize);

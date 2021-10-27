@@ -402,21 +402,21 @@ public:
 
 private:
 
-    void drawDungeonMap(SDL_Renderer* renderer) noexcept;
-    void drawSelectStatus(SDL_Renderer* renderer) noexcept;
-    void drawMiscItems(SDL_Renderer* renderer) noexcept;
-    void drawInventoryItems(SDL_Renderer* renderer) noexcept;
-    void drawDungeonItems(SDL_Renderer* renderer) noexcept;
-    void drawInstruments(SDL_Renderer* renderer) noexcept;
-    void drawHealth(SDL_Renderer* renderer) noexcept;
-    void drawInventoryWeapons(SDL_Renderer* renderer) noexcept;
-    void drawSelector(SDL_Renderer* renderer) noexcept;
-    void drawInventoryDividers(SDL_Renderer* renderer) noexcept;
-    void drawHUD(SDL_Renderer* renderer) noexcept;
+    void drawDungeonMap() noexcept;
+    void drawSelectStatus() noexcept;
+    void drawMiscItems() noexcept;
+    void drawInventoryItems() noexcept;
+    void drawDungeonItems() noexcept;
+    void drawInstruments() noexcept;
+    void drawHealth() noexcept;
+    void drawInventoryWeapons() noexcept;
+    void drawSelector() noexcept;
+    void drawInventoryDividers() noexcept;
+    void drawHUD() noexcept;
     
 
-    void drawNumber(SDL_Renderer* renderer, const Sprite& srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const noexcept;
-    void drawWeaponLevel(SDL_Renderer* renderer, const Sprite& srcTexture, WeaponItem weapon, const Rect<int>& dstRect) noexcept;
+    void drawNumber(const Sprite& srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const noexcept;
+    void drawWeaponLevel(const Sprite& srcTexture, WeaponItem weapon, const Rect<int>& dstRect) noexcept;
 
     Sprite m_subscreen;   // The select status at the bottom of the screen
     TradeItem m_tradeItem;      // Current trade item

@@ -12,7 +12,7 @@ namespace Zelda
 {
 
 Dialogue::Dialogue() :
-    Renderable("Dialogue", SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, DIALOGUE_WIDTH, DIALOGUE_HEIGHT), ZD_DEPTH_DIALOGUE),
+    Renderable("Dialogue", Sprite(Renderer::getInstance().getRenderer(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT), ZD_DEPTH_DIALOGUE),
     Controllable(m_name),
     m_dialoguePosX(DIALOGUE_POS_X),
     m_dialoguePosY(DIALOGUE_POS_Y_LOW),
@@ -23,7 +23,7 @@ Dialogue::Dialogue() :
     m_dstCharX(0),
     m_dstCharY(0),
     m_text(ResourceManager::getInstance()[Graphic::GFX_TEXT]),
-    m_subTexture(SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, DIALOGUE_WIDTH, DIALOGUE_HEIGHT)),
+    m_subTexture(Sprite(Renderer::getInstance().getRenderer(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT)),
     m_moreText(false),
     m_flashQuestion(false),
     m_questionXPos(0),

@@ -32,11 +32,8 @@ public:
     {
     }
 
-    /*constexpr Sprite(int width, int height)
-    {
-        m_sprite = SDL_CreateTexture(Renderer::getInstance().getRenderer(), SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, width, height);
-    }
-    */
+    Sprite(SDL_Renderer* renderer, int width, int height);
+    
     SDL_Texture* data() const noexcept;
     Sprite& operator=(SDL_Texture* texture) noexcept;
 
