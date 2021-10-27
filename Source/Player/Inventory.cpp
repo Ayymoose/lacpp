@@ -32,8 +32,8 @@ Inventory::Inventory() :
     m_goldleafs(0),
     m_photographs(0),
     m_ruppees(0),
-    m_weaponA(std::pair(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE)),
-    m_weaponB(std::pair(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE)),
+    m_weaponA(InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE)),
+    m_weaponB(InventoryWeapon(WeaponItem::WPN_NONE, WeaponLevel::WPN_LEVEL_NONE)),
     m_selectorX(SELECTOR_INITIAL_X),
     m_selectorY(SELECTOR_INITIAL_Y),
     m_selectorIndex(0),
@@ -1287,6 +1287,8 @@ void Inventory::drawNumber(const Sprite& srcTexture, bool drawLevel, bool useNor
     // trailingDigits = Number of trailing digits to append to the LHS of the number (e.g 1 01 001)
 
     assert(number >= 0);
+    assert(trailingDigits >= 0);
+    assert(dstRect != Rect<int>());
 
     // Save the current renderering target
     auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(srcTexture);

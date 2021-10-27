@@ -10,6 +10,8 @@ Sprite::Sprite(SDL_Texture* texture) : m_sprite(texture), m_width(0), m_height(0
 {
     assert(texture);
     SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height), SDL_ERROR_MESSAGE);
+    assert(m_width);
+    assert(m_height);
 }
 
 Sprite::Sprite(SDL_Renderer* renderer, int width, int height) :
