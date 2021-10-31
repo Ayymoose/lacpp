@@ -279,9 +279,6 @@ void Dialogue::render() noexcept
     {
         if (m_textTimer.elapsed(TEXT_SPEED) && !m_scrollMessage)
         {
-
-            //std::cout << "Outputting character '" << m_message[m_currentChar] << "'\n";
-
             //m_textTimer.reset();
 
             // Only allow MAX_CHAR_PER_LINE characters per line

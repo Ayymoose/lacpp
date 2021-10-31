@@ -1,9 +1,12 @@
 #pragma once
 
+#include "Debug.h"
 #include <iostream>
 #include <cassert>
 
 // Allows an object to receive control depending on whether it is the controller or not
+namespace Zelda
+{
 
 class Controllable
 {
@@ -14,7 +17,7 @@ public:
     Controllable() = default;
     virtual ~Controllable()
     {
-        std::cout << "Controllable deconstructor called" << std::endl;
+        DEBUG(DBG_INFO, "Controllable deconstructor called");
     }
     virtual void control(double ts) noexcept = 0;
     std::string name() const noexcept
@@ -25,3 +28,5 @@ public:
 protected:
     std::string m_controllableName;
 };
+
+}

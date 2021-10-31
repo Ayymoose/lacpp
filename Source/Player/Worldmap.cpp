@@ -26,7 +26,7 @@ void Worldmap::control(double ts) noexcept
         close();
         Controller::getInstance().popController();
         Engine::getInstance().pause(false);
-        std::cout << "Worldmap closed!\n";
+        DEBUG(DBG_INFO, "Worldmap closed!");
     }
 
     // Move scope around map if the area is visited

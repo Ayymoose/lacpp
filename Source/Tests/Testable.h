@@ -2,6 +2,7 @@
 
 #include <map>
 #include <iostream>
+#include "Debug.h"
 
 namespace Testable
 {
@@ -18,7 +19,7 @@ public:
     {
         for (auto const& [testName, testFunction] : testList)
         {
-            std::cout << "Running test: " << testName << '\n';
+            DEBUG(Zelda::DBG_TEST, "Running test: " + testName);
             (testType->*testFunction)();
         }
     }

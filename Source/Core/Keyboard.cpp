@@ -1,4 +1,5 @@
 #include "Keyboard.h"
+#include "Debug.h"
 #include <iostream>
 #include <assert.h>
 
@@ -52,7 +53,7 @@ bool Keyboard::keyPressed(int key) noexcept
     // If it's true now, return true then make it false
     if (m_keyStatePressed[key])
     {
-        std::cout << key << " was pressed\n";
+        DEBUG(DBG_INFO, std::to_string(key) + " was pressed");
         m_keyStatePressed[key] = false;
         return true;
     }
@@ -67,7 +68,7 @@ bool Keyboard::keyReleased(int key) noexcept
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     if (m_keyStateReleased[key])
     {
-        std::cout << key << " was released\n";
+        DEBUG(DBG_INFO, std::to_string(key) + " was released");
         m_keyStateReleased[key] = false;
         return true;
     }

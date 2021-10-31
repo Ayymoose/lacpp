@@ -9,6 +9,7 @@
 #include "ZD_Assert.h"
 #include "Keyboard.h"
 #include "Engine.h"
+#include "Debug.h""
 #include <set>
 
 namespace Zelda
@@ -487,7 +488,7 @@ void Link::attack() noexcept
 
 void Link::die() noexcept
 {
-    std::cout << "Link died" << std::endl;
+    DEBUG(DBG_INFO, "Link died");
 }
 
 void Link::resetAnimation() noexcept
@@ -1283,7 +1284,7 @@ void Link::animate()
     //m_clockAnimation.start();
     if (m_clockAnimation.elapsed(m_animations[m_state].animationFPS))
     {
-        std::cout << "Animating frame " << m_currentFrame << " out of " << m_endFrame << '\n';
+        DEBUG(DBG_INFO, "Animating frame " + std::to_string(m_currentFrame) + " out of " + std::to_string(m_endFrame));
         if (m_currentFrame+1 > m_endFrame)
         {
             // Reset to the initial frame

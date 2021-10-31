@@ -2,7 +2,11 @@
 
 #include "Singleton.h"
 #include "Controllable.h"
+#include "Debug.h"
 #include <stack>
+
+namespace Zelda
+{
 
 class Controller : public Singleton<Controller>
 {
@@ -14,11 +18,11 @@ public:
         m_controller = controller;
         if (controller)
         {
-            std::cout << "Controller is now " << m_controller->name() << '\n';
+            DEBUG(DBG_INFO, "Controller is now " + m_controller->name());
         }
         else
         {
-            std::cout << "No one has control\n";
+            DEBUG(DBG_INFO, "No one has control");
         }
 
         // Clear stack
@@ -31,7 +35,7 @@ public:
         // TODO: There must be an existing controller in place
         //assert(m_controller && "No existing controller in place");
         assert(controller);
-        std::cout << "Controller is now " << controller->name() << '\n';
+        DEBUG(DBG_INFO, "Controller is now " + controller->name());
         m_stack.push(controller);
     }
 
@@ -41,11 +45,11 @@ public:
         m_stack.pop();
         if (!m_stack.empty())
         {
-            std::cout << "Controller is now " << m_stack.top()->name() << '\n';
+            DEBUG(DBG_INFO, "Controller is now " + m_stack.top()->name());
         }
         else
         {
-            std::cout << "No one has control\n";
+            DEBUG(DBG_INFO, "No one has control");
         }
     }
 
@@ -69,3 +73,5 @@ private:
     Controllable* m_controller;
     std::stack<Controllable*> m_stack;
 };
+
+}

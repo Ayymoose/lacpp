@@ -4,16 +4,19 @@
 #include "DialogueTests.h"
 #include "RectTests.h"
 #include "Engine.h"
+#include "Debug.h"
 #include <vector>
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
-    // TODO: Tidy this up
-    Zelda::Engine::getInstance().init();
+    using namespace Zelda;
 
-    Zelda::Camera::getInstance().setScrollSpeed(Zelda::CAMERA_SCROLL_SPEED);
-    Zelda::Camera::getInstance().setPosition(480, 640);
-    Zelda::Camera::getInstance().setTileMap(Zelda::RM_TAIL_CAVE);
+    // TODO: Tidy this up
+    Engine::getInstance().init();
+
+    Camera::getInstance().setScrollSpeed(Zelda::CAMERA_SCROLL_SPEED);
+    Camera::getInstance().setPosition(480, 640);
+    Camera::getInstance().setTileMap(Zelda::RM_TAIL_CAVE);
 
     std::vector<std::unique_ptr<Testable::TestUnit>> tests;
     
@@ -23,12 +26,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     //tests.emplace_back(std::make_unique<Testable::RectTests>());
     tests.emplace_back(std::make_unique<Testable::DialogueTests>());
 
+    Debug::getInstance().setDebugMask(DBG_TEST);
+
     for (auto const& test : tests)
     {
         test->runTests();
     }
 
-    std::cout << "All tests run\n";
+    DEBUG(DBG_TEST, "All tests run");
     std::cin.get();
     return 0;
 }

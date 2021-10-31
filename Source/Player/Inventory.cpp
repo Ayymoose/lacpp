@@ -111,7 +111,7 @@ void Inventory::control(double ts) noexcept
         Controller::getInstance().popController();
         Link::getInstance().updateState();
         Engine::getInstance().pause(false);
-        std::cout << "Inventory closed!\n";
+        DEBUG(DBG_INFO, "Inventory closed!");
     }
 
 

@@ -42,7 +42,7 @@ void Engine::init() noexcept
     // TODO: Move this somwhere
     m_initialised = true;
 
-    std::cout << "Engine initialised\n";
+    DEBUG(DBG_INFO, "Engine initialised");
 }
 
 void Engine::run() noexcept
@@ -70,7 +70,7 @@ void Engine::run() noexcept
 void Engine::stop() noexcept
 {
     // Cleanup
-    std::cout << "Engine has stopped running\n";
+    DEBUG(DBG_INFO, "Engine has stopped running");
     m_engineRunning = false;
     m_preRenderTestFunction = nullptr;
     m_renderTestFunction = nullptr;
