@@ -58,8 +58,8 @@ Link::Link() :
     m_currentCollisionMapY = 5;
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];*/
 
-    Renderer::getInstance().addRenderable(this);
-    Controller::getInstance().setController(this);
+    //Renderer::getInstance().addRenderable(this);
+    //Controller::getInstance().setController(this);
 
     m_upDownSpeedLimiter = 1;
 

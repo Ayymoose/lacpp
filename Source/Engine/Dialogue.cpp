@@ -38,8 +38,9 @@ Dialogue::Dialogue() :
 {
     assert(m_texture.data());
     assert(m_subTexture.data());
-    //colourTexture(Renderer::getInstance().getRenderer(), m_texture, nullptr, SDL_RGB(0, 0, 0));
-    //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
+    Rect<int> rect{ 0,0,m_texture.width(),m_texture.height()};
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_texture, rect, SDL_RGB(0, 0, 0));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, rect, SDL_RGB(0, 0, 0));
 }
 
 void Dialogue::message(const std::string& message, float yPos) noexcept
@@ -53,9 +54,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
     Renderer::getInstance().addRenderable(this);
     // Special characters are for items which are represented by
 
-#ifndef NDEBUG
     // Sanity tests
-
     // Only the following characters allowed
     std::for_each(message.begin(), message.end(), [](const char c)
     {
@@ -83,8 +82,6 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
     }
     assert(string.length() < MAX_CHAR_PER_LINE);
 
-#endif
-
     // Dialogue is simple in LA
     // For each character in the message
     // Copy a character from the srcTexture to the screen
@@ -108,7 +105,8 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
     m_continue = false;
     m_moreText = false;
 
-    //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, nullptr, SDL_RGB(0, 0, 0));
+    Rect<int> rect{ 0,0,m_subTexture.width(),m_subTexture.height() };
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, rect, SDL_RGB(0, 0, 0));
 
     // TODO: Correct text colour
     // TODO: Add special characters (arrows, items etc)
@@ -128,8 +126,9 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
         m_dialoguePosY = DIALOGUE_POS_Y_LOW;
     }
 
-    // Switch controller over to this
-    Controller::getInstance().pushController(Controller::getInstance().getController(), this);
+    // Switch controller over to this if there is one 
+    Controller::getInstance().pushController(this);
+
 }
 
 bool Dialogue::question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos) noexcept
@@ -184,8 +183,8 @@ void Dialogue::render() noexcept
     {
         m_dialoguePosX,
         m_dialoguePosY,
-        m_width,
-        m_height
+        DIALOGUE_WIDTH,
+        DIALOGUE_HEIGHT
     };
 
     Rect<int> srcRectArrow =
@@ -204,7 +203,7 @@ void Dialogue::render() noexcept
         CHAR_HEIGHT
     };
 
-    Rect<int> srcRectChar, dstRectChar = { 0,0,0,0 };
+    Rect<int> srcRectChar, dstRectChar;
 
     // Copy each character onto the message box and display that,
     if (m_message[m_currentChar] >= 'A' && m_message[m_currentChar] <= 'Z')
@@ -267,8 +266,15 @@ void Dialogue::render() noexcept
         CHAR_HEIGHT
     };
 
-    // If there is a message to display
+    dstRectChar =
+    {
+        TEXT_POS_X + m_dstCharX * CHAR_WIDTH,
+        TEXT_POS_Y + m_currentLine * LINE_HEIGHT,
+        CHAR_WIDTH,
+        CHAR_HEIGHT
+    };
 
+    // If there is a message to display
     if (m_currentChar != m_message.length())
     {
         if (m_textTimer.elapsed(TEXT_SPEED) && !m_scrollMessage)
@@ -344,20 +350,20 @@ void Dialogue::render() noexcept
             {
                 0,
                 0,
-                m_width,
-                m_height / 2
+                DIALOGUE_WIDTH,
+                DIALOGUE_HEIGHT / 2
             };
-            // 1. Hide the top half of the sub texture
-            //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcSubTextureHalf, SDL_RGB(0, 0, 0));
 
+            // 1. Hide the top half of the sub texture
+            Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, srcSubTextureHalf, SDL_RGB(0, 0, 0));
 
             // Copy the bottom line of text to the top of the texture
             Rect<int> srcRectSubTextureLowerHalf =
             {
                 0,
                 m_dstCharY,
-                m_width,
-                m_height / 2
+                DIALOGUE_WIDTH,
+                DIALOGUE_HEIGHT / 2
             };
 
             // 2. Scroll up LINE_HEIGHT pixels
@@ -376,10 +382,10 @@ void Dialogue::render() noexcept
                     dstRectSubTextureLowerHalf.y = m_dstCharY;
 
                     // 3. Copy to a bottom half of texture to top half 
-                    //copyToTexture(Renderer::getInstance().getRenderer(), m_subTexture, m_subTexture, &srcRectSubTextureLowerHalf, &dstRectSubTextureLowerHalf);
+                    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_subTexture, srcRectSubTextureLowerHalf, dstRectSubTextureLowerHalf);
 
                     // Block out the what used to be the bottom line
-                    //colourTexture(Renderer::getInstance().getRenderer(), m_subTexture, &srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
+                    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
 
                     m_currentLine = MAX_LINE - 1;
                     m_dstCharX = 0;
@@ -395,10 +401,7 @@ void Dialogue::render() noexcept
         }
 
         // Copy text to sub texture
-        assert(srcRectChar.x >= 0 && srcRectChar.y >= 0 && srcRectChar.w >= 0 && srcRectChar.h >= 0);
-        assert(dstRectChar.x >= 0 && dstRectChar.y >= 0 && dstRectChar.w >= 0 && dstRectChar.h >= 0);
-
-        //copyToTexture(Renderer::getInstance().getRenderer(), m_text, m_subTexture, &srcRectChar, &dstRectChar);
+        Sprite::copySprite(Renderer::getInstance().getRenderer(), m_text, m_subTexture, srcRectChar, dstRectChar);
 
     }
 
@@ -406,15 +409,17 @@ void Dialogue::render() noexcept
     {
         0,
         -m_dstCharY,
-        m_width,
-        m_height
+        DIALOGUE_WIDTH,
+        DIALOGUE_HEIGHT
     };
 
     // Copy sub texture to main textbox
-    //copyToTexture(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, nullptr, &dstRectSubTexture);
+    Rect<int> rect = { 0,0,m_subTexture.width(), m_subTexture.height() };
+    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, rect, dstRectSubTexture);
 
     // Display the textbox
     //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRectDialogue), SDL_ERROR_MESSAGE);
+    m_texture.drawSprite(Renderer::getInstance().getRenderer(), Rect<int>{0,0, m_texture.width(), m_texture.height()}, dstRectDialogue);
 
     // Flashing red arrow 
     if (m_flashArrow && m_continue)
@@ -444,6 +449,7 @@ void Dialogue::render() noexcept
 
 void Dialogue::update() noexcept
 {
+
 }
 
 void Dialogue::control(double ts) noexcept
@@ -457,7 +463,8 @@ void Dialogue::control(double ts) noexcept
     else if (m_currentChar == m_message.length() && Keyboard::getInstance().keyPressed(BUTTON_B))
     {
         // Close dialogue box and restore control
-        Controller::getInstance().popController();
+        Controller::getInstance().popController(); 
+        
         Renderer::getInstance().removeRenderable(this);
         // Unpause
         Engine::getInstance().pause(false);

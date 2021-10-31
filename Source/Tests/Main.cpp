@@ -1,6 +1,7 @@
 #include "Testable.h"
 #include "VectorTests.h"
 #include "InventoryTests.h"
+#include "DialogueTests.h"
 #include "RectTests.h"
 #include "Engine.h"
 #include <vector>
@@ -17,9 +18,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     std::vector<std::unique_ptr<Testable::TestUnit>> tests;
     
     // Add tests here
-    tests.emplace_back(std::make_unique<Testable::VectorTests>());
-    tests.emplace_back(std::make_unique<Testable::InventoryTests>());
-    tests.emplace_back(std::make_unique<Testable::RectTests>());
+    //tests.emplace_back(std::make_unique<Testable::VectorTests>());
+    //tests.emplace_back(std::make_unique<Testable::InventoryTests>());
+    //tests.emplace_back(std::make_unique<Testable::RectTests>());
+    tests.emplace_back(std::make_unique<Testable::DialogueTests>());
 
     for (auto const& test : tests)
     {

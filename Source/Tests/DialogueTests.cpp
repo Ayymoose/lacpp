@@ -14,6 +14,9 @@ void DialogueTests::runTests()
 
 void DialogueTests::everyCharacterTest() noexcept
 {
+    Dialogue::getInstance().message("You got your sword! It has your name on the back! Very nice",0);
+
+    Engine::getInstance().run();
 }
 
 void DialogueTests::maxCharactersTest() noexcept

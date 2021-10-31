@@ -54,7 +54,6 @@ public:
         assert(dstRect != Rect<R2>());
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
-
         SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture.data(), &rectSrc, &rectDst), SDL_ERROR_MESSAGE);
 
         // Pop rendering target

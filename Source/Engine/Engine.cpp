@@ -48,6 +48,7 @@ void Engine::init() noexcept
 void Engine::run() noexcept
 {
     assert(m_initialised && "Engine is not initialised");
+    assert(m_engineRunning == false && "Engine already running");
 
     m_engineRunning = true;
 
@@ -125,21 +126,25 @@ void Engine::update() const noexcept
         assert(renderable);
         renderable->update();
     }
+
+    Controllable* controller = Controller::getInstance().getController();
+    if (controller)
+    {
+        controller->control(0);
+    }
 }
 
 void Engine::clearScreen() const noexcept
 {
     // Clear black
-    auto const renderer = Renderer::getInstance().getRenderer();
-    SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0), SDL_ERROR_MESSAGE);
-    SDL_ASSERT(SDL_RenderClear(renderer), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_SetRenderDrawColor(Renderer::getInstance().getRenderer(), 0, 0, 0, 0), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderClear(Renderer::getInstance().getRenderer()), SDL_ERROR_MESSAGE);
 }
 
 void Engine::renderScreen() const noexcept
 {
     // Represent to the screen
-    auto const renderer = Renderer::getInstance().getRenderer();
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(Renderer::getInstance().getRenderer());
 }
 
 void Engine::render() const noexcept
