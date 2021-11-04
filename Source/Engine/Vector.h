@@ -18,7 +18,7 @@ public:
         this->y = y;
     }
 
-    Vector operator/(double scalar) const noexcept
+    constexpr Vector operator/(double scalar) const noexcept
     {
         assert(scalar != 0);
         return Vector(x / scalar, y / scalar);

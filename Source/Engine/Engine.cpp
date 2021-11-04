@@ -70,6 +70,7 @@ void Engine::run() noexcept
 void Engine::stop() noexcept
 {
     // Cleanup
+    assert(m_engineRunning && "Engine is not running");
     DEBUG(DBG_INFO, "Engine has stopped running");
     m_engineRunning = false;
     m_preRenderTestFunction = nullptr;

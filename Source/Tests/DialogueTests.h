@@ -27,6 +27,7 @@ private:
         {"dialogue heart test", &DialogueTests::heartTest},
         {"dialogue position test", &DialogueTests::positionTest},
         {"dialogue colour test", &DialogueTests::colourTest},
+        {"dialogue max chars but no continue", &DialogueTests::maxCharsButNoContinue}
     };
 
     void everyCharacterTest() noexcept;
@@ -35,6 +36,7 @@ private:
     void heartTest() noexcept;
     void positionTest() noexcept;
     void colourTest() noexcept;
+    void maxCharsButNoContinue() noexcept;
 };
 
 };

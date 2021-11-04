@@ -50,6 +50,8 @@ public:
         auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
         SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture.data()), SDL_ERROR_MESSAGE);
 
+        // TODO:: assert srcRect and dstRect boundaries are less than srcSprite dstSprite dimensions
+
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());
         auto rectSrc = rectToSDLRect(srcRect);

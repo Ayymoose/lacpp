@@ -24,14 +24,16 @@ constexpr int DIALOGUE_POS_Y_HIGH = 8;
 constexpr int TEXT_POS_X = 8;
 constexpr int TEXT_POS_Y = 8;
 
+// Red arrow more text indicator position
 constexpr int ARROW_POS_X = 135;
 constexpr int ARROW_POS_Y = 32;
 
 // Max characters per line
 constexpr int MAX_CHAR_PER_LINE = 16;
 constexpr int LINE_HEIGHT = 16;
-constexpr int MAX_LINE = 2;
+constexpr int MAX_LINES = 2;
 
+// Dimensions of a character
 constexpr int CHAR_WIDTH = 8;
 constexpr int CHAR_HEIGHT = 8;
 
@@ -43,6 +45,7 @@ class Dialogue : public Renderable, public Controllable, public Singleton<Dialog
     friend class Singleton<Dialogue>;
 public:
     void message(const std::string& message, float yPos) noexcept;
+    // TODO: std::forward these args?
     bool question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
     bool question(const char* question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
     void render() noexcept override;
@@ -61,10 +64,8 @@ private:
     std::string m_choice2;
 
     std::string m_message;
-    size_t m_currentChar;
+    int m_currentChar;
     int m_currentLine;
-    int m_srcCharX;
-    int m_srcCharY;
     int m_dstCharX;
     int m_dstCharY;
     Sprite m_text;

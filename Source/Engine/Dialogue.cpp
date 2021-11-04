@@ -18,8 +18,6 @@ Dialogue::Dialogue() :
     m_dialoguePosY(DIALOGUE_POS_Y_LOW),
     m_currentChar(0),
     m_currentLine(0),
-    m_srcCharX(TEXT_POS_X),
-    m_srcCharY(TEXT_POS_Y),
     m_dstCharX(0),
     m_dstCharY(0),
     m_text(ResourceManager::getInstance()[Graphic::GFX_TEXT]),
@@ -56,7 +54,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
 
     // Sanity tests
     // Only the following characters allowed
-    std::for_each(message.begin(), message.end(), [](const char c)
+    std::for_each(message.cbegin(), message.cend(), [](const char c)
     {
         bool isLowerCaseCharacter = (c >= 'a' && c <= 'z');
         bool isUppperCaseCharacter = (c >= 'A' && c <= 'Z');
@@ -66,6 +64,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
         assert(isLowerCaseCharacter || isUppperCaseCharacter || isDigit || isSpecialCharacter || isSpace);
     });
 
+    /*
     // Assert that word length isn't longer than line 
     // Taken from https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
     std::string string = message;
@@ -81,6 +80,7 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
         string.erase(0, pos + delimiter.length());
     }
     assert(string.length() < MAX_CHAR_PER_LINE);
+    */
 
     // Dialogue is simple in LA
     // For each character in the message
@@ -147,14 +147,14 @@ bool Dialogue::question(const char* question, const std::string& choice1, const 
     assert(choice1.length() + choice2.length() + 2 < MAX_CHAR_PER_LINE);
 
     // Determine how much padding is needed to force a new line
-    int messagePadding = MAX_CHAR_PER_LINE - (std::strlen(question) % MAX_CHAR_PER_LINE);
+    const int messagePadding = MAX_CHAR_PER_LINE - (std::strlen(question) % MAX_CHAR_PER_LINE);
     // If padding is 0 it means the last line is full
     assert(messagePadding != 0);
     // TODO: Fix when assert fails
     std::string messagePad(messagePadding, ' ');
 
     std::string options = choice1 + "  " + choice2;
-    int optionsPadding = (MAX_CHAR_PER_LINE - options.length() + 1) / 2;
+    const int optionsPadding = (MAX_CHAR_PER_LINE - options.length() + 1) / 2;
     std::string optionsPad(optionsPadding, ' ');
 
     m_isQuestion = true;
@@ -178,95 +178,69 @@ bool Dialogue::question(const char* question, const std::string& choice1, const 
 
 void Dialogue::render() noexcept
 {
-    // Drawn on top or bottom depending on Link's position
-    Rect<int> dstRectDialogue =
+    auto charSrcRect = [this](const char c) noexcept
     {
-        m_dialoguePosX,
-        m_dialoguePosY,
-        DIALOGUE_WIDTH,
-        DIALOGUE_HEIGHT
+        int srcCharX = 0, srcCharY = 0;
+        // Get srcRect position of current character
+        if (c >= 'A' && c <= 'Z')
+        {
+            srcCharX = CHAR_WIDTH * (c - 'A');
+            srcCharY = 0;
+        }
+        else if (c >= 'a' && c <= 'z')
+        {
+            srcCharX = CHAR_WIDTH * (c - 'a');
+            srcCharY = 8;
+        }
+        else if (c >= '0' && c <= '9')
+        {
+            srcCharX = CHAR_WIDTH * (c - '0');
+            srcCharY = 16;
+        }
+        else if (c == ' ')
+        {
+            srcCharX = 80;
+            srcCharY = 16;
+        }
+        else if (c == '-')
+        {
+            srcCharX = 88;
+            srcCharY = 16;
+        }
+        else if (c == '?')
+        {
+            srcCharX = 96;
+            srcCharY = 16;
+        }
+        else if (c == '!')
+        {
+            srcCharX = 104;
+            srcCharY = 16;
+        }
+        else if (c == '.')
+        {
+            srcCharX = 112;
+            srcCharY = 16;
+        }
+        else if (c == ',')
+        {
+            srcCharX = 120;
+            srcCharY = 16;
+        }
+        else if (c == '\'')
+        {
+            srcCharX = 128;
+            srcCharY = 16;
+        }
+        else
+        {
+            assert(false && "Unknown character");
+        }
+        return Rect<int>{srcCharX, srcCharY, CHAR_WIDTH, CHAR_HEIGHT};
     };
-
-    Rect<int> srcRectArrow =
-    {
-        136,
-        16,
-        CHAR_WIDTH,
-        CHAR_HEIGHT
-    };
-
-    Rect<int> dstRectArrow =
-    {
-        m_dialoguePosX + ARROW_POS_X,
-        m_dialoguePosY + ARROW_POS_Y,
-        CHAR_WIDTH,
-        CHAR_HEIGHT
-    };
-
-    Rect<int> srcRectChar, dstRectChar;
-
-    // Copy each character onto the message box and display that,
-    if (m_message[m_currentChar] >= 'A' && m_message[m_currentChar] <= 'Z')
-    {
-        m_srcCharX = CHAR_WIDTH * (m_message[m_currentChar] - 'A');
-        m_srcCharY = 0;
-    }
-    else if (m_message[m_currentChar] >= 'a' && m_message[m_currentChar] <= 'z')
-    {
-        m_srcCharX = CHAR_WIDTH * (m_message[m_currentChar] - 'a');
-        m_srcCharY = 8;
-    }
-    else if (m_message[m_currentChar] >= '0' && m_message[m_currentChar] <= '9')
-    {
-        m_srcCharX = CHAR_WIDTH * (m_message[m_currentChar] - '0');
-        m_srcCharY = 16;
-    }
-    else if (m_message[m_currentChar] == ' ')
-    {
-        m_srcCharX = 80;
-        m_srcCharY = 16;
-    }
-    else if (m_message[m_currentChar] == '-')
-    {
-        m_srcCharX = 88;
-        m_srcCharY = 16;
-    }
-    else if (m_message[m_currentChar] == '?')
-    {
-        m_srcCharX = 96;
-        m_srcCharY = 16;
-    }
-    else if (m_message[m_currentChar] == '!')
-    {
-        m_srcCharX = 104;
-        m_srcCharY = 16;
-    }
-    else if (m_message[m_currentChar] == '.')
-    {
-        m_srcCharX = 112;
-        m_srcCharY = 16;
-    }
-    else if (m_message[m_currentChar] == ',')
-    {
-        m_srcCharX = 120;
-        m_srcCharY = 16;
-    }
-    else if (m_message[m_currentChar] == '\'')
-    {
-        m_srcCharX = 128;
-        m_srcCharY = 16;
-    }
 
     // Start copying characters across
-    srcRectChar =
-    {
-        m_srcCharX,
-        m_srcCharY,
-        CHAR_WIDTH,
-        CHAR_HEIGHT
-    };
-
-    dstRectChar =
+    Rect<int> dstRectChar =
     {
         TEXT_POS_X + m_dstCharX * CHAR_WIDTH,
         TEXT_POS_Y + m_currentLine * LINE_HEIGHT,
@@ -275,35 +249,30 @@ void Dialogue::render() noexcept
     };
 
     // If there is a message to display
-    if (m_currentChar != m_message.length())
+    if (m_currentChar < m_message.length())
     {
-        if (m_textTimer.elapsed(TEXT_SPEED) && !m_scrollMessage)
-        {
-            //m_textTimer.reset();
+        auto srcRectChar = charSrcRect(m_message[m_currentChar]);
 
-            // Only allow MAX_CHAR_PER_LINE characters per line
-            // After that we move onto the next line
-            if (m_currentChar != 0 && m_currentChar % MAX_CHAR_PER_LINE == 0 && !m_moreText)
+        if (!m_scrollMessage)
+        {
+            // If we've displayed maximum chars per line
+            if ((m_currentChar && (m_currentChar % MAX_CHAR_PER_LINE == 0)) && !m_moreText)
             {
-                if (m_currentLine != MAX_LINE - 1)
+                // Advance text onto the next line if not reached the maximum lines
+                if (m_currentLine != MAX_LINES-1)
                 {
                     m_currentLine++;
                     m_dstCharX = 0;
 
                     // Copies the character onto the subtexture at given position
-                    dstRectChar =
-                    {
-                        TEXT_POS_X + m_dstCharX * CHAR_WIDTH,
-                        TEXT_POS_Y + m_currentLine * LINE_HEIGHT,
-                        CHAR_WIDTH,
-                        CHAR_HEIGHT
-                    };
+                    dstRectChar.x = TEXT_POS_X + m_dstCharX * CHAR_WIDTH;
+                    dstRectChar.y = TEXT_POS_Y + m_currentLine * LINE_HEIGHT;
 
                     m_dstCharX++;
                 }
                 else
                 {
-
+                    // Otherwise begin scrolling text up
                     if (m_scrolledLines == 0)
                     {
                         m_continue = true;
@@ -313,21 +282,19 @@ void Dialogue::render() noexcept
                         m_scrollMessage = true;
                         m_scrolledLines--;
                     }
+
+                    m_currentChar--;
+                    srcRectChar = charSrcRect(m_message[m_currentChar]);
                 }
             }
             else
             {
                 if (!m_continue)
                 {
-                    dstRectChar =
-                    {
-                        TEXT_POS_X + m_dstCharX * CHAR_WIDTH,
-                        TEXT_POS_Y + m_currentLine * LINE_HEIGHT,
-                        CHAR_WIDTH,
-                        CHAR_HEIGHT
-                    };
-                    m_dstCharX++;
+                    m_dstCharX = std::min(m_dstCharX + 1, MAX_CHAR_PER_LINE-1);
                 }
+
+                // TODO: This snippet is weird
                 if (m_moreText)
                 {
                     m_moreText = false;
@@ -343,7 +310,7 @@ void Dialogue::render() noexcept
         else if (m_scrollMessage)
         {
             // Scrolls the message and continues on to the next
-            Rect<int> srcSubTextureHalf =
+            const Rect<int> srcSubTextureHalf =
             {
                 0,
                 0,
@@ -355,7 +322,7 @@ void Dialogue::render() noexcept
             Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, srcSubTextureHalf, SDL_RGB(0, 0, 0));
 
             // Copy the bottom line of text to the top of the texture
-            Rect<int> srcRectSubTextureLowerHalf =
+            const Rect<int> srcRectSubTextureLowerHalf =
             {
                 0,
                 m_dstCharY,
@@ -384,8 +351,16 @@ void Dialogue::render() noexcept
                     // Block out the what used to be the bottom line
                     Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
 
-                    m_currentLine = MAX_LINE - 1;
+                    // Reset to the beginning of the line
+                    m_currentLine = MAX_LINES - 1;
                     m_dstCharX = 0;
+                    dstRectChar.x = TEXT_POS_X + m_dstCharX * CHAR_WIDTH;
+                    dstRectChar.y = TEXT_POS_Y + m_currentLine * LINE_HEIGHT;
+
+                    // Restore last character now
+                    m_currentChar++;
+                    srcRectChar = charSrcRect(m_message[m_currentChar]);
+
                     m_scrollMessage = false;
                     m_moreText = true;
                 }
@@ -398,11 +373,15 @@ void Dialogue::render() noexcept
         }
 
         // Copy text to sub texture
+        assert(dstRectChar.y >= TEXT_POS_Y);
+        assert(dstRectChar.y < TEXT_POS_Y + MAX_LINES * LINE_HEIGHT);
+        assert(dstRectChar.x >= TEXT_POS_X);
+        assert(dstRectChar.x < TEXT_POS_X + MAX_CHAR_PER_LINE * CHAR_WIDTH);
         Sprite::copySprite(Renderer::getInstance().getRenderer(), m_text, m_subTexture, srcRectChar, dstRectChar);
 
     }
 
-    Rect<int> dstRectSubTexture =
+    const Rect<int> dstRectSubTexture =
     {
         0,
         -m_dstCharY,
@@ -411,18 +390,39 @@ void Dialogue::render() noexcept
     };
 
     // Copy sub texture to main textbox
-    Rect<int> rect = { 0,0,m_subTexture.width(), m_subTexture.height() };
-    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, rect, dstRectSubTexture);
+    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, Rect<int>{ 0, 0, m_subTexture.width(), m_subTexture.height() }, dstRectSubTexture);
 
     // Display the textbox
-    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRectDialogue), SDL_ERROR_MESSAGE);
-    m_texture.drawSprite(Renderer::getInstance().getRenderer(), Rect<int>{0,0, m_texture.width(), m_texture.height()}, dstRectDialogue);
+   // Drawn on top or bottom depending on Link's position
+    const Rect<int> dstRectDialogue =
+    {
+        m_dialoguePosX,
+        m_dialoguePosY,
+        DIALOGUE_WIDTH,
+        DIALOGUE_HEIGHT
+    };
 
+    m_texture.drawSprite(Renderer::getInstance().getRenderer(), Rect<int>{0,0, m_texture.width(), m_texture.height()}, dstRectDialogue);
+    
     // Flashing red arrow 
     if (m_flashArrow && m_continue)
     {
+        const Rect<int> srcRectArrow =
+        {
+            136,
+            16,
+            CHAR_WIDTH,
+            CHAR_HEIGHT
+        };
+
+        const Rect<int> dstRectArrow =
+        {
+            m_dialoguePosX + ARROW_POS_X,
+            m_dialoguePosY + ARROW_POS_Y,
+            CHAR_WIDTH,
+            CHAR_HEIGHT
+        };
         m_redArrow.drawSprite(Renderer::getInstance().getRenderer(), srcRectArrow, dstRectArrow);
-        //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_redArrow, &srcRectArrow, &dstRectArrow), SDL_ERROR_MESSAGE);
     }
 
     // Flash the continue arrow
@@ -434,12 +434,10 @@ void Dialogue::render() noexcept
         toggleItem(m_flashQuestion, m_questionTimer, INVENTORY_SELECTOR_FPS);
         if (m_flashQuestion && m_currentChar == m_message.length())
         {
-            Rect<int> srcQuestionRect = { 144,16, CHAR_WIDTH, CHAR_HEIGHT };
-            Rect<int> dstQuestionRect = { m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
+            const Rect<int> srcQuestionRect = { 144,16, CHAR_WIDTH, CHAR_HEIGHT };
+            const Rect<int> dstQuestionRect = { m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
 
             m_questionMarker.drawSprite(Renderer::getInstance().getRenderer(), srcQuestionRect, dstQuestionRect);
-
-            //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_questionMarker, &srcQuestionRect, &dstQuestionRect), SDL_ERROR_MESSAGE);
         }
     }
 }
@@ -455,7 +453,7 @@ void Dialogue::control(double ts) noexcept
     {
         m_scrollMessage = true;
         m_continue = false;
-        m_scrolledLines = MAX_LINE - 1;
+        m_scrolledLines = MAX_LINES - 1;
     }
     else if (m_currentChar == m_message.length() && Keyboard::getInstance().keyPressed(BUTTON_B))
     {
