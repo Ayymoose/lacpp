@@ -200,8 +200,11 @@ void Engine::render() const noexcept
 
         //////////////////////////////////////////////////
 
-        renderable->render();
-
+        // Render only visible objects
+        if (renderable->visible())
+        {
+            renderable->render();
+        }
     }
 
 

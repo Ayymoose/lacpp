@@ -6,8 +6,12 @@
 #include "Vector.h"
 #include "Common.h"
 #include "Timer.h"
-#include <string>
 #include "Sprite.h"
+
+#include <string>
+#include <queue>
+#include <variant>
+
 
 namespace Zelda
 {
@@ -44,10 +48,10 @@ class Dialogue : public Renderable, public Controllable, public Singleton<Dialog
 {
     friend class Singleton<Dialogue>;
 public:
+
     void message(const std::string& message, float yPos) noexcept;
-    // TODO: std::forward these args?
     bool question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
-    bool question(const char* question, const std::string& choice1, const std::string& choice2, float yPos) noexcept;
+    
     void render() noexcept override;
     void update() noexcept override;
     void control(double ts) noexcept override;
@@ -87,6 +91,34 @@ private:
     bool m_scrollMessage;
     int m_scrolledLines;
     Timer m_scrollTimer;
+
+    struct Message
+    {
+        std::string message;
+        float yPos;
+        Message(const std::string& message, const float yPos) : message(message), yPos(yPos) {}
+    };
+
+    struct Question
+    {
+        std::string question;
+        float yPos;
+        int questionXPos;
+        int questionYPos;
+        std::string choice1;
+        std::string choice2;
+        Question(const std::string& question, const float yPos, const int questionXPos, const int questionYPos,
+            const std::string& choice1, const std::string& choice2) : question(question),
+            yPos(yPos), questionXPos(questionXPos), questionYPos(questionYPos), choice1(choice1), choice2(choice2) {}
+    };
+
+    using MessageQuestion = std::variant<Message, Question>;
+    
+    // Queue messages
+    std::queue<MessageQuestion> m_messageQueue;
+
+    void reset() noexcept;
+    void checkCharacters(const std::string& string) const noexcept;
 
     // All the dialogue from the game
     // Credits go to https://github.com/zladx/LADX-Disassembly for providing the text

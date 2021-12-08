@@ -21,22 +21,10 @@ private:
 
     DialogueTestsMap m_tests =
     {
-        {"dialogue max characters test", &DialogueTests::maxCharactersTest},
-        {"dialogue every character test", &DialogueTests::everyCharacterTest},
-        {"dialogue question test", &DialogueTests::questionTest},
-        {"dialogue heart test", &DialogueTests::heartTest},
-        {"dialogue position test", &DialogueTests::positionTest},
-        {"dialogue colour test", &DialogueTests::colourTest},
-        {"dialogue max chars but no continue", &DialogueTests::maxCharsButNoContinue}
+        {"dialogue all tests", &DialogueTests::allTests}
     };
 
-    void everyCharacterTest() noexcept;
-    void maxCharactersTest() noexcept;
-    void questionTest() noexcept;
-    void heartTest() noexcept;
-    void positionTest() noexcept;
-    void colourTest() noexcept;
-    void maxCharsButNoContinue() noexcept;
+    void allTests() noexcept;
 };
 
 };

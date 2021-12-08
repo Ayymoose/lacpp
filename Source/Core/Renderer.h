@@ -5,6 +5,7 @@
 #include <set>
 #include <SDL_image.h>
 #include "Sprite.h"
+#include "Debug.h"
 
 // Singleton instance of the renderer for the main window
 
@@ -19,12 +20,12 @@ public:
     void createRenderer(SDL_Window* window) noexcept
     {
         assert(window);
-
         auto const flags = SDL_RENDERER_ACCELERATED |
             SDL_RENDERER_PRESENTVSYNC |
             SDL_RENDERER_TARGETTEXTURE;
         m_renderer = SDL_CreateRenderer(window, -1, flags);
         assert(m_renderer);
+        DEBUG(DBG_INFO, "Renderer created");
     }
 
     auto getRenderer() const noexcept
@@ -38,9 +39,15 @@ public:
         m_renderer = renderer;
     }
 
+    void clearScreen(int colour) const noexcept
+    {
+
+    }
+
     virtual ~Renderer()
     {
         SDL_DestroyRenderer(m_renderer);
+        DEBUG(DBG_INFO, "Renderer destroyed");
     }
 
     auto getRenderSet() const noexcept
@@ -48,38 +55,44 @@ public:
         return m_renderables;
     }
 
-    void addRenderable(Renderable* renderable) noexcept
+    bool inRenderSet(Renderable* renderable) const noexcept
     {
-        assert(renderable);
-        auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1)
+        auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
         {
             return r1 == renderable;
         });
+        return iterator != m_renderables.cend();
+    }
 
-        if (iterator != m_renderables.end())
+    void addRenderable(Renderable* renderable) noexcept
+    {
+        assert(renderable);
+        if (inRenderSet(renderable))
         {
-            // No adding the same object to the render set
             assert(false && "Can't add same object to render set");
         }
-        //std::cout << "Adding renderable " << renderable->name() << std::endl;
-        m_renderables.emplace(renderable);
+        else
+        {
+            //std::cout << "Adding renderable " << renderable->name() << std::endl;
+            m_renderables.emplace(renderable);
+        }
+
     }
 
     void removeRenderable(Renderable* renderable) noexcept
     {
         assert(renderable);
-        auto iterator = std::find_if(m_renderables.begin(), m_renderables.end(), [renderable](const Renderable* r1)
+        auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
         {
             return r1 == renderable;
         });
-        if (iterator != m_renderables.end())
+        if (iterator != m_renderables.cend())
         {
             //std::cout << "Removing renderable " << (*iterator)->name() << std::endl;
             m_renderables.erase(iterator);
         }
         else
         {
-            // Attempting to remove something that wasn't in the renderable set
             assert(false && "Trying to remove non-existent renderable");
         }
     }
@@ -92,8 +105,10 @@ public:
         return currentRenderingTarget;
     }
 
-    void popRenderingTarget(SDL_Texture* srcTexture)  const noexcept
+    void popRenderingTarget(SDL_Texture* srcTexture) const noexcept
     {
+        //auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
+       
         assert(m_renderer);
         SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture), SDL_ERROR_MESSAGE);
     }

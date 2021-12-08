@@ -218,6 +218,7 @@
     <ClCompile Include="..\..\Source\Tests\Main.cpp" />
     <ClCompile Include="..\..\Source\Tests\RectTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\VectorTests.cpp" />
+    <ClCompile Include="..\..\Source\Tests\WorldmapTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Core\Jenkins.h" />
@@ -293,6 +294,7 @@
     <ClInclude Include="..\..\Source\Tests\RectTests.h" />
     <ClInclude Include="..\..\Source\Tests\Testable.h" />
     <ClInclude Include="..\..\Source\Tests\VectorTests.h" />
+    <ClInclude Include="..\..\Source\Tests\WorldmapTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

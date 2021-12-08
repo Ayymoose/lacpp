@@ -32,6 +32,7 @@ SDL_Texture* Sprite::data() const noexcept
 // SDL_Texture assignment operator
 Sprite& Sprite::operator=(SDL_Texture* texture) noexcept
 {
+    // TODO: Memory leak if not freeing existing texture?
     m_sprite = texture; 
     if (m_sprite)
     {

@@ -220,6 +220,8 @@ void Worldmap::control(double ts) noexcept
         case LN_PHOTO_SHOP:
             Dialogue::getInstance().message("Step right up   ""and get your    ""souvenir photo!", yPos);
             break;
+        default:
+            assert(false);
         }
     }
 }
@@ -228,10 +230,7 @@ void Worldmap::render() noexcept
 {
     if (m_show)
     {
-        Rect<int> dstRect;
-
         auto const target = Renderer::getInstance().pushRenderingTarget(m_texture);
-        //auto target = pushRenderingTarget(Renderer::getInstance().getRenderer(), m_texture);
 
         for (int y = 0; y < WORLDMAP_MAX_Y; y++)
         {
@@ -241,26 +240,19 @@ void Worldmap::render() noexcept
                 WorldmapLocation wml = m_worldmapLocation[x][y];
                 if (!wml.visited)
                 {
-                    auto srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED];
-                    Rect<int> dstRect = { WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7,7 };
-                    
-                    ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-                    //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+                    ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), 
+                        m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED],
+                        Rect<int>{ WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7, 7 });
                 }
             }
         }
 
         Renderer::getInstance().popRenderingTarget(target);
-        //popRenderingTarget(Renderer::getInstance().getRenderer(), target);
 
         // Render the worldmap
-        dstRect = { 0, 0, m_width, m_height };
-        //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), m_texture, nullptr, &dstRect), SDL_ERROR_MESSAGE);
-
-        // Draw current world location marker
-        auto srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_LOCATION];
-        dstRect = { (WORLDMAP_START_X + m_worldX * 8) - 1, (WORLDMAP_START_Y + m_worldY * 8) - 1, 8,8 };
-        //basicAnimate(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], srcRect, dstRect, 2, 0, 2, WORLDMAP_LOCATION_FPS, Engine::getInstance().paused());
+        m_texture.drawSprite(Renderer::getInstance().getRenderer(),
+            Rect<int>{ 0, 0, m_texture.width(), m_texture.height()},
+            Rect<int>{ 0, 0, m_texture.width(), m_texture.height() });
 
         // Draw the location if we hit upon one
         if (m_worldmapLocation[m_scopeX][m_scopeY].locationType != LT_NONE)
@@ -305,43 +297,11 @@ void Worldmap::render() noexcept
                 sy = 97;
             }
 
-            dstRect = { sx,sy, 30,30 };
-            ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRectLocation, dstRect);
-            //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRectLocation, &dstRect), SDL_ERROR_MESSAGE);
+            ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRectLocation, Rect<int>{ sx, sy, 30, 30 });
         }
 
         // Draw the "scope" we use to move around
-        srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE];
-        dstRect = { (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5 , 16, 16 };
-        //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-
-        toggleItem(m_scopeSelect, m_scopeSelectTimer, WORLDMAP_SELECTOR_FPS);
-
-        if (m_scopeSelect)
-        {
-            // Draw the flashing arrows
-            srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_ARROW];
-            dstRect.w = 9;
-            dstRect.h = 8;
-            dstRect.x += 4;
-            dstRect.y -= 10;
-            // Up arrow
-            //SDL_ASSERT(SDL_RenderCopy(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect), SDL_ERROR_MESSAGE);
-            // Right arrow
-            dstRect.x += 15;
-            dstRect.y += 14;
-            //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 90, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
-            // Down arrow
-            dstRect.x -= 15;
-            dstRect.y += 15;
-            //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 180, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
-            // Left arrow
-            dstRect.x -= 15;
-            dstRect.y -= 15;
-            //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), ResourceManager::getInstance()[Graphic::GFX_INVENTORY], &srcRect, &dstRect, 270, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
-
-        }
+        drawScope();
     }
 }
 
@@ -357,6 +317,44 @@ void Worldmap::open() noexcept
 void Worldmap::close() noexcept
 {
     m_show = false;
+}
+
+void Worldmap::drawScope() noexcept
+{
+    
+    ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(),
+        m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE],
+        Rect<int>{ (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5, 16, 16 });
+
+    toggleItem(m_scopeSelect, m_scopeSelectTimer, WORLDMAP_SELECTOR_FPS);
+
+    if (m_scopeSelect)
+    {
+        // Draw the flashing arrows
+        auto srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_ARROW];
+        Rect<int> dstRect = { (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5, 8,8 };
+        dstRect.w = 9;
+        dstRect.h = 8;
+        dstRect.x += 4;
+        dstRect.y -= 10;
+        // Up arrow
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(),srcRect,dstRect, 0, SpriteFlip::FLIP_NONE);
+        
+        // Right arrow
+        dstRect.x += 15;
+        dstRect.y += 14;
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 90, SpriteFlip::FLIP_NONE);
+
+        // Down arrow
+        dstRect.x -= 15;
+        dstRect.y += 15;
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 180, SpriteFlip::FLIP_NONE);
+
+        // Left arrow
+        dstRect.x -= 15;
+        dstRect.y -= 15;
+        ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 270, SpriteFlip::FLIP_NONE);
+    }
 }
 
 }

@@ -63,17 +63,16 @@ void Camera::renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture
         for (int tileX = 0; tileX < ROOM_TILES_ACROSS; tileX++)
         {
             // The tile will be the ID in the image
-            auto tileID = roomTiles[tileY][tileX];
+            auto const tileID = roomTiles[tileY][tileX];
 
             // Calculate where to grab the tile from in the image
-            auto srcTileX = TILE_WIDTH * (tileID % TILE_MAP_TILES_ACROSS);
-            auto srcTileY = TILE_HEIGHT * (tileID / TILE_MAP_TILES_ACROSS);
-
-            Rect<int> srcTile = { srcTileX , srcTileY ,TILE_WIDTH, TILE_HEIGHT };
-            Rect<int> dstTile = { tileX * TILE_WIDTH, tileY * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT };
+            auto const srcTileX = TILE_WIDTH * (tileID % TILE_MAP_TILES_ACROSS);
+            auto const srcTileY = TILE_HEIGHT * (tileID / TILE_MAP_TILES_ACROSS);
 
             // Paste tile from tilemap
-            tilemapTexture.drawSprite(renderer, srcTile, dstTile);
+            tilemapTexture.drawSprite(renderer, 
+                Rect<int>{ srcTileX, srcTileY, TILE_WIDTH, TILE_HEIGHT }, 
+                Rect<int>{ tileX* TILE_WIDTH, tileY* TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT });
         }
     }
 

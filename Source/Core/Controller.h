@@ -68,7 +68,7 @@ public:
 private:
     Controller() : m_controller(nullptr)
     {
-
+        DEBUG(DBG_INFO, "Controller is no-one");
     }
     Controllable* m_controller;
     std::stack<Controllable*> m_stack;

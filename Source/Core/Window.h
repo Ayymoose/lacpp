@@ -8,7 +8,7 @@
 
 constexpr int MAIN_WINDOW_WIDTH = 160 * 4;
 constexpr int MAIN_WINDOW_HEIGHT = 144 * 4;
-#define MAIN_WINDOW_TITLE "Link's Awakening - " LACPP_BUILD " " LACPP_BUILD_DATE
+#define MAIN_WINDOW_TITLE "Link's Awakening - " LACPP_BUILD " "// LACPP_BUILD_DATE
 
 namespace Zelda
 {

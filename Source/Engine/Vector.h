@@ -24,7 +24,7 @@ public:
         return Vector(x / scalar, y / scalar);
     }
 
-    Vector operator+(Vector other) const noexcept
+    Vector operator+(const Vector& other) const noexcept
     {
         return Vector(x + other.x, y + other.y);
     }
@@ -54,36 +54,36 @@ public:
         return Vector(-x, -y);
     }
 
-    Vector operator+=(Vector other) noexcept
+    Vector operator+=(const Vector& other) noexcept
     {
         x += other.x;
         y += other.y;
         return *this;
     }
 
-    Vector operator-=(Vector other) noexcept
+    Vector operator-=(const Vector& other) noexcept
     {
         return operator+=(-other);
     }
 
-    Vector operator=(Vector other) noexcept
+    Vector operator=(const Vector& other) noexcept
     {
         x = other.x;
         y = other.y;
         return *this;
     }
 
-    Vector operator-(Vector other) const noexcept
+    Vector operator-(const Vector& other) const noexcept
     {
         return Vector(x - other.x, y - other.y);
     }
 
-    bool operator==(Vector other) const noexcept
+    bool operator==(const Vector& other) const noexcept
     {
         return ((x == other.x) && (y == other.y));
     }
 
-    bool operator!=(Vector other) const noexcept
+    bool operator!=(const Vector& other) const noexcept
     {
         return !operator==(other);
     }
@@ -110,17 +110,18 @@ public:
 
     static constexpr Vector normalise(const Vector& v) noexcept
     {
-        auto len = v.length();
+        auto const len = v.length();
         // TODO: Double/float epsilon comparison
         assert(len != 0);
         return Vector(v.x / len, v.y / len);
     }
 
     // Normalise a vector
-    // Note this will only work for float and double 
+    // Note this will only work for float and double
+    // SFINAE this out
     void normalise() noexcept
     {
-        auto len = length();
+        auto const len = length();
         // TODO: Double/float epsilon comparison
         assert(len != 0);
 

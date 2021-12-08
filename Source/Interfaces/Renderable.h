@@ -34,6 +34,11 @@ public:
     virtual void render() noexcept = 0;
     virtual void update() noexcept = 0;
 
+    bool visible() const noexcept
+    {
+        return m_visible;
+    }
+
     int depth() const noexcept
     {
         assert(m_depth > 0);
@@ -68,11 +73,15 @@ public:
         m_currentFrame(0),
         m_endFrame(0),
         m_orientation(0.0f),
-        m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
+        m_flip(SDL_RendererFlip::SDL_FLIP_NONE),
+        m_visible(true)
     {
         assert(texture.data());
         m_texture = texture;
+        assert(depth > 0);
         m_depth = depth;
+        // TODO: Fix error when this is uncommented
+        //Renderer::getInstance().addRenderable(this);
     }
 
     Renderable() :
@@ -92,8 +101,10 @@ public:
         m_currentFrame(0),
         m_endFrame(0),
         m_orientation(0.0f),
-        m_flip(SDL_RendererFlip::SDL_FLIP_NONE)
+        m_flip(SDL_RendererFlip::SDL_FLIP_NONE),
+        m_visible(true)
     {
+        //Renderer::getInstance().addRenderable(this);
     }
 private:
 
@@ -174,6 +185,7 @@ protected:
     int m_endFrame;
     float m_orientation;
     SDL_RendererFlip m_flip;
+    bool m_visible;
 
     // Updateable
     static constexpr double m_dt = 1000.0 / (double)60;

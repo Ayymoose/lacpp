@@ -27,11 +27,12 @@ public:
     {
         if (!(m_currentMask & mask))
         {
-            std::cout << message << '\n';
+            std::cout << message << std::endl;
         }
     }
     void setDebugMask(uint32_t mask) noexcept
     {
+        std::cout << "Setting mask to: " << mask << std::endl;
         m_currentMask = mask;
     }
 

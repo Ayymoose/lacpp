@@ -46,6 +46,8 @@ public:
     template<typename R1, typename R2>
     static void copySprite(SDL_Renderer* renderer, const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect, const Rect<R2>& dstRect) noexcept
     {
+        assert(renderer);
+
         // Push rendering target
         auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
         SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture.data()), SDL_ERROR_MESSAGE);
@@ -66,6 +68,8 @@ public:
     template<typename R>
     static void colourSprite(SDL_Renderer* renderer, const Sprite& srcTexture, const Rect<R>& srcRect, uint32_t colour)
     {
+        assert(renderer);
+
         // Push rendering target
         auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
 
@@ -86,6 +90,7 @@ public:
     template<typename R1, typename R2>
     void drawSprite(SDL_Renderer* renderer, const Rect<R1>& srcRect, const Rect<R2>& dstRect) const noexcept
     {
+        assert(renderer);
         assert(m_sprite);
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());
@@ -99,6 +104,7 @@ public:
     template<typename R1, typename R2>
     void drawSpriteEx(SDL_Renderer* renderer, const Rect<R1>& srcRect, const Rect<R2>& dstRect, double angle, SpriteFlip flip) const noexcept
     {
+        assert(renderer);
         assert(m_sprite);
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());

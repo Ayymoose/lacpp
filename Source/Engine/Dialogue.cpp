@@ -36,9 +36,8 @@ Dialogue::Dialogue() :
 {
     assert(m_texture.data());
     assert(m_subTexture.data());
-    Rect<int> rect{ 0,0,m_texture.width(),m_texture.height()};
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_texture, rect, SDL_RGB(0, 0, 0));
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, rect, SDL_RGB(0, 0, 0));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_texture, Rect<int>{ 0, 0, m_texture.width(), m_texture.height()}, SDL_RGB(0, 0, 0));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, Rect<int>{ 0, 0, m_texture.width(), m_texture.height()}, SDL_RGB(0, 0, 0));
 }
 
 void Dialogue::message(const std::string& message, float yPos) noexcept
@@ -49,38 +48,16 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
 
     // Acceptable characters in the message are only
     // a-z A-Z !?'.,- 0-9 space
-    Renderer::getInstance().addRenderable(this);
-    // Special characters are for items which are represented by
+    // TODO: Special characters are for items which are represented by
 
-    // Sanity tests
-    // Only the following characters allowed
-    std::for_each(message.cbegin(), message.cend(), [](const char c)
+    if (!Renderer::getInstance().inRenderSet(this))
     {
-        bool isLowerCaseCharacter = (c >= 'a' && c <= 'z');
-        bool isUppperCaseCharacter = (c >= 'A' && c <= 'Z');
-        bool isDigit = (c >= '0' && c <= '9');
-        bool isSpecialCharacter = (c == '!' || c == '?' || c == '\'' || c == '.' || c == ',' || c == '-');
-        bool isSpace = (c == ' ');
-        assert(isLowerCaseCharacter || isUppperCaseCharacter || isDigit || isSpecialCharacter || isSpace);
-    });
-
-    /*
-    // Assert that word length isn't longer than line 
-    // Taken from https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-    std::string string = message;
-    std::string delimiter = " ";
-
-    // Tokenise each word by delimter ' ' and check the length doesn't exceed 16 chars
-    size_t pos = 0;
-    std::string token;
-    while ((pos = string.find(delimiter)) != std::string::npos)
-    {
-        token = string.substr(0, pos);
-        assert(token.length() < MAX_CHAR_PER_LINE);
-        string.erase(0, pos + delimiter.length());
+        Renderer::getInstance().addRenderable(this);
     }
-    assert(string.length() < MAX_CHAR_PER_LINE);
-    */
+
+    assert(!message.empty());
+
+    checkCharacters(message);
 
     // Dialogue is simple in LA
     // For each character in the message
@@ -90,87 +67,93 @@ void Dialogue::message(const std::string& message, float yPos) noexcept
     // If all characters are displayed then display the blinking red arrow in the corner
     // Once user pressers the continue key, move the text up 
 
-    // Reset after use
-    // TODO: Check if question() needs similar resets
-    m_message = message;
-
-    m_dstCharX = 0;
-    m_dstCharY = 0;
-    m_currentLine = 0;
-    m_scrollMessage = false;
-
-    m_scrolledLines = 0;
-    m_currentChar = 0;
-    m_flashArrow = false;
-    m_continue = false;
-    m_moreText = false;
-
-    Rect<int> rect{ 0,0,m_subTexture.width(),m_subTexture.height() };
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, rect, SDL_RGB(0, 0, 0));
-
-    // TODO: Correct text colour
-    // TODO: Add special characters (arrows, items etc)
-    // TODO: Add heart container on RHS when acquired
-
-    // TODO: Add dialogue paramter to configure where to put on screen
-    // - Not only Link uses this dialogue
-
-    // Display at top or bottom on screen depending on yPos
-    auto yDiff = yPos - Camera::getInstance().getY();
-    if (yDiff > DIALOGUE_HEIGHT + DIALOGUE_POS_Y_HIGH)
+    if (yPos > DIALOGUE_HEIGHT + DIALOGUE_POS_Y_HIGH)
     {
-        m_dialoguePosY = DIALOGUE_POS_Y_HIGH;
+        yPos = DIALOGUE_POS_Y_HIGH;
     }
     else
     {
-        m_dialoguePosY = DIALOGUE_POS_Y_LOW;
+        yPos = DIALOGUE_POS_Y_LOW;
     }
 
-    // Switch controller over to this if there is one 
-    Controller::getInstance().pushController(this);
+    // TODO: This needs to be in update
+    m_messageQueue.emplace(Message(message, yPos));
 
+    // Switch controller over to this if there is one 
+    if (Controller::getInstance().getController() != this)
+    {
+        Controller::getInstance().pushController(this);
+    }
 }
 
 bool Dialogue::question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos) noexcept
 {
-    // TODO: Why can't this overload be called as question?
-    return this->question(question.c_str(), choice1, choice2, yPos);
-}
+    // Displays a message on screen to the player
+    // Engine is paused while the message is being displayed
+    Engine::getInstance().pause(true);
 
-bool Dialogue::question(const char* question, const std::string& choice1, const std::string& choice2, float yPos) noexcept
-{
+    // Acceptable characters in the message are only
+    // a-z A-Z !?'.,- 0-9 space
+    // TODO: Special characters are for items which are represented by
+
+    if (!Renderer::getInstance().inRenderSet(this))
+    {
+        Renderer::getInstance().addRenderable(this);
+    }
+
+    checkCharacters(question);
+    checkCharacters(choice1);
+    checkCharacters(choice2);
+
     // If it's a question
     // Output the message and then add an extra line with the given options
     assert(choice1.length() < MAX_CHAR_PER_LINE);
     assert(choice2.length() < MAX_CHAR_PER_LINE);
+
+    assert(!question.empty());
+    assert(!choice1.empty());
+    assert(!choice2.empty());
+
+    const std::string optionsSpace("  ");
+
     // +2 for the spaces we add
-    assert(choice1.length() + choice2.length() + 2 < MAX_CHAR_PER_LINE);
+    assert(choice1.length() + choice2.length() + optionsSpace.length() < MAX_CHAR_PER_LINE);
 
     // Determine how much padding is needed to force a new line
-    const int messagePadding = MAX_CHAR_PER_LINE - (std::strlen(question) % MAX_CHAR_PER_LINE);
+    const int messagePadding = MAX_CHAR_PER_LINE - (question.length() % MAX_CHAR_PER_LINE);
     // If padding is 0 it means the last line is full
+    // TODO: Fix when assert fails (can't remember when this will be 0)
     assert(messagePadding != 0);
-    // TODO: Fix when assert fails
+
+    // TODO: When this fails, the last line will just be a blank
+    assert(messagePadding != MAX_CHAR_PER_LINE);
     std::string messagePad(messagePadding, ' ');
 
-    std::string options = choice1 + "  " + choice2;
+    std::string options = choice1 + optionsSpace + choice2;
     const int optionsPadding = (MAX_CHAR_PER_LINE - options.length() + 1) / 2;
     std::string optionsPad(optionsPadding, ' ');
 
-    m_isQuestion = true;
-    //'                '
-    //'Red Blue'
-    message(question + messagePad + optionsPad + options, yPos);
+    if (yPos > DIALOGUE_HEIGHT + DIALOGUE_POS_Y_HIGH)
+    {
+        yPos = DIALOGUE_POS_Y_HIGH;
+    }
+    else
+    {
+        yPos = DIALOGUE_POS_Y_LOW;
+    }
 
-    m_questionXPos = m_dialoguePosX + (optionsPadding * (CHAR_WIDTH - 1));
-    m_questionYPos = m_dialoguePosY + TEXT_POS_Y + LINE_HEIGHT;
-
-    m_choice1 = choice1;
-    m_choice2 = choice2;
-
-    // Choice 1 will always be selected first
-    m_choice = m_choice1;
-    // TODO: Automatically append spaces before words in sentence
+    m_messageQueue.emplace(Question(question + messagePad + optionsPad + options,
+        yPos,
+        m_dialoguePosX + (optionsPadding * (CHAR_WIDTH - 1)),
+        yPos + TEXT_POS_Y + LINE_HEIGHT,
+        choice1,
+        choice2));
+ 
+    // Switch controller over to this if there is one 
+    if (Controller::getInstance().getController() != this)
+    {
+        Controller::getInstance().pushController(this);
+    }
 
     // TODO: Fix to return correct choice
     return false;
@@ -178,6 +161,9 @@ bool Dialogue::question(const char* question, const std::string& choice1, const 
 
 void Dialogue::render() noexcept
 {
+
+    // TODO: This logic should be in the update() function
+
     auto charSrcRect = [this](const char c) noexcept
     {
         int srcCharX = 0, srcCharY = 0;
@@ -234,7 +220,8 @@ void Dialogue::render() noexcept
         }
         else
         {
-            assert(false && "Unknown character");
+            assert(false && "Unknown character: " + c);
+            return Rect<int>{};
         }
         return Rect<int>{srcCharX, srcCharY, CHAR_WIDTH, CHAR_HEIGHT};
     };
@@ -247,6 +234,41 @@ void Dialogue::render() noexcept
         CHAR_WIDTH,
         CHAR_HEIGHT
     };
+
+    // If there are any messages in the queue, pop them off one by one and display
+    if (m_messageQueue.size() && m_currentChar == 0)
+    {
+        auto const messageItem = m_messageQueue.front();
+        float yDiff = ~0;
+
+        if (std::holds_alternative<Message>(messageItem))
+        {
+            auto const message = std::get<Message>(messageItem);
+            yDiff = message.yPos;
+            m_message = message.message;
+        }
+        else
+        {
+            auto const question = std::get<Question>(messageItem);
+            yDiff = question.yPos;
+
+            m_isQuestion = true;
+
+            m_questionXPos = question.questionXPos;
+            m_questionYPos = question.questionYPos;
+
+            m_choice1 = question.choice1;
+            m_choice2 = question.choice2;
+            m_message = question.question;
+            // Choice 1 will always be selected first
+            m_choice = m_choice1;
+        }
+
+        assert(yDiff != ~0);
+        m_dialoguePosY = yDiff;
+
+        m_messageQueue.pop();
+    }
 
     // If there is a message to display
     if (m_currentChar < m_message.length())
@@ -294,7 +316,6 @@ void Dialogue::render() noexcept
                     m_dstCharX = std::min(m_dstCharX + 1, MAX_CHAR_PER_LINE-1);
                 }
 
-                // TODO: This snippet is weird
                 if (m_moreText)
                 {
                     m_moreText = false;
@@ -393,16 +414,10 @@ void Dialogue::render() noexcept
     Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, Rect<int>{ 0, 0, m_subTexture.width(), m_subTexture.height() }, dstRectSubTexture);
 
     // Display the textbox
-   // Drawn on top or bottom depending on Link's position
-    const Rect<int> dstRectDialogue =
-    {
-        m_dialoguePosX,
-        m_dialoguePosY,
-        DIALOGUE_WIDTH,
-        DIALOGUE_HEIGHT
-    };
-
-    m_texture.drawSprite(Renderer::getInstance().getRenderer(), Rect<int>{0,0, m_texture.width(), m_texture.height()}, dstRectDialogue);
+    // Drawn on top or bottom depending on Link's position
+    m_texture.drawSprite(Renderer::getInstance().getRenderer(), 
+        Rect<int>{0,0, m_texture.width(), m_texture.height()}, 
+        Rect<int>{m_dialoguePosX,m_dialoguePosY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT});
     
     // Flashing red arrow 
     if (m_flashArrow && m_continue)
@@ -414,15 +429,8 @@ void Dialogue::render() noexcept
             CHAR_WIDTH,
             CHAR_HEIGHT
         };
-
-        const Rect<int> dstRectArrow =
-        {
-            m_dialoguePosX + ARROW_POS_X,
-            m_dialoguePosY + ARROW_POS_Y,
-            CHAR_WIDTH,
-            CHAR_HEIGHT
-        };
-        m_redArrow.drawSprite(Renderer::getInstance().getRenderer(), srcRectArrow, dstRectArrow);
+        m_redArrow.drawSprite(Renderer::getInstance().getRenderer(), srcRectArrow, 
+            Rect<int>{m_dialoguePosX + ARROW_POS_X,m_dialoguePosY + ARROW_POS_Y,CHAR_WIDTH,CHAR_HEIGHT});
     }
 
     // Flash the continue arrow
@@ -435,9 +443,14 @@ void Dialogue::render() noexcept
         if (m_flashQuestion && m_currentChar == m_message.length())
         {
             const Rect<int> srcQuestionRect = { 144,16, CHAR_WIDTH, CHAR_HEIGHT };
-            const Rect<int> dstQuestionRect = { m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT };
 
-            m_questionMarker.drawSprite(Renderer::getInstance().getRenderer(), srcQuestionRect, dstQuestionRect);
+            assert(m_questionXPos >= m_dialoguePosX);
+            assert(m_questionXPos <= m_dialoguePosX + DIALOGUE_WIDTH);
+            assert(m_questionYPos >= m_dialoguePosY);
+            assert(m_questionYPos <= m_dialoguePosY + DIALOGUE_HEIGHT);
+            m_questionMarker.drawSprite(Renderer::getInstance().getRenderer(), 
+                srcQuestionRect, 
+                Rect<int>{ m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT });
         }
     }
 }
@@ -445,6 +458,61 @@ void Dialogue::render() noexcept
 void Dialogue::update() noexcept
 {
 
+}
+
+void Dialogue::reset() noexcept
+{
+    m_dstCharX = 0;
+    m_dstCharY = 0;
+    m_currentLine = 0;
+    m_scrollMessage = false;
+
+    m_scrolledLines = 0;
+    m_currentChar = 0;
+    m_flashArrow = false;
+    m_continue = false;
+    m_moreText = false;
+
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, Rect<int>{ 0, 0, m_subTexture.width(), m_subTexture.height() }, SDL_RGB(0, 0, 0));
+
+    m_isQuestion = false;
+    m_questionXPos = 0;
+    m_questionYPos = 0;
+
+    // TODO: Correct text colour
+    // TODO: Add special characters (arrows, items etc)
+    // TODO: Add heart container on RHS when acquired
+}
+
+void Dialogue::checkCharacters(const std::string& string) const noexcept
+{
+    // Only the following characters allowed
+    std::for_each(string.cbegin(), string.cend(), [](const char c)
+    {
+        bool isLowerCaseCharacter = (c >= 'a' && c <= 'z');
+        bool isUppperCaseCharacter = (c >= 'A' && c <= 'Z');
+        bool isDigit = (c >= '0' && c <= '9');
+        bool isSpecialCharacter = (c == '!' || c == '?' || c == '\'' || c == '.' || c == ',' || c == '-');
+        bool isSpace = (c == ' ');
+        assert(isLowerCaseCharacter || isUppperCaseCharacter || isDigit || isSpecialCharacter || isSpace);
+    });
+
+    /*
+    // Assert that word length isn't longer than line
+    // Taken from https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+    std::string delimiter = " ";
+
+    // Tokenise each word by delimter ' ' and check the length doesn't exceed 16 chars
+    size_t pos = 0;
+    std::string token;
+    while ((pos = string.find(delimiter)) != std::string::npos)
+    {
+        token = string.substr(0, pos);
+        assert(token.length() < MAX_CHAR_PER_LINE);
+        string.erase(0, pos + delimiter.length());
+    }
+    assert(string.length() < MAX_CHAR_PER_LINE);
+    */
 }
 
 void Dialogue::control(double ts) noexcept
@@ -457,12 +525,17 @@ void Dialogue::control(double ts) noexcept
     }
     else if (m_currentChar == m_message.length() && Keyboard::getInstance().keyPressed(BUTTON_B))
     {
-        // Close dialogue box and restore control
-        Controller::getInstance().popController(); 
-        
-        Renderer::getInstance().removeRenderable(this);
-        // Unpause
-        Engine::getInstance().pause(false);
+        reset();
+
+        if (m_messageQueue.empty())
+        {
+            // Close dialogue box and restore control
+            Controller::getInstance().popController();
+
+            Renderer::getInstance().removeRenderable(this);
+
+            Engine::getInstance().pause(false);
+        }
     }
     else if (m_isQuestion)
     {

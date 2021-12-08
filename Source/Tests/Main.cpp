@@ -3,6 +3,7 @@
 #include "InventoryTests.h"
 #include "DialogueTests.h"
 #include "RectTests.h"
+#include "WorldmapTests.h"
 #include "Engine.h"
 #include "Debug.h"
 #include <vector>
@@ -24,9 +25,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     //tests.emplace_back(std::make_unique<Testable::VectorTests>());
     //tests.emplace_back(std::make_unique<Testable::InventoryTests>());
     //tests.emplace_back(std::make_unique<Testable::RectTests>());
-    tests.emplace_back(std::make_unique<Testable::DialogueTests>());
-
-    Debug::getInstance().setDebugMask(DBG_TEST);
+    //tests.emplace_back(std::make_unique<Testable::DialogueTests>());
+    //tests.emplace_back(std::make_unique<Testable::WorldmapTests>());
 
     for (auto const& test : tests)
     {
