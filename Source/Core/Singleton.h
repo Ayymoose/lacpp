@@ -1,12 +1,10 @@
 #pragma once
 
-#include <iostream>
-
 template <typename T>
 class Singleton
 {
 public:
-    static T& getInstance()
+    static T& getInstance() noexcept
     {
         static T m_instance;
         return m_instance;
@@ -21,9 +19,6 @@ protected:
     // No move assigning
     Singleton& operator=(Singleton&&) = delete;
 
-    Singleton()
-    {
-        //std::cout << "Creating " << typeid(*this).name() << '\n';
-    }
+    Singleton() = default;
     virtual ~Singleton() = default;
 };

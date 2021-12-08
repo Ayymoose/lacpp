@@ -92,6 +92,7 @@ void Engine::initControl() const noexcept
 
 void Engine::initSingleton() const noexcept
 {
+    Debug::getInstance();
     Renderer::getInstance();
     ResourceManager::getInstance();
     Keyboard::getInstance();
