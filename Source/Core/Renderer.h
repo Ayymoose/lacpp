@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 #include "Sprite.h"
 #include "Debug.h"
+#include "Window.h"
 
 // Singleton instance of the renderer for the main window
 
@@ -17,13 +18,13 @@ class Renderer : public Singleton<Renderer>
     friend class Singleton<Renderer>;
 public:
 
-    void createRenderer(SDL_Window* window) noexcept
+    void createRenderer(const Window& window) noexcept
     {
-        assert(window);
+        assert(window.getWindowHandle());
         auto const flags = SDL_RENDERER_ACCELERATED |
             SDL_RENDERER_PRESENTVSYNC |
             SDL_RENDERER_TARGETTEXTURE;
-        m_renderer = SDL_CreateRenderer(window, -1, flags);
+        m_renderer = SDL_CreateRenderer(window.getWindowHandle(), -1, flags);
         assert(m_renderer);
         DEBUG(DBG_INFO, "Renderer created");
     }
@@ -41,7 +42,22 @@ public:
 
     void clearScreen(int colour) const noexcept
     {
+        assert(m_renderer);
+        SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderClear(m_renderer), SDL_ERROR_MESSAGE);
+    }
 
+    void renderScreen() const noexcept
+    {
+        assert(m_renderer);
+        // Represent to the screen
+        SDL_RenderPresent(m_renderer);
+    }
+
+    void setRendererScale(float scaleX, float scaleY) const noexcept
+    {
+        assert(m_renderer);
+        SDL_ASSERT(SDL_RenderSetScale(m_renderer,scaleX,scaleY), SDL_ERROR_MESSAGE);
     }
 
     virtual ~Renderer()

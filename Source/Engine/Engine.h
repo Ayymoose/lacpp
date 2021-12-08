@@ -37,8 +37,12 @@ private:
     void events() noexcept;
     void update() const noexcept;
     void render() const noexcept;
-    void clearScreen() const noexcept;
-    void renderScreen() const noexcept;
+
+    void initVideo() const noexcept;
+    void initAudio() const noexcept;
+    void initControl() const noexcept;
+    void initSingleton() const noexcept;
+    void initWindow() noexcept;
 
     void preRenderTestFunction() const noexcept
     {

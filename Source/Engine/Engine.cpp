@@ -13,31 +13,15 @@ namespace Zelda
 {
 void Engine::init() noexcept
 {
-    // Initialise SDL
-    SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO), SDL_ERROR_MESSAGE);
-
-    // Create the main window
-    m_mainWindow.createWindow(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
-
-    // Create main hardware renderer
-    Renderer::getInstance().createRenderer(m_mainWindow.getWindowHandle());
-
-    // Stretch the textures to the window size
-    SDL_ASSERT(SDL_RenderSetScale(Renderer::getInstance().getRenderer(), MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + HUD_HEIGHT)), SDL_ERROR_MESSAGE);
-
-    // Needs to be separated
+    // Initialise everything
+    initVideo();
+    initAudio();
+    initControl();
+    initWindow();
+    initSingleton();
 
     // Load all resources (sound + graphics)
     ResourceManager::getInstance().loadGraphics();
-
-    // Initialise the keyboard
-    Keyboard::getInstance();
-
-    // Room manager
-    RoomManager::getInstance();
-
-    // Init camera
-    Camera::getInstance();
 
     // TODO: Move this somwhere
     m_initialised = true;
@@ -57,12 +41,8 @@ void Engine::run() noexcept
     {
         events();
         update();
-
         preRenderTestFunction();
-
         render();
-
-
     }
 
 }
@@ -95,8 +75,45 @@ Engine::~Engine()
     }
 }
 
+void Engine::initVideo() const noexcept
+{
+    SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO), SDL_ERROR_MESSAGE);
+}
+
+void Engine::initAudio() const noexcept
+{
+    SDL_ASSERT(SDL_Init(SDL_INIT_AUDIO), SDL_ERROR_MESSAGE);
+}
+
+void Engine::initControl() const noexcept
+{
+    SDL_ASSERT(SDL_Init(SDL_INIT_GAMECONTROLLER), SDL_ERROR_MESSAGE);
+}
+
+void Engine::initSingleton() const noexcept
+{
+    Renderer::getInstance();
+    ResourceManager::getInstance();
+    Keyboard::getInstance();
+    RoomManager::getInstance();
+    Camera::getInstance();
+}
+
+void Engine::initWindow() noexcept
+{
+    // Create the main window
+    m_mainWindow.createWindow(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+
+    // Create main hardware renderer
+    Renderer::getInstance().createRenderer(m_mainWindow);
+
+    // Stretch the textures to the window size
+    Renderer::getInstance().setRendererScale(MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + HUD_HEIGHT));
+}
+
 void Engine::events() noexcept
 {
+    // TODO: There should be a Controller Singleton which can be a Keyboard or GameController
     SDL_Event eventHandler;
     if (SDL_PollEvent(&eventHandler))
     {
@@ -121,11 +138,11 @@ void Engine::events() noexcept
 void Engine::update() const noexcept
 {
     // TODO: Create an Updateable interface class and remove update() from Renderable
-    auto const renderables = Renderer::getInstance().getRenderSet();
-    for (const auto& renderable : renderables)
+    auto const gameObjects = Renderer::getInstance().getRenderSet();
+    for (const auto& gameObject : gameObjects)
     {
-        assert(renderable);
-        renderable->update();
+        assert(gameObject);
+        gameObject->update();
     }
 
     auto const controller = Controller::getInstance().getController();
@@ -133,181 +150,52 @@ void Engine::update() const noexcept
     {
         controller->control();
     }
-}
 
-void Engine::clearScreen() const noexcept
-{
-    // Clear black
-    SDL_ASSERT(SDL_SetRenderDrawColor(Renderer::getInstance().getRenderer(), 0, 0, 0, 0), SDL_ERROR_MESSAGE);
-    SDL_ASSERT(SDL_RenderClear(Renderer::getInstance().getRenderer()), SDL_ERROR_MESSAGE);
-}
+#if 0
+    if (!Engine::getInstance().paused())
+    {
+        // TODO: If engine is paused, all animation/movement must be stopped until resumed
+        // Engine is paused when 
+        // - Opening the inventory and remains paused until inventory is closed
+        // - Opening the file save screen
+        // - Dialogue is running
+        // - An item that opens the dialogue is obtained
 
-void Engine::renderScreen() const noexcept
-{
-    // Represent to the screen
-    SDL_RenderPresent(Renderer::getInstance().getRenderer());
+        // Basic enemy function
+        auto enemy = dynamic_cast<Enemy*>(renderable);
+        if (enemy)
+        {
+            // Or can/can't attack
+            enemy->attack();
+
+            // Or can/can't be killed
+            if (enemy->health() <= 0)
+            {
+                enemy->die();
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////
+
+#endif
 }
 
 void Engine::render() const noexcept
 {
-    static auto renderStartTime = SDL_GetTicks();
-    static auto renderedFrames = 0;
-
-    clearScreen();
-
-    // Render any objects
+    Renderer::getInstance().clearScreen(COLOUR_BLACK);
     auto const renderables = Renderer::getInstance().getRenderSet();
-
     for (const auto& renderable : renderables)
     {
         assert(renderable);
-
-        // This shouldn't be here
-
-        //////////////////////////////////////////////////
-        // Cull any objects out of view
-        auto cullable = dynamic_cast<CullableParent*>(renderable);
-        if (cullable)
-        {
-            cullable->cull();
-        }
-
-        // TODO: Should be in a logic function
-
-        if (!Engine::getInstance().paused())
-        {
-            // TODO: If engine is paused, all animation/movement must be stopped until resumed
-            // Engine is paused when 
-            // - Opening the inventory and remains paused until inventory is closed
-            // - Opening the file save screen
-            // - Dialogue is running
-            // - An item that opens the dialogue is obtained
-
-            // Basic enemy function
-            auto enemy = dynamic_cast<Enemy*>(renderable);
-            if (enemy)
-            {
-                // Or can/can't attack
-                enemy->attack();
-
-                // Or can/can't be killed
-                if (enemy->health() <= 0)
-                {
-                    enemy->die();
-                }
-            }
-        }
-
-        //////////////////////////////////////////////////
-
         // Render only visible objects
         if (renderable->visible())
         {
             renderable->render();
         }
     }
-
-
     renderTestFunction();
-
-    renderScreen();
-
-    renderedFrames++;
-
-    //auto lx = Link::getInstance().position().x;
-    //auto ly = Link::getInstance().position().y;
-    //std::string windowTitle = MAIN_WINDOW_TITLE " - LX: " + std::to_string(lx) + " LY: " + std::to_string(ly);
-    //SDL_SetWindowTitle(m_mainWindow.getWindowHandle(), windowTitle.c_str());
-
-#if 0
-
-    auto elapsedTicks = SDL_GetTicks() - renderStartTime;
-    //std::cout << "elapsed: " << elapsedTicks << "\n";
-
-   if (elapsedTicks >= 1000)
-    {
-        std::string windowTitle = MAIN_WINDOW_TITLE " - FPS: " + std::to_string((elapsedTicks / 1000.0f) * (double)renderedFrames);
-        std::cout << "Rendererd frames in this second: " << renderedFrames << '\n';
-        SDL_SetWindowTitle(m_mainWindow.getWindowHandle(), windowTitle.c_str());
-        renderStartTime = SDL_GetTicks();
-        renderedFrames = 0;
-    }
-#endif
+    Renderer::getInstance().renderScreen();
 }
-
-#if 0
-void Engine::engineTest()
-{
-    // Set camera position
-    Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
-    Camera::getInstance().setPosition(480, 640);
-    Camera::getInstance().setTileMap(RM_TAIL_CAVE);
-
-
-    // Dialogue::getInstance().message("You got your sword! It has your name on the back! Very nice");
-    // Dialogue::getInstance().message("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEFABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFABCDEFGHIJKLMNOPXRSTUVWXYZABCDEF");//"You've got a    Guardian Acorn! It will reduce  the damage you  take by half!");
-    //Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red","Blue", Link::getInstance().position().y);
-
-    //std::string test = "test";
-   // Dialogue::getInstance().message("Level 1--       ""     Tail Cave", Link::getInstance().position().y);
-
-    // TODO: Make sure local objects when destroyed get removed from renderer
-    /*static SeaUrchin su(72,64);
-    static Beamos be(72, 80);
-    static GopongaFlower goflower(32, 80);
-    static Gibdo gibdo(16, 64);
-    static LikeLike likelike(32, 64);
-    static HardhatBeetle hhb(80, 32);
-    static Bubble bubble(32, 16);
-    static Star star(64, 32);
-    static Vacuum vacuum(96, 0);
-    static BladeTrap bladeTrap(64, 64);
-    static ArmMimic arm(64, 64);
-    static ShyGuy arm(64, 64);
-    static WaterTektite waterTektite(64, 64);
-    static IronMask ironMask(64, 64);
-    static ThreeOfAKind threeOfAKind(64, 64);
-    static Spark spark(64, 64);
-    static Leever leever(64, 64);
-    static SandCrab sandcrab(64, 64);
-    static BuzzBlob buzzblod(64, 64);
-    static Zombie zombie(64, 64);
-    static Peahat peahat(64, 64);*/
-
-    // 18/02/2021 - Update
-
-    /*
-    Too many things are broken here and I'm too lazy to work on this anymore
-
-    1) Frame rate will be dependant on the users VSync refresh rate either 60Hz, 75Hz or 120Hz
-    2) Not entirely sure how to do the corner cutting and Link collisions
-    3) Need to create GUI tool to allow me to place solid tiles and auto-generate collision maps
-    4) Software timers are kind of broken
-    5) Animation
-    6) Keyboard input
-    7) Graphics loading
-
-    * /
-
-    /*
-
-        // TODOs
-
-        // 1. Game introduction
-        // 2. File select
-        // 3. Save file
-        // 4. Collisions
-        // 5. Enemies
-        // 6. Sound
-        // 7. Objects
-        // 8. Fix timer classes
-        // 9. Dialogue outstanding issues
-        // 10. Engine pausing
-
-
-    */
-}
-
-#endif
 
 }

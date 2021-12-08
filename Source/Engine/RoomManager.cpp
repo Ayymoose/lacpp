@@ -2,6 +2,8 @@
 
 #include "AnimatedObject.h"
 
+#include "Renderer.h"
+
 // All enemies
 #include "Pairodd.h"
 #include "Gibdo.h"

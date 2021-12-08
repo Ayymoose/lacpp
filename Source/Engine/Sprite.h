@@ -15,6 +15,7 @@ namespace Zelda
 #define SDL_RED(colour) ((colour) & 0x0000FF)
 #define SDL_GREEN(colour) (((colour) >> 8) & 0x0000FF)
 #define SDL_BLUE(colour) (((colour) >> 16) & 0x0000FF)
+#define COLOUR_BLACK (0)
 
 enum class SpriteFlip
 {
