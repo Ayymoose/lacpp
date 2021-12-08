@@ -19,7 +19,7 @@ public:
     {
         DEBUG(DBG_INFO, "Controllable deconstructor called");
     }
-    virtual void control(double ts) noexcept = 0;
+    virtual void control() noexcept = 0;
     std::string name() const noexcept
     {
         assert(!m_controllableName.empty());

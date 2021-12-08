@@ -18,7 +18,7 @@ Worldmap::Worldmap() :
     Renderer::getInstance().addRenderable(this);
 }
 
-void Worldmap::control(double ts) noexcept
+void Worldmap::control() noexcept
 {
     // TODO: Fix key press overlaps between inventory and worldmap
     if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))

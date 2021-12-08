@@ -335,7 +335,7 @@ void Link::cull() noexcept
     
 }
 
-void Link::control(double ts) noexcept
+void Link::control() noexcept
 {
 
    /* if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))

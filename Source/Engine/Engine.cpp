@@ -128,10 +128,10 @@ void Engine::update() const noexcept
         renderable->update();
     }
 
-    Controllable* controller = Controller::getInstance().getController();
+    auto const controller = Controller::getInstance().getController();
     if (controller)
     {
-        controller->control(0);
+        controller->control();
     }
 }
 

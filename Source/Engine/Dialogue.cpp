@@ -515,7 +515,7 @@ void Dialogue::checkCharacters(const std::string& string) const noexcept
     */
 }
 
-void Dialogue::control(double ts) noexcept
+void Dialogue::control() noexcept
 {
     if (m_continue && Keyboard::getInstance().keyPressed(BUTTON_B))
     {

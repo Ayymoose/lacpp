@@ -54,7 +54,7 @@ public:
     
     void render() noexcept override;
     void update() noexcept override;
-    void control(double ts) noexcept override;
+    void control() noexcept override;
 private:
     Dialogue();
 

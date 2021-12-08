@@ -349,7 +349,7 @@ class Inventory : public Renderable, public Controllable
 {
 public:
     Inventory();
-    void control(double ts) noexcept override;
+    void control() noexcept override;
     void render() noexcept override;
     void update() noexcept override;
     void open() noexcept;

@@ -144,7 +144,7 @@ public:
     void move() noexcept override;
 
     // Controllable overrides
-    void control(double ts) noexcept override;
+    void control() noexcept override;
 
     // CullableParent overrides
     void cull() noexcept override;

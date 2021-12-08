@@ -82,7 +82,7 @@ Inventory::Inventory() :
     Renderer::getInstance().addRenderable(this);
 }
 
-void Inventory::control(double ts) noexcept
+void Inventory::control() noexcept
 {
     if (Keyboard::getInstance().keyPressed(BUTTON_A))
     {
