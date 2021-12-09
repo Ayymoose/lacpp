@@ -135,9 +135,6 @@
     <ClCompile Include="..\..\Source\Engine\Dialogue.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Engine\Drawing.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Engine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -225,9 +222,6 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Depth.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\Drawing.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\InputControl.h">

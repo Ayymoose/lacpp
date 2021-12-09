@@ -199,7 +199,6 @@
     <ClCompile Include="..\..\Source\Engine\Timer.cpp" />
     <ClCompile Include="..\..\Source\Engine\CollisionMap.cpp" />
     <ClCompile Include="..\..\Source\Engine\Dialogue.cpp" />
-    <ClCompile Include="..\..\Source\Engine\Drawing.cpp" />
     <ClCompile Include="..\..\Source\Engine\Engine.cpp" />
     <ClCompile Include="..\..\Source\Engine\Resource.cpp" />
     <ClCompile Include="..\..\Source\Player\Bomb.cpp" />
@@ -262,7 +261,6 @@
     <ClInclude Include="..\..\Source\Engine\Camera.h" />
     <ClInclude Include="..\..\Source\Engine\CollisionMap.h" />
     <ClInclude Include="..\..\Source\Engine\Depth.h" />
-    <ClInclude Include="..\..\Source\Engine\Drawing.h" />
     <ClInclude Include="..\..\Source\Engine\Engine.h" />
     <ClInclude Include="..\..\Source\Engine\InputControl.h" />
     <ClInclude Include="..\..\Source\Engine\Resource.h" />

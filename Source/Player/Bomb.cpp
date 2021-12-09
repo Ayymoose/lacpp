@@ -207,7 +207,7 @@ bool Bomb::exploded() const
 
 bool Bomb::cull() noexcept
 {
-    return m_exploded || !Camera::getInstance().visible({ m_position.x, m_position.y, static_cast<float>(m_width), static_cast<float>(m_height) });
+    return m_exploded || !Camera::getInstance().visible(Rect<float>{ m_position.x, m_position.y, static_cast<float>(m_width), static_cast<float>(m_height) });
 }
 
 }

@@ -4,6 +4,7 @@
 #include "ZD_Assert.h"
 #include <cassert>
 #include "Rect.h"
+#include <type_traits>
 
 // Wrapper class around an SDL_Texture
 namespace Zelda
@@ -42,6 +43,7 @@ public:
     int height() const noexcept;
     void free() noexcept;
 
+
     // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
     // The dstRect co-ordinates are relative to the srcRect!
     template<typename R1, typename R2>
@@ -53,12 +55,17 @@ public:
         auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
         SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture.data()), SDL_ERROR_MESSAGE);
 
-        // TODO:: assert srcRect and dstRect boundaries are less than srcSprite dstSprite dimensions
-
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());
+        
+        assert(srcRect.w <= srcTexture.width());
+        assert(srcRect.h <= srcTexture.height());
+        assert(dstRect.w <= dstTexture.width());
+        assert(dstRect.h <= dstTexture.height());
+
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
+
         SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture.data(), &rectSrc, &rectDst), SDL_ERROR_MESSAGE);
 
         // Pop rendering target
@@ -79,6 +86,9 @@ public:
 
         // assert rect boundaries
         assert(srcRect != Rect<R>());
+        assert(srcRect.w <= srcTexture.width());
+        assert(srcRect.h <= srcTexture.height());
+
         auto const rectSrc = rectToSDLRect(srcRect);
 
         SDL_ASSERT(SDL_RenderFillRect(renderer, &rectSrc), SDL_ERROR_MESSAGE);
@@ -113,7 +123,14 @@ public:
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
 
-        SDL_ASSERT(SDL_RenderCopyEx(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)), SDL_ERROR_MESSAGE);
+        if constexpr(std::is_same<R2, int>::value)
+        {
+           SDL_ASSERT(SDL_RenderCopyEx(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)), SDL_ERROR_MESSAGE);
+        }
+        else
+        {
+           SDL_ASSERT(SDL_RenderCopyExF(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)), SDL_ERROR_MESSAGE);
+        }
     }
 
 private:
@@ -122,7 +139,6 @@ private:
     int m_height;
 
     static SDL_RendererFlip flipToSDLRendererFlip(SpriteFlip flip) noexcept;
-
 };
 
 

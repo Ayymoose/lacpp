@@ -59,7 +59,7 @@ Link::Link() :
     m_currentCollisionMapY = 5;
     m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];*/
 
-    //Renderer::getInstance().addRenderable(this);
+    Renderer::getInstance().addRenderable(this);
     //Controller::getInstance().setController(this);
 
     m_upDownSpeedLimiter = 1;
@@ -240,8 +240,6 @@ void Link::render() noexcept
 
     // Walking - Holding movement keys will play the same animation over and over unless the user has the sword out
 
-
-
     // Get clock, if elapsed, increase frame counter
     // Source rect to pull from sprite sheet
     m_srcRect =
@@ -252,8 +250,6 @@ void Link::render() noexcept
         m_height
     };
 
-    
-
     // Where to draw on screen
     m_dstRect =
     {
@@ -263,7 +259,6 @@ void Link::render() noexcept
         static_cast<float>(m_height)
     };
 
-
     // Max frame controlled by the state
     m_endFrame = m_animations[m_state].endFrame;
 
@@ -271,57 +266,8 @@ void Link::render() noexcept
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
+    m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
     //SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
-
-
-    // Drawing bounding boxes for testing
-    //m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];
-    
-    Rect<int> playerRect =
-    {
-        m_boundingBox.x - Camera::getInstance().getX(),
-        m_boundingBox.y - Camera::getInstance().getY(),
-        m_boundingBox.w,
-        m_boundingBox.h
-    };
-
-    //SDL_ASSERT(SDL_RenderDrawRect(renderer, &playerRect), SDL_ERROR_MESSAGE);
-
-    /* std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
-    for (const BoundingBox& box : bbs)
-    {
-
-        SDL_Rect bbRect = { box.x , box.y, box.w, box.h };
-
-        SDL_ASSERT(SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0), SDL_ERROR_MESSAGE);
-        SDL_ASSERT(SDL_RenderDrawRect(renderer, &bbRect), SDL_ERROR_MESSAGE);
-    }
-    
-    */
-
-    // Perishable weapons
-    // Weapons that go offscreen are culled
-    /*
-
-    if (m_boomerang)
-    {
-        auto boomerangPos = m_boomerang->position();
-        if (!Camera::getInstance().visible(boomerangPos))
-        {
-            m_boomerang->returnToPlayer();
-        }
-        BoundingBox box;
-        box.x = m_boundingBox.x - Camera::getInstance().getX();
-        box.y = m_boundingBox.y - Camera::getInstance().getY();
-
-        if (BoundingBox::intersects(box, m_boomerang->boundingBox()))
-        {
-            Renderer::getInstance().removeRenderable(m_boomerang);
-            delete m_boomerang;
-            m_boomerang = nullptr;
-        }
-    }
-    }*/
 
 }
 
@@ -1164,15 +1110,6 @@ void Link::useWeapon(WeaponItem weapon) noexcept
             break;
         }
         
-
-        // std::vector<std::shared_ptr> cullables;
-// for (auto cullable : cullables)
-// if (cullable->cull())
-// {
-//     cullable->reset();
-//     cullables.remove(this it);
-// }
-// 
         // When a new object is created, add it to the cullable list
         // Each frame, call cull() on each item in the cullable list
         // If it returns true then remove the item from the render list and free the memory

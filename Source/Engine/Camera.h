@@ -48,7 +48,27 @@ public:
     void setTileMap(RoomName tilemap) noexcept;
 
     // Returns true whether a rect is visible in the camera region
-    bool visible(SDL_FRect&& rectangle) const noexcept;
+    template <typename R>
+    bool visible(const Rect<R>& rectangle) const noexcept
+    {
+        if (rectangle.x > (m_scrollX + CAMERA_WIDTH) - rectangle.w)
+        {
+            return false;
+        }
+        else if (rectangle.x < m_scrollX)
+        {
+            return false;
+        }
+        else if (rectangle.y < m_scrollY)
+        {
+            return false;
+        }
+        else if (rectangle.y > (m_scrollY + CAMERA_HEIGHT) - rectangle.h)
+        {
+            return false;
+        }
+        return true;
+    }
 
     int getX() const noexcept;
     int getY() const noexcept;
@@ -62,7 +82,7 @@ public:
 private:
     Camera();
     // Called in the render function
-    void renderTileMap(SDL_Renderer* renderer, SDL_Rect dstRect, SDL_Texture* srcTexture, uint16_t roomIndex) noexcept;
+    void renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, uint16_t roomIndex) noexcept;
 
     // m_scrollX and m_scrollY are manipulated to achieve scrolling
     int m_scrollX;
