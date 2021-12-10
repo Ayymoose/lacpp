@@ -121,8 +121,6 @@ RoomManager::RoomManager()
         {}
     };
 
-    auto x = sizeof(AnimatedObject);
-
     m_rooms[RM_TAIL_CAVE] = tc;
 }
 

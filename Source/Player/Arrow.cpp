@@ -1,7 +1,7 @@
 #include "Arrow.h"
 #include "Camera.h"
 #include "Resource.h"
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 
 namespace Zelda
 {
@@ -58,7 +58,7 @@ void Arrow::render() noexcept
     }
 
     m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
-    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE));
 
     m_boundingBox.x = m_position.x - Camera::getInstance().getX();
     m_boundingBox.y = m_position.y - Camera::getInstance().getY();

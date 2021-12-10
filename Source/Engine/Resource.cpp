@@ -1,7 +1,7 @@
 #include "Resource.h"
 #include "Renderer.h"
 #include "Singleton.h"
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 
 namespace Zelda
 {
@@ -47,7 +47,7 @@ Sprite ResourceManager::loadSprite(const std::string& path, uint32_t transparenc
     else
     {
         // Set transparency
-        SDL_ASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, SDL_RED(transparency), SDL_GREEN(transparency), SDL_BLUE(transparency))), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, SDL_RED(transparency), SDL_GREEN(transparency), SDL_BLUE(transparency))));
 
         // Create texture from surface
         auto newTexture = SDL_CreateTextureFromSurface(Renderer::getInstance().getRenderer(), loadedSurface);
@@ -66,7 +66,7 @@ Sprite ResourceManager::loadSprite(const std::string& path, uint32_t transparenc
         SDL_FreeSurface(loadedSurface);
 
         // TODO: What does this do?
-        SDL_ASSERT(SDL_SetTextureBlendMode(destSprite.data(), SDL_BLENDMODE_BLEND), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetTextureBlendMode(destSprite.data(), SDL_BLENDMODE_BLEND));
 
         return destSprite;
     }

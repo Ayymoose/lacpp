@@ -9,7 +9,7 @@ namespace Zelda
 Sprite::Sprite(SDL_Texture* texture) : m_sprite(texture), m_width(0), m_height(0)
 {
     assert(texture);
-    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
     assert(m_width);
     assert(m_height);
 }
@@ -36,7 +36,7 @@ Sprite& Sprite::operator=(SDL_Texture* texture) noexcept
     m_sprite = texture; 
     if (m_sprite)
     {
-        SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
     }
     return *this;
 }

@@ -1,7 +1,7 @@
 #include "FlameRod.h"
 #include "Camera.h"
 #include "Resource.h"
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 #include "Link.h"
 
 namespace Zelda
@@ -37,7 +37,7 @@ void FlameRod::render() noexcept
     };
 
     // The flame
-    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE));
     m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
     auto flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
@@ -58,7 +58,7 @@ void FlameRod::render() noexcept
     if (m_display)
     {
         m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_flameRodOrientation, SpriteFlip::FLIP_NONE);
-        //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+        //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE));
     }
 
     // Animate the flame rod

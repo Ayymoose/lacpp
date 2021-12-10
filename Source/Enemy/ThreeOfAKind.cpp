@@ -51,7 +51,7 @@ void ThreeOfAKind::render() noexcept
         static_cast<float>(m_height)
     };
 
-    SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_flip), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, m_orientation, nullptr, m_flip));
 
     if (m_animationTimer.elapsed(m_animationFPS) && !Engine::getInstance().paused())
     {

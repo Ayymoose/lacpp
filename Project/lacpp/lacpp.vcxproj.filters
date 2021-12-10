@@ -218,9 +218,6 @@
     <ClInclude Include="..\..\Source\Player\Inventory.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\ZD_Assert.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Depth.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -372,6 +369,9 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Rect.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\SDL_Assert.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

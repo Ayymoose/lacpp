@@ -6,7 +6,7 @@
 #include "Inventory.h"
 #include <string>
 #include "Link.h"
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 
 namespace Zelda
 {

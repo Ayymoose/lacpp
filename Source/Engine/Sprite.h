@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SDL_render.h"
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 #include <cassert>
 #include "Rect.h"
 #include <type_traits>
@@ -53,7 +53,7 @@ public:
 
         // Push rendering target
         auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
-        SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture.data()), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture.data()));
 
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());
@@ -66,10 +66,10 @@ public:
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
 
-        SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture.data(), &rectSrc, &rectDst), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture.data(), &rectSrc, &rectDst));
 
         // Pop rendering target
-        SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget));
     }
 
     // Colours a part of a texture (or whole use nullptr with a given colour 
@@ -81,8 +81,8 @@ public:
         // Push rendering target
         auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
 
-        SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture.data()), SDL_ERROR_MESSAGE);
-        SDL_ASSERT(SDL_SetRenderDrawColor(renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture.data()));
+        SDL_ASSERT(SDL_SetRenderDrawColor(renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0));
 
         // assert rect boundaries
         assert(srcRect != Rect<R>());
@@ -91,10 +91,10 @@ public:
 
         auto const rectSrc = rectToSDLRect(srcRect);
 
-        SDL_ASSERT(SDL_RenderFillRect(renderer, &rectSrc), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderFillRect(renderer, &rectSrc));
 
         // Pop rendering target
-        SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget));
     }
 
     // Draw a sprite on screen
@@ -109,7 +109,7 @@ public:
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
 
-        SDL_ASSERT(SDL_RenderCopy(renderer, m_sprite, &rectSrc, &rectDst), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopy(renderer, m_sprite, &rectSrc, &rectDst));
     }
 
     template<typename R1, typename R2>
@@ -125,11 +125,11 @@ public:
 
         if constexpr(std::is_same<R2, int>::value)
         {
-           SDL_ASSERT(SDL_RenderCopyEx(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)), SDL_ERROR_MESSAGE);
+           SDL_ASSERT(SDL_RenderCopyEx(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)));
         }
         else
         {
-           SDL_ASSERT(SDL_RenderCopyExF(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)), SDL_ERROR_MESSAGE);
+           SDL_ASSERT(SDL_RenderCopyExF(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)));
         }
     }
 

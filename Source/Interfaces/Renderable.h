@@ -4,7 +4,7 @@
 #include "Timer.h"
 #include <iostream>
 #include <cassert>
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 #include "Vector.h"
 #include "Sprite.h"
 
@@ -172,7 +172,7 @@ protected:
         {
             frameCounter = (frameCounter + 1) % frameCount;
         }
-        SDL_ASSERT(SDL_RenderCopy(renderer, texture, &srcRect, &dstRect), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderCopy(renderer, texture, &srcRect, &dstRect));
     }*/
 
     Timer m_animationTimer;

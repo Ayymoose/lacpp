@@ -1,7 +1,7 @@
 #include "Engine.h"
 #include "Keyboard.h"
 #include "Link.h"
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 #include "Dialogue.h"
 #include "Controllable.h"
 #include "Enemy.h"
@@ -77,17 +77,17 @@ Engine::~Engine()
 
 void Engine::initVideo() const noexcept
 {
-    SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO));
 }
 
 void Engine::initAudio() const noexcept
 {
-    SDL_ASSERT(SDL_Init(SDL_INIT_AUDIO), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_Init(SDL_INIT_AUDIO));
 }
 
 void Engine::initControl() const noexcept
 {
-    SDL_ASSERT(SDL_Init(SDL_INIT_GAMECONTROLLER), SDL_ERROR_MESSAGE);
+    SDL_ASSERT(SDL_Init(SDL_INIT_GAMECONTROLLER));
 }
 
 void Engine::initSingleton() const noexcept

@@ -43,8 +43,8 @@ public:
     void clearScreen(int colour) const noexcept
     {
         assert(m_renderer);
-        SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0), SDL_ERROR_MESSAGE);
-        SDL_ASSERT(SDL_RenderClear(m_renderer), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0));
+        SDL_ASSERT(SDL_RenderClear(m_renderer));
     }
 
     void renderScreen() const noexcept
@@ -57,7 +57,7 @@ public:
     void setRendererScale(float scaleX, float scaleY) const noexcept
     {
         assert(m_renderer);
-        SDL_ASSERT(SDL_RenderSetScale(m_renderer,scaleX,scaleY), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_RenderSetScale(m_renderer,scaleX,scaleY));
     }
 
     virtual ~Renderer()
@@ -117,7 +117,7 @@ public:
     {
         assert(m_renderer);
         auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, dstTexture.data()), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, dstTexture.data()));
         return currentRenderingTarget;
     }
 
@@ -126,7 +126,7 @@ public:
         //auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
        
         assert(m_renderer);
-        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture), SDL_ERROR_MESSAGE);
+        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture));
     }
 
 private:

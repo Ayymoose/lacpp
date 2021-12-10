@@ -265,7 +265,7 @@
     <ClInclude Include="..\..\Source\Engine\InputControl.h" />
     <ClInclude Include="..\..\Source\Engine\Resource.h" />
     <ClInclude Include="..\..\Source\Engine\Vector.h" />
-    <ClInclude Include="..\..\Source\Engine\ZD_Assert.h" />
+    <ClInclude Include="..\..\Source\Engine\SDL_Assert.h" />
     <ClInclude Include="..\..\Source\Interfaces\Character.h" />
     <ClInclude Include="..\..\Source\Interfaces\Controllable.h" />
     <ClInclude Include="..\..\Source\Interfaces\Renderable.h" />

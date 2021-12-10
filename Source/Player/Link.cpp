@@ -6,10 +6,10 @@
 #include "Renderer.h"
 #include "Arrow.h"
 #include "Depth.h"
-#include "ZD_Assert.h"
+#include "SDL_Assert.h"
 #include "Keyboard.h"
 #include "Engine.h"
-#include "Debug.h""
+#include "Debug.h"
 #include <set>
 
 namespace Zelda
@@ -267,7 +267,7 @@ void Link::render() noexcept
     m_animateYPos = m_animations[m_state].y;
 
     m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
-    //SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE), SDL_ERROR_MESSAGE);
+    //SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE));
 
 }
 
