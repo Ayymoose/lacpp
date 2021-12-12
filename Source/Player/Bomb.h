@@ -2,6 +2,7 @@
 
 #include "Weapon.h"
 #include "Cullable.h"
+#include "Updateable.h"
 #include <iostream>
 
 // How many times the bomb "flashes"
@@ -22,7 +23,7 @@ constexpr float BOMB_ANIMATION_TIME = (1.0f / 12.0f);
 namespace Zelda
 {
 
-class Bomb : public Weapon, public CullableChild
+class Bomb : public Weapon, public CullableChild, public Updateable
 {
 public:
     Bomb();

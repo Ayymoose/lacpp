@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL_image.h>
+#include "Updateable.h"
 #include "Controller.h"
 #include "Renderable.h"
 #include "Character.h"
@@ -14,30 +15,21 @@ namespace Zelda
 constexpr int CAMERA_WIDTH = 160;
 constexpr int CAMERA_HEIGHT = 128;
 
-// How much we add to the position vector of the player to scroll
-constexpr float PLAYER_SCROLL_SPEED = 1.0f;
+// HUD Height
+constexpr int HUD_HEIGHT = 16;
 
 // How much edge pixels to add to the width/height of the character before it triggers a scroll
 constexpr int SCROLL_RIGHT_EDGE = 12;
 constexpr int SCROLL_LEFT_EDGE = 4;
 constexpr int SCROLL_UP_EDGE = 2;
-constexpr int SCROLL_DOWN_EDGE = 0;
-
-// HUD Height
-constexpr int HUD_HEIGHT = 16;
+constexpr int SCROLL_DOWN_EDGE = HUD_HEIGHT;
 
 constexpr int CAMERA_SCROLL_SPEED = 4;
-
-// The game is locked to 60 fps because of VSync
-// So everything runs at 60 fps
-// It seems like using timers for scrolling to lock it 60fps was messing with that
-// It's not choppy anymore
-
-// #define FPS_60 (1.0 / 60.0) 
+ 
 constexpr float FPS_66 = (1.0f / 60.0f);
 constexpr float FPS_33 = (1.0f / 33.0f);    // To be adjusted!
 
-class Camera : public Renderable, public Singleton<Camera>
+class Camera : public Renderable, public Singleton<Camera>, public Updateable
 {
     friend class Singleton<Camera>;
 public:
@@ -73,9 +65,6 @@ public:
     int getX() const noexcept;
     int getY() const noexcept;
 
-    int offScrollX() const noexcept;
-    int offScrollY() const noexcept;
-
     // Position as a vector
     Vector<float> position() const noexcept;
 
@@ -87,9 +76,6 @@ private:
     // m_scrollX and m_scrollY are manipulated to achieve scrolling
     int m_scrollX;
     int m_scrollY;
-
-    int m_offScrollX;
-    int m_offScrollY;
 
     // m_x and m_y is the initial position of the camera in the tilemap
     int m_x;

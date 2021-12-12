@@ -32,7 +32,6 @@ public:
 
     virtual ~Renderable() = default;
     virtual void render() noexcept = 0;
-    virtual void update() noexcept = 0;
 
     bool visible() const noexcept
     {
@@ -77,7 +76,7 @@ public:
         m_visible(true)
     {
         assert(texture.data());
-        m_texture = texture;
+        m_sprite = texture;
         assert(depth > 0);
         m_depth = depth;
         // TODO: Fix error when this is uncommented
@@ -85,7 +84,7 @@ public:
     }
 
     Renderable() :
-        m_texture(nullptr),
+        m_sprite(nullptr),
         m_width(0),
         m_height(0),
         m_srcRect({ 0,0,0,0 }),
@@ -125,7 +124,7 @@ private:
 protected:
 
     // Default texture to render
-    Sprite m_texture;
+    Sprite m_sprite;
 
     // Dimensions
     int m_width;
@@ -188,12 +187,12 @@ protected:
     bool m_visible;
 
     // Updateable
-    static constexpr double m_dt = 1000.0 / (double)60;
+    /*static constexpr double m_dt = 1000.0 / (double)60;
     double m_currentTime = 0;
     double m_accumulator = 0;
     static constexpr double m_maxFrameTime = 60;
     double m_alphaTime = 0;
-    Vector<float> m_lerpPrevious;
+    Vector<float> m_lerpPrevious;*/
 
 };
 

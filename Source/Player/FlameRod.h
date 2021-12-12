@@ -2,11 +2,12 @@
 
 #include "Weapon.h"
 #include <iostream>
+#include "Updateable.h"
 
 namespace Zelda
 {
 
-class FlameRod : public Weapon
+class FlameRod : public Weapon, public Updateable
 {
 public:
     FlameRod();

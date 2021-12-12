@@ -34,10 +34,10 @@ Dialogue::Dialogue() :
     m_scrollMessage(false),
     m_scrolledLines(0)
 {
-    assert(m_texture.data());
+    assert(m_sprite.data());
     assert(m_subTexture.data());
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_texture, Rect<int>{ 0, 0, m_texture.width(), m_texture.height()}, SDL_RGB(0, 0, 0));
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, Rect<int>{ 0, 0, m_texture.width(), m_texture.height()}, SDL_RGB(0, 0, 0));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_sprite, Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height()}, SDL_RGB(0, 0, 0));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height()}, SDL_RGB(0, 0, 0));
 }
 
 void Dialogue::message(const std::string& message, float yPos) noexcept
@@ -411,12 +411,12 @@ void Dialogue::render() noexcept
     };
 
     // Copy sub texture to main textbox
-    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_texture, Rect<int>{ 0, 0, m_subTexture.width(), m_subTexture.height() }, dstRectSubTexture);
+    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_sprite, Rect<int>{ 0, 0, m_subTexture.width(), m_subTexture.height() }, dstRectSubTexture);
 
     // Display the textbox
     // Drawn on top or bottom depending on Link's position
-    m_texture.drawSprite(Renderer::getInstance().getRenderer(), 
-        Rect<int>{0,0, m_texture.width(), m_texture.height()}, 
+    m_sprite.drawSprite(Renderer::getInstance().getRenderer(), 
+        Rect<int>{0,0, m_sprite.width(), m_sprite.height()}, 
         Rect<int>{m_dialoguePosX,m_dialoguePosY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT});
     
     // Flashing red arrow 

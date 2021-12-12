@@ -8,13 +8,11 @@ namespace Zelda
 
 Arrow::Arrow()
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_speed = 2;
     m_name = "Arrow";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOW].w;
     m_height = m_weaponSpritesSrc[WPN_SPRITE_BOW].h;
-    m_boundingBox.w = m_width;
-    m_boundingBox.h = m_height;
 }
 
 void Arrow::render() noexcept
@@ -57,15 +55,10 @@ void Arrow::render() noexcept
         break;
     }
 
-    m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
-    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE));
-
-    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
+    m_sprite.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
     // Fire the arrow
     m_position += m_dirVec;
-
 }
 
 void Arrow::update() noexcept

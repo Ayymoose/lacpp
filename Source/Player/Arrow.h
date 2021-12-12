@@ -2,11 +2,12 @@
 
 #include "Weapon.h"
 #include <iostream>
+#include "Updateable.h"
 
 namespace Zelda
 {
 
-class Arrow : public Weapon
+class Arrow : public Weapon, public Updateable
 {
 public:
     Arrow();

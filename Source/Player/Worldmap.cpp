@@ -230,7 +230,7 @@ void Worldmap::render() noexcept
 {
     if (m_show)
     {
-        auto const target = Renderer::getInstance().pushRenderingTarget(m_texture);
+        auto const target = Renderer::getInstance().pushRenderingTarget(m_sprite);
 
         for (int y = 0; y < WORLDMAP_MAX_Y; y++)
         {
@@ -250,9 +250,9 @@ void Worldmap::render() noexcept
         Renderer::getInstance().popRenderingTarget(target);
 
         // Render the worldmap
-        m_texture.drawSprite(Renderer::getInstance().getRenderer(),
-            Rect<int>{ 0, 0, m_texture.width(), m_texture.height()},
-            Rect<int>{ 0, 0, m_texture.width(), m_texture.height() });
+        m_sprite.drawSprite(Renderer::getInstance().getRenderer(),
+            Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height()},
+            Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height() });
 
         // Draw the location if we hit upon one
         if (m_worldmapLocation[m_scopeX][m_scopeY].locationType != LT_NONE)
@@ -305,10 +305,6 @@ void Worldmap::render() noexcept
     }
 }
 
-void Worldmap::update() noexcept
-{
-}
-
 void Worldmap::open() noexcept
 {
     m_show = true;
@@ -321,7 +317,6 @@ void Worldmap::close() noexcept
 
 void Worldmap::drawScope() noexcept
 {
-    
     ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(),
         m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE],
         Rect<int>{ (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5, 16, 16 });

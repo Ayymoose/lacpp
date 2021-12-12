@@ -6,7 +6,6 @@
 #include "Vector.h"
 #include "Character.h"
 #include "Renderer.h"
-#include "BoundingBox.h"
 
 
 /*
@@ -68,16 +67,11 @@ public:
 
     virtual void setPosition(Vector<float> position) = 0;
 
-    BoundingBox boundingBox() const
-    {
-        return m_boundingBox;
-    }
 
 protected:
     Vector<float> m_position;
     Direction m_direction;
     Timer m_weaponTimer;
-    BoundingBox m_boundingBox;
 
     // Weapon sprite sources
     const Rect<int> m_weaponSpritesSrc[WPN_SPRITE_COUNT] =

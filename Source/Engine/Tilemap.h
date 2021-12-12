@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdint>
 #include <vector>
 #include <array>
 #include <map>
@@ -23,14 +22,14 @@ constexpr int TILE_MAP_WIDTH = 128;
    
 constexpr int TILE_MAP_TILES_ACROSS = (TILE_MAP_WIDTH / TILE_WIDTH);
 
-using TileRoom = std::array<std::array<uint16_t, ROOM_TILES_ACROSS>, ROOM_TILES_DOWN>;
+using TileRoom = std::array<std::array<int, ROOM_TILES_ACROSS>, ROOM_TILES_DOWN>;
 using TilemapArray = std::vector<TileRoom>;
 
 typedef struct
 {
 	TilemapArray rooms;     // The 10x8 room
-	uint16_t roomsAcross;   // Number of rooms across in tilemap
-	uint16_t roomsDown;     // Number of rooms down in tilemap
+    int roomsAcross;   // Number of rooms across in tilemap
+    int roomsDown;     // Number of rooms down in tilemap
 	Graphic tilemap;       // Graphic constant of loaded tilemap
 } TilemapInformation;
 
@@ -42,11 +41,11 @@ public:
 	// Get current room dimensions of tilemap
     TileRoom getRoomTiles(size_t roomIndex) const noexcept;
 
-    uint16_t roomsDown() const noexcept;
-    uint16_t roomsAcross() const noexcept;
+    int roomsDown() const noexcept;
+    int roomsAcross() const noexcept;
 
     // Tilemap texture used
-    Sprite getTilemapTexture() const noexcept;
+    Sprite getTilemap() const noexcept;
 
     Tilemap();
 private:

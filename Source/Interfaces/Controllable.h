@@ -15,11 +15,11 @@ public:
     {
     }
     Controllable() = default;
-    virtual ~Controllable()
-    {
-        DEBUG(DBG_INFO, "Controllable deconstructor called");
-    }
+    virtual ~Controllable() = default;
+
     virtual void control() noexcept = 0;
+    
+    
     std::string name() const noexcept
     {
         assert(!m_controllableName.empty());

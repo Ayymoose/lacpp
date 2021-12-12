@@ -1,12 +1,12 @@
 #pragma once
 
+#include "Updateable.h"
 #include "Renderable.h"
 #include "Controllable.h"
 #include "Vector.h"
 #include "Character.h"
 #include "Inventory.h"
 #include "Singleton.h"
-#include "BoundingBox.h"
 #include "CollisionMap.h"
 #include "Bomb.h"
 #include "Arrow.h"
@@ -128,12 +128,19 @@ constexpr float LINK_DROWN_FPS = 1.0f / 3.0f;
 constexpr float LINK_MAX_HEARTS = 16.0;
 constexpr float LINK_MIN_HEARTS = 3.0;
 
-class Link : public Renderable, public Controllable, public Character, public Singleton<Link>, public CullableParent
+class Link : public Renderable, 
+    public Controllable, 
+    public Character, 
+    public Singleton<Link>, 
+    public CullableParent,
+    public Updateable
 {
     friend class Singleton<Link>;
 public:
     // Renderable overrides
     void render() noexcept override;
+
+    // Updateable
     void update() noexcept override;
 
     // Character overrides
@@ -172,13 +179,7 @@ public:
 
     bool moving() const noexcept;
     Direction direction() const noexcept;
-
-    //int m_currentCollisionMapX;
-    //int m_currentCollisionMapY;
-    //CollisionArea m_collisionArea;
-
     void setDungeonMarkerLocation(int x, int y) noexcept;
-
 
 private:
     Link();
@@ -186,8 +187,6 @@ private:
     Inventory m_inventory;
     float m_speedX;
     float m_speedY;
-    BoundingBox m_boundingBox;
-    //CollisionMap m_collisionMap;
 
     Worldmap m_worldmap;
 
@@ -200,8 +199,6 @@ private:
     bool m_dirLockUp;
     bool m_dirLockDown;
     bool m_dirLockLeft;
-
-    float m_upDownSpeedLimiter;
 
     // Weapons
     Boomerang* m_boomerang;
@@ -224,8 +221,6 @@ private:
     bool m_usingWeapon;
     void animate();
     Timer m_clockAnimation;
-
-    Vector<float> m_drawPosition;
 
     const Animation m_animations[LINK_COUNT] =
     {

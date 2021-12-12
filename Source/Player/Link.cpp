@@ -10,7 +10,10 @@
 #include "Keyboard.h"
 #include "Engine.h"
 #include "Debug.h"
+
+
 #include <set>
+#include <chrono>
 
 namespace Zelda
 {
@@ -42,27 +45,19 @@ Link::Link() :
     m_useWeapon(false),
     m_usingWeapon(false)
 {
+
+    // TODO: m_width/height is for the renderable element only so we do nned it
     m_width = 16;
     m_height = 16;
 
     m_position.x = 72;
     m_position.y = 32;
-    m_boundingBox = { (int)m_position.x,(int)m_position.y, PLAYER_BOUNDING_BOX_WIDTH, PLAYER_BOUNDING_BOX_HEIGHT };
 
     m_health = 3;
     m_speed = 1;
     m_dir = Direction::DIRECTION_DOWN;
 
-    // Set to Tail cave entrace
-    /*
-    m_currentCollisionMapX = 3;
-    m_currentCollisionMapY = 5;
-    m_collisionArea = m_collisionMap.m_tailCave[m_currentCollisionMapY][m_currentCollisionMapX];*/
-
     Renderer::getInstance().addRenderable(this);
-    //Controller::getInstance().setController(this);
-
-    m_upDownSpeedLimiter = 1;
 
     m_lerpPrevious = m_position;
 }
@@ -171,15 +166,17 @@ bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexce
 
 void Link::update() noexcept
 {
-    // TODO: Fixed step update goes here
+    //using clock = std::chrono::high_resolution_clock;
+    //using milliseconds = std::chrono::milliseconds;
+
     if (m_currentTime == 0)
     {
-        m_currentTime = SDL_GetTicks();
+        m_currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     }
 
     // TODO: Even this doesn't work although CPed from the example on FixedTimestep
     // It's inconsistent and jittery still
-    auto const timeNow = SDL_GetTicks();
+    auto const timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     auto frameTime = timeNow - m_currentTime;
     if (frameTime > m_maxFrameTime)
     {
@@ -189,52 +186,40 @@ void Link::update() noexcept
     m_currentTime = timeNow;
     m_accumulator += frameTime;
 
-
-    static float xSpeed = 0.5;
-    static float ySpeed = 0;
-
     while (m_accumulator >= m_dt)
     {
         // Lerp
         m_lerpPrevious = m_position;
 
+        
+        //////////////////////////////////////////////////
         if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
         {
-            m_position.x -= 0.75;
+            m_position.x -= 0.5;
         }
         if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
         {
-            m_position.x += 0.75;
+            m_position.x += 0.5;
         }
         if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
         {
-            m_position.y += 0.75;
+            m_position.y += 0.5;
         }
         if (Keyboard::getInstance().keyPushed(BUTTON_UP))
         {
-            m_position.y -= 0.75;
+            m_position.y -= 0.5;
         }
-
+        //////////////////////////////////////////////////
 
         m_accumulator -= m_dt;
     }
 
     m_alphaTime = m_accumulator / m_dt;
-
-    // (A * alpha) + B * (1.0 - alpha)
-
-    //auto v = (m_lerpPrevious * m_alphaTime) + (m_position * (1.0 - m_alphaTime));
-
     m_drawPosition = Vector<float>::lerp(m_lerpPrevious, m_position, m_alphaTime);
-
-    //std::cout << '(' << m_position.x << ',' << m_position.y << ')' << '\n';
-    
-
 }
 
 void Link::render() noexcept
 {
-
     // The render loop calls render() every frame
     // But there are special cases of animation
 
@@ -266,9 +251,7 @@ void Link::render() noexcept
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
-    //SDL_ASSERT(SDL_RenderCopyExF(Renderer::getInstance().getRenderer(), m_texture, &m_srcRect, &m_dstRect, 0, nullptr, SDL_RendererFlip::SDL_FLIP_NONE));
-
+    m_sprite.drawSpriteEx(Renderer::getInstance().getRenderer(), m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
 }
 
 void Link::cull() noexcept
@@ -549,7 +532,6 @@ void Link::move() noexcept
     if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
     {
         m_speedX = -m_speed;
-        m_upDownSpeedLimiter = 0.70710678118654752440084436210485f;
 
         if (!m_dirLockUp && !m_dirLockDown)
         {
@@ -1017,7 +999,7 @@ void Link::useWeapon(WeaponItem weapon) noexcept
         {
             m_sword = std::make_unique<Sword>();
             m_sword->setDirection(m_dir);
-            m_sword->setPosition(m_position);
+            //m_sword->setPosition(m_position);
             m_usingSword = true;
         }
         
@@ -1122,7 +1104,7 @@ void Link::useWeapon(WeaponItem weapon) noexcept
             {
                 auto arrow = std::make_unique<Arrow>();
                 arrow->setDirection(m_dir);
-                arrow->setPosition(m_position);
+                //arrow->setPosition(m_position);
                 m_inventory.useBowAndArrow();
                 m_quiver.emplace_back(std::move(arrow));
                 m_canUseArrow = false;
@@ -1142,7 +1124,7 @@ void Link::useWeapon(WeaponItem weapon) noexcept
         {
             m_boomerang = new Boomerang();
             m_boomerang->setDirection(m_dir);
-            m_boomerang->setPosition(m_position);
+            //m_boomerang->setPosition(m_position);
         }
         
         break;
@@ -1156,7 +1138,7 @@ void Link::useWeapon(WeaponItem weapon) noexcept
             {
                 m_bomb = std::make_unique<Bomb>();
                 m_bomb->setDirection(m_dir);
-                m_bomb->setPosition(m_position);
+                //m_bomb->setPosition(m_position);
                 m_inventory.useBombs();
             }
 
@@ -1177,7 +1159,7 @@ void Link::useWeapon(WeaponItem weapon) noexcept
         {
             m_flameRod = new FlameRod();
             m_flameRod->setDirection(m_dir);
-            m_flameRod->setPosition(m_position);
+            //m_flameRod->setPosition(m_position);
 
             switch (m_state)
             {

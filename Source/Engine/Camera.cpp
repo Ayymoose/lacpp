@@ -15,8 +15,6 @@ Camera::Camera() :
     Renderable("Camera", Sprite(Renderer::getInstance().getRenderer(),CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
     m_scrollX(0),
     m_scrollY(0),
-    m_offScrollX(0),
-    m_offScrollY(0),
     m_x(0),
     m_y(0),
     m_screenX(0),
@@ -32,8 +30,8 @@ Camera::Camera() :
     m_nextRoomIndex(0)
 {
     // TODO: Free textures on shutdown
-    assert(m_texture.data());
-    m_swapCanvas = Sprite(Renderer::getInstance().getRenderer(), m_texture.width(), m_texture.height());
+    assert(m_sprite.data());
+    m_swapCanvas = Sprite(Renderer::getInstance().getRenderer(), m_sprite.width(), m_sprite.height());
     assert(m_swapCanvas.data());
     Renderer::getInstance().addRenderable(this);
 }
@@ -53,7 +51,7 @@ void Camera::renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, u
     auto const roomTiles = m_tilemap.getRoomTiles(roomIndex);
 
     // Get texture used
-    auto const tilemapTexture = m_tilemap.getTilemapTexture();
+    auto const tilemapTexture = m_tilemap.getTilemap();
 
     auto const target = Renderer::getInstance().pushRenderingTarget(srcTexture);
 
@@ -118,11 +116,11 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomObjects(RoomAction::ROOM_LOAD, m_nextRoomIndex - 1);
+        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex - 1);
         RoomManager::getInstance().transitionObjects(m_nextRoomIndex - 1, CAMERA_WIDTH, 0);
 
         // Put swap canvas in view
-        m_swapX = -m_width;
+        m_swapX = -m_swapCanvas.width();
         m_swapY = 0;
     }
     else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE && !m_scrollRight)
@@ -135,11 +133,11 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomObjects(RoomAction::ROOM_LOAD, m_nextRoomIndex + 1);
+        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex + 1);
         RoomManager::getInstance().transitionObjects(m_nextRoomIndex + 1, -CAMERA_WIDTH, 0);
 
         // Put swap canvas in view
-        m_swapX = m_width;
+        m_swapX = m_swapCanvas.width();
         m_swapY = 0;
     }
     else if (y < m_scrollY - SCROLL_UP_EDGE && !m_scrollUp)
@@ -152,16 +150,15 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomObjects(RoomAction::ROOM_LOAD, m_nextRoomIndex - m_tilemap.roomsAcross());
+        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex - m_tilemap.roomsAcross());
         RoomManager::getInstance().transitionObjects(m_nextRoomIndex - m_tilemap.roomsAcross(), 0, CAMERA_HEIGHT);
-
 
         // Put swap canvas in view
         m_swapX = 0;
-        m_swapY = -m_height;
+        m_swapY = -m_swapCanvas.height();
 
     }
-    else if (y > m_scrollY + CAMERA_HEIGHT - HUD_HEIGHT - SCROLL_DOWN_EDGE && !m_scrollDown)
+    else if (y > m_scrollY + CAMERA_HEIGHT - SCROLL_DOWN_EDGE && !m_scrollDown)
     {
         // -HUD height because its on the bottom
 
@@ -173,12 +170,12 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomObjects(RoomAction::ROOM_LOAD, m_nextRoomIndex + m_tilemap.roomsAcross());
+        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex + m_tilemap.roomsAcross());
         RoomManager::getInstance().transitionObjects(m_nextRoomIndex + m_tilemap.roomsAcross(), 0, -CAMERA_HEIGHT);
 
         // Put swap canvas in view
         m_swapX = 0;
-        m_swapY = m_height;
+        m_swapY = m_swapCanvas.height();
     }
 
     if (m_scrollLeft)
@@ -188,22 +185,17 @@ void Camera::render() noexcept
             m_scrollX -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
 
-            if (m_timerPlayerScroll.elapsed(1.0f / 25.0f))
-            {
-                player->addPosition(-PLAYER_SCROLL_SPEED, 0);
-            }
             // Load next room tiles
             m_nextRoomIndex--;
         }
         else
         {
-
             // Scrolling left complete
 
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
             RoomManager::getInstance().transitionObjects(roomIndex, -CAMERA_WIDTH, 0);
-            RoomManager::getInstance().roomObjects(RoomAction::ROOM_CLEAR, roomIndex);
+            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
             RoomManager::getInstance().transitionObjects(roomIndex - 1, 0, 0);
@@ -211,9 +203,6 @@ void Camera::render() noexcept
             // Update current view
             roomIndex--;
             m_x -= CAMERA_WIDTH;
-
-
-            // m_screenX -= CAMERA_WIDTH;
 
              // Reset initial positions
             m_screenX = 0;
@@ -223,10 +212,9 @@ void Camera::render() noexcept
             // Reset Link position
             player->setPosition(CAMERA_WIDTH + player->position().x, player->position().y);
 
-
             // Put swap canvas out of view
-            m_swapX = m_width;
-            m_swapY = m_height;
+            m_swapX = m_swapCanvas.width();
+            m_swapY = m_swapCanvas.height();
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -244,22 +232,16 @@ void Camera::render() noexcept
             m_scrollX += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
 
-            if (m_timerPlayerScroll.elapsed(1.0f / 25.0f))
-            {
-                player->addPosition(PLAYER_SCROLL_SPEED, 0);
-            }
-
             // Load next room tiles
             m_nextRoomIndex++;
         }
         else
         {
 
-
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
             RoomManager::getInstance().transitionObjects(roomIndex, CAMERA_WIDTH, 0);
-            RoomManager::getInstance().roomObjects(RoomAction::ROOM_CLEAR, roomIndex);
+            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
             RoomManager::getInstance().transitionObjects(roomIndex + 1, 0, 0);
@@ -267,21 +249,18 @@ void Camera::render() noexcept
             roomIndex++;
             m_x += CAMERA_WIDTH;
 
-            //m_screenX += CAMERA_WIDTH;
             // Reset initial positions
             m_screenX = 0;
             m_screenY = 0;
             m_scrollX = 0;
             m_scrollY = 0;
+
             // Reset Link position
-            //std::cout << "Player X : " << player->position().x << "\n";
             player->setPosition(player->position().x - CAMERA_WIDTH, player->position().y);
 
-
-
             // Put swap canvas out of view
-            m_swapX = m_width;
-            m_swapY = m_height;
+            m_swapX = m_swapCanvas.width();
+            m_swapY = m_swapCanvas.height();
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -299,35 +278,24 @@ void Camera::render() noexcept
             m_scrollY += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
 
-            if (m_timerPlayerScroll.elapsed(1.0f / 30.0f))
-            {
-                player->addPosition(0, PLAYER_SCROLL_SPEED);
-            }
-
             // Load next room tiles
             m_nextRoomIndex += m_tilemap.roomsAcross();
         }
         else
         {
-            // Player will be 1 pixel off so move back
-            // Hacky code
-            player->addPosition(0, -1.0f);
-
             // Unpause engine
             Engine::getInstance().pause(false);
 
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
             RoomManager::getInstance().transitionObjects(roomIndex, 0, CAMERA_HEIGHT);
-            RoomManager::getInstance().roomObjects(RoomAction::ROOM_CLEAR, roomIndex);
+            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
             RoomManager::getInstance().transitionObjects(roomIndex + m_tilemap.roomsAcross(), 0, 0);
 
             roomIndex += m_tilemap.roomsAcross();
             m_y += CAMERA_HEIGHT;
-
-            //m_screenY += CAMERA_HEIGHT;
 
             // Reset initial positions
             m_screenX = 0;
@@ -337,14 +305,13 @@ void Camera::render() noexcept
             // Reset Link position
             player->setPosition(player->position().x, player->position().y - CAMERA_HEIGHT);
 
-
             // Take a snapshot of the canvas and use that for display
             // Clear the current room objects
             // Set offsetX / offsetY to scroll 
 
             // Put swap canvas out of view
-            m_swapX = m_width;
-            m_swapY = m_height;
+            m_swapX = m_swapCanvas.width();
+            m_swapY = m_swapCanvas.height();
 
             m_scrollDown = false;
             m_scrolled = 0;
@@ -359,28 +326,21 @@ void Camera::render() noexcept
             m_scrollY -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
 
-            // More hacky code to assure the player is 1 pixel above the HUD
-            player->addPosition(0, -0.40625f);
-
             // Load next room tiles
             m_nextRoomIndex -= m_tilemap.roomsAcross();
         }
         else
         {
-
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
             RoomManager::getInstance().transitionObjects(roomIndex, 0, -CAMERA_HEIGHT);
-            RoomManager::getInstance().roomObjects(RoomAction::ROOM_CLEAR, roomIndex);
+            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
             RoomManager::getInstance().transitionObjects(roomIndex - m_tilemap.roomsAcross(), 0, 0);
 
             roomIndex -= m_tilemap.roomsAcross();
             m_y -= CAMERA_HEIGHT;
-
-            //m_screenY -= CAMERA_HEIGHT;
-
 
             // Reset initial positions
             m_screenX = 0;
@@ -391,8 +351,8 @@ void Camera::render() noexcept
             player->setPosition(player->position().x, CAMERA_HEIGHT + player->position().y);
 
             // Put swap canvas out of view
-            m_swapX = m_width;
-            m_swapY = m_height;
+            m_swapX = m_swapCanvas.width();
+            m_swapY = m_swapCanvas.height();
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -413,7 +373,7 @@ void Camera::render() noexcept
     player->setDungeonMarkerLocation(dx, dy);
 
     // Render the main view
-    renderTileMap(Rect<int>{ m_screenX - m_scrollX, m_screenY - m_scrollY, m_texture.width(), m_texture.height() }, m_texture, roomIndex);
+    renderTileMap(Rect<int>{ m_screenX - m_scrollX, m_screenY - m_scrollY, m_sprite.width(), m_sprite.height() }, m_sprite, roomIndex);
 
     // Render the swap canvas out of view 
     renderTileMap(Rect<int>{(m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY, m_swapCanvas.width(), m_swapCanvas.height() }, m_swapCanvas, m_nextRoomIndex);
@@ -421,6 +381,7 @@ void Camera::render() noexcept
 
 void Camera::update() noexcept
 {
+
 }
 
 // Set the tilemap to use
@@ -434,7 +395,7 @@ void Camera::setTileMap(RoomName roomname) noexcept
 
     // And load the current room objects
     int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
-    RoomManager::getInstance().roomObjects(RoomAction::ROOM_LOAD, roomIndex);
+    RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, roomIndex);
 }
 
 void Camera::setScrollSpeed(int scrollSpeed) noexcept
@@ -451,16 +412,6 @@ int Camera::getX() const noexcept
 int Camera::getY() const noexcept
 {
     return m_scrollY;
-}
-
-int Camera::offScrollX() const noexcept
-{
-    return m_offScrollX;
-}
-
-int Camera::offScrollY() const noexcept
-{
-    return m_offScrollY;
 }
 
 Vector<float> Camera::position() const noexcept

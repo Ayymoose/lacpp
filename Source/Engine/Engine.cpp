@@ -20,10 +20,11 @@ void Engine::init() noexcept
     initWindow();
     initSingleton();
 
+    // TODO: Move this somwhere
+
     // Load all resources (sound + graphics)
     ResourceManager::getInstance().loadGraphics();
 
-    // TODO: Move this somwhere
     m_initialised = true;
 
     DEBUG(DBG_INFO, "Engine initialised");
@@ -138,14 +139,18 @@ void Engine::events() noexcept
 
 void Engine::update() const noexcept
 {
-    // TODO: Create an Updateable interface class and remove update() from Renderable
     auto const gameObjects = Renderer::getInstance().getRenderSet();
     for (const auto& gameObject : gameObjects)
     {
         assert(gameObject);
-        gameObject->update();
+        auto const updateableGameObject = dynamic_cast<Updateable*>(gameObject);
+        if (updateableGameObject)
+        {
+            updateableGameObject->update();
+        }
     }
 
+    // TOOD: Should this go before or after update() ?
     auto const controller = Controller::getInstance().getController();
     if (controller)
     {

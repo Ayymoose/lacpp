@@ -151,8 +151,7 @@ public:
     {
         // A* t + B * (1.f - t);
         assert(alpha >= 0.0 && alpha <= 1.0);
-        return Vector((1.0 - alpha) * A.x + alpha * B.x,
-            (1.0 - alpha) * A.y + alpha * B.y);
+        return Vector((1.0 - alpha) * A.x + alpha * B.x, (1.0 - alpha) * A.y + alpha * B.y);
     }
 
     T x;

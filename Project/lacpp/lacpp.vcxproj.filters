@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Core">
-      <UniqueIdentifier>{d12904e9-d4e4-4b8b-949b-67191b5f8645}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Enemy">
       <UniqueIdentifier>{e9483ccf-d321-4bc4-9693-30fa14ee45d0}</UniqueIdentifier>
     </Filter>
@@ -123,16 +120,10 @@
     <ClCompile Include="..\..\Source\Engine\AnimatedObject.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Engine\BoundingBox.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Camera.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\CollisionMap.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Engine\Dialogue.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Engine.cpp">
@@ -156,20 +147,23 @@
     <ClCompile Include="..\..\Source\Player\Inventory.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Core\Keyboard.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Core\Main.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Core\Window.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Player\FileSelect.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Sprite.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Keyboard.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Window.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Main.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Dialogue.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,16 +185,7 @@
     <ClInclude Include="..\..\Source\Engine\Vector.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Core\Window.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Core\Keyboard.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Engine\CollisionMap.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\BoundingBox.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\Character.h">
@@ -209,8 +194,8 @@
     <ClInclude Include="..\..\Source\Interfaces\Controllable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Core\Controller.h">
-      <Filter>Interfaces</Filter>
+    <ClInclude Include="..\..\Source\Engine\Controller.h">
+      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\Renderable.h">
       <Filter>Interfaces</Filter>
@@ -223,12 +208,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\InputControl.h">
       <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Core\Renderer.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Core\Singleton.h">
-      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Resource.h">
       <Filter>Engine</Filter>
@@ -247,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\Cullable.h">
       <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\Dialogue.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Common.h">
       <Filter>Engine</Filter>
@@ -362,9 +338,6 @@
     <ClInclude Include="..\..\Source\Enemy\ShroudedStalfos.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Core\Jenkins.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Sprite.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -373,6 +346,27 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\SDL_Assert.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Keyboard.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Renderer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Window.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Singleton.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Jenkins.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Dialogue.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Interfaces\Updateable.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

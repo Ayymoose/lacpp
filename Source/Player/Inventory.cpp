@@ -47,7 +47,7 @@ Inventory::Inventory() :
     // Select sub screen
     assert(m_subscreen.data());
     // m_texture is the main texture we draw ontoas
-    assert(m_texture.data());
+    assert(m_sprite.data());
     Rect<int> srcRect = { 0,0, m_subscreen.width(), m_subscreen.height() };    
     Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subscreen, srcRect, SDL_RGB(0, 0, 0));
 
@@ -180,10 +180,10 @@ void Inventory::render() noexcept
     }
 
     // Render the inventory background
-    Rect<int> dstRect = { 0, renderY, m_texture.width() , m_texture.height() };
-    Rect<int> srcRect = { 0, 0,  m_texture.width() , m_texture.height() };
-    m_texture.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_texture, srcRect, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+    Rect<int> dstRect = { 0, renderY, m_sprite.width() , m_sprite.height() };
+    Rect<int> srcRect = { 0, 0,  m_sprite.width() , m_sprite.height() };
+    m_sprite.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_sprite, srcRect, SDL_RGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
     drawHUD();
 
@@ -610,7 +610,7 @@ void Inventory::drawDungeonMap() noexcept
 
     // Draw dungeon map level
     Rect<int> dstRectMapLevel = {72,64,8,8};
-    drawNumber(m_texture, true, true, 0, m_dungeon, dstRectMapLevel);
+    drawNumber(m_sprite, true, true, 0, m_dungeon, dstRectMapLevel);
 
     // Draw the dungeon map
     
@@ -834,7 +834,7 @@ void Inventory::drawMiscItems() noexcept
 
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    drawNumber(m_texture, false, true, 1, m_seashells, dstRect);
+    drawNumber(m_sprite, false, true, 1, m_seashells, dstRect);
 
     // Draw currently traded item (if any)
     if (m_tradeItem != ITEM_NONE)
@@ -933,7 +933,7 @@ void Inventory::drawDungeonItems() noexcept
     
     dstRect.w = 8; dstRect.h = 8;
     dstRect.x += dstRect.w; dstRect.y += dstRect.h;
-    drawNumber(m_texture, false, true, 0, m_dungeonKeys[m_dungeon], dstRect);
+    drawNumber(m_sprite, false, true, 0, m_dungeonKeys[m_dungeon], dstRect);
 }
 
 void Inventory::drawInstruments() noexcept
@@ -973,7 +973,7 @@ void Inventory::drawInstruments() noexcept
             ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
         
             dstRect.x += 8; dstRect.y += 8; dstRect.w = 8; dstRect.h = 8;
-            drawNumber(m_texture, false, true, 0, i, dstRect);
+            drawNumber(m_sprite, false, true, 0, i, dstRect);
             break;
         }
     }
@@ -1046,7 +1046,7 @@ void Inventory::drawInventoryWeapons() noexcept
     // Instead of creating an object for each item we have
     // We just render the items we have to a single texture
     // and render that instead
-    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_sprite);
 
     for (int i = 0; i < INVENTORY_MAX_WEAPONS; i++)
     {
@@ -1082,7 +1082,7 @@ void Inventory::drawInventoryWeapons() noexcept
                 WEAPON_LEVEL_HEIGHT
             };
 
-            drawWeaponLevel(m_texture, m_weaponItems[i].first, dstRect);
+            drawWeaponLevel(m_sprite, m_weaponItems[i].first, dstRect);
         }
     }
   
@@ -1091,7 +1091,7 @@ void Inventory::drawInventoryWeapons() noexcept
 
 void Inventory::drawSelector() noexcept
 {
-    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_sprite);
 
     Rect<int> srcRect, dstRect;
     // Render the selector
@@ -1112,7 +1112,7 @@ void Inventory::drawSelector() noexcept
 void Inventory::drawInventoryDividers() noexcept
 {
     Rect<int> srcRect, dstRect;
-    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_sprite);
 
     srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
 
@@ -1147,7 +1147,7 @@ void Inventory::drawInventoryDividers() noexcept
 
 void Inventory::drawHUD() noexcept 
 {
-    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_texture);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(m_sprite);
     Rect<int> srcRect, dstRect;
 
     // Copy "B" 
@@ -1187,7 +1187,7 @@ void Inventory::drawHUD() noexcept
 
         // Draw the weapon level
         dstRect = { 56,8, 8, 8 };
-        drawWeaponLevel(m_texture, m_weaponA.first, dstRect);
+        drawWeaponLevel(m_sprite, m_weaponA.first, dstRect);
     }
 
     // Draw weapon B
@@ -1198,12 +1198,12 @@ void Inventory::drawHUD() noexcept
         ResourceManager::getInstance()[Graphic::GFX_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
         dstRect = { 16,8, 8, 8 };
-        drawWeaponLevel(m_texture, m_weaponB.first, dstRect);
+        drawWeaponLevel(m_sprite, m_weaponB.first, dstRect);
     }
 
     // Draw current ruppees
     dstRect = { 80,8,8,8 };
-    drawNumber(m_texture, false, true, 2, m_ruppees, dstRect);
+    drawNumber(m_sprite, false, true, 2, m_ruppees, dstRect);
 
     // Pop rendering target
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);

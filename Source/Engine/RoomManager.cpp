@@ -135,10 +135,10 @@ void RoomManager::setRoom(RoomName room) noexcept
 }
 
 // Loads the room objects for the current room at roomIndex
-void RoomManager::roomObjects(RoomAction action, size_t roomIndex) noexcept
+void RoomManager::roomDo(RoomAction action, size_t roomIndex) noexcept
 {
     // Check we have a room
-    assert(m_currentRoom.size() && roomIndex < m_currentRoom.size());
+    assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");
 
     // Add or remove objects depending on action
     for (auto const& roomObject : m_currentRoom[roomIndex])
@@ -158,7 +158,7 @@ void RoomManager::roomObjects(RoomAction action, size_t roomIndex) noexcept
 void RoomManager::transitionObjects(size_t roomIndex, int xTransition, int yTransition) noexcept
 {
     // Check we have a room
-    assert(m_currentRoom.size() && roomIndex < m_currentRoom.size());
+    assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");
 
     // Add or remove objects depending on action
     for (auto const& roomObject : m_currentRoom[roomIndex])

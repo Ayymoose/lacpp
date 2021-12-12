@@ -46,7 +46,7 @@ public:
     void setRoom(RoomName room) noexcept;
 
     // Load or clear room objects from the current room
-    void roomObjects(RoomAction action, size_t roomIndex) noexcept;
+    void roomDo(RoomAction action, size_t roomIndex) noexcept;
 
     void transitionObjects(size_t roomIndex, int xTransition, int yTransition) noexcept;
 private:

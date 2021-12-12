@@ -1,6 +1,7 @@
+#if 0
+
 #pragma once
 
-#include "BoundingBox.h"
 #include <vector>
 #include <map>
 
@@ -63,3 +64,5 @@ private:
     std::map<CollisionArea, std::vector<BoundingBox>> m_collisionMap;
 
 };
+
+#endif

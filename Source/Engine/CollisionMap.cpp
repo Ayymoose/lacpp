@@ -1,3 +1,5 @@
+#if 0
+
 #include "CollisionMap.h"
 #include <assert.h>
 
@@ -630,3 +632,6 @@ std::vector<BoundingBox> CollisionMap::collisionMap(CollisionArea area)
     assert(area > COLLISION_AREA_NONE && area < COLLISION_AREA_COUNT);
     return m_collisionMap[area];
 }
+
+
+#endif

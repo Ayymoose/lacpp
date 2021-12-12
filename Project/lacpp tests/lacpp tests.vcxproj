@@ -72,16 +72,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <IncludePath>$(SolutionDir)..\..\Source\Tests;$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Core;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\Source\Tests;$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Core;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)..\..\Source\Tests;$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Core;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\Source\Tests;$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Core;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\Source\Enemy;$(SolutionDir)..\..\Source\Interfaces;$(SolutionDir)..\..\Source\Player;$(SolutionDir)..\..\Source\Engine;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -190,8 +190,8 @@
     <ClCompile Include="..\..\Source\Enemy\GopongaFlower.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Beamos.cpp" />
     <ClCompile Include="..\..\Source\Enemy\SeaUrchin.cpp" />
-    <ClCompile Include="..\..\Source\Core\Keyboard.cpp" />
-    <ClCompile Include="..\..\Source\Core\Window.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Keyboard.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Window.cpp" />
     <ClCompile Include="..\..\Source\Player\Worldmap.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Zombie.cpp" />
     <ClCompile Include="..\..\Source\Engine\BoundingBox.cpp" />
@@ -222,7 +222,7 @@
     <ClCompile Include="..\..\Source\Tests\WorldmapTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Core\Jenkins.h" />
+    <ClInclude Include="..\..\Source\Engine\Jenkins.h" />
     <ClInclude Include="..\..\Source\Enemy\ShroudedStalfos.h" />
     <ClInclude Include="..\..\Source\Enemy\Darknut.h" />
     <ClInclude Include="..\..\Source\Enemy\Moblin.h" />
@@ -259,11 +259,11 @@
     <ClInclude Include="..\..\Source\Engine\Common.h" />
     <ClInclude Include="..\..\Source\Engine\Dialogue.h" />
     <ClInclude Include="..\..\Source\Interfaces\Cullable.h" />
-    <ClInclude Include="..\..\Source\Core\Controller.h" />
-    <ClInclude Include="..\..\Source\Core\Keyboard.h" />
-    <ClInclude Include="..\..\Source\Core\Renderer.h" />
-    <ClInclude Include="..\..\Source\Core\Singleton.h" />
-    <ClInclude Include="..\..\Source\Core\Window.h" />
+    <ClInclude Include="..\..\Source\Engine\Controller.h" />
+    <ClInclude Include="..\..\Source\Engine\Keyboard.h" />
+    <ClInclude Include="..\..\Source\Engine\Renderer.h" />
+    <ClInclude Include="..\..\Source\Engine\Singleton.h" />
+    <ClInclude Include="..\..\Source\Engine\Window.h" />
     <ClInclude Include="..\..\Source\Engine\BoundingBox.h" />
     <ClInclude Include="..\..\Source\Engine\Camera.h" />
     <ClInclude Include="..\..\Source\Engine\CollisionMap.h" />

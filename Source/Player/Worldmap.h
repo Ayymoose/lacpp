@@ -119,7 +119,6 @@ public:
     Worldmap();
     void control() noexcept override;
     void render() noexcept override;
-    void update() noexcept override;
     void open() noexcept;
     void close() noexcept;
 private:

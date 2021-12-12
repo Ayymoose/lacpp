@@ -9,17 +9,14 @@ namespace Zelda
 
 FlameRod::FlameRod()
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_speed = 2;
     m_name = "Flamerod";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME].w;
     m_height = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME].h;
-    m_boundingBox.w = m_width;
-    m_boundingBox.h = m_height;
     m_flameRodOrientation = 0;
     m_flameRodWidth = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD].w;
     m_flameRodHeight = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD].h;
-    //m_depth = ZD_DEPTH_BACKGROUND;
     m_display = true;
 }
 
@@ -37,8 +34,7 @@ void FlameRod::render() noexcept
     };
 
     // The flame
-    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameSrcRect, &flameDstRect, m_orientation, nullptr, SDL_FLIP_NONE));
-    m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_orientation, SpriteFlip::FLIP_NONE);
+    m_sprite.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
     auto flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
 
@@ -50,15 +46,10 @@ void FlameRod::render() noexcept
         m_flameRodHeight
     };
 
-
-    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
-
     // The flame rod
     if (m_display)
     {
-        m_texture.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_flameRodOrientation, SpriteFlip::FLIP_NONE);
-        //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &flameRodSrcRect, &flameRodDstRect, m_flameRodOrientation, nullptr, SDL_FLIP_NONE));
+        m_sprite.drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_flameRodOrientation, SpriteFlip::FLIP_NONE);
     }
 
     // Animate the flame rod

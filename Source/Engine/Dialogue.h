@@ -3,6 +3,7 @@
 #include "Singleton.h"
 #include "Renderable.h"
 #include "Controllable.h"
+#include "Updateable.h"
 #include "Vector.h"
 #include "Common.h"
 #include "Timer.h"
@@ -44,7 +45,7 @@ constexpr int CHAR_HEIGHT = 8;
 constexpr float TEXT_SPEED = 1 / 45.0f;
 constexpr int SCROLL_SPEED = 4;
 
-class Dialogue : public Renderable, public Controllable, public Singleton<Dialogue>
+class Dialogue : public Renderable, public Controllable, public Singleton<Dialogue>, public Updateable
 {
     friend class Singleton<Dialogue>;
 public:

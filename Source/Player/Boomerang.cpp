@@ -9,13 +9,11 @@ namespace Zelda
 
 Boomerang::Boomerang()
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_speed = 2;
     m_name = "Boomerang";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG].w;
     m_height = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG].h;
-    m_boundingBox.w = m_width;
-    m_boundingBox.h = m_height;
     m_return = false;
 }
 
@@ -32,23 +30,19 @@ void Boomerang::render() noexcept
         m_height
     };
 
-    m_texture.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
-    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE));
-
-    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
+    m_sprite.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
     // Return to the player
     if (m_return)
     {
         // Get vector from player to here and repeatedly add position till we return to player
-        Vector<float> positionVector = Link::getInstance().position();
+       /* Vector<float> positionVector = Link::getInstance().position();
         Vector<float> returnVector = positionVector - m_position;
         if (returnVector.length() > 0.01f)
         {
             returnVector.normalise();
         }
-        m_position += returnVector * m_speed;
+        m_position += returnVector * m_speed;*/
     }
     else
     {

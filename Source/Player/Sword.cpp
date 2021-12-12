@@ -9,15 +9,13 @@ namespace Zelda
 
 Sword::Sword()
 {
-    m_texture = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
     m_name = "Sword";
     m_animateXPos = 0;
     m_animateYPos = 16;
     m_endFrame = 2;
     m_width = m_weaponSpritesSrc[WPN_SPRITE_SWORD].w;
     m_height = m_weaponSpritesSrc[WPN_SPRITE_SWORD].h;
-    m_boundingBox.w = m_width;
-    m_boundingBox.h = m_height;
     m_depth = ZD_DEPTH_BACKGROUND;
 }
 
@@ -38,9 +36,6 @@ void Sword::render() noexcept
         m_width,
         m_height
     };
-
-    m_boundingBox.x = m_position.x - Camera::getInstance().getX();
-    m_boundingBox.y = m_position.y - Camera::getInstance().getY();
 
     switch (m_direction)
     {
@@ -123,10 +118,6 @@ void Sword::render() noexcept
         }
         break;
     }
-
-    //SDL_ASSERT(SDL_RenderCopyEx(Renderer::getInstance().getRenderer(), m_texture, &srcRect, &dstRect, m_orientation, nullptr, SDL_FLIP_NONE));
-
-
 
     //m_animationTimer.start();
     if (m_animationTimer.elapsed(SWORD_ATTACK_FPS))

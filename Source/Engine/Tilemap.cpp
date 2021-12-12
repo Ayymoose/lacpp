@@ -539,26 +539,26 @@ void Tilemap::setTileMap(RoomName tilemap) noexcept
 TileRoom Tilemap::getRoomTiles(size_t roomIndex) const noexcept
 {
 	// Check room index is within bounds
-	assert(roomIndex < (size_t)(m_currentTileMap.roomsAcross* m_currentTileMap.roomsDown));
+	assert(roomIndex < (size_t)(m_currentTileMap.roomsAcross * m_currentTileMap.roomsDown));
 	// Check if there is a room
 	assert(m_currentTileMap.rooms.size());
 
 	return m_currentTileMap.rooms[roomIndex];
 }
 
-uint16_t Tilemap::roomsAcross() const noexcept
+int Tilemap::roomsAcross() const noexcept
 {
 	assert(m_currentTileMap.roomsAcross > 0);
 	return m_currentTileMap.roomsAcross;
 }
 
-uint16_t Tilemap::roomsDown() const noexcept
+int Tilemap::roomsDown() const noexcept
 {
 	assert(m_currentTileMap.roomsDown > 0);
 	return m_currentTileMap.roomsDown;
 }
 
-Sprite Tilemap::getTilemapTexture() const noexcept
+Sprite Tilemap::getTilemap() const noexcept
 {
 	return ResourceManager::getInstance()[m_currentTileMap.tilemap];
 }

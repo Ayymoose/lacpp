@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Updateable.h"
 #include "Controllable.h"
 #include "Renderable.h"
 #include "Vector.h"
@@ -345,7 +346,7 @@ enum Ruppee
 
 using InventoryWeapon = std::pair<WeaponItem, WeaponLevel>;
 
-class Inventory : public Renderable, public Controllable
+class Inventory : public Renderable, public Controllable, public Updateable
 {
 public:
     Inventory();
