@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 Leever::Leever(float x, float y) :
-    Renderable("Leever", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Leever", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_emerging(true),
     m_burrowing(false)

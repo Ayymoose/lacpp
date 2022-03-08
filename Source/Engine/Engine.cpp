@@ -23,7 +23,7 @@ void Engine::init() noexcept
     // TODO: Move this somwhere
 
     // Load all resources (sound + graphics)
-    ResourceManager::getInstance().loadGraphics();
+    ResourceManager::getInstance().loadSprites();
 
     m_initialised = true;
 
@@ -115,30 +115,27 @@ void Engine::initWindow() noexcept
 
 void Engine::events() noexcept
 {
-    // TODO: There should be a Controller Singleton which can be a Keyboard or GameController
     SDL_Event eventHandler;
     if (SDL_PollEvent(&eventHandler))
     {
-        switch (eventHandler.type)
+        if (eventHandler.type == SDL_QUIT)
         {
-        case SDL_QUIT:
-            m_engineRunning = false;
-            break;
-        case SDL_KEYDOWN:
-            Keyboard::getInstance().updateKeyStates(eventHandler.key.keysym.scancode, true, false);
-            // If key was released in the next frame, set it to not released now
-            break;
-        case SDL_KEYUP:
-            Keyboard::getInstance().updateKeyStates(eventHandler.key.keysym.scancode, false, true);
-            // Set key released to true on this frame
-            break;
-
+            stop();
+        }
+        else if (eventHandler.type == SDL_KEYDOWN || eventHandler.type == SDL_KEYUP)
+        {
+            Keyboard::getInstance().eventHandler(eventHandler);
         }
     }
 }
 
 void Engine::update() const noexcept
 {
+    auto const controller = Controller::getInstance().getController();
+    if (controller)
+    {
+        controller->control();
+    }
     auto const gameObjects = Renderer::getInstance().getRenderSet();
     for (const auto& gameObject : gameObjects)
     {
@@ -149,42 +146,6 @@ void Engine::update() const noexcept
             updateableGameObject->update();
         }
     }
-
-    // TOOD: Should this go before or after update() ?
-    auto const controller = Controller::getInstance().getController();
-    if (controller)
-    {
-        controller->control();
-    }
-
-#if 0
-    if (!Engine::getInstance().paused())
-    {
-        // TODO: If engine is paused, all animation/movement must be stopped until resumed
-        // Engine is paused when 
-        // - Opening the inventory and remains paused until inventory is closed
-        // - Opening the file save screen
-        // - Dialogue is running
-        // - An item that opens the dialogue is obtained
-
-        // Basic enemy function
-        auto enemy = dynamic_cast<Enemy*>(renderable);
-        if (enemy)
-        {
-            // Or can/can't attack
-            enemy->attack();
-
-            // Or can/can't be killed
-            if (enemy->health() <= 0)
-            {
-                enemy->die();
-            }
-        }
-    }
-
-    //////////////////////////////////////////////////
-
-#endif
 }
 
 void Engine::render() const noexcept

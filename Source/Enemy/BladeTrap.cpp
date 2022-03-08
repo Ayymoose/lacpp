@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 BladeTrap::BladeTrap(float x, float y) :
-    Renderable("Blade Trap", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Blade Trap", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_range(0),
     m_attack(false),

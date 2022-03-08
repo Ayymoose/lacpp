@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 ThreeOfAKind::ThreeOfAKind(float x, float y) :
-    Renderable("Three Of A Kind", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Three Of A Kind", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     m_dir = Direction::DIRECTION_DOWN;

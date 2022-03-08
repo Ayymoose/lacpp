@@ -7,7 +7,7 @@ namespace Zelda
 {
 
 GopongaFlower::GopongaFlower(float x, float y) :
-    Renderable("Goponga Flower", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Goponga Flower", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy

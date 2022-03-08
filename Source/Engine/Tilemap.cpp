@@ -7,7 +7,7 @@ namespace Zelda
 
 Tilemap::Tilemap()
 {
-	m_currentTileMap.tilemap = Graphic::GFX_RESOURCE_NONE;
+	m_currentTileMap.tilemap = SpriteResource::SPR_RESOURCE_NONE;
 	m_currentTileMap.roomsAcross = 0;
 	m_currentTileMap.roomsDown = 0;
 
@@ -524,7 +524,7 @@ Tilemap::Tilemap()
 	};
 	ti.roomsAcross = 7;
 	ti.roomsDown = 6;
-	ti.tilemap = Graphic::GFX_DUNGEON_1_TAIL_CAVE;
+	ti.tilemap = SpriteResource::SPR_DUNGEON_1_TAIL_CAVE;
 
 
 	m_tileMaps[RM_TAIL_CAVE] = ti;

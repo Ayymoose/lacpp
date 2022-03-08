@@ -12,13 +12,7 @@ struct Rect
     static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "Invalid template type");
 
     constexpr Rect() : x(0), y(0), w(0), h(0) {};
-    constexpr Rect(T x, T y, T w, T h)
-    {
-        this->x = x;
-        this->y = y;
-        this->w = w;
-        this->h = h;
-    }
+    constexpr Rect(T x, T y, T w, T h) : x(x), y(y), w(w), h(h) {}
 
     bool operator==(const Rect& other) const noexcept
     {

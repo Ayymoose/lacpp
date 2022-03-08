@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 Goomba::Goomba(float x, float y) :
-    Renderable("Goomba", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Goomba", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy

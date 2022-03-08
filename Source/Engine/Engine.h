@@ -7,6 +7,11 @@
 
 namespace Zelda
 {
+
+constexpr int MAIN_WINDOW_WIDTH = 160 * 6;
+constexpr int MAIN_WINDOW_HEIGHT = 144 * 6;
+constexpr const char* MAIN_WINDOW_TITLE = "Link's Awakening";
+
 class Engine : public Singleton<Engine>
 {
     friend class Singleton<Engine>;

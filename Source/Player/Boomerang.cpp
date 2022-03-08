@@ -9,7 +9,7 @@ namespace Zelda
 
 Boomerang::Boomerang()
 {
-    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
     m_speed = 2;
     m_name = "Boomerang";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG].w;

@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 Moblin::Moblin(EnemyType enemyType, float x, float y) :
-    Renderable("Moblin", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Moblin", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_type(enemyType),
     m_steps(0)

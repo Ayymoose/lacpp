@@ -24,7 +24,7 @@ void Link::setDungeonMarkerLocation(int x, int y) noexcept
 }
 
 Link::Link() : 
-    Renderable("Link", ResourceManager::getInstance()[Graphic::GFX_LINK], ZD_DEPTH_PLAYER),
+    Renderable("Link", ResourceManager::getInstance()[SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER),
     Controllable(m_name),
     m_healthMax(3),
     m_speedX(0),
@@ -58,8 +58,6 @@ Link::Link() :
     m_dir = Direction::DIRECTION_DOWN;
 
     Renderer::getInstance().addRenderable(this);
-
-    m_lerpPrevious = m_position;
 }
 
 float Link::health() const noexcept
@@ -72,150 +70,28 @@ float Link::maxHealth() const noexcept
     return m_healthMax;
 }
 
-bool Link::handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept
-{
-    return false;
-
-#if 0
-    // When moving in a direction
-    // If our position + speed encounters a wall, stop
-    // else keep moving in that direction
-    bool topLeftLeftToRight = false;
-    bool bottomLeftLeftToRight = false;
-    bool topRightRightToLeft = false;
-    bool bottomRightRightToLeft = false;
-    bool bottomLeftBottomToTop = false;
-    bool bottomRightBottomToTop = false;
-    bool topLeftTopToBottom = false;
-    bool topRightTopToBottom = false;
-
-    m_boundingBox.x = m_positionVector.x + PLAYER_BOUNDING_BOX_WIDTH_OFFSET;
-    m_boundingBox.y = m_positionVector.y + PLAYER_BOUNDING_BOX_HEIGHT;
-
-    // Copy box
-    BoundingBox testBox = m_boundingBox;
-    testBox.x += horizontalSpeed;
-    testBox.y += verticalSpeed;
-
-    // Handle static collisions
-    bool collision = false;
-    std::vector<BoundingBox> bbs = m_collisionMap.collisionMap(m_collisionArea);
-    for (BoundingBox& box : bbs)
-    {
-        // Transform the bounding box co-ordinates as we offset from the count
-        // Why does this have to be negative?
-        box.x -= -Camera::getInstance().getX();
-        box.y -= -Camera::getInstance().getY();
-
-        if (BoundingBox::intersects(testBox, box))
-        {
-            // Either horizontal or vertical speed will be non-zero, never both
-            // Do corner cutting
-            collision = true;
-            topLeftLeftToRight = (((m_boundingBox.y + m_boundingBox.h) - box.y) >= 0 && ((m_boundingBox.y + m_boundingBox.h) - box.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.x + m_boundingBox.w <= box.x);  // Push player UP when going right
-            topLeftTopToBottom = (((m_boundingBox.x + m_boundingBox.w) - box.x) >= 0 && ((m_boundingBox.x + m_boundingBox.w) - box.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.y + m_boundingBox.h <= box.y);  // push player DOWN when going down
-            topRightTopToBottom = (((box.x + box.w) - m_boundingBox.x) >= 0 && ((box.x + box.w) - m_boundingBox.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.y + m_boundingBox.h <= box.y);
-            topRightRightToLeft = (((m_boundingBox.y + m_boundingBox.h) - box.y) >= 0 && ((m_boundingBox.y + m_boundingBox.h) - box.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.x + box.w <= m_boundingBox.x);
-            bottomRightRightToLeft = (((box.y + box.h) - m_boundingBox.y) >= 0 && ((box.y + box.h) - m_boundingBox.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.x + box.w <= m_boundingBox.x);
-            bottomRightBottomToTop = (((box.x + box.w) - m_boundingBox.x) >= 0 && ((box.x + box.w) - m_boundingBox.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.y + box.h <= m_boundingBox.y);
-            bottomLeftBottomToTop = (((m_boundingBox.x + m_boundingBox.w) - box.x) >= 0 && ((m_boundingBox.x + m_boundingBox.w) - box.x) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (box.y + box.h <= m_boundingBox.y);
-            bottomLeftLeftToRight = (((box.y + box.h) - m_boundingBox.y) >= 0 && ((box.y + box.h) - m_boundingBox.y) <= PLAYER_CORNER_CUTTING_BOUNDARY) && (m_boundingBox.x + m_boundingBox.w <= box.x);
-            break;
-        }
-    }
-
-    // TODO: Check whether there is space or not before pushing the player
-    // Don't get stuck on a corner or increase speed when gliding along the wall
-    if (topLeftLeftToRight && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
-    {
-        m_positionVector.y-= m_speed;
-    }
-    if (topLeftTopToBottom && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
-    {
-        m_positionVector.x-= m_speed;
-    }
-    if (topRightTopToBottom && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
-    {
-        m_positionVector.x+= m_speed;
-    }
-    if (topRightRightToLeft && !(m_speedX == -m_speed && m_speedY == m_speed) && !(m_speedX == -m_speed && m_speedY == -m_speed))
-    {
-        m_positionVector.y-= m_speed;
-    }
-    if (bottomRightRightToLeft && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == -m_speed && m_speedY == m_speed))
-    {
-        m_positionVector.y+= m_speed;
-    }
-    if (bottomRightBottomToTop && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
-    {
-        m_positionVector.x+= m_speed;
-    }
-    if (bottomLeftBottomToTop && !(m_speedX == -m_speed && m_speedY == -m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
-    {
-        m_positionVector.x-= m_speed;
-    }
-    if (bottomLeftLeftToRight && !(m_speedX == m_speed && m_speedY == m_speed) && !(m_speedX == m_speed && m_speedY == -m_speed))
-    {
-        m_positionVector.y+= m_speed;
-    }
-
-    return collision;
-#endif
-}
-
-
 void Link::update() noexcept
 {
-    //using clock = std::chrono::high_resolution_clock;
-    //using milliseconds = std::chrono::milliseconds;
-
-    if (m_currentTime == 0)
+    //////////////////////////////////////////////////
+    if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
     {
-        m_currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        m_position.x -= 0.75;
     }
-
-    // TODO: Even this doesn't work although CPed from the example on FixedTimestep
-    // It's inconsistent and jittery still
-    auto const timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    auto frameTime = timeNow - m_currentTime;
-    if (frameTime > m_maxFrameTime)
+    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
     {
-        frameTime = m_maxFrameTime;
+        m_position.x += 0.75;
     }
-
-    m_currentTime = timeNow;
-    m_accumulator += frameTime;
-
-    while (m_accumulator >= m_dt)
+    if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
     {
-        // Lerp
-        m_lerpPrevious = m_position;
-
-        
-        //////////////////////////////////////////////////
-        if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
-        {
-            m_position.x -= 0.5;
-        }
-        if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
-        {
-            m_position.x += 0.5;
-        }
-        if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
-        {
-            m_position.y += 0.5;
-        }
-        if (Keyboard::getInstance().keyPushed(BUTTON_UP))
-        {
-            m_position.y -= 0.5;
-        }
-        //////////////////////////////////////////////////
-
-        m_accumulator -= m_dt;
+        m_position.y += 0.75;
     }
+    if (Keyboard::getInstance().keyPushed(BUTTON_UP))
+    {
+        m_position.y -= 0.75;
+    }
+    //////////////////////////////////////////////////
 
-    m_alphaTime = m_accumulator / m_dt;
-    m_drawPosition = Vector<float>::lerp(m_lerpPrevious, m_position, m_alphaTime);
+
 }
 
 void Link::render() noexcept
@@ -238,8 +114,8 @@ void Link::render() noexcept
     // Where to draw on screen
     m_dstRect =
     {
-        m_drawPosition.x - Camera::getInstance().getX(),
-        m_drawPosition.y - Camera::getInstance().getY(),
+        m_position.x - Camera::getInstance().getX(),
+        m_position.y - Camera::getInstance().getY(),
         static_cast<float>(m_width),
         static_cast<float>(m_height)
     };
@@ -266,123 +142,6 @@ void Link::cull() noexcept
 
 void Link::control() noexcept
 {
-
-   /* if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
-    {
-        m_position.x += 64.0 * (ts / 1000.0);
-    }
-    if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
-    {
-        m_position.x -= 64.0 * (ts / 1000.0);
-    }
-    if (Keyboard::getInstance().keyPushed(BUTTON_UP))
-    {
-        m_position.y -= 64.0 * (ts / 1000.0);
-    }
-    if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
-    {
-        m_position.y += 64.0 * (ts / 1000.0);
-    }*/
-
-#if 0
-    // Open the inventory
-    if (Keyboard::getInstance().keyPushed(BUTTON_SELECT))
-    {
-        m_inventory.open();
-        // Give control to the inventory and pause the engine
-        Controller::getInstance().pushController(this, &m_inventory);
-        Engine::getInstance().pause(true);
-        std::cout << "Inventory opened!\n";
-    }
-
-    // TODO: Open worldmap only if inventory not open
-    // Open worldmap
-    /*if (Keyboard::getInstance().keyPushed(BUTTON_START))
-    {
-        m_worldmap.open();
-        // Give control to the inventory and pause the engine
-        Controller::getInstance().pushController(this, &m_worldmap);
-        Engine::getInstance().pause(true);
-        std::cout << "Worldmap opened!\n";
-    }*/
-
-    // Only animate if moving
-    if (m_moveable && (Keyboard::getInstance().keyPushed(BUTTON_RIGHT) || Keyboard::getInstance().keyPushed(BUTTON_LEFT) || Keyboard::getInstance().keyPushed(BUTTON_DOWN) || Keyboard::getInstance().keyPushed(BUTTON_UP)))
-    {
-        // Animation
-        animate();
-
-        // If we are holding left and we press up or down, we don't want to change the state whatever it is...
-        // Same applies to other directions 
-        move();
-
-        m_moving = true;
-    }
-    else
-    {
-        m_moving = false;
-        // TODO: Current frame has to be reset to intial frame
-        if (!m_usingSword && !m_usingArrow)
-        {
-            resetAnimation();
-        }
-        else
-        {
-            m_moveable = false;
-            if (!m_animationComplete)
-            {
-                animate();
-            }
-            else
-            {
-                updateState();
-                m_animationComplete = false;
-                m_moveable = true;
-
-                if (m_usingSword)
-                {
-                    m_usingSword = false;
-                    m_sword.reset();
-                }
-                else if (m_usingArrow)
-                {
-                    m_usingArrow = false;
-                    //m_quiver.erase(m_quiver.begin());
-                    m_canUseArrow = true;
-                }
-
-            }
-        }
-
-        m_dirLockRight = false;
-        m_dirLockUp = false;
-        m_dirLockLeft = false;
-        m_dirLockDown = false;
-    }
-
-    // If any directional keys are released
-    // Release the direction lock
-    if (Keyboard::getInstance().keyReleased(BUTTON_RIGHT))
-    {
-        m_dirLockRight = false;
-    }
-    if (Keyboard::getInstance().keyReleased(BUTTON_LEFT))
-    {
-        m_dirLockLeft = false;
-    }
-    if (Keyboard::getInstance().keyReleased(BUTTON_UP))
-    {
-        m_dirLockUp = false;
-    }
-    if (Keyboard::getInstance().keyReleased(BUTTON_DOWN))
-    {
-        m_dirLockDown = false;
-    }
-
-    // Link attack
-    // Only attack if a key is actually pressed
-    attack();
-#endif
 }
 
 void Link::attack() noexcept
@@ -493,20 +252,10 @@ void Link::move() noexcept
             m_dir = Direction::DIRECTION_RIGHT;
         }
 
-        if (!handleStaticCollisions(m_speedX, 0))
-        {
-            m_position.x += m_speedX;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_RIGHT;
-            m_dir = Direction::DIRECTION_RIGHT;
-        }
     }
     else
     {
-        if (m_state == LINK_PUSH_RIGHT && handleStaticCollisions(m_speedX, 0))
+        if (m_state == LINK_PUSH_RIGHT)
         {
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
@@ -569,20 +318,11 @@ void Link::move() noexcept
             }
             m_dir = Direction::DIRECTION_LEFT;
         }
-        if (!handleStaticCollisions(m_speedX, 0))
-        {
-            m_position.x += m_speedX;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_LEFT;
-            m_dir = Direction::DIRECTION_LEFT;
-        }
+
     }
     else
     {
-        if (m_state == LINK_PUSH_LEFT && handleStaticCollisions(m_speedX, 0))
+        if (m_state == LINK_PUSH_LEFT)
         {
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
@@ -645,20 +385,10 @@ void Link::move() noexcept
             m_dir = Direction::DIRECTION_UP;
         }
 
-        if (!handleStaticCollisions(0, m_speedY))
-        {
-            m_position.y += m_speedY;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_UP;
-            m_dir = Direction::DIRECTION_UP;
-        }
     }
     else
     {
-        if (m_state == LINK_PUSH_UP && handleStaticCollisions(0, m_speedY))
+        if (m_state == LINK_PUSH_UP)
         {
             // Show shield equipped sprite
             if (m_inventory.shieldEquipped())
@@ -721,20 +451,10 @@ void Link::move() noexcept
             m_dir = Direction::DIRECTION_DOWN;
         }
 
-        if (!handleStaticCollisions(0, m_speedY))
-        {
-            m_position.y += m_speedY;
-        }
-        else
-        {
-            // If collision with wall
-            m_state = LINK_PUSH_DOWN;
-            m_dir = Direction::DIRECTION_DOWN;
-        }
     }
     else
     {
-        if (m_state == LINK_PUSH_DOWN && handleStaticCollisions(0, m_speedY))
+        if (m_state == LINK_PUSH_DOWN)
         {
             if (m_inventory.shieldEquipped())
             {

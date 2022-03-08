@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 WaterTektite::WaterTektite(float x, float y) :
-    Renderable("Water Tektite", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Water Tektite", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_strideLength(48),
     m_strided(0),

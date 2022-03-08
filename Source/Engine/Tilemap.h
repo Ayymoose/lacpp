@@ -4,7 +4,7 @@
 #include <array>
 #include <map>
 
-#include "Resource.h"
+#include "ResourceManager.h"
 #include "RoomManager.h"
 
 namespace Zelda
@@ -30,7 +30,7 @@ typedef struct
 	TilemapArray rooms;     // The 10x8 room
     int roomsAcross;   // Number of rooms across in tilemap
     int roomsDown;     // Number of rooms down in tilemap
-	Graphic tilemap;       // Graphic constant of loaded tilemap
+	SpriteResource tilemap;       // SpriteResource constant of loaded tilemap
 } TilemapInformation;
 
 class Tilemap

@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 HardhatBeetle::HardhatBeetle(float x, float y) :
-    Renderable("Hardhat Beetle", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Hardhat Beetle", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy

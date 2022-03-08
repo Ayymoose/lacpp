@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 BuzzBlob::BuzzBlob(float x, float y) :
-    Renderable("Buzz Blob", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Buzz Blob", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_bigEyes(true)
 {

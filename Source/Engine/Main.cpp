@@ -1,17 +1,22 @@
 #include "Engine.h"
 #include "Camera.h"
 
+#include "Window.h"
+
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     // Everything starts here
-    Zelda::Engine::getInstance().init();
+    using namespace Zelda;
+
+    Engine::getInstance().init();
+    //Debug::getInstance().setDebugMask(DBG_INFO);
 
     // Set camera position
-    Zelda::Camera::getInstance().setScrollSpeed(Zelda::CAMERA_SCROLL_SPEED);
-    Zelda::Camera::getInstance().setPosition(480, 640);
-    Zelda::Camera::getInstance().setTileMap(Zelda::RM_TAIL_CAVE);
+    Camera::getInstance().setScrollSpeed(Zelda::CAMERA_SCROLL_SPEED);
+    Camera::getInstance().setPosition(480, 640);
+    Camera::getInstance().setTileMap(Zelda::RM_TAIL_CAVE);
 
-    Zelda::Engine::getInstance().run();
-    Zelda::Engine::getInstance().stop();
+    Engine::getInstance().run();
+
     return 0;
 }

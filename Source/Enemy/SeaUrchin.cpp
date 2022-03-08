@@ -7,7 +7,7 @@ namespace Zelda
 {
 
 SeaUrchin::SeaUrchin(float x, float y) :
-    Renderable("Sea Urchin", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Sea Urchin", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy

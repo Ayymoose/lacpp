@@ -8,7 +8,7 @@ namespace Zelda
 
 Arrow::Arrow()
 {
-    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
     m_speed = 2;
     m_name = "Arrow";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOW].w;

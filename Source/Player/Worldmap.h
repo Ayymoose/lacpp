@@ -2,7 +2,7 @@
 
 #include "Renderable.h"
 #include "Controllable.h"
-#include "Resource.h"
+#include "ResourceManager.h"
 #include "Depth.h"
 #include "Renderer.h"
 #include "Keyboard.h"

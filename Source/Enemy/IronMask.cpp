@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 IronMask::IronMask(float x, float y) :
-    Renderable("Iron Mask", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Iron Mask", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_exposed(false),
     m_steps(0)

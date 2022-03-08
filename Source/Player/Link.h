@@ -190,7 +190,6 @@ private:
 
     Worldmap m_worldmap;
 
-    bool handleStaticCollisions(int horizontalSpeed, int verticalSpeed) noexcept;
     void useWeapon(WeaponItem weapon) noexcept;
 
     bool m_useShield;

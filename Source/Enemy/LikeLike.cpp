@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 LikeLike::LikeLike(float x, float y) :
-    Renderable("Like Like", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Like Like", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     m_dir = Direction::DIRECTION_DOWN;

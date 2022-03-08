@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 Spark::Spark(float x, float y) :
-    Renderable("Spark", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Spark", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy

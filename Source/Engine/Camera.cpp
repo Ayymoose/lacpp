@@ -96,6 +96,10 @@ void Camera::render() noexcept
     m_nextRoomIndex = roomIndex;
 
 
+    // TODO: Decouple Tilemap from Camera class
+    // TODO: Algorithm to move Link x pixels across when scrolling 
+
+
     // Camera scrolling is implemented by using two canvases
     // One main canvas and a swap canvas
     // The main canvas is the one we always see on the screen

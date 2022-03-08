@@ -9,7 +9,7 @@ namespace Zelda
 
 Sword::Sword()
 {
-    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
     m_name = "Sword";
     m_animateXPos = 0;
     m_animateYPos = 16;

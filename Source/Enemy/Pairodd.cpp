@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 Pairodd::Pairodd(float x, float y) :
-    Renderable("Pairodd", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Pairodd", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_idle(true),
     m_disappear(false),

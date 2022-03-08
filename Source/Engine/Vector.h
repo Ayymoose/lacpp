@@ -12,11 +12,7 @@ class Vector
 public:
     static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "Invalid template type");
     constexpr Vector() : x(0), y(0) {};
-    Vector(T x, T y)
-    {
-        this->x = x;
-        this->y = y;
-    }
+    Vector(T x, T y) : x(x), y(y) {}
 
     constexpr Vector operator/(double scalar) const noexcept
     {
@@ -34,14 +30,14 @@ public:
         return Vector(x * scalar, y * scalar);
     }
 
-    Vector operator*=(double scalar) noexcept
+    Vector& operator*=(double scalar) noexcept
     {
         x *= scalar;
         y *= scalar;
         return *this;
     }
 
-    Vector operator/=(double scalar) noexcept
+    Vector& operator/=(double scalar) noexcept
     {
         assert(scalar != 0);
         x /= scalar;
@@ -54,23 +50,16 @@ public:
         return Vector(-x, -y);
     }
 
-    Vector operator+=(const Vector& other) noexcept
+    Vector& operator+=(const Vector& other) noexcept
     {
         x += other.x;
         y += other.y;
         return *this;
     }
 
-    Vector operator-=(const Vector& other) noexcept
+    Vector& operator-=(const Vector& other) noexcept
     {
         return operator+=(-other);
-    }
-
-    Vector operator=(const Vector& other) noexcept
-    {
-        x = other.x;
-        y = other.y;
-        return *this;
     }
 
     Vector operator-(const Vector& other) const noexcept
@@ -80,6 +69,7 @@ public:
 
     bool operator==(const Vector& other) const noexcept
     {
+        // EPSILON COMPARISON
         return ((x == other.x) && (y == other.y));
     }
 
@@ -147,6 +137,7 @@ public:
     }
 
     // Linear interpolate between two vectors
+    // FLOAT DOUBLE only
     static constexpr Vector lerp(const Vector& A, const Vector& B, double alpha) noexcept
     {
         // A* t + B * (1.f - t);

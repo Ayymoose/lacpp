@@ -23,23 +23,53 @@ Sprite::Sprite(SDL_Renderer* renderer, int width, int height) :
     assert(height);
     assert(m_sprite);
 }
-
 SDL_Texture* Sprite::data() const noexcept
 {
     return m_sprite;
 }
 
-// SDL_Texture assignment operator
-Sprite& Sprite::operator=(SDL_Texture* texture) noexcept
+/*Sprite::Sprite(Sprite&& sprite) noexcept
 {
-    // TODO: Memory leak if not freeing existing texture?
-    m_sprite = texture; 
-    if (m_sprite)
-    {
-        SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
-    }
+    // Free existing data if any
+    SDL_DestroyTexture(m_sprite);
+
+    // Now "copy"
+    m_sprite = sprite.data();
+    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
+    assert(m_width);
+    assert(m_height);
+        
+    SDL_DestroyTexture(sprite.data());
+}
+
+Sprite& Sprite::operator=(const Sprite& sprite) noexcept
+{
+    // Free existing data if any
+    SDL_DestroyTexture(m_sprite);
+
+    // Now "copy"
+    m_sprite = sprite.data();
+    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
+    assert(m_width);
+    assert(m_height);
+
     return *this;
 }
+
+Sprite::Sprite(const Sprite& sprite) noexcept
+{
+    // Free existing data if any
+    if (m_sprite)
+    {
+        SDL_DestroyTexture(m_sprite);
+    }
+
+    // Now "copy"
+    m_sprite = sprite.data();
+    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
+    assert(m_width);
+    assert(m_height);
+}*/
 
 int Sprite::width() const noexcept
 {

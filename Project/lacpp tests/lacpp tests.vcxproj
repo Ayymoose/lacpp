@@ -171,10 +171,11 @@
     <ClCompile Include="..\..\Source\Enemy\Goomba.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Pairodd.cpp" />
     <ClCompile Include="..\..\Source\Engine\AnimatedObject.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Renderer.cpp" />
+    <ClCompile Include="..\..\Source\Engine\ResourceManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\RoomManager.cpp" />
     <ClCompile Include="..\..\Source\Enemy\BuzzBlob.cpp" />
     <ClCompile Include="..\..\Source\Engine\Sprite.cpp" />
-    <ClCompile Include="..\..\Source\Interfaces\Controllable.cpp" />
     <ClCompile Include="..\..\Source\Player\FileSelect.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Peahat.cpp" />
     <ClCompile Include="..\..\Source\Enemy\SandCrab.cpp" />
@@ -194,7 +195,6 @@
     <ClCompile Include="..\..\Source\Engine\Window.cpp" />
     <ClCompile Include="..\..\Source\Player\Worldmap.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Zombie.cpp" />
-    <ClCompile Include="..\..\Source\Engine\BoundingBox.cpp" />
     <ClCompile Include="..\..\Source\Engine\Camera.cpp" />
     <ClCompile Include="..\..\Source\Engine\Timer.cpp" />
     <ClCompile Include="..\..\Source\Engine\CollisionMap.cpp" />
@@ -218,6 +218,7 @@
     <ClCompile Include="..\..\Source\Tests\InventoryTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\Main.cpp" />
     <ClCompile Include="..\..\Source\Tests\RectTests.cpp" />
+    <ClCompile Include="..\..\Source\Tests\SpriteTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\VectorTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\WorldmapTests.cpp" />
   </ItemGroup>
@@ -233,6 +234,7 @@
     <ClInclude Include="..\..\Source\Engine\AnimatedObject.h" />
     <ClInclude Include="..\..\Source\Engine\Debug.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
+    <ClInclude Include="..\..\Source\Engine\ResourceManager.h" />
     <ClInclude Include="..\..\Source\Engine\RoomManager.h" />
     <ClInclude Include="..\..\Source\Enemy\BuzzBlob.h" />
     <ClInclude Include="..\..\Source\Engine\Sprite.h" />
@@ -293,6 +295,7 @@
     <ClInclude Include="..\..\Source\Tests\DialogueTests.h" />
     <ClInclude Include="..\..\Source\Tests\InventoryTests.h" />
     <ClInclude Include="..\..\Source\Tests\RectTests.h" />
+    <ClInclude Include="..\..\Source\Tests\SpriteTests.h" />
     <ClInclude Include="..\..\Source\Tests\Testable.h" />
     <ClInclude Include="..\..\Source\Tests\VectorTests.h" />
     <ClInclude Include="..\..\Source\Tests\WorldmapTests.h" />

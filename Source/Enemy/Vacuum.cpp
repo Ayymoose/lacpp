@@ -9,7 +9,7 @@ namespace Zelda
 {
 
 Vacuum::Vacuum(float x, float y) :
-    Renderable("Vacuum", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Vacuum", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_vacuums(0)
 {

@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 Zombie::Zombie(float x, float y) :
-    Renderable("Zombie", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Zombie", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_emerging(true),
     m_burrowing(false)

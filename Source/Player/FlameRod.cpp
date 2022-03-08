@@ -9,7 +9,7 @@ namespace Zelda
 
 FlameRod::FlameRod()
 {
-    m_sprite = ResourceManager::getInstance()[Graphic::GFX_WEAPON];
+    m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
     m_speed = 2;
     m_name = "Flamerod";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD_FLAME].w;

@@ -18,52 +18,26 @@ class Renderer : public Singleton<Renderer>
     friend class Singleton<Renderer>;
 public:
 
-    void createRenderer(const Window& window) noexcept
-    {
-        assert(window.getWindowHandle());
-        auto const flags = SDL_RENDERER_ACCELERATED |
-            SDL_RENDERER_PRESENTVSYNC |
-            SDL_RENDERER_TARGETTEXTURE;
-        m_renderer = SDL_CreateRenderer(window.getWindowHandle(), -1, flags);
-        assert(m_renderer);
-        DEBUG(DBG_INFO, "Renderer created");
-    }
+    ~Renderer();
+
+    void createRenderer(const Window& window) noexcept;
+
+    void clearScreen(int colour) const noexcept;
+
+    void renderScreen() const noexcept;
+
+    void setRendererScale(float scaleX, float scaleY) const noexcept;
+
+    bool inRenderSet(Renderable* renderable) const noexcept;
+
+    void addRenderable(Renderable* renderable) noexcept;
+
+    void removeRenderable(Renderable* renderable) noexcept;
 
     auto getRenderer() const noexcept
     {
         assert(m_renderer);
         return m_renderer;
-    }
-    void setRenderer(SDL_Renderer* renderer) noexcept
-    {
-        assert(renderer);
-        m_renderer = renderer;
-    }
-
-    void clearScreen(int colour) const noexcept
-    {
-        assert(m_renderer);
-        SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0));
-        SDL_ASSERT(SDL_RenderClear(m_renderer));
-    }
-
-    void renderScreen() const noexcept
-    {
-        assert(m_renderer);
-        // Represent to the screen
-        SDL_RenderPresent(m_renderer);
-    }
-
-    void setRendererScale(float scaleX, float scaleY) const noexcept
-    {
-        assert(m_renderer);
-        SDL_ASSERT(SDL_RenderSetScale(m_renderer,scaleX,scaleY));
-    }
-
-    virtual ~Renderer()
-    {
-        SDL_DestroyRenderer(m_renderer);
-        DEBUG(DBG_INFO, "Renderer destroyed");
     }
 
     auto getRenderSet() const noexcept
@@ -71,73 +45,24 @@ public:
         return m_renderables;
     }
 
-    bool inRenderSet(Renderable* renderable) const noexcept
-    {
-        auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
-        {
-            return r1 == renderable;
-        });
-        return iterator != m_renderables.cend();
-    }
-
-    void addRenderable(Renderable* renderable) noexcept
-    {
-        assert(renderable);
-        if (inRenderSet(renderable))
-        {
-            assert(false && "Can't add same object to render set");
-        }
-        else
-        {
-            //std::cout << "Adding renderable " << renderable->name() << std::endl;
-            m_renderables.emplace(renderable);
-        }
-
-    }
-
-    void removeRenderable(Renderable* renderable) noexcept
-    {
-        assert(renderable);
-        auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
-        {
-            return r1 == renderable;
-        });
-        if (iterator != m_renderables.cend())
-        {
-            //std::cout << "Removing renderable " << (*iterator)->name() << std::endl;
-            m_renderables.erase(iterator);
-        }
-        else
-        {
-            assert(false && "Trying to remove non-existent renderable");
-        }
-    }
-
-    SDL_Texture* pushRenderingTarget(const Sprite& dstTexture) const noexcept
+    auto pushRenderingTarget(const Sprite& dstTexture) const noexcept
     {
         assert(m_renderer);
+        assert(dstTexture.data());
         auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
         SDL_ASSERT(SDL_SetRenderTarget(m_renderer, dstTexture.data()));
         return currentRenderingTarget;
     }
 
-    void popRenderingTarget(SDL_Texture* srcTexture) const noexcept
-    {
-        //auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-       
-        assert(m_renderer);
-        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture));
-    }
+    void popRenderingTarget(SDL_Texture* srcTexture) const noexcept;
 
 private:
-    Renderer() : m_renderer(nullptr)
-    {
+    Renderer() : m_renderer(nullptr) {}
 
-    }
     // Global renderer
     SDL_Renderer* m_renderer;
 
-    struct rendererComparator
+    struct RendererComparator
     {
         bool operator ()(const Renderable* r1, const Renderable* r2) const noexcept
         {
@@ -146,7 +71,7 @@ private:
     };
 
     // Multiset of Renderable objects that will be drawn
-    std::multiset<Renderable*, rendererComparator> m_renderables;
+    std::multiset<Renderable*, RendererComparator> m_renderables;
 
 };
 }

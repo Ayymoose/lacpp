@@ -9,7 +9,7 @@ namespace Zelda
 {
 
 Peahat::Peahat(float x, float y) :
-    Renderable("Peahat", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Peahat", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y),
     m_startingUp(true),
     m_coolDown(false),

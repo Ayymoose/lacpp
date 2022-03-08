@@ -5,18 +5,11 @@
 #include <cassert>
 #include "Rect.h"
 #include <type_traits>
+#include "Colour.h"
 
 // Wrapper class around an SDL_Texture
 namespace Zelda
 {
-
-//     b        g        r 
-// 00000000 00000000 00000000 
-#define SDL_RGB(r,g,b) ((r) | ((g) << 8) | ((b) << 16))
-#define SDL_RED(colour) ((colour) & 0x0000FF)
-#define SDL_GREEN(colour) (((colour) >> 8) & 0x0000FF)
-#define SDL_BLUE(colour) (((colour) >> 16) & 0x0000FF)
-#define COLOUR_BLACK (0)
 
 enum class SpriteFlip
 {
@@ -37,7 +30,11 @@ public:
     Sprite(SDL_Renderer* renderer, int width, int height);
     
     SDL_Texture* data() const noexcept;
-    Sprite& operator=(SDL_Texture* texture) noexcept;
+
+    // TODO: Check memory leaks with these special member functions
+    //Sprite& operator=(const Sprite& sprite) noexcept;
+    //Sprite(const Sprite& sprite) noexcept;
+    //Sprite(Sprite&& sprite) noexcept;
 
     int width() const noexcept;
     int height() const noexcept;
@@ -74,7 +71,7 @@ public:
 
     // Colours a part of a texture (or whole use nullptr with a given colour 
     template<typename R>
-    static void colourSprite(SDL_Renderer* renderer, const Sprite& srcTexture, const Rect<R>& srcRect, uint32_t colour)
+    static void colourSprite(SDL_Renderer* renderer, const Sprite& srcTexture, const Rect<R>& srcRect, Colour colour)
     {
         assert(renderer);
 
@@ -82,7 +79,7 @@ public:
         auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
 
         SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture.data()));
-        SDL_ASSERT(SDL_SetRenderDrawColor(renderer, SDL_RED(colour), SDL_GREEN(colour), SDL_BLUE(colour), 0));
+        SDL_ASSERT(SDL_SetRenderDrawColor(renderer, SDL_Red(colour), SDL_Green(colour), SDL_Blue(colour), 0));
 
         // assert rect boundaries
         assert(srcRect != Rect<R>());

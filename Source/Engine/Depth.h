@@ -11,24 +11,21 @@
 
 namespace Zelda
 {
-
-enum ZOrdering
-{
-// Background tiles
-ZD_DEPTH_BACKGROUND = 1,
-// Background objects
-ZD_DEPTH_BACKGROUND_OBJECT,
-// Enemies
-ZD_DEPTH_ENEMY,
-// Player
-ZD_DEPTH_PLAYER,
-// Inventory
-ZD_DEPTH_INVENTORY,
-// Worldmap
-ZD_DEPTH_WORLDMAP,
-// Dialogue
-ZD_DEPTH_DIALOGUE
-};
-
-
+    enum ZOrdering
+    {
+        // Background tiles
+        ZD_DEPTH_BACKGROUND = 1,
+        // Background objects
+        ZD_DEPTH_BACKGROUND_OBJECT,
+        // Enemies
+        ZD_DEPTH_ENEMY,
+        // Player
+        ZD_DEPTH_PLAYER,
+        // Inventory
+        ZD_DEPTH_INVENTORY,
+        // Worldmap
+        ZD_DEPTH_WORLDMAP,
+        // Dialogue
+        ZD_DEPTH_DIALOGUE
+    };
 }

@@ -7,7 +7,7 @@ namespace Zelda
 {
 
 Star::Star(float x, float y) :
-    Renderable("Star", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Star", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     m_dir = Direction::DIRECTION_DOWN;

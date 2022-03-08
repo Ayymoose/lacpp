@@ -7,7 +7,7 @@ namespace Zelda
 {
 
 Bubble::Bubble(float x, float y) :
-    Renderable("Bubble", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Bubble", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy

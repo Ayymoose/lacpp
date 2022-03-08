@@ -8,7 +8,7 @@ namespace Zelda
 {
 
 ShyGuy::ShyGuy(float x, float y) :
-    Renderable("Shy Guy", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Shy Guy", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     m_dir = Direction::DIRECTION_DOWN;

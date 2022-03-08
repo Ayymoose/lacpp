@@ -7,7 +7,7 @@ namespace Zelda
 {
 
 Beamos::Beamos(float x, float y) :
-    Renderable("Beamos", ResourceManager::getInstance()[Graphic::GFX_ENEMY], ZD_DEPTH_ENEMY),
+    Renderable("Beamos", ResourceManager::getInstance()[SpriteResource::SPR_ENEMY], ZD_DEPTH_ENEMY),
     Enemy(x, y)
 {
     // Values likely to be different per enemy

@@ -1,7 +1,7 @@
 #include "Keyboard.h"
 #include "Debug.h"
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 namespace Zelda
 {
@@ -15,6 +15,22 @@ Keyboard::Keyboard()
         m_keyStatePressed[i] = false;
         m_keyStatePressedRecord[i] = false;
     }
+}
+
+void Keyboard::eventHandler(SDL_Event event) noexcept
+{
+    switch (event.type)
+    {
+        case SDL_KEYDOWN:
+            Keyboard::getInstance().updateKeyStates(event.key.keysym.scancode, true, false);
+            // If key was released in the next frame, set it to not released now
+            break;
+        case SDL_KEYUP:
+            Keyboard::getInstance().updateKeyStates(event.key.keysym.scancode, false, true);
+            // Set key released to true on this frame
+            break;
+    }
+
 }
 
 // Updates the internal key state every frame
