@@ -78,12 +78,12 @@ enum LocationType
     LT_UNKNOWN
 };
 
-typedef struct
+struct WorldmapLocation
 {
     bool visited;                   // Did we visit this location
     LocationType locationType;      // Type of the location (see above)
     LocationName locationName;      // The name of the location
-} WorldmapLocation;
+};
 
 enum WorldmapSprites
 {

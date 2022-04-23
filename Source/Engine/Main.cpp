@@ -13,8 +13,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     // Set camera position
     Camera::getInstance().setScrollSpeed(Zelda::CAMERA_SCROLL_SPEED);
-    Camera::getInstance().setPosition(480, 640);
-    Camera::getInstance().setTileMap(Zelda::RM_TAIL_CAVE);
+    //Camera::getInstance().setPosition(480, 640);
 
     Engine::getInstance().run();
 

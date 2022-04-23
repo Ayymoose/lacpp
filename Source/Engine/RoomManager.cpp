@@ -76,6 +76,7 @@ RoomManager::RoomManager()
         {},
         {},
         {
+            // TODO: Create EnemyFactory class
            // new AnimatedObject(AnimatedClass::AN_TORCH,144,32,0,90),
            // new AnimatedObject(AnimatedClass::AN_TORCH,144,80,0,90),
         },

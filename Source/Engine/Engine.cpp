@@ -6,8 +6,9 @@
 #include "Controllable.h"
 #include "Enemy.h"
 #include "RoomManager.h"
-#include "Tilemap.h"
-#include <thread>
+#include "TilemapManager.h"
+#include "DataManager.h"
+//#include <thread>
 
 namespace Zelda
 {
@@ -19,11 +20,7 @@ void Engine::init() noexcept
     initControl();
     initWindow();
     initSingleton();
-
-    // TODO: Move this somwhere
-
-    // Load all resources (sound + graphics)
-    ResourceManager::getInstance().loadSprites();
+    initData();
 
     m_initialised = true;
 
@@ -91,6 +88,11 @@ void Engine::initControl() const noexcept
     SDL_ASSERT(SDL_Init(SDL_INIT_GAMECONTROLLER));
 }
 
+void Engine::initData() const noexcept
+{
+    DataManager::getInstance().loadData();
+}
+
 void Engine::initSingleton() const noexcept
 {
     Debug::getInstance();
@@ -99,6 +101,8 @@ void Engine::initSingleton() const noexcept
     Keyboard::getInstance();
     RoomManager::getInstance();
     Camera::getInstance();
+    TilemapManager::getInstance();
+    DataManager::getInstance();
 }
 
 void Engine::initWindow() noexcept

@@ -1,4 +1,5 @@
 #include "AnimatedObject.h"
+#include "ResourceManager.h"
 
 namespace Zelda
 {

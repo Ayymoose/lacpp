@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <assert.h>
-#include <SDL_image.h>
+#include <cassert>
+
 #include <unordered_map>
 #include "Singleton.h"
 #include "Sprite.h"
@@ -36,10 +36,10 @@ class ResourceManager : public Singleton<ResourceManager>
     friend class Singleton<ResourceManager>;
 public:
 
+    void loadSprite(SpriteResource resource, const std::string& path, const Colour transparencyColour);
     Sprite operator[](SpriteResource resource) noexcept;
-    void loadSprites() noexcept;
-
     ~ResourceManager();
+
 private:
     ResourceManager() = default;
 

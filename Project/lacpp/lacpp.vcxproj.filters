@@ -171,6 +171,15 @@
     <ClCompile Include="..\..\Source\Engine\ResourceManager.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\TilemapManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\DataManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\RoomLinkManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Player\FlameRod.h">
@@ -378,6 +387,18 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Colour.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Debug.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\TilemapManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\DataManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\RoomLinkManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

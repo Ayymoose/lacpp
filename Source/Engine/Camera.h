@@ -8,6 +8,7 @@
 #include "Singleton.h"
 #include "Timer.h"
 #include "Tilemap.h"
+#include "RoomManager.h"
 
 namespace Zelda
 {
@@ -24,10 +25,9 @@ constexpr int SCROLL_LEFT_EDGE = 4;
 constexpr int SCROLL_UP_EDGE = 2;
 constexpr int SCROLL_DOWN_EDGE = HUD_HEIGHT;
 
+// How many pixels per frame the camera scrolls
 constexpr int CAMERA_SCROLL_SPEED = 4;
  
-constexpr float FPS_66 = (1.0f / 60.0f);
-constexpr float FPS_33 = (1.0f / 33.0f);    // To be adjusted!
 
 class Camera : public Renderable, public Singleton<Camera>, public Updateable
 {
@@ -37,7 +37,6 @@ public:
     void setScrollSpeed(int scrollSpeed) noexcept;
     void render() noexcept override;
     void update() noexcept override;
-    void setTileMap(RoomName tilemap) noexcept;
 
     // Returns true whether a rect is visible in the camera region
     template <typename R>
@@ -70,8 +69,9 @@ public:
 
 private:
     Camera();
-    // Called in the render function
-    void renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, uint16_t roomIndex) noexcept;
+
+    void updateNextRoomLocation(const int nextRoomIndex) const noexcept;
+    void updateCurrentRoomLocation() const noexcept;
 
     // m_scrollX and m_scrollY are manipulated to achieve scrolling
     int m_scrollX;
@@ -100,13 +100,5 @@ private:
     // How many we scrolled by
     int m_scrolled;
 
-    // World tilemap
-    Tilemap m_tilemap;
-
-    // TODO: Fix player movement during scrolling
-    Timer m_timerPlayerScroll;
-
-    Sprite m_swapCanvas;
-    int m_nextRoomIndex;
 };
 }

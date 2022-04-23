@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Resource.h"
 #include "SDL_Assert.h"
+#include "ResourceManager.h"
 
 namespace Zelda
 {

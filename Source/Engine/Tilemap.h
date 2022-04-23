@@ -1,60 +1,44 @@
 #pragma once
 
 #include <vector>
-#include <array>
 #include <map>
 
-#include "ResourceManager.h"
-#include "RoomManager.h"
+#include "Sprite.h"
+#include "Renderer.h"
 
 namespace Zelda
 {
 
-// Tilemap array of room and room dimensions (WxH)
-constexpr int TILE_WIDTH = 16;
-constexpr int TILE_HEIGHT = 16;
-
-constexpr int ROOM_TILES_ACROSS = 10;
-constexpr int ROOM_TILES_DOWN = 8;
-
-// Tilemap image will always be 128xH
-constexpr int TILE_MAP_WIDTH = 128;
-   
-constexpr int TILE_MAP_TILES_ACROSS = (TILE_MAP_WIDTH / TILE_WIDTH);
-
-using TileRoom = std::array<std::array<int, ROOM_TILES_ACROSS>, ROOM_TILES_DOWN>;
-using TilemapArray = std::vector<TileRoom>;
-
-typedef struct
-{
-	TilemapArray rooms;     // The 10x8 room
-    int roomsAcross;   // Number of rooms across in tilemap
-    int roomsDown;     // Number of rooms down in tilemap
-	SpriteResource tilemap;       // SpriteResource constant of loaded tilemap
-} TilemapInformation;
-
 class Tilemap
 {
 public:
-	// Sets the tilemap to use
-    void setTileMap(RoomName roomname) noexcept;
-	// Get current room dimensions of tilemap
-    TileRoom getRoomTiles(size_t roomIndex) const noexcept;
 
-    int roomsDown() const noexcept;
-    int roomsAcross() const noexcept;
+    using TileIndexArray = std::vector<std::vector<int>>;
 
-    // Tilemap texture used
-    Sprite getTilemap() const noexcept;
+    struct TilemapConfig
+    {
+        size_t tilemapWidth;
+        size_t tileWidth;
+        size_t tileHeight;
+        size_t tilesAcross;
+        size_t tilesDown;
+    };
 
     Tilemap();
+    Tilemap(const Sprite& tilemap, const std::vector<TileIndexArray>& mapEntries, const TilemapConfig& config);
+    
+    void tile(const Renderer& renderer, const Sprite& tilemapSprite, size_t mapIndex) const noexcept;
+    size_t size() const noexcept;
+
 private:
-
-    // Scrolling tiles when moving out of view
-    // Loading tiles when moving to next room
-
-    TilemapInformation m_currentTileMap;
-	std::map<RoomName, TilemapInformation> m_tileMaps;
-
+    Sprite m_sprite;
+    size_t m_tilemapWidth;
+    size_t m_tileWidth;
+    size_t m_tileHeight;
+    size_t m_tilesAcross;
+    size_t m_tilesDown;
+    std::vector<TileIndexArray> m_mapEntries;
 };
+
+
 }

@@ -1,18 +1,20 @@
 #include "Camera.h"
 #include "InputControl.h"
-#include <assert.h>
+#include <cassert>
 #include "Link.h"
 #include "Renderer.h"
 #include "Depth.h"
 #include "SDL_Assert.h"
 #include "Engine.h"
+#include "TilemapManager.h"
+#include "RoomLinkManager.h"
 
 
 namespace Zelda
 {
 
 Camera::Camera() :
-    Renderable("Camera", Sprite(Renderer::getInstance().getRenderer(),CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
+    Renderable("Camera", Sprite(Renderer::getInstance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
     m_scrollX(0),
     m_scrollY(0),
     m_x(0),
@@ -26,13 +28,11 @@ Camera::Camera() :
     m_scrollRight(false),
     m_scrollDown(false),
     m_scrollUp(false),
-    m_scrolled(0),
-    m_nextRoomIndex(0)
+    m_scrolled(0)
 {
     // TODO: Free textures on shutdown
     assert(m_sprite.data());
-    m_swapCanvas = Sprite(Renderer::getInstance().getRenderer(), m_sprite.width(), m_sprite.height());
-    assert(m_swapCanvas.data());
+    // TODO: Remove Camera from Renderable
     Renderer::getInstance().addRenderable(this);
 }
 
@@ -44,63 +44,41 @@ void Camera::setPosition(int x, int y) noexcept
     m_y = y;
 }
 
-void Camera::renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, uint16_t roomIndex) noexcept
+void Camera::updateNextRoomLocation(const int nextRoomIndex) const noexcept
 {
-    // Get the room tiles for the current room index
-    // Calculate index into room array from co-ordinates
-    auto const roomTiles = m_tilemap.getRoomTiles(roomIndex);
-
-    // Get texture used
-    auto const tilemapTexture = m_tilemap.getTilemap();
-
-    auto const target = Renderer::getInstance().pushRenderingTarget(srcTexture);
-
-    // Start painting the canvas with tiles
-    for (int tileY = 0; tileY < ROOM_TILES_DOWN; tileY++)
+    if (nextRoomIndex == -1)
     {
-        for (int tileX = 0; tileX < ROOM_TILES_ACROSS; tileX++)
-        {
-            // The tile will be the ID in the image
-            auto const tileID = roomTiles[tileY][tileX];
-
-            // Calculate where to grab the tile from in the image
-            auto const srcTileX = TILE_WIDTH * (tileID % TILE_MAP_TILES_ACROSS);
-            auto const srcTileY = TILE_HEIGHT * (tileID / TILE_MAP_TILES_ACROSS);
-
-            // Paste tile from tilemap
-            tilemapTexture.drawSprite(Renderer::getInstance().getRenderer(),
-                Rect<int>{ srcTileX, srcTileY, TILE_WIDTH, TILE_HEIGHT }, 
-                Rect<int>{ tileX * TILE_WIDTH, tileY * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT });
-        }
+        assert(false && "Invalid next room index");
     }
+    else
+    {
+        TilemapManager::getInstance().setNextRoomLocation(nextRoomIndex);
+        RoomLinkManager::getInstance().setRoomLocation(nextRoomIndex);
+    }
+}
 
-    Renderer::getInstance().popRenderingTarget(target);
-
-    // Finally render the canvas
-    srcTexture.drawSprite(Renderer::getInstance().getRenderer(), 
-        Rect<int>{0,0,srcTexture.width(), srcTexture.height()}, 
-        dstRect);
+void Camera::updateCurrentRoomLocation() const noexcept
+{
+    // Update room information
+    auto const currentRoomIndex = RoomLinkManager::getInstance().currentRoom();
+    TilemapManager::getInstance().setRoomLocation(currentRoomIndex);
 }
 
 void Camera::render() noexcept
 {
     // We will only ever track the player
+    // TODO: Decouple this
     Link* player = &Link::getInstance();
 
     Vector<float> position = player->position();
     auto x = position.x;
     auto y = position.y;
 
-    // Calculate room index
-    int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
-    m_nextRoomIndex = roomIndex;
 
 
-    // TODO: Decouple Tilemap from Camera class
     // TODO: Algorithm to move Link x pixels across when scrolling 
 
-
-    // Camera scrolling is implemented by using two canvases
+        // Camera scrolling is implemented by using two canvases
     // One main canvas and a swap canvas
     // The main canvas is the one we always see on the screen
     // The swap canvas is the canvas that we see when scrolling to the next area
@@ -120,12 +98,16 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex - 1);
-        RoomManager::getInstance().transitionObjects(m_nextRoomIndex - 1, CAMERA_WIDTH, 0);
+       // RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex - 1);
+       // RoomManager::getInstance().transitionObjects(m_nextRoomIndex - 1, CAMERA_WIDTH, 0);
 
         // Put swap canvas in view
-        m_swapX = -m_swapCanvas.width();
+        m_swapX = -CAMERA_WIDTH;
         m_swapY = 0;
+
+        // Find out if we can scroll left
+        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().left);
+
     }
     else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE && !m_scrollRight)
     {
@@ -137,12 +119,15 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex + 1);
-        RoomManager::getInstance().transitionObjects(m_nextRoomIndex + 1, -CAMERA_WIDTH, 0);
+        //RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex + 1);
+        //RoomManager::getInstance().transitionObjects(m_nextRoomIndex + 1, -CAMERA_WIDTH, 0);
 
         // Put swap canvas in view
-        m_swapX = m_swapCanvas.width();
+        m_swapX = CAMERA_WIDTH;
         m_swapY = 0;
+
+        // Find out if we can scroll right
+        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().right);
     }
     else if (y < m_scrollY - SCROLL_UP_EDGE && !m_scrollUp)
     {
@@ -154,13 +139,15 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex - m_tilemap.roomsAcross());
-        RoomManager::getInstance().transitionObjects(m_nextRoomIndex - m_tilemap.roomsAcross(), 0, CAMERA_HEIGHT);
+        //RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex /*- m_tilemap.roomsAcross()*/);
+        //RoomManager::getInstance().transitionObjects(m_nextRoomIndex/* - m_tilemap.roomsAcross()*/, 0, CAMERA_HEIGHT);
 
         // Put swap canvas in view
         m_swapX = 0;
-        m_swapY = -m_swapCanvas.height();
+        m_swapY = -CAMERA_HEIGHT;
 
+        // Find out if we can scroll up
+        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().up);
     }
     else if (y > m_scrollY + CAMERA_HEIGHT - SCROLL_DOWN_EDGE && !m_scrollDown)
     {
@@ -174,12 +161,15 @@ void Camera::render() noexcept
         Engine::getInstance().pause(true);
 
         // Load next room objects
-        RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex + m_tilemap.roomsAcross());
-        RoomManager::getInstance().transitionObjects(m_nextRoomIndex + m_tilemap.roomsAcross(), 0, -CAMERA_HEIGHT);
+        //RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex /*+ m_tilemap.roomsAcross()*/);
+        //RoomManager::getInstance().transitionObjects(m_nextRoomIndex /*+ m_tilemap.roomsAcross()*/, 0, -CAMERA_HEIGHT);
 
         // Put swap canvas in view
         m_swapX = 0;
-        m_swapY = m_swapCanvas.height();
+        m_swapY = CAMERA_HEIGHT;
+
+        // Find out if we can scroll down
+        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().down);
     }
 
     if (m_scrollLeft)
@@ -188,9 +178,6 @@ void Camera::render() noexcept
         {
             m_scrollX -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-
-            // Load next room tiles
-            m_nextRoomIndex--;
         }
         else
         {
@@ -198,14 +185,13 @@ void Camera::render() noexcept
 
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
-            RoomManager::getInstance().transitionObjects(roomIndex, -CAMERA_WIDTH, 0);
-            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
+            //RoomManager::getInstance().transitionObjects(roomIndex, -CAMERA_WIDTH, 0);
+            //RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
-            RoomManager::getInstance().transitionObjects(roomIndex - 1, 0, 0);
+            //RoomManager::getInstance().transitionObjects(roomIndex - 1, 0, 0);
 
             // Update current view
-            roomIndex--;
             m_x -= CAMERA_WIDTH;
 
              // Reset initial positions
@@ -217,8 +203,8 @@ void Camera::render() noexcept
             player->setPosition(CAMERA_WIDTH + player->position().x, player->position().y);
 
             // Put swap canvas out of view
-            m_swapX = m_swapCanvas.width();
-            m_swapY = m_swapCanvas.height();
+            //m_swapX = m_swapCanvas.width();
+            //m_swapY = m_swapCanvas.height();
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -227,6 +213,10 @@ void Camera::render() noexcept
             m_scrolled = 0;
             Controller::getInstance().setController(player);
             player->resetAnimation();
+
+            // Update room information
+            updateCurrentRoomLocation();
+
         }
     }
     else if (m_scrollRight)
@@ -235,22 +225,18 @@ void Camera::render() noexcept
         {
             m_scrollX += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-
-            // Load next room tiles
-            m_nextRoomIndex++;
         }
         else
         {
 
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
-            RoomManager::getInstance().transitionObjects(roomIndex, CAMERA_WIDTH, 0);
-            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
+            //RoomManager::getInstance().transitionObjects(roomIndex, CAMERA_WIDTH, 0);
+            //RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
-            RoomManager::getInstance().transitionObjects(roomIndex + 1, 0, 0);
+            //RoomManager::getInstance().transitionObjects(roomIndex + 1, 0, 0);
 
-            roomIndex++;
             m_x += CAMERA_WIDTH;
 
             // Reset initial positions
@@ -263,8 +249,8 @@ void Camera::render() noexcept
             player->setPosition(player->position().x - CAMERA_WIDTH, player->position().y);
 
             // Put swap canvas out of view
-            m_swapX = m_swapCanvas.width();
-            m_swapY = m_swapCanvas.height();
+            //m_swapX = m_swapCanvas.width();
+            //m_swapY = m_swapCanvas.height();
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -273,6 +259,9 @@ void Camera::render() noexcept
             m_scrolled = 0;
             Controller::getInstance().setController(player);
             player->resetAnimation();
+
+            // Update room information
+            updateCurrentRoomLocation();
         }
     }
     else if (m_scrollDown)
@@ -281,9 +270,6 @@ void Camera::render() noexcept
         {
             m_scrollY += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-
-            // Load next room tiles
-            m_nextRoomIndex += m_tilemap.roomsAcross();
         }
         else
         {
@@ -292,13 +278,12 @@ void Camera::render() noexcept
 
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
-            RoomManager::getInstance().transitionObjects(roomIndex, 0, CAMERA_HEIGHT);
-            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
+           // RoomManager::getInstance().transitionObjects(roomIndex, 0, CAMERA_HEIGHT);
+           // RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
-            RoomManager::getInstance().transitionObjects(roomIndex + m_tilemap.roomsAcross(), 0, 0);
+           // RoomManager::getInstance().transitionObjects(roomIndex /*+ m_tilemap.roomsAcross()*/, 0, 0);
 
-            roomIndex += m_tilemap.roomsAcross();
             m_y += CAMERA_HEIGHT;
 
             // Reset initial positions
@@ -314,13 +299,16 @@ void Camera::render() noexcept
             // Set offsetX / offsetY to scroll 
 
             // Put swap canvas out of view
-            m_swapX = m_swapCanvas.width();
-            m_swapY = m_swapCanvas.height();
+            //m_swapX = m_swapCanvas.width();
+            //m_swapY = m_swapCanvas.height();
 
             m_scrollDown = false;
             m_scrolled = 0;
             Controller::getInstance().setController(player);
             player->resetAnimation();
+
+            // Update room information
+            updateCurrentRoomLocation();
         }
     }
     else if (m_scrollUp)
@@ -329,21 +317,17 @@ void Camera::render() noexcept
         {
             m_scrollY -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
-
-            // Load next room tiles
-            m_nextRoomIndex -= m_tilemap.roomsAcross();
         }
         else
         {
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
-            RoomManager::getInstance().transitionObjects(roomIndex, 0, -CAMERA_HEIGHT);
-            RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
+           // RoomManager::getInstance().transitionObjects(roomIndex, 0, -CAMERA_HEIGHT);
+           // RoomManager::getInstance().roomDo(RoomAction::ROOM_CLEAR, roomIndex);
 
             // Remove transition from loaded objects
-            RoomManager::getInstance().transitionObjects(roomIndex - m_tilemap.roomsAcross(), 0, 0);
+           // RoomManager::getInstance().transitionObjects(roomIndex /*- m_tilemap.roomsAcross()*/, 0, 0);
 
-            roomIndex -= m_tilemap.roomsAcross();
             m_y -= CAMERA_HEIGHT;
 
             // Reset initial positions
@@ -355,8 +339,8 @@ void Camera::render() noexcept
             player->setPosition(player->position().x, CAMERA_HEIGHT + player->position().y);
 
             // Put swap canvas out of view
-            m_swapX = m_swapCanvas.width();
-            m_swapY = m_swapCanvas.height();
+            //m_swapX = m_swapCanvas.width();
+            //m_swapY = m_swapCanvas.height();
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -365,41 +349,31 @@ void Camera::render() noexcept
             m_scrolled = 0;
             Controller::getInstance().setController(player);
             player->resetAnimation();
+
+            // Update room information
+            updateCurrentRoomLocation();
         }
     }
 
     // Set position of dungeon marker if Link in dungeon
-    int dx = roomIndex % m_tilemap.roomsAcross();
+    int dx = 0;// roomIndex;//% m_tilemap.roomsAcross();
     // The y offset is calculated because we line the dungeon map array with 1s on the top and right
     // if roomsDown > 9 then we'll get assertion failure
-    int dy = (DUNGEON_MAX_BLOCKS_Y - m_tilemap.roomsDown()) + (roomIndex / m_tilemap.roomsAcross());
+    int dy = 0;// (DUNGEON_MAX_BLOCKS_Y - m_tilemap.roomsDown()) + (roomIndex / m_tilemap.roomsAcross());
 
-    player->setDungeonMarkerLocation(dx, dy);
+    //player->setDungeonMarkerLocation(dx, dy);
 
     // Render the main view
-    renderTileMap(Rect<int>{ m_screenX - m_scrollX, m_screenY - m_scrollY, m_sprite.width(), m_sprite.height() }, m_sprite, roomIndex);
 
-    // Render the swap canvas out of view 
-    renderTileMap(Rect<int>{(m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY, m_swapCanvas.width(), m_swapCanvas.height() }, m_swapCanvas, m_nextRoomIndex);
+    // TODO: Wrap in RoomManager class which will handle the tilemap and roomlink positions
+	TilemapManager::getInstance().setRoomPosition(m_screenX - m_scrollX, m_screenY - m_scrollY);
+	TilemapManager::getInstance().setNextRoomPosition((m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY);
+
 }
 
 void Camera::update() noexcept
 {
 
-}
-
-// Set the tilemap to use
-void Camera::setTileMap(RoomName roomname) noexcept
-{
-    // Set the internal map to use
-    m_tilemap.setTileMap(roomname);
-
-    // And room to use
-    RoomManager::getInstance().setRoom(roomname);
-
-    // And load the current room objects
-    int roomIndex = ((m_y / CAMERA_HEIGHT) * m_tilemap.roomsAcross()) + (m_x / CAMERA_WIDTH);
-    RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, roomIndex);
 }
 
 void Camera::setScrollSpeed(int scrollSpeed) noexcept

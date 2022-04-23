@@ -9,6 +9,7 @@ public:
         static T m_instance;
         return m_instance;
     }
+
 protected:
     // No Copying
     Singleton(const Singleton&) = delete;

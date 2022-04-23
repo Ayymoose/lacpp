@@ -171,11 +171,14 @@
     <ClCompile Include="..\..\Source\Enemy\Goomba.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Pairodd.cpp" />
     <ClCompile Include="..\..\Source\Engine\AnimatedObject.cpp" />
+    <ClCompile Include="..\..\Source\Engine\DataManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\Renderer.cpp" />
     <ClCompile Include="..\..\Source\Engine\ResourceManager.cpp" />
+    <ClCompile Include="..\..\Source\Engine\RoomLinkManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\RoomManager.cpp" />
     <ClCompile Include="..\..\Source\Enemy\BuzzBlob.cpp" />
     <ClCompile Include="..\..\Source\Engine\Sprite.cpp" />
+    <ClCompile Include="..\..\Source\Engine\TilemapManager.cpp" />
     <ClCompile Include="..\..\Source\Player\FileSelect.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Peahat.cpp" />
     <ClCompile Include="..\..\Source\Enemy\SandCrab.cpp" />
@@ -218,6 +221,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Engine\Colour.h" />
+    <ClInclude Include="..\..\Source\Engine\DataManager.h" />
+    <ClInclude Include="..\..\Source\Engine\Debug.h" />
     <ClInclude Include="..\..\Source\Engine\Jenkins.h" />
     <ClInclude Include="..\..\Source\Enemy\ShroudedStalfos.h" />
     <ClInclude Include="..\..\Source\Enemy\Darknut.h" />
@@ -229,9 +234,11 @@
     <ClInclude Include="..\..\Source\Engine\AnimatedObject.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
     <ClInclude Include="..\..\Source\Engine\ResourceManager.h" />
+    <ClInclude Include="..\..\Source\Engine\RoomLinkManager.h" />
     <ClInclude Include="..\..\Source\Engine\RoomManager.h" />
     <ClInclude Include="..\..\Source\Enemy\BuzzBlob.h" />
     <ClInclude Include="..\..\Source\Engine\Sprite.h" />
+    <ClInclude Include="..\..\Source\Engine\TilemapManager.h" />
     <ClInclude Include="..\..\Source\Interfaces\Updateable.h" />
     <ClInclude Include="..\..\Source\Player\FileSelect.h" />
     <ClInclude Include="..\..\Source\Enemy\Peahat.h" />

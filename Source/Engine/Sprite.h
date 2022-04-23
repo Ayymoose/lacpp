@@ -36,6 +36,8 @@ public:
     //Sprite(const Sprite& sprite) noexcept;
     //Sprite(Sprite&& sprite) noexcept;
 
+    // TODO: Make Sprite class smary with free() in destructor?
+
     int width() const noexcept;
     int height() const noexcept;
     void free() noexcept;
@@ -55,10 +57,11 @@ public:
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());
         
-        assert(srcRect.w <= srcTexture.width());
-        assert(srcRect.h <= srcTexture.height());
-        assert(dstRect.w <= dstTexture.width());
-        assert(dstRect.h <= dstTexture.height());
+        // Check rects within boundaries of sprite
+        assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= srcTexture.width());
+        assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= srcTexture.height());
+        assert(dstRect.x >= 0 && dstRect.x + dstRect.w <= dstTexture.width());
+        assert(dstRect.y >= 0 && dstRect.y + dstRect.h <= dstTexture.height());
 
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
@@ -81,10 +84,11 @@ public:
         SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture.data()));
         SDL_ASSERT(SDL_SetRenderDrawColor(renderer, SDL_Red(colour), SDL_Green(colour), SDL_Blue(colour), 0));
 
-        // assert rect boundaries
         assert(srcRect != Rect<R>());
-        assert(srcRect.w <= srcTexture.width());
-        assert(srcRect.h <= srcTexture.height());
+
+        // Check srcRect within boundaries of sprite
+        assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= srcTexture.width());
+        assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= srcTexture.height());
 
         auto const rectSrc = rectToSDLRect(srcRect);
 
@@ -103,6 +107,10 @@ public:
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());
 
+        // Check srcRect within boundaries of sprite
+        assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
+        assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
 
@@ -117,10 +125,15 @@ public:
         assert(srcRect != Rect<R1>());
         assert(dstRect != Rect<R2>());
 
+        // Check srcRect within boundaries of sprite
+        assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
+        assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+
         auto rectSrc = rectToSDLRect(srcRect);
         auto rectDst = rectToSDLRect(dstRect);
 
-        if constexpr(std::is_same<R2, int>::value)
+        // TODO: Why do we need if constrexpr here?
+        if constexpr(std::is_integral_v<R2>)
         {
            SDL_ASSERT(SDL_RenderCopyEx(renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)));
         }

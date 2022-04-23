@@ -10,7 +10,8 @@ template <typename T>
 class Vector
 {
 public:
-    static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "Invalid template type");
+    static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "Invalid template type");
+
     constexpr Vector() : x(0), y(0) {};
     Vector(T x, T y) : x(x), y(y) {}
 

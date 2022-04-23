@@ -1,4 +1,5 @@
 #include "Resource.h"
+#include "Debug.h"
 
 namespace Zelda
 {
@@ -12,7 +13,8 @@ Sprite Resource::loadSprite(const Renderer& renderer, const std::string& path, C
     auto const loadedSurface = IMG_Load(path.c_str());
     if (!loadedSurface)
     {
-        assert(false && IMG_GetError());
+        DEBUG(DBG_ERROR, IMG_GetError());
+        assert(false);
         return Sprite();
     }
     else

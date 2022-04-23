@@ -48,6 +48,7 @@ private:
     void initControl() const noexcept;
     void initSingleton() const noexcept;
     void initWindow() noexcept;
+    void initData() const noexcept;
 
     void preRenderTestFunction() const noexcept
     {

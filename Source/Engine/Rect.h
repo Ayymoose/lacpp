@@ -9,7 +9,7 @@ namespace Zelda
 template<typename T>
 struct Rect
 {
-    static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "Invalid template type");
+    static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "Invalid template type");
 
     constexpr Rect() : x(0), y(0), w(0), h(0) {};
     constexpr Rect(T x, T y, T w, T h) : x(x), y(y), w(w), h(h) {}
@@ -24,22 +24,38 @@ struct Rect
         return !operator==(other);
     }
 
+    // TODO: Add method to check rect within rect
+
     T x;
     T y;
     T w;
     T h;
 };
 
-// if RectType is Rect<int> then return SDL_Rect
-// if RectType is Rect<float> then return SDL_FRect
-inline auto rectToSDLRect(const Rect<int>& rect) noexcept
-{
-    return SDL_Rect{ rect.x, rect.y, rect.w, rect.h };
-}
+// if RectType is Rect<integral type> then return SDL_Rect
+// if RectType is Rect<floating point type> then return SDL_FRect
 
-inline auto rectToSDLRect(const Rect<float>& rect) noexcept
+template<typename T>
+std::enable_if_t<std::is_integral_v<T>, SDL_Rect> rectToSDLRect(const Rect<T>& rect) noexcept
 {
-    return SDL_FRect{ rect.x, rect.y, rect.w, rect.h };
+    return SDL_Rect
+    {
+        static_cast<int>(rect.x), 
+        static_cast<int>(rect.y), 
+        static_cast<int>(rect.w), 
+        static_cast<int>(rect.h)
+    };
+}
+template<typename T>
+std::enable_if_t<std::is_floating_point_v<T>, SDL_FRect> rectToSDLRect(const Rect<T>& rect) noexcept
+{
+    return SDL_FRect
+    {
+        rect.x, 
+        rect.y,
+        rect.w, 
+        rect.h 
+    };
 }
 
 }
