@@ -6,8 +6,7 @@
 #include "Depth.h"
 #include "SDL_Assert.h"
 #include "Engine.h"
-#include "TilemapManager.h"
-#include "RoomLinkManager.h"
+#include "RoomManager.h"
 
 
 namespace Zelda
@@ -36,7 +35,7 @@ Camera::Camera() :
     Renderer::getInstance().addRenderable(this);
 }
 
-void Camera::setPosition(int x, int y) noexcept
+void Camera::setPosition(const int x, const int y) noexcept
 {
     assert(x % CAMERA_WIDTH == 0);
     assert(y % CAMERA_HEIGHT == 0);
@@ -44,35 +43,13 @@ void Camera::setPosition(int x, int y) noexcept
     m_y = y;
 }
 
-void Camera::updateNextRoomLocation(const int nextRoomIndex) const noexcept
-{
-    if (nextRoomIndex == -1)
-    {
-        assert(false && "Invalid next room index");
-    }
-    else
-    {
-        TilemapManager::getInstance().setNextRoomLocation(nextRoomIndex);
-        RoomLinkManager::getInstance().setRoomLocation(nextRoomIndex);
-    }
-}
-
-void Camera::updateCurrentRoomLocation() const noexcept
-{
-    // Update room information
-    auto const currentRoomIndex = RoomLinkManager::getInstance().currentRoom();
-    TilemapManager::getInstance().setRoomLocation(currentRoomIndex);
-}
-
 void Camera::render() noexcept
 {
     // We will only ever track the player
-    // TODO: Decouple this
-    Link* player = &Link::getInstance();
-
-    Vector<float> position = player->position();
-    auto x = position.x;
-    auto y = position.y;
+    auto player = &Link::getInstance();
+    auto const position = player->position();
+    auto const x = position.x;
+    auto const y = position.y;
 
 
 
@@ -106,7 +83,7 @@ void Camera::render() noexcept
         m_swapY = 0;
 
         // Find out if we can scroll left
-        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().left);
+        RoomManager::getInstance().updateNextRoomLocation(RoomDirection::LEFT);
 
     }
     else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE && !m_scrollRight)
@@ -127,7 +104,7 @@ void Camera::render() noexcept
         m_swapY = 0;
 
         // Find out if we can scroll right
-        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().right);
+        RoomManager::getInstance().updateNextRoomLocation(RoomDirection::RIGHT);
     }
     else if (y < m_scrollY - SCROLL_UP_EDGE && !m_scrollUp)
     {
@@ -147,7 +124,7 @@ void Camera::render() noexcept
         m_swapY = -CAMERA_HEIGHT;
 
         // Find out if we can scroll up
-        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().up);
+        RoomManager::getInstance().updateNextRoomLocation(RoomDirection::UP);
     }
     else if (y > m_scrollY + CAMERA_HEIGHT - SCROLL_DOWN_EDGE && !m_scrollDown)
     {
@@ -169,7 +146,7 @@ void Camera::render() noexcept
         m_swapY = CAMERA_HEIGHT;
 
         // Find out if we can scroll down
-        updateNextRoomLocation(RoomLinkManager::getInstance().roomLink().down);
+        RoomManager::getInstance().updateNextRoomLocation(RoomDirection::DOWN);
     }
 
     if (m_scrollLeft)
@@ -199,12 +176,8 @@ void Camera::render() noexcept
             m_screenY = 0;
             m_scrollX = 0;
             m_scrollY = 0;
-            // Reset Link position
-            player->setPosition(CAMERA_WIDTH + player->position().x, player->position().y);
 
-            // Put swap canvas out of view
-            //m_swapX = m_swapCanvas.width();
-            //m_swapY = m_swapCanvas.height();
+            // TODO: Reset player animation
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -215,7 +188,7 @@ void Camera::render() noexcept
             player->resetAnimation();
 
             // Update room information
-            updateCurrentRoomLocation();
+            RoomManager::getInstance().updateCurrentRoomLocation();
 
         }
     }
@@ -245,13 +218,6 @@ void Camera::render() noexcept
             m_scrollX = 0;
             m_scrollY = 0;
 
-            // Reset Link position
-            player->setPosition(player->position().x - CAMERA_WIDTH, player->position().y);
-
-            // Put swap canvas out of view
-            //m_swapX = m_swapCanvas.width();
-            //m_swapY = m_swapCanvas.height();
-
             // Unpause engine
             Engine::getInstance().pause(false);
 
@@ -261,7 +227,7 @@ void Camera::render() noexcept
             player->resetAnimation();
 
             // Update room information
-            updateCurrentRoomLocation();
+            RoomManager::getInstance().updateCurrentRoomLocation();
         }
     }
     else if (m_scrollDown)
@@ -291,24 +257,14 @@ void Camera::render() noexcept
             m_screenY = 0;
             m_scrollX = 0;
             m_scrollY = 0;
-            // Reset Link position
-            player->setPosition(player->position().x, player->position().y - CAMERA_HEIGHT);
-
-            // Take a snapshot of the canvas and use that for display
-            // Clear the current room objects
-            // Set offsetX / offsetY to scroll 
-
-            // Put swap canvas out of view
-            //m_swapX = m_swapCanvas.width();
-            //m_swapY = m_swapCanvas.height();
-
+           
             m_scrollDown = false;
             m_scrolled = 0;
             Controller::getInstance().setController(player);
             player->resetAnimation();
 
             // Update room information
-            updateCurrentRoomLocation();
+            RoomManager::getInstance().updateCurrentRoomLocation();
         }
     }
     else if (m_scrollUp)
@@ -335,12 +291,6 @@ void Camera::render() noexcept
             m_screenY = 0;
             m_scrollX = 0;
             m_scrollY = 0;
-            // Reset Link position
-            player->setPosition(player->position().x, CAMERA_HEIGHT + player->position().y);
-
-            // Put swap canvas out of view
-            //m_swapX = m_swapCanvas.width();
-            //m_swapY = m_swapCanvas.height();
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -351,7 +301,7 @@ void Camera::render() noexcept
             player->resetAnimation();
 
             // Update room information
-            updateCurrentRoomLocation();
+            RoomManager::getInstance().updateCurrentRoomLocation();
         }
     }
 
@@ -363,11 +313,8 @@ void Camera::render() noexcept
 
     //player->setDungeonMarkerLocation(dx, dy);
 
-    // Render the main view
-
-    // TODO: Wrap in RoomManager class which will handle the tilemap and roomlink positions
-	TilemapManager::getInstance().setRoomPosition(m_screenX - m_scrollX, m_screenY - m_scrollY);
-	TilemapManager::getInstance().setNextRoomPosition((m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY);
+    RoomManager::getInstance().updateCurrentRoomPosition(m_screenX - m_scrollX, m_screenY - m_scrollY);
+    RoomManager::getInstance().updateNextRoomPosition((m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY);
 
 }
 
@@ -376,7 +323,7 @@ void Camera::update() noexcept
 
 }
 
-void Camera::setScrollSpeed(int scrollSpeed) noexcept
+void Camera::setScrollSpeed(const int scrollSpeed) noexcept
 {
     assert((CAMERA_WIDTH % scrollSpeed == 0) && "scrollSpeed not multiple of CAMERA_WIDTH");
     assert((CAMERA_HEIGHT % scrollSpeed == 0) && "scrollSpeed not multiple of CAMERA_HEIGHT");

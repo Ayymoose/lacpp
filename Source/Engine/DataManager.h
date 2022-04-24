@@ -13,9 +13,9 @@ public:
 private:
     DataManager() = default;
 
-    void loadTilemaps() const noexcept;
     void loadSprites() const noexcept;
-    void loadRoomLinks() const noexcept;
+    void loadRooms() const noexcept;
+
 };
 
 };

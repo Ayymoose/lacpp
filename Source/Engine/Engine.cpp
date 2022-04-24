@@ -8,7 +8,7 @@
 #include "RoomManager.h"
 #include "TilemapManager.h"
 #include "DataManager.h"
-//#include <thread>
+#include "RoomLinkManager.h"
 
 namespace Zelda
 {
@@ -102,6 +102,7 @@ void Engine::initSingleton() const noexcept
     RoomManager::getInstance();
     Camera::getInstance();
     TilemapManager::getInstance();
+    RoomLinkManager::getInstance();
     DataManager::getInstance();
 }
 

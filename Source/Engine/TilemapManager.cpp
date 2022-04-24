@@ -7,13 +7,13 @@
 namespace Zelda
 {
 
-void TilemapManager::createTilemap(const TilemapName& mapName, const Sprite& tilemap, const TileIndexArrays& mapEntries, const Tilemap::TilemapConfig& config)
+void TilemapManager::createTilemap(RoomName mapName, const Sprite& tilemap, const TileIndexArrays& mapEntries, const Tilemap::TilemapConfig& config)
 {
     assert(m_tilemaps.count(mapName) == 0 && "Given mapName already exists");
     m_tilemaps[mapName] = Tilemap(tilemap, mapEntries, config);
 }
 
-void TilemapManager::useTilemap(const TilemapName& mapName)
+void TilemapManager::useTilemap(RoomName mapName)
 {
     assert(m_tilemaps.count(mapName) == 1 && "Given mapName does NOT exist");
     m_currentTilemapname = mapName;
@@ -52,6 +52,11 @@ int TilemapManager::roomLocation() const noexcept
 
 void TilemapManager::render() noexcept
 {
+    if (m_currentTilemapname == RoomName::RM_NONE)
+    {
+        return;
+    }
+
     // Render the main canvas
     renderTileMap(Rect<int>
     {
@@ -90,7 +95,7 @@ TilemapManager::TilemapManager() :
     m_nextRoomY(0),
     m_currentRoom(0),
     m_nextRoom(0),
-    m_currentTilemapname(TilemapName::TM_NONE),
+    m_currentTilemapname(RoomName::RM_NONE),
     m_swapCanvas(Renderer::getInstance().getRenderer(), m_sprite.width(), m_sprite.height())
 {
     // TODO: Free textures on shutdown

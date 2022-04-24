@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Singleton.h"
+#include "RoomName.h"
+
 #include <unordered_map>
 #include <string>
 
@@ -9,7 +11,6 @@ namespace Zelda
 
 // This class is responsible for linking rooms together
 
-using RoomLinkName = std::string;
 using RoomIndex = int;
 
 struct RoomLink
@@ -26,8 +27,8 @@ class RoomLinkManager : public Singleton<RoomLinkManager>
 {
     friend class Singleton<RoomLinkManager>;
 public:
-    void createRoomLink(const RoomLinkName& roomLinkName, const RoomLinkMap& roomLinkMap);
-    void useRoomLink(const RoomLinkName& roomLinkName);
+    void createRoomLink(RoomName roomLinkName, const RoomLinkMap& roomLinkMap);
+    void useRoomLink(RoomName roomLinkName);
     void setRoomLocation(const int roomLocation);
     RoomIndex currentRoom() const noexcept;
     RoomLink roomLink() noexcept;
@@ -35,8 +36,8 @@ public:
 private:
     RoomLinkManager();
     RoomIndex m_currentRoom;
-    RoomLinkName m_currentRoomLink;
-    std::unordered_map<RoomLinkName, RoomLinkMap> m_roomLinkMap;
+    RoomName m_currentRoomLink;
+    std::unordered_map<RoomName, RoomLinkMap> m_roomLinkMap;
 };
 
 };

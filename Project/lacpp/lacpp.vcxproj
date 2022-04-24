@@ -234,6 +234,7 @@
     <ClInclude Include="..\..\Source\Engine\AnimatedObject.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
     <ClInclude Include="..\..\Source\Engine\ResourceManager.h" />
+    <ClInclude Include="..\..\Source\Engine\RoomName.h" />
     <ClInclude Include="..\..\Source\Engine\RoomLinkManager.h" />
     <ClInclude Include="..\..\Source\Engine\RoomManager.h" />
     <ClInclude Include="..\..\Source\Enemy\BuzzBlob.h" />

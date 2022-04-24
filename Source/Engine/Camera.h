@@ -7,7 +7,6 @@
 #include "Character.h"
 #include "Singleton.h"
 #include "Timer.h"
-#include "Tilemap.h"
 #include "RoomManager.h"
 
 namespace Zelda
@@ -33,8 +32,9 @@ class Camera : public Renderable, public Singleton<Camera>, public Updateable
 {
     friend class Singleton<Camera>;
 public:
-    void setPosition(int x, int y) noexcept;
-    void setScrollSpeed(int scrollSpeed) noexcept;
+    void setPosition(const int x, const int y) noexcept;
+    void setScrollSpeed(const int scrollSpeed) noexcept;
+
     void render() noexcept override;
     void update() noexcept override;
 
@@ -70,9 +70,6 @@ public:
 private:
     Camera();
 
-    void updateNextRoomLocation(const int nextRoomIndex) const noexcept;
-    void updateCurrentRoomLocation() const noexcept;
-
     // m_scrollX and m_scrollY are manipulated to achieve scrolling
     int m_scrollX;
     int m_scrollY;
@@ -99,6 +96,8 @@ private:
 
     // How many we scrolled by
     int m_scrolled;
+
+    Vector<float> m_trackPosition;
 
 };
 }

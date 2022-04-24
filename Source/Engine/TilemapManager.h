@@ -4,17 +4,13 @@
 #include "Renderable.h"
 #include "Sprite.h"
 #include "Tilemap.h"
+#include "RoomName.h"
 
 #include <unordered_map>
 
 namespace Zelda
 {
 
-enum class TilemapName
-{
-    TM_NONE,
-    TM_TAIL_CAVE
-};
 
 using TileIndexArray = std::vector<std::vector<int>>;
 using TileIndexArrays = std::vector<TileIndexArray>;
@@ -25,10 +21,10 @@ class TilemapManager : public Singleton<TilemapManager>, Renderable
     friend class Singleton<TilemapManager>;
 public:
     // Associates the tilemap data provided with mapName
-    void createTilemap(const TilemapName& mapName, const Sprite& tilemap, const TileIndexArrays& mapEntry, const Tilemap::TilemapConfig& config);
+    void createTilemap(RoomName mapName, const Sprite& tilemap, const TileIndexArrays& mapEntry, const Tilemap::TilemapConfig& config);
 
     // Sets the current map to be mapName
-    void useTilemap(const TilemapName& mapName);
+    void useTilemap(RoomName mapName);
 
     // Sets position of the main and next room canvas on screen
     void setRoomPosition(const int x, const int y);
@@ -54,9 +50,9 @@ private:
     size_t m_currentRoom;
     size_t m_nextRoom;
 
-    TilemapName m_currentTilemapname;
+    RoomName m_currentTilemapname;
     Sprite m_swapCanvas;
-    std::unordered_map<TilemapName, Tilemap> m_tilemaps;
+    std::unordered_map<RoomName, Tilemap> m_tilemaps;
 };
 
 };

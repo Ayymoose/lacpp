@@ -4,6 +4,8 @@
 #include "RoomLinkManager.h"
 #include "Colour.h"
 
+#include "RoomManager.h"
+
 namespace Zelda
 {
 
@@ -11,8 +13,7 @@ void DataManager::loadData() const noexcept
 {
     // TODO: Load data from file
 	loadSprites();
-    loadTilemaps();
-	loadRoomLinks();
+	loadRooms();
 }
 
 void DataManager::loadSprites() const noexcept
@@ -28,8 +29,12 @@ void DataManager::loadSprites() const noexcept
 
 }
 
-void DataManager::loadTilemaps() const noexcept
+void DataManager::loadRooms() const noexcept
 {
+
+	// TODO: Ideally, RoomManager would call createRoom() that does this step but it's not easy
+	// as we aren't loading data from file yet
+
 	Tilemap::TilemapConfig config;
 	config.tileHeight = 16;
 	config.tileWidth = 16;
@@ -37,7 +42,7 @@ void DataManager::loadTilemaps() const noexcept
 	config.tilesDown = 8;
 	config.tilemapWidth = 160;
 
-    const TileIndexArrays tileIndexArrays = 
+	const TileIndexArrays tileIndexArrays =
 	{
 		{
 			{
@@ -388,21 +393,13 @@ void DataManager::loadTilemaps() const noexcept
 			}
 		},
 	};
-    
-	TilemapManager::getInstance().createTilemap(
-		TilemapName::TM_TAIL_CAVE,
-		ResourceManager::getInstance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE], 
-		tileIndexArrays, 
+
+	TilemapManager::getInstance().createTilemap(RoomName::RM_TAIL_CAVE,
+		ResourceManager::getInstance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
+		tileIndexArrays,
 		config);
 
-	TilemapManager::getInstance().useTilemap(TilemapName::TM_TAIL_CAVE);
-	TilemapManager::getInstance().setRoomLocation(28);
-}
-
-
-void DataManager::loadRoomLinks() const noexcept
-{
-	// TODO: Read from file
+		// TODO: Read from file
 	RoomLinkMap roomLinkMap =
 	{
 		{0,{-1,1,-1,6}},
@@ -436,9 +433,13 @@ void DataManager::loadRoomLinks() const noexcept
 		{28,{27,-1,24,-1}},
 	};
 
-	RoomLinkManager::getInstance().createRoomLink("TAIL_CAVE", roomLinkMap);
-	RoomLinkManager::getInstance().useRoomLink("TAIL_CAVE");
-	RoomLinkManager::getInstance().setRoomLocation(28);
+	RoomLinkManager::getInstance().createRoomLink(RoomName::RM_TAIL_CAVE, roomLinkMap);
+
+
+	// TODO: Setup initial starting positions somewhere
+	RoomManager::getInstance().useRoom(RoomName::RM_TAIL_CAVE);
+	RoomManager::getInstance().setRoomLocation(28);
 }
+
 
 };

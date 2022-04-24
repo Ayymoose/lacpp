@@ -3,13 +3,13 @@
 
 namespace Zelda
 {
-void RoomLinkManager::createRoomLink(const RoomLinkName& roomLinkName, const RoomLinkMap& roomLinkMap)
+void RoomLinkManager::createRoomLink(RoomName roomLinkName, const RoomLinkMap& roomLinkMap)
 {
     assert(m_roomLinkMap.count(roomLinkName) == 0 && "Invalid roomLinkName");
     m_roomLinkMap[roomLinkName] = roomLinkMap;
 }
 
-void RoomLinkManager::useRoomLink(const RoomLinkName& roomLinkName)
+void RoomLinkManager::useRoomLink(RoomName roomLinkName)
 {
     assert(m_roomLinkMap.count(roomLinkName) == 1 && "Given roomLinkName does NOT exist");
     m_currentRoomLink = roomLinkName;
@@ -32,7 +32,7 @@ RoomLink RoomLinkManager::roomLink() noexcept
     return m_roomLinkMap[m_currentRoomLink][m_currentRoom];
 }
 
-RoomLinkManager::RoomLinkManager() : m_currentRoom(0)
+RoomLinkManager::RoomLinkManager() : m_currentRoom(0), m_currentRoomLink(RoomName::RM_NONE)
 {
 }
 
