@@ -19,8 +19,8 @@ void Engine::init() noexcept
     initAudio();
     initControl();
     initWindow();
-    initSingleton();
     initData();
+    initSingleton();
 
     m_initialised = true;
 
@@ -98,12 +98,14 @@ void Engine::initSingleton() const noexcept
     Debug::getInstance();
     Renderer::getInstance();
     ResourceManager::getInstance();
+    Controller::getInstance();
     Keyboard::getInstance();
     RoomManager::getInstance();
     Camera::getInstance();
     TilemapManager::getInstance();
     RoomLinkManager::getInstance();
     DataManager::getInstance();
+    Link::getInstance();
 }
 
 void Engine::initWindow() noexcept

@@ -6,6 +6,11 @@
 
 #include "RoomManager.h"
 
+
+// TODO: Remove when defaults are set
+#include "Link.h"
+#include "Controller.h"
+
 namespace Zelda
 {
 
@@ -439,6 +444,7 @@ void DataManager::loadRooms() const noexcept
 	// TODO: Setup initial starting positions somewhere
 	RoomManager::getInstance().useRoom(RoomName::RM_TAIL_CAVE);
 	RoomManager::getInstance().setRoomLocation(28);
+	Controller::getInstance().setController(&Link::getInstance());
 }
 
 

@@ -19,10 +19,11 @@ constexpr int CAMERA_HEIGHT = 128;
 constexpr int HUD_HEIGHT = 16;
 
 // How much edge pixels to add to the width/height of the character before it triggers a scroll
+// TODO: Check these again, along with the scrolling, when animation corrected to see if these are correct
 constexpr int SCROLL_RIGHT_EDGE = 12;
 constexpr int SCROLL_LEFT_EDGE = 4;
-constexpr int SCROLL_UP_EDGE = 2;
-constexpr int SCROLL_DOWN_EDGE = HUD_HEIGHT;
+constexpr int SCROLL_UP_EDGE = 4;
+constexpr int SCROLL_DOWN_EDGE = HUD_HEIGHT - 4;
 
 // How many pixels per frame the camera scrolls
 constexpr int CAMERA_SCROLL_SPEED = 4;
@@ -84,7 +85,7 @@ private:
 
     int m_swapX;
     int m_swapY;
-        
+       
     // Scrolling speed
     int m_scrollSpeed;
 

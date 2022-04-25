@@ -73,7 +73,7 @@ float Link::maxHealth() const noexcept
 void Link::update() noexcept
 {
     //////////////////////////////////////////////////
-    if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
+    /*if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
     {
         m_position.x -= 0.75;
     }
@@ -88,7 +88,7 @@ void Link::update() noexcept
     if (Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
         m_position.y -= 0.75;
-    }
+    }*/
     //////////////////////////////////////////////////
 
 
@@ -142,6 +142,22 @@ void Link::cull() noexcept
 
 void Link::control() noexcept
 {
+    if (Keyboard::getInstance().keyPushed(BUTTON_LEFT))
+    {
+        m_position.x -= 1;
+    }
+    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
+    {
+        m_position.x += 1;
+    }
+    if (Keyboard::getInstance().keyPushed(BUTTON_DOWN))
+    {
+        m_position.y += 1;
+    }
+    if (Keyboard::getInstance().keyPushed(BUTTON_UP))
+    {
+        m_position.y -= 1;
+    }
 }
 
 void Link::attack() noexcept

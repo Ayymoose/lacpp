@@ -155,6 +155,12 @@ void Camera::render() noexcept
         {
             m_scrollX -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
+
+            // Move player slowly with camera
+            constexpr float leftSteps = 14.0f;
+            auto const cameraSteps = CAMERA_WIDTH / m_scrollSpeed;
+            auto const pushSteps = leftSteps / cameraSteps;
+            player->setPosition(player->position().x - pushSteps, player->position().y);
         }
         else
         {
@@ -177,7 +183,7 @@ void Camera::render() noexcept
             m_scrollX = 0;
             m_scrollY = 0;
 
-            // TODO: Reset player animation
+            player->setPosition(CAMERA_WIDTH + player->position().x, player->position().y);
 
             // Unpause engine
             Engine::getInstance().pause(false);
@@ -198,6 +204,12 @@ void Camera::render() noexcept
         {
             m_scrollX += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
+
+            // Move player slowly with camera
+            constexpr float rightSteps = 14.0f;
+            auto const cameraSteps = CAMERA_WIDTH / m_scrollSpeed;
+            auto const pushSteps = rightSteps / cameraSteps;
+            player->setPosition(player->position().x + pushSteps, player->position().y);
         }
         else
         {
@@ -218,6 +230,8 @@ void Camera::render() noexcept
             m_scrollX = 0;
             m_scrollY = 0;
 
+            player->setPosition(player->position().x - CAMERA_WIDTH, player->position().y);
+
             // Unpause engine
             Engine::getInstance().pause(false);
 
@@ -236,6 +250,12 @@ void Camera::render() noexcept
         {
             m_scrollY += m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
+
+            // Move player slowly with camera
+            constexpr float downSteps = 12.0f;
+            auto const cameraSteps = CAMERA_HEIGHT / m_scrollSpeed;
+            auto const pushSteps = downSteps / cameraSteps;
+            player->setPosition(player->position().x, player->position().y + pushSteps);
         }
         else
         {
@@ -257,6 +277,8 @@ void Camera::render() noexcept
             m_screenY = 0;
             m_scrollX = 0;
             m_scrollY = 0;
+
+            player->setPosition(player->position().x, player->position().y - CAMERA_HEIGHT);
            
             m_scrollDown = false;
             m_scrolled = 0;
@@ -273,6 +295,12 @@ void Camera::render() noexcept
         {
             m_scrollY -= m_scrollSpeed;
             m_scrolled += m_scrollSpeed;
+
+            // Move player slowly with camera
+            constexpr float upSteps = 12.0f;
+            auto const cameraSteps = CAMERA_HEIGHT / m_scrollSpeed;
+            auto const pushSteps = upSteps / cameraSteps;
+            player->setPosition(player->position().x, player->position().y - pushSteps);
         }
         else
         {
@@ -291,6 +319,8 @@ void Camera::render() noexcept
             m_screenY = 0;
             m_scrollX = 0;
             m_scrollY = 0;
+
+            player->setPosition(player->position().x, CAMERA_HEIGHT + player->position().y);
 
             // Unpause engine
             Engine::getInstance().pause(false);
