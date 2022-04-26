@@ -506,7 +506,12 @@ InventoryWeapon Inventory::weaponB() const noexcept
     return m_weaponB;
 }
 
-void Inventory::setDungeonLocationMarker(int x, int y) noexcept
+Vector<int> Inventory::dungeonMarkerLocation() const noexcept
+{
+    return m_dungeonPosition;
+}
+
+void Inventory::setDungeonLocationMarker(const int x, const int y) noexcept
 {
     assert(x < DUNGEON_MAX_BLOCKS_X && x >= 0 && y >= 0 && y < DUNGEON_MAX_BLOCKS_Y);
 

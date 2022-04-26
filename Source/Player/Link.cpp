@@ -18,9 +18,14 @@
 namespace Zelda
 {
 
-void Link::setDungeonMarkerLocation(int x, int y) noexcept
+void Link::setDungeonMarkerLocation(const int x, const int y) noexcept
 {
     m_inventory.setDungeonLocationMarker(x, y);
+}
+
+Vector<int> Link::dungeonMarkerLocation() const noexcept
+{
+    return m_inventory.dungeonMarkerLocation();
 }
 
 Link::Link() : 
@@ -56,6 +61,10 @@ Link::Link() :
     m_health = 3;
     m_speed = 1;
     m_dir = Direction::DIRECTION_DOWN;
+
+    //m_inventory.addItem(DungeonItem::ITEM_MAP);
+
+    //m_inventory.addItem(DungeonItem::ITEM_NIGHTMARE_KEY);
 
     Renderer::getInstance().addRenderable(this);
 }
@@ -157,6 +166,14 @@ void Link::control() noexcept
     if (Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
         m_position.y -= 1;
+    }
+
+    if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
+    {
+        m_inventory.inDungeon(true);
+        m_inventory.open();
+       // Controller::getInstance().setController();
+        Controller::getInstance().pushController(&m_inventory);
     }
 }
 
@@ -496,8 +513,10 @@ void Link::move() noexcept
 // Update the player (visible state)
 void Link::updateState() noexcept
 {
-    bool shieldEquipped = m_inventory.shieldEquipped();
-    WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
+    auto shieldEquipped = false;
+    auto shieldLevel = WeaponLevel::WPN_LEVEL_NONE;
+    //bool shieldEquipped = m_inventory.shieldEquipped();
+    //WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
 
     switch (m_state)
     {

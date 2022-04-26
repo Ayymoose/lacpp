@@ -390,10 +390,12 @@ public:
     InventoryWeapon weaponB() const noexcept;
 
     // Set position of current location marker for dungeon
-    void setDungeonLocationMarker(int x, int y) noexcept;
+    Vector<int> dungeonMarkerLocation() const noexcept;
+    void setDungeonLocationMarker(const int x, const int y) noexcept;
     void getDungeonMap(Dungeon dungeon, DungeonMapEntry(&dungeonMapEntry)[DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y]) const noexcept;
     void setDungeonMapEntry(const int x, const int y, const DungeonMapEntry& dungeonMapEntry) noexcept;
 
+    // TODO: May be better off as singleton
 
     void drawSubscreen() const noexcept;
     void moveSelectorRight() noexcept;
@@ -442,6 +444,7 @@ private:
     DungeonKey m_dungeonEntraceKeys[KEY_COUNT];
 
     // Dungeon items
+    // TODO: Use std::array here
     int m_dungeonKeys[DUNGEON_COUNT];  // Number of dungeon keys (small ones)
     bool m_compass[DUNGEON_COUNT];       // Dungeon compass
     bool m_dungeonMap[DUNGEON_COUNT];   // Dungeon map
@@ -499,7 +502,7 @@ private:
     bool m_selectPressed;
 
     // Link position in dungeon map as a vector
-    Vector<uint8_t> m_dungeonPosition;
+    Vector<int> m_dungeonPosition;
 
     Timer m_dungeonMapPositionTimer;
 
@@ -581,7 +584,7 @@ private:
             { {19,false,DungeonRoomItem::ITEM_NONE}, {5,false,DungeonRoomItem::ITEM_NONE}, {17,false,DungeonRoomItem::ITEM_NONE}, {10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{10,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
             { {13,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {14,false,DungeonRoomItem::ITEM_NONE}, {11,false,DungeonRoomItem::ITEM_NONE},{15,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },
             { {0,false,DungeonRoomItem::ITEM_NONE},  {5,false,DungeonRoomItem::ITEM_NONE}, {20,false,DungeonRoomItem::ITEM_NONE}, {18,false,DungeonRoomItem::ITEM_NONE},{0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE}, {0,false,DungeonRoomItem::ITEM_NONE},  {0,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} }
-            // Rooms start at the bottom left of the map here (0,8)
+            // Rooms start at the bottom left of the map here (3, 8);
         },
         {   // Lvl 2 - Bottle Grotto
             { {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE},  {1,false,DungeonRoomItem::ITEM_NONE}, {1,false,DungeonRoomItem::ITEM_NONE} },

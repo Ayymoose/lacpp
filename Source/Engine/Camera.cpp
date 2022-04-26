@@ -51,11 +51,7 @@ void Camera::render() noexcept
     auto const x = position.x;
     auto const y = position.y;
 
-
-
-    // TODO: Algorithm to move Link x pixels across when scrolling 
-
-        // Camera scrolling is implemented by using two canvases
+    // Camera scrolling is implemented by using two canvases
     // One main canvas and a swap canvas
     // The main canvas is the one we always see on the screen
     // The swap canvas is the canvas that we see when scrolling to the next area
@@ -149,6 +145,9 @@ void Camera::render() noexcept
         RoomManager::getInstance().updateNextRoomLocation(RoomDirection::DOWN);
     }
 
+    auto dungeonMarker = player->dungeonMarkerLocation();
+    
+
     if (m_scrollLeft)
     {
         if (m_scrolled != CAMERA_WIDTH)
@@ -196,6 +195,8 @@ void Camera::render() noexcept
             // Update room information
             RoomManager::getInstance().updateCurrentRoomLocation();
 
+            dungeonMarker.x--;
+
         }
     }
     else if (m_scrollRight)
@@ -242,6 +243,8 @@ void Camera::render() noexcept
 
             // Update room information
             RoomManager::getInstance().updateCurrentRoomLocation();
+
+            dungeonMarker.x++;
         }
     }
     else if (m_scrollDown)
@@ -287,6 +290,8 @@ void Camera::render() noexcept
 
             // Update room information
             RoomManager::getInstance().updateCurrentRoomLocation();
+
+            dungeonMarker.y++;
         }
     }
     else if (m_scrollUp)
@@ -332,16 +337,13 @@ void Camera::render() noexcept
 
             // Update room information
             RoomManager::getInstance().updateCurrentRoomLocation();
+
+            dungeonMarker.y--;
         }
     }
 
     // Set position of dungeon marker if Link in dungeon
-    int dx = 0;// roomIndex;//% m_tilemap.roomsAcross();
-    // The y offset is calculated because we line the dungeon map array with 1s on the top and right
-    // if roomsDown > 9 then we'll get assertion failure
-    int dy = 0;// (DUNGEON_MAX_BLOCKS_Y - m_tilemap.roomsDown()) + (roomIndex / m_tilemap.roomsAcross());
-
-    //player->setDungeonMarkerLocation(dx, dy);
+    player->setDungeonMarkerLocation(dungeonMarker.x, dungeonMarker.y);
 
     RoomManager::getInstance().updateCurrentRoomPosition(m_screenX - m_scrollX, m_screenY - m_scrollY);
     RoomManager::getInstance().updateNextRoomPosition((m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY);
@@ -364,6 +366,7 @@ int Camera::getX() const noexcept
 {
     return m_scrollX;
 }
+
 int Camera::getY() const noexcept
 {
     return m_scrollY;

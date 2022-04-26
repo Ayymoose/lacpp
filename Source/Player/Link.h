@@ -179,7 +179,8 @@ public:
 
     bool moving() const noexcept;
     Direction direction() const noexcept;
-    void setDungeonMarkerLocation(int x, int y) noexcept;
+    void setDungeonMarkerLocation(const int x, const int y) noexcept;
+    Vector<int> dungeonMarkerLocation() const noexcept;
 
 private:
     Link();
