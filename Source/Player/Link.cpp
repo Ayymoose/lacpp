@@ -62,6 +62,8 @@ Link::Link() :
     m_speed = 1;
     m_dir = Direction::DIRECTION_DOWN;
 
+    // TODO: Superfluous header includes
+
     //m_inventory.addItem(DungeonItem::ITEM_MAP);
 
     //m_inventory.addItem(DungeonItem::ITEM_NIGHTMARE_KEY);

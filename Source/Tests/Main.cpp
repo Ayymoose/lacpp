@@ -15,7 +15,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     using namespace Zelda;
 
     // TODO: Tidy this up
-    //Engine::getInstance().init();
+    Engine::getInstance().init();
 
     // Camera::getInstance().setScrollSpeed(Zelda::CAMERA_SCROLL_SPEED);
     //Camera::getInstance().setPosition(480, 640);
@@ -29,7 +29,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     //tests.emplace_back(std::make_unique<Testable::RectTests>());
     //tests.emplace_back(std::make_unique<Testable::DialogueTests>());
     //tests.emplace_back(std::make_unique<Testable::WorldmapTests>());
-    tests.emplace_back(std::make_unique<Testable::SpriteTests>());
+    //tests.emplace_back(std::make_unique<Testable::SpriteTests>());
 
     for (auto const& test : tests)
     {

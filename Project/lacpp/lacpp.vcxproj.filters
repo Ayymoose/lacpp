@@ -123,9 +123,6 @@
     <ClCompile Include="..\..\Source\Engine\Camera.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Engine\CollisionMap.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Engine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -145,9 +142,6 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Player\Inventory.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Player\FileSelect.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Sprite.cpp">
@@ -198,9 +192,6 @@
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Vector.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\CollisionMap.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\Character.h">
@@ -331,9 +322,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Enemy\Pairodd.h">
       <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Player\FileSelect.h">
-      <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Enemy\Goomba.h">
       <Filter>Enemy</Filter>

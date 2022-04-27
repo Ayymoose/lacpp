@@ -98,7 +98,5 @@ private:
     // How many we scrolled by
     int m_scrolled;
 
-    Vector<float> m_trackPosition;
-
 };
 }

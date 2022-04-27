@@ -1,6 +1,4 @@
 #include "RoomManager.h"
-#include "TilemapManager.h"
-#include "RoomLinkManager.h"
 #include "Renderer.h"
 
 #include <cassert>
@@ -130,17 +128,23 @@ RoomManager::RoomManager()
 
 void RoomManager::useRoom(RoomName room) noexcept
 {
-    TilemapManager::getInstance().useTilemap(room);
-    TilemapManager::getInstance().setRoomLocation(0);
+    m_tilemapManager.useTilemap(room);
+    m_tilemapManager.setRoomLocation(0);
 
-    RoomLinkManager::getInstance().useRoomLink(room);
-    RoomLinkManager::getInstance().setRoomLocation(0);
+    m_roomLinkManager.useRoomLink(room);
+    m_roomLinkManager.setRoomLocation(0);
 }
 
 void RoomManager::setRoomLocation(const int roomLocation) noexcept
 {
-    TilemapManager::getInstance().setRoomLocation(roomLocation);
-    RoomLinkManager::getInstance().setRoomLocation(roomLocation);
+    m_tilemapManager.setRoomLocation(roomLocation);
+    m_roomLinkManager.setRoomLocation(roomLocation);
+}
+
+void RoomManager::createRoom(RoomName roomName, const Sprite& tilemap, const TileIndexArrays& tileIndexArrays, const Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap)
+{
+    m_tilemapManager.createTilemap(roomName, tilemap, tileIndexArrays, tilemapConfig);
+    m_roomLinkManager.createRoomLink(roomName, roomLinkMap);
 }
 
 // Loads the room objects for the current room at roomIndex
@@ -177,22 +181,22 @@ void RoomManager::transitionObjects(size_t roomIndex, int xTransition, int yTran
     }*/
 }
 
-void RoomManager::updateNextRoomLocation(RoomDirection direction) const noexcept
+void RoomManager::updateNextRoomLocation(RoomDirection direction) noexcept
 {
     int nextRoomIndex;
     switch (direction)
     {
     case RoomDirection::LEFT: 
-        nextRoomIndex = RoomLinkManager::getInstance().roomLink().left;
+        nextRoomIndex = m_roomLinkManager.roomLink().left;
         break;
     case RoomDirection::RIGHT: 
-        nextRoomIndex = RoomLinkManager::getInstance().roomLink().right;
+        nextRoomIndex = m_roomLinkManager.roomLink().right;
         break;
     case RoomDirection::UP:
-        nextRoomIndex = RoomLinkManager::getInstance().roomLink().up;
+        nextRoomIndex = m_roomLinkManager.roomLink().up;
         break;
     case RoomDirection::DOWN:
-        nextRoomIndex = RoomLinkManager::getInstance().roomLink().down;
+        nextRoomIndex = m_roomLinkManager.roomLink().down;
         break;
     default: 
         nextRoomIndex = -1; 
@@ -204,26 +208,26 @@ void RoomManager::updateNextRoomLocation(RoomDirection direction) const noexcept
     }
     else
     {
-        TilemapManager::getInstance().setNextRoomLocation(nextRoomIndex);
-        RoomLinkManager::getInstance().setRoomLocation(nextRoomIndex);
+        m_tilemapManager.setNextRoomLocation(nextRoomIndex);
+        m_roomLinkManager.setRoomLocation(nextRoomIndex);
     }
 }
 
-void RoomManager::updateCurrentRoomPosition(const int x, const int y) const noexcept
+void RoomManager::updateCurrentRoomPosition(const int x, const int y) noexcept
 {
-    TilemapManager::getInstance().setRoomPosition(x, y);
+    m_tilemapManager.setRoomPosition(x, y);
 }
 
-void RoomManager::updateNextRoomPosition(const int x, const int y) const noexcept
+void RoomManager::updateNextRoomPosition(const int x, const int y) noexcept
 {
-    TilemapManager::getInstance().setNextRoomPosition(x, y);
+    m_tilemapManager.setNextRoomPosition(x, y);
 }
 
-void RoomManager::updateCurrentRoomLocation() const noexcept
+void RoomManager::updateCurrentRoomLocation() noexcept
 {
     // Update room information
-    auto const currentRoomIndex = RoomLinkManager::getInstance().currentRoom();
-    TilemapManager::getInstance().setRoomLocation(currentRoomIndex);
+    auto const currentRoomIndex = m_roomLinkManager.currentRoom();
+    m_tilemapManager.setRoomLocation(currentRoomIndex);
 }
 
 RoomManager::~RoomManager()

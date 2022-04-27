@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Singleton.h"
 #include "Renderable.h"
 #include "Sprite.h"
 #include "Tilemap.h"
@@ -16,9 +15,8 @@ using TileIndexArray = std::vector<std::vector<int>>;
 using TileIndexArrays = std::vector<TileIndexArray>;
 // This class is responsible for displaying the two canvas's on which we draw tiles too
 
-class TilemapManager : public Singleton<TilemapManager>, Renderable
+class TilemapManager : Renderable
 {
-    friend class Singleton<TilemapManager>;
 public:
     // Associates the tilemap data provided with mapName
     void createTilemap(RoomName mapName, const Sprite& tilemap, const TileIndexArrays& mapEntry, const Tilemap::TilemapConfig& config);
@@ -36,6 +34,9 @@ public:
     int roomLocation() const noexcept;
 
     void render() noexcept override;
+
+    TilemapManager();
+
 private:
 
     void renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, size_t roomIndex) noexcept;
@@ -46,7 +47,6 @@ private:
     int m_nextRoomX;
     int m_nextRoomY;
 
-    TilemapManager();
     size_t m_currentRoom;
     size_t m_nextRoom;
 

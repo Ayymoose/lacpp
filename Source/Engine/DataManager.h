@@ -16,6 +16,8 @@ private:
     void loadSprites() const noexcept;
     void loadRooms() const noexcept;
 
+    void loadTailCave() const noexcept;
+
 };
 
 };

@@ -3,6 +3,8 @@
 #include "Singleton.h"
 #include "Renderable.h"
 #include "RoomName.h"
+#include "RoomLinkManager.h"
+#include "TilemapManager.h"
 
 #include <unordered_map>
 #include <vector>
@@ -36,20 +38,26 @@ public:
     void useRoom(RoomName roomName) noexcept;
     void setRoomLocation(const int roomLocation) noexcept;
 
+    void createRoom(RoomName roomName, const Sprite& tilemap, const TileIndexArrays& tileIndexArrays,
+        const Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap);
+
     // Load or clear room objects from the current room
     void roomDo(RoomAction action, size_t roomIndex) noexcept;
     void transitionObjects(size_t roomIndex, int xTransition, int yTransition) noexcept;
 
 
     // Room transition related functions
-    void updateCurrentRoomLocation() const noexcept;
-    void updateNextRoomLocation(RoomDirection direction) const noexcept;
-    void updateCurrentRoomPosition(const int x, const int y) const noexcept;
-    void updateNextRoomPosition(const int x, const int y) const noexcept;
+    void updateCurrentRoomLocation() noexcept;
+    void updateNextRoomLocation(RoomDirection direction) noexcept;
+    void updateCurrentRoomPosition(const int x, const int y) noexcept;
+    void updateNextRoomPosition(const int x, const int y) noexcept;
 
 private:
     RoomManager();
     ~RoomManager();
+
+    RoomLinkManager m_roomLinkManager;
+    TilemapManager m_tilemapManager;
 
     // [RoomName][Room][std::vector<Rendereable*>]
 

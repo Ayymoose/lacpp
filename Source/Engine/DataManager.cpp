@@ -34,18 +34,16 @@ void DataManager::loadSprites() const noexcept
 
 }
 
-void DataManager::loadRooms() const noexcept
+void DataManager::loadTailCave() const noexcept
 {
 
-	// TODO: Ideally, RoomManager would call createRoom() that does this step but it's not easy
-	// as we aren't loading data from file yet
-
-	Tilemap::TilemapConfig config;
-	config.tileHeight = 16;
-	config.tileWidth = 16;
-	config.tilesAcross = 10;
-	config.tilesDown = 8;
-	config.tilemapWidth = 160;
+	// TODO: const this (constexpr?)
+	Tilemap::TilemapConfig tilemapConfig;
+	tilemapConfig.tileHeight = 16;
+	tilemapConfig.tileWidth = 16;
+	tilemapConfig.tilesAcross = 10;
+	tilemapConfig.tilesDown = 8;
+	tilemapConfig.tilemapWidth = 160;
 
 	const TileIndexArrays tileIndexArrays =
 	{
@@ -399,12 +397,6 @@ void DataManager::loadRooms() const noexcept
 		},
 	};
 
-	TilemapManager::getInstance().createTilemap(RoomName::RM_TAIL_CAVE,
-		ResourceManager::getInstance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
-		tileIndexArrays,
-		config);
-
-		// TODO: Read from file
 	RoomLinkMap roomLinkMap =
 	{
 		{0,{-1,1,-1,6}},
@@ -438,10 +430,21 @@ void DataManager::loadRooms() const noexcept
 		{28,{27,-1,24,-1}},
 	};
 
-	RoomLinkManager::getInstance().createRoomLink(RoomName::RM_TAIL_CAVE, roomLinkMap);
+	// TODO: Load collision data
+	// TODO: Load enemies/room objects at some point
+
+	RoomManager::getInstance().createRoom(RoomName::RM_TAIL_CAVE,
+		ResourceManager::getInstance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
+		tileIndexArrays, tilemapConfig, roomLinkMap);
+}
+
+void DataManager::loadRooms() const noexcept
+{
+	loadTailCave();
 
 
 	// TODO: Setup initial starting positions somewhere
+	// e.g GameManager
 	RoomManager::getInstance().useRoom(RoomName::RM_TAIL_CAVE);
 	RoomManager::getInstance().setRoomLocation(28);
 	Link::getInstance().setDungeonMarkerLocation(3, 8);

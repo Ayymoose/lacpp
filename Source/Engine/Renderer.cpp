@@ -15,6 +15,7 @@ void Renderer::createRenderer(const Window& window) noexcept
     DEBUG(DBG_INFO, "Renderer created");
 }
 
+// TODO: Const all these parameters
 void Renderer::clearScreen(int colour) const noexcept
 {
     assert(m_renderer);

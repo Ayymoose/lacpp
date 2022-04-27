@@ -6,9 +6,8 @@
 #include "Controllable.h"
 #include "Enemy.h"
 #include "RoomManager.h"
-#include "TilemapManager.h"
 #include "DataManager.h"
-#include "RoomLinkManager.h"
+
 
 namespace Zelda
 {
@@ -102,8 +101,6 @@ void Engine::initSingleton() const noexcept
     Keyboard::getInstance();
     RoomManager::getInstance();
     Camera::getInstance();
-    TilemapManager::getInstance();
-    RoomLinkManager::getInstance();
     DataManager::getInstance();
     Link::getInstance();
 }

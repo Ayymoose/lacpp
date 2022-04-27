@@ -444,7 +444,6 @@ private:
     DungeonKey m_dungeonEntraceKeys[KEY_COUNT];
 
     // Dungeon items
-    // TODO: Use std::array here
     int m_dungeonKeys[DUNGEON_COUNT];  // Number of dungeon keys (small ones)
     bool m_compass[DUNGEON_COUNT];       // Dungeon compass
     bool m_dungeonMap[DUNGEON_COUNT];   // Dungeon map

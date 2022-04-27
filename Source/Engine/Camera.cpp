@@ -116,6 +116,7 @@ void Camera::render() noexcept
         //RoomManager::getInstance().transitionObjects(m_nextRoomIndex/* - m_tilemap.roomsAcross()*/, 0, CAMERA_HEIGHT);
 
         // Put swap canvas in view
+        // TODO: Black area shown when moving in the corner
         m_swapX = 0;
         m_swapY = -CAMERA_HEIGHT;
 
@@ -338,6 +339,7 @@ void Camera::render() noexcept
             // Update room information
             RoomManager::getInstance().updateCurrentRoomLocation();
 
+            // TODO: This needs a mapping from the room position as with looping rooms, this will just keep decrementing
             dungeonMarker.y--;
         }
     }

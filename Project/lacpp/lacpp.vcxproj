@@ -179,7 +179,6 @@
     <ClCompile Include="..\..\Source\Enemy\BuzzBlob.cpp" />
     <ClCompile Include="..\..\Source\Engine\Sprite.cpp" />
     <ClCompile Include="..\..\Source\Engine\TilemapManager.cpp" />
-    <ClCompile Include="..\..\Source\Player\FileSelect.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Peahat.cpp" />
     <ClCompile Include="..\..\Source\Enemy\SandCrab.cpp" />
     <ClCompile Include="..\..\Source\Enemy\Leever.cpp" />
@@ -201,7 +200,6 @@
     <ClCompile Include="..\..\Source\Enemy\Zombie.cpp" />
     <ClCompile Include="..\..\Source\Engine\Camera.cpp" />
     <ClCompile Include="..\..\Source\Engine\Timer.cpp" />
-    <ClCompile Include="..\..\Source\Engine\CollisionMap.cpp" />
     <ClCompile Include="..\..\Source\Engine\Dialogue.cpp" />
     <ClCompile Include="..\..\Source\Engine\Engine.cpp" />
     <ClCompile Include="..\..\Source\Engine\Resource.cpp" />
@@ -241,7 +239,6 @@
     <ClInclude Include="..\..\Source\Engine\Sprite.h" />
     <ClInclude Include="..\..\Source\Engine\TilemapManager.h" />
     <ClInclude Include="..\..\Source\Interfaces\Updateable.h" />
-    <ClInclude Include="..\..\Source\Player\FileSelect.h" />
     <ClInclude Include="..\..\Source\Enemy\Peahat.h" />
     <ClInclude Include="..\..\Source\Enemy\SandCrab.h" />
     <ClInclude Include="..\..\Source\Enemy\Leever.h" />
@@ -270,7 +267,6 @@
     <ClInclude Include="..\..\Source\Engine\Singleton.h" />
     <ClInclude Include="..\..\Source\Engine\Window.h" />
     <ClInclude Include="..\..\Source\Engine\Camera.h" />
-    <ClInclude Include="..\..\Source\Engine\CollisionMap.h" />
     <ClInclude Include="..\..\Source\Engine\Depth.h" />
     <ClInclude Include="..\..\Source\Engine\Engine.h" />
     <ClInclude Include="..\..\Source\Engine\InputControl.h" />
