@@ -73,8 +73,8 @@ private:
     int m_currentLine;
     int m_dstCharX;
     int m_dstCharY;
-    Sprite m_text;
-    Sprite m_subTexture;
+    std::shared_ptr<Sprite> m_text;
+    std::unique_ptr<Sprite> m_subTexture;
     bool m_moreText;
 
     bool m_flashQuestion;
@@ -82,12 +82,12 @@ private:
     int m_questionXPos;
     int m_questionYPos;
     bool m_isQuestion;
-    Sprite m_questionMarker;
+    std::shared_ptr<Sprite> m_questionMarker;
 
     // Continue arrow
     Timer m_redArrowTimer;
     bool m_flashArrow;
-    Sprite m_redArrow;
+    std::shared_ptr<Sprite> m_redArrow;
     bool m_continue;
     bool m_scrollMessage;
     int m_scrolledLines;

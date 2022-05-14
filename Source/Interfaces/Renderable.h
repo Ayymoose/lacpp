@@ -7,6 +7,7 @@
 #include "SDL_Assert.h"
 #include "Vector.h"
 #include "Sprite.h"
+#include <memory>
 
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
@@ -57,6 +58,8 @@ public:
     }
 
     Renderable(const char* name, const Sprite& texture, int depth) :
+        m_sprite(std::make_unique<Sprite>(texture)),
+        //m_sprite(std::make_unique<Sprite>(texture.renderer(), texture.surface())),
         m_width(0),
         m_height(0),
         m_srcRect({ 0,0,0,0 }),
@@ -64,6 +67,7 @@ public:
         m_xTransition(0),
         m_yTransition(0),
         m_name(name),
+        m_depth(depth),
         m_animationStart(false),
         m_animationComplete(false),
         m_animationFPS(0.0f),
@@ -75,16 +79,13 @@ public:
         m_flip(SDL_RendererFlip::SDL_FLIP_NONE),
         m_visible(true)
     {
-        assert(texture.data());
-        m_sprite = texture;
         assert(depth > 0);
-        m_depth = depth;
         // TODO: Fix error when this is uncommented
         //Renderer::getInstance().addRenderable(this);
     }
 
     Renderable() :
-        m_sprite(nullptr),
+        //m_sprite(nullptr),
         m_width(0),
         m_height(0),
         m_srcRect({ 0,0,0,0 }),
@@ -103,6 +104,7 @@ public:
         m_flip(SDL_RendererFlip::SDL_FLIP_NONE),
         m_visible(true)
     {
+        assert(false && "Method not allowed");
         //Renderer::getInstance().addRenderable(this);
     }
 private:
@@ -124,7 +126,7 @@ private:
 protected:
 
     // Default texture to render
-    Sprite m_sprite;
+    std::unique_ptr<Sprite> m_sprite;
 
     // Dimensions
     int m_width;

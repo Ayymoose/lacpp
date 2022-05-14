@@ -14,21 +14,21 @@ void ResourceManager::loadSprite(SpriteResource resource, const std::string& pat
     m_spriteResources.emplace(resource, Resource::loadSprite(Renderer::getInstance(), path, transparencyColour));
 }
 
-Sprite ResourceManager::operator[](SpriteResource resource) noexcept
+std::shared_ptr<Sprite> ResourceManager::operator[](SpriteResource resource) noexcept
 {
     assert(resource > SpriteResource::SPR_RESOURCE_NONE && resource < SpriteResource::SPR_RESOURCE_COUNT);
     auto sprite = m_spriteResources[resource];
-    assert(sprite.data());
+    assert(sprite->data());
     return sprite;
 }
 
 ResourceManager::~ResourceManager()
 {
     // Free all loaded resources
-    for (auto& [spriteResource, sprite]: m_spriteResources)
+    /*for (auto& [spriteResource, sprite]: m_spriteResources)
     {
         sprite.free();
-    }
+    }*/
 }
 
 }

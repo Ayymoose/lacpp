@@ -21,14 +21,14 @@ void Engine::init() noexcept
     initData();
     initSingleton();
 
-    m_initialised = true;
+    //m_initialised = true;
 
     DEBUG(DBG_INFO, "Engine initialised");
 }
 
 void Engine::run() noexcept
 {
-    assert(m_initialised && "Engine is not initialised");
+    //assert(m_initialised && "Engine is not initialised");
     assert(m_engineRunning == false && "Engine already running");
 
     m_engineRunning = true;

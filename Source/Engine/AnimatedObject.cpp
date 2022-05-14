@@ -5,7 +5,7 @@ namespace Zelda
 {
 
 AnimatedObject::AnimatedObject(AnimatedClass animatedClass, int x, int y, int repeatAcross, float orientation) : 
-    Renderable("AnimatedObject", ResourceManager::getInstance()[SpriteResource::SPR_ANIMATED_TILES], ZD_DEPTH_BACKGROUND)
+    Renderable("AnimatedObject", *ResourceManager::getInstance()[SpriteResource::SPR_ANIMATED_TILES], ZD_DEPTH_BACKGROUND)
 {
     switch (animatedClass)
     {

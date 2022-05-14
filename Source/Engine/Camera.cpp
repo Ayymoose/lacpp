@@ -30,7 +30,7 @@ Camera::Camera() :
     m_scrolled(0)
 {
     // TODO: Free textures on shutdown
-    assert(m_sprite.data());
+    assert(m_sprite->data());
     // TODO: Remove Camera from Renderable
     Renderer::getInstance().addRenderable(this);
 }

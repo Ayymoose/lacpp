@@ -31,7 +31,7 @@ public:
     size_t size() const noexcept;
 
 private:
-    Sprite m_sprite;
+    std::unique_ptr<Sprite> m_sprite;
     size_t m_tilemapWidth;
     size_t m_tileWidth;
     size_t m_tileHeight;

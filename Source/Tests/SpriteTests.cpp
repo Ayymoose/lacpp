@@ -1,5 +1,8 @@
 #include "SpriteTests.h"
+#include "ResourceManager.h"
+#include "Engine.h"
 #include "Renderer.h"
+#include "Resource.h"
 
 namespace Testable
 {
@@ -13,15 +16,60 @@ void SpriteTests::runTests()
 
 void SpriteTests::spriteTests() noexcept
 {
-    Sprite s1;
-    Sprite s2(s1);
+    constexpr Colour TRANSPARENCY_COLOUR = make_rgb(255, 0, 128);
+    
+    // Create sprite test
+    auto spriteBall = Sprite(Renderer::getInstance().getRenderer(), Resource::loadSprite(RESOURCE_OBJECT_PATH + "ball.png", TRANSPARENCY_COLOUR));
+    auto spriteObstacle = Sprite(Renderer::getInstance().getRenderer(), Resource::loadSprite(RESOURCE_OBJECT_PATH + "obstacle.png", TRANSPARENCY_COLOUR));
 
-   /* Window w;
-    w.createWindow("Sprite test", 640, 480);
-    Renderer::getInstance().createRenderer(w);
-    Sprite s3(Renderer::getInstance().getRenderer(), 32, 32);
-    Sprite::colourSprite(*/
+    // Copy sprite test
+    auto spriteBallCopy = spriteBall;
 
+    // operator= copy test
+    auto spriteObstacleCopy = spriteBall;
+    spriteObstacleCopy = spriteObstacle;
+
+    // move constructor test
+    auto spriteObstacleMoveConstructed(std::move(spriteObstacleCopy));
+
+    // move assign operator test
+    auto spriteBallMoveAssigned(spriteBall);
+    spriteBallMoveAssigned = std::move(spriteBallCopy);
+
+    // self assignment test
+    spriteBall = spriteBall;
+    spriteObstacle = spriteObstacle;
+
+    auto spriteFunction = [&spriteBall, 
+        &spriteObstacle, 
+        &spriteBallCopy,
+        &spriteObstacleCopy, 
+        &spriteObstacleMoveConstructed,
+        &spriteBallMoveAssigned]()
+    {
+        Rect srcRect1 = { 0,0,16,16 };
+        Rect dstRect1 = { 32,32,16,16 };
+        spriteBall.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect1);
+
+        Rect dstRect2 = { 64,32,16,16 };
+        spriteObstacle.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect2);
+
+        Rect dstRect3 = { 32,64,16,16 };
+        spriteBallCopy.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect3);
+
+        Rect dstRect4 = { 64,64,16,16 };
+        spriteObstacleCopy.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect4);
+
+        Rect dstRect5 = { 64,96,16,16 };
+        spriteObstacleMoveConstructed.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect5);
+
+        Rect dstRect6 = { 32, 96, 16, 16 };
+        spriteBallMoveAssigned.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect6);
+    };
+
+    Engine::getInstance().setRenderTestFunction(spriteFunction);
+
+    Engine::getInstance().run();
 }
 
 }

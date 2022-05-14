@@ -62,9 +62,9 @@ void TilemapManager::render() noexcept
     {
         m_roomX,
         m_roomY,
-        m_sprite.width(),
-        m_sprite.height()
-    }, m_sprite, m_currentRoom);
+        m_sprite->width(),
+        m_sprite->height()
+    }, *m_sprite, m_currentRoom);
 
     // Render the swap canvas
     renderTileMap(Rect<int>
@@ -96,10 +96,10 @@ TilemapManager::TilemapManager() :
     m_currentRoom(0),
     m_nextRoom(0),
     m_currentTilemapname(RoomName::RM_NONE),
-    m_swapCanvas(Renderer::getInstance().getRenderer(), m_sprite.width(), m_sprite.height())
+    m_swapCanvas(Renderer::getInstance().getRenderer(), m_sprite->width(), m_sprite->height())
 {
     // TODO: Free textures on shutdown
-    assert(m_sprite.data());
+    assert(m_sprite->data());
     assert(m_swapCanvas.data());
     Renderer::getInstance().addRenderable(this);
 }

@@ -9,7 +9,7 @@ namespace Zelda
 
 Boomerang::Boomerang()
 {
-    m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
+    //m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
     m_speed = 2;
     m_name = "Boomerang";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOOMERANG].w;
@@ -30,7 +30,7 @@ void Boomerang::render() noexcept
         m_height
     };
 
-    m_sprite.drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
+    m_sprite->drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
 
     // Return to the player
     if (m_return)

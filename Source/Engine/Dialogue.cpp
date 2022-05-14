@@ -21,7 +21,7 @@ Dialogue::Dialogue() :
     m_dstCharX(0),
     m_dstCharY(0),
     m_text(ResourceManager::getInstance()[SpriteResource::SPR_TEXT]),
-    m_subTexture(Sprite(Renderer::getInstance().getRenderer(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT)),
+    m_subTexture(std::make_unique<Sprite>(Renderer::getInstance().getRenderer(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT)),
     m_moreText(false),
     m_flashQuestion(false),
     m_questionXPos(0),
@@ -34,10 +34,10 @@ Dialogue::Dialogue() :
     m_scrollMessage(false),
     m_scrolledLines(0)
 {
-    assert(m_sprite.data());
-    assert(m_subTexture.data());
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_sprite, Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height()}, SDL_RGB(0, 0, 0));
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height()}, SDL_RGB(0, 0, 0));
+    assert(m_sprite->data());
+    assert(m_subTexture->data());
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), *m_sprite, Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, make_rgb(0, 0, 0));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), *m_subTexture, Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, make_rgb(0, 0, 0));
 }
 
 void Dialogue::message(const std::string& message, float yPos) noexcept
@@ -340,7 +340,7 @@ void Dialogue::render() noexcept
             };
 
             // 1. Hide the top half of the sub texture
-            Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, srcSubTextureHalf, SDL_RGB(0, 0, 0));
+            Sprite::colourSprite(Renderer::getInstance().getRenderer(), *m_subTexture, srcSubTextureHalf, make_rgb(0, 0, 0));
 
             // Copy the bottom line of text to the top of the texture
             const Rect<int> srcRectSubTextureLowerHalf =
@@ -367,10 +367,10 @@ void Dialogue::render() noexcept
                     dstRectSubTextureLowerHalf.y = m_dstCharY;
 
                     // 3. Copy to a bottom half of texture to top half 
-                    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_subTexture, srcRectSubTextureLowerHalf, dstRectSubTextureLowerHalf);
+                    Sprite::copySprite(Renderer::getInstance().getRenderer(), *m_subTexture, *m_subTexture, srcRectSubTextureLowerHalf, dstRectSubTextureLowerHalf);
 
                     // Block out the what used to be the bottom line
-                    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, srcRectSubTextureLowerHalf, SDL_RGB(0, 0, 0));
+                    Sprite::colourSprite(Renderer::getInstance().getRenderer(), *m_subTexture, srcRectSubTextureLowerHalf, make_rgb(0, 0, 0));
 
                     // Reset to the beginning of the line
                     m_currentLine = MAX_LINES - 1;
@@ -398,7 +398,7 @@ void Dialogue::render() noexcept
         assert(dstRectChar.y < TEXT_POS_Y + MAX_LINES * LINE_HEIGHT);
         assert(dstRectChar.x >= TEXT_POS_X);
         assert(dstRectChar.x < TEXT_POS_X + MAX_CHAR_PER_LINE * CHAR_WIDTH);
-        Sprite::copySprite(Renderer::getInstance().getRenderer(), m_text, m_subTexture, srcRectChar, dstRectChar);
+        Sprite::copySprite(Renderer::getInstance().getRenderer(), *m_text, *m_subTexture, srcRectChar, dstRectChar);
 
     }
 
@@ -411,12 +411,12 @@ void Dialogue::render() noexcept
     };
 
     // Copy sub texture to main textbox
-    Sprite::copySprite(Renderer::getInstance().getRenderer(), m_subTexture, m_sprite, Rect<int>{ 0, 0, m_subTexture.width(), m_subTexture.height() }, dstRectSubTexture);
+    Sprite::copySprite(Renderer::getInstance().getRenderer(), *m_subTexture, *m_sprite, Rect<int>{ 0, 0, m_subTexture->width(), m_subTexture->height() }, dstRectSubTexture);
 
     // Display the textbox
     // Drawn on top or bottom depending on Link's position
-    m_sprite.drawSprite(Renderer::getInstance().getRenderer(), 
-        Rect<int>{0,0, m_sprite.width(), m_sprite.height()}, 
+    m_sprite->drawSprite(Renderer::getInstance().getRenderer(),
+        Rect<int>{0,0, m_sprite->width(), m_sprite->height()},
         Rect<int>{m_dialoguePosX,m_dialoguePosY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT});
     
     // Flashing red arrow 
@@ -429,7 +429,7 @@ void Dialogue::render() noexcept
             CHAR_WIDTH,
             CHAR_HEIGHT
         };
-        m_redArrow.drawSprite(Renderer::getInstance().getRenderer(), srcRectArrow, 
+        m_redArrow->drawSprite(Renderer::getInstance().getRenderer(), srcRectArrow, 
             Rect<int>{m_dialoguePosX + ARROW_POS_X,m_dialoguePosY + ARROW_POS_Y,CHAR_WIDTH,CHAR_HEIGHT});
     }
 
@@ -448,7 +448,7 @@ void Dialogue::render() noexcept
             assert(m_questionXPos <= m_dialoguePosX + DIALOGUE_WIDTH);
             assert(m_questionYPos >= m_dialoguePosY);
             assert(m_questionYPos <= m_dialoguePosY + DIALOGUE_HEIGHT);
-            m_questionMarker.drawSprite(Renderer::getInstance().getRenderer(), 
+            m_questionMarker->drawSprite(Renderer::getInstance().getRenderer(), 
                 srcQuestionRect, 
                 Rect<int>{ m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT });
         }
@@ -473,7 +473,7 @@ void Dialogue::reset() noexcept
     m_continue = false;
     m_moreText = false;
 
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), m_subTexture, Rect<int>{ 0, 0, m_subTexture.width(), m_subTexture.height() }, SDL_RGB(0, 0, 0));
+    Sprite::colourSprite(Renderer::getInstance().getRenderer(), *m_subTexture, Rect<int>{ 0, 0, m_subTexture->width(), m_subTexture->height() }, make_rgb(0, 0, 0));
 
     m_isQuestion = false;
     m_questionXPos = 0;

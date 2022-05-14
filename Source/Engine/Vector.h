@@ -110,7 +110,8 @@ public:
     // Normalise a vector
     // Note this will only work for float and double
     // SFINAE this out
-    void normalise() noexcept
+
+    void /*std::enable_if_t<std::is_integral_v<T>, void>*/ normalise() noexcept
     {
         auto const len = length();
         // TODO: Double/float epsilon comparison

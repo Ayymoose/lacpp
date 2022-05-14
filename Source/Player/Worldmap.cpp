@@ -6,7 +6,7 @@ namespace Zelda
 {
 
 Worldmap::Worldmap() :
-    Renderable("Worldmap", ResourceManager::getInstance()[SpriteResource::SPR_WORLD_MAP], ZD_DEPTH_WORLDMAP),
+    Renderable("Worldmap", *ResourceManager::getInstance()[SpriteResource::SPR_WORLD_MAP], ZD_DEPTH_WORLDMAP),
     Controllable(m_name),
     m_scopeX(WORLDMAP_INITIAL_POS_X),
     m_scopeY(WORLDMAP_INITIAL_POS_Y),
@@ -230,7 +230,7 @@ void Worldmap::render() noexcept
 {
     if (m_show)
     {
-        auto const target = Renderer::getInstance().pushRenderingTarget(m_sprite);
+        auto const target = Renderer::getInstance().pushRenderingTarget(*m_sprite);
 
         for (int y = 0; y < WORLDMAP_MAX_Y; y++)
         {
@@ -240,7 +240,7 @@ void Worldmap::render() noexcept
                 WorldmapLocation wml = m_worldmapLocation[x][y];
                 if (!wml.visited)
                 {
-                    ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), 
+                    ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(Renderer::getInstance().getRenderer(),
                         m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED],
                         Rect<int>{ WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7, 7 });
                 }
@@ -250,9 +250,9 @@ void Worldmap::render() noexcept
         Renderer::getInstance().popRenderingTarget(target);
 
         // Render the worldmap
-        m_sprite.drawSprite(Renderer::getInstance().getRenderer(),
-            Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height()},
-            Rect<int>{ 0, 0, m_sprite.width(), m_sprite.height() });
+        m_sprite->drawSprite(Renderer::getInstance().getRenderer(),
+            Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()},
+            Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height() });
 
         // Draw the location if we hit upon one
         if (m_worldmapLocation[m_scopeX][m_scopeY].locationType != LT_NONE)
@@ -297,7 +297,7 @@ void Worldmap::render() noexcept
                 sy = 97;
             }
 
-            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(), srcRectLocation, Rect<int>{ sx, sy, 30, 30 });
+            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(Renderer::getInstance().getRenderer(), srcRectLocation, Rect<int>{ sx, sy, 30, 30 });
         }
 
         // Draw the "scope" we use to move around
@@ -317,7 +317,7 @@ void Worldmap::close() noexcept
 
 void Worldmap::drawScope() noexcept
 {
-    ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY].drawSprite(Renderer::getInstance().getRenderer(),
+    ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(Renderer::getInstance().getRenderer(),
         m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE],
         Rect<int>{ (WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5, 16, 16 });
 
@@ -333,22 +333,22 @@ void Worldmap::drawScope() noexcept
         dstRect.x += 4;
         dstRect.y -= 10;
         // Up arrow
-        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(),srcRect,dstRect, 0, SpriteFlip::FLIP_NONE);
+        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSpriteEx(Renderer::getInstance().getRenderer(),srcRect,dstRect, 0, SpriteFlip::FLIP_NONE);
         
         // Right arrow
         dstRect.x += 15;
         dstRect.y += 14;
-        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 90, SpriteFlip::FLIP_NONE);
+        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 90, SpriteFlip::FLIP_NONE);
 
         // Down arrow
         dstRect.x -= 15;
         dstRect.y += 15;
-        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 180, SpriteFlip::FLIP_NONE);
+        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 180, SpriteFlip::FLIP_NONE);
 
         // Left arrow
         dstRect.x -= 15;
         dstRect.y -= 15;
-        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY].drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 270, SpriteFlip::FLIP_NONE);
+        ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 270, SpriteFlip::FLIP_NONE);
     }
 }
 

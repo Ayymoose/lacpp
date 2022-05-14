@@ -1,75 +1,113 @@
 #pragma once
 
+#include <cstring>
 #include "Sprite.h"
 
 // Wrapper class around an SDL_Texture
 namespace Zelda
 {
 
-Sprite::Sprite(SDL_Texture* texture) : m_sprite(texture), m_width(0), m_height(0)
+
+Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
 {
-    assert(texture);
-    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
-    assert(m_width);
-    assert(m_height);
+    m_width = width;
+    m_height = height;
+    m_renderer = renderer;
+    
+    if (m_renderer)
+    {
+        assert(m_width);
+        assert(m_height);
+        m_sprite = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
+        assert(m_sprite);
+    }
+    else
+    {
+        assert(!m_width);
+        assert(!m_height);
+        m_sprite = nullptr;
+    }
 }
 
-Sprite::Sprite(SDL_Renderer* renderer, int width, int height) :
-    m_sprite(SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, width, height)),
-    m_width(width),
-    m_height(height)
+Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
 {
-    assert(width);
-    assert(height);
+    assert(renderer);
+    m_renderer = renderer;
+    assert(surface);
+
+    // Create a new texture from this surface
+    auto const textureCreatedFromSurface = SDL_CreateTextureFromSurface(m_renderer, surface);
+    SDL_FreeSurface(surface);
+
+    // Query dimensions
+    SDL_ASSERT(SDL_QueryTexture(textureCreatedFromSurface, nullptr, nullptr, &m_width, &m_height));
+    assert(m_width);
+    assert(m_height);
+
+    // Create the main texture onto which we copy the texture created from the surface
+    m_sprite = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
     assert(m_sprite);
+
+    // Copy texture created from surface to one we can draw on
+    auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
+    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
+    SDL_ASSERT(SDL_RenderCopy(m_renderer, textureCreatedFromSurface, nullptr, nullptr));
+    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
+
+    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, SDL_BLENDMODE_BLEND));
+
+    SDL_DestroyTexture(textureCreatedFromSurface);
 }
+
 SDL_Texture* Sprite::data() const noexcept
 {
     return m_sprite;
 }
 
-/*Sprite::Sprite(Sprite&& sprite) noexcept
+SDL_Renderer* Sprite::renderer() const noexcept
 {
-    // Free existing data if any
-    SDL_DestroyTexture(m_sprite);
-
-    // Now "copy"
-    m_sprite = sprite.data();
-    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
-    assert(m_width);
-    assert(m_height);
-        
-    SDL_DestroyTexture(sprite.data());
-}
-
-Sprite& Sprite::operator=(const Sprite& sprite) noexcept
-{
-    // Free existing data if any
-    SDL_DestroyTexture(m_sprite);
-
-    // Now "copy"
-    m_sprite = sprite.data();
-    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
-    assert(m_width);
-    assert(m_height);
-
-    return *this;
+    return m_renderer;
 }
 
 Sprite::Sprite(const Sprite& sprite) noexcept
 {
-    // Free existing data if any
-    if (m_sprite)
-    {
-        SDL_DestroyTexture(m_sprite);
-    }
+    m_width = sprite.m_width;
+    m_height = sprite.m_height;
+    m_renderer = sprite.m_renderer;
 
-    // Now "copy"
-    m_sprite = sprite.data();
-    SDL_ASSERT(SDL_QueryTexture(m_sprite, nullptr, nullptr, &m_width, &m_height));
-    assert(m_width);
-    assert(m_height);
-}*/
+    // Free existing texture
+    SDL_DestroyTexture(m_sprite);
+
+    // Create new texture
+    m_sprite = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
+
+    // Paste sprite texture onto here
+    auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
+    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
+    SDL_ASSERT(SDL_RenderCopy(m_renderer, sprite.m_sprite, nullptr, nullptr));
+    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
+
+    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, SDL_BLENDMODE_BLEND));
+}
+
+Sprite& Sprite::operator=(Sprite sprite) noexcept
+{
+    swap(*this, sprite);
+    return *this;
+}
+
+Sprite::Sprite(Sprite&& sprite) noexcept : 
+    Sprite(nullptr, 0, 0)
+{
+    swap(*this, sprite);
+}
+
+
+Sprite::~Sprite() noexcept
+{
+    SDL_DestroyTexture(m_sprite);
+    m_sprite = nullptr;
+}
 
 int Sprite::width() const noexcept
 {
@@ -79,12 +117,6 @@ int Sprite::width() const noexcept
 int Sprite::height() const noexcept
 {
     return m_height;
-}
-
-void Sprite::free() noexcept
-{
-    SDL_DestroyTexture(m_sprite);
-    m_sprite = nullptr;
 }
 
 SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip) noexcept
@@ -102,5 +134,14 @@ SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip) noexcept
         return SDL_RendererFlip::SDL_FLIP_NONE;
     }
 }
+
+void swap(Sprite& sprite1, Sprite& sprite2) noexcept
+{
+    std::swap(sprite1.m_height, sprite2.m_height);
+    std::swap(sprite1.m_width, sprite2.m_width);
+    std::swap(sprite1.m_renderer, sprite2.m_renderer);
+    std::swap(sprite1.m_sprite, sprite2.m_sprite);
+}
+
 
 }

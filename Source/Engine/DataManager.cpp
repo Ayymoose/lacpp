@@ -23,7 +23,7 @@ void DataManager::loadData() const noexcept
 
 void DataManager::loadSprites() const noexcept
 {
-	constexpr Colour TRANSPARENCY_COLOUR = SDL_RGB(255, 0, 128);
+	constexpr Colour TRANSPARENCY_COLOUR = make_rgb(255, 0, 128);
 	ResourceManager::getInstance().loadSprite(SpriteResource::SPR_DUNGEON_1_TAIL_CAVE, RESOURCE_DUNGEONS_PATH + "tail-cave.png", TRANSPARENCY_COLOUR);
 	ResourceManager::getInstance().loadSprite(SpriteResource::SPR_WORLD_MAP, RESOURCE_MISC_PATH + "tm_worldmap.png", TRANSPARENCY_COLOUR);
 	ResourceManager::getInstance().loadSprite(SpriteResource::SPR_LINK, RESOURCE_SPRITE_LINK_PATH + "link.png", TRANSPARENCY_COLOUR);
@@ -434,7 +434,7 @@ void DataManager::loadTailCave() const noexcept
 	// TODO: Load enemies/room objects at some point
 
 	RoomManager::getInstance().createRoom(RoomName::RM_TAIL_CAVE,
-		ResourceManager::getInstance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
+		*ResourceManager::getInstance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
 		tileIndexArrays, tilemapConfig, roomLinkMap);
 }
 

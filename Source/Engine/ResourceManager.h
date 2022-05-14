@@ -27,6 +27,9 @@ enum class SpriteResource
     SPR_LINK,
     SPR_ANIMATED_TILES,
     SPR_ENEMY,
+
+    // TEST
+    SPR_BALL,
     SPR_RESOURCE_COUNT
 };
 
@@ -37,13 +40,13 @@ class ResourceManager : public Singleton<ResourceManager>
 public:
 
     void loadSprite(SpriteResource resource, const std::string& path, const Colour transparencyColour);
-    Sprite operator[](SpriteResource resource) noexcept;
+    std::shared_ptr<Sprite> operator[](SpriteResource resource) noexcept;
     ~ResourceManager();
 
 private:
     ResourceManager() = default;
 
     // Map between resources and pointer to all textures
-    std::unordered_map<SpriteResource, Sprite> m_spriteResources;
+    std::unordered_map<SpriteResource, std::shared_ptr<Sprite>> m_spriteResources;
 };
 }

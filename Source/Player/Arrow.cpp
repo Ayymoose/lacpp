@@ -9,7 +9,7 @@ namespace Zelda
 
 Arrow::Arrow()
 {
-    m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
+    //m_sprite = ResourceManager::getInstance()[SpriteResource::SPR_WEAPON];
     m_speed = 2;
     m_name = "Arrow";
     m_width = m_weaponSpritesSrc[WPN_SPRITE_BOW].w;
@@ -56,7 +56,7 @@ void Arrow::render() noexcept
         break;
     }
 
-    m_sprite.drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+    m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
     // Fire the arrow
     m_position += m_dirVec;

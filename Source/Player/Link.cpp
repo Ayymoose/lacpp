@@ -29,7 +29,7 @@ Vector<int> Link::dungeonMarkerLocation() const noexcept
 }
 
 Link::Link() : 
-    Renderable("Link", ResourceManager::getInstance()[SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER),
+    Renderable("Link", *ResourceManager::getInstance()[SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER),
     Controllable(m_name),
     m_healthMax(3),
     m_speedX(0),
@@ -138,7 +138,7 @@ void Link::render() noexcept
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    m_sprite.drawSpriteEx(Renderer::getInstance().getRenderer(), m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
+    m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
 }
 
 void Link::cull() noexcept

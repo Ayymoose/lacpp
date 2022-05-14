@@ -8,7 +8,7 @@ Tilemap::Tilemap() : m_tilemapWidth(0), m_tileWidth(0), m_tileHeight(0), m_tiles
 }
 
 Tilemap::Tilemap(const Sprite& tilemap, const std::vector<TileIndexArray>& mapEntries, const TilemapConfig& config) 
-    : m_sprite(tilemap), 
+    : m_sprite(std::make_unique<Sprite>(tilemap)),
     m_mapEntries(mapEntries), 
     m_tilemapWidth(config.tilemapWidth),
     m_tileWidth(config.tileWidth),
@@ -16,7 +16,7 @@ Tilemap::Tilemap(const Sprite& tilemap, const std::vector<TileIndexArray>& mapEn
     m_tilesAcross(config.tilesAcross),
     m_tilesDown(config.tilesDown)
 {
-    assert(m_sprite.data());
+    assert(m_sprite->data());
 }
 
 void Tilemap::tile(const Renderer& renderer, const Sprite& tilemapSprite, size_t mapIndex) const noexcept
@@ -49,7 +49,7 @@ void Tilemap::tile(const Renderer& renderer, const Sprite& tilemapSprite, size_t
             auto const srcTileY = m_tileHeight * (tileID / tileMapTilesAcross);
 
             // Paste tile from tilemap
-            m_sprite.drawSprite(
+            m_sprite->drawSprite(
                 renderer.getRenderer(),
                 Rect<size_t>
                 {

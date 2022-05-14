@@ -421,7 +421,7 @@ private:
     void drawNumber(const Sprite& srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const noexcept;
     void drawWeaponLevel(const Sprite& srcTexture, WeaponItem weapon, const Rect<int>& dstRect) noexcept;
 
-    Sprite m_subscreen;   // The select status at the bottom of the screen
+    std::unique_ptr<Sprite> m_subscreen;   // The select status at the bottom of the screen
     TradeItem m_tradeItem;      // Current trade item
 
 

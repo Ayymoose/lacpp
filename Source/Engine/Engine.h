@@ -34,6 +34,9 @@ public:
         m_renderTestFunction = function;
     }
 
+    void initVideo() const noexcept;
+    void initWindow() noexcept;
+
 private:
     Engine() : m_enginePaused(false), m_engineRunning(false), m_initialised(false), m_preRenderTestFunction(nullptr)
     {
@@ -43,11 +46,10 @@ private:
     void update() const noexcept;
     void render() const noexcept;
 
-    void initVideo() const noexcept;
     void initAudio() const noexcept;
     void initControl() const noexcept;
     void initSingleton() const noexcept;
-    void initWindow() noexcept;
+    
     void initData() const noexcept;
 
     void preRenderTestFunction() const noexcept

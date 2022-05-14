@@ -19,7 +19,7 @@ void Renderer::createRenderer(const Window& window) noexcept
 void Renderer::clearScreen(int colour) const noexcept
 {
     assert(m_renderer);
-    SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, SDL_Red(colour), SDL_Green(colour), SDL_Blue(colour), 0));
+    SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), 0));
     SDL_ASSERT(SDL_RenderClear(m_renderer));
 }
 
