@@ -7,7 +7,6 @@
 namespace Zelda
 {
 
-
 Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
 {
     m_width = width;
@@ -101,7 +100,6 @@ Sprite::Sprite(Sprite&& sprite) noexcept :
 {
     swap(*this, sprite);
 }
-
 
 Sprite::~Sprite() noexcept
 {

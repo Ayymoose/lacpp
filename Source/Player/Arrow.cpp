@@ -56,7 +56,7 @@ void Arrow::render() noexcept
         break;
     }
 
-    m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+    m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
     // Fire the arrow
     m_position += m_dirVec;

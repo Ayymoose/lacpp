@@ -59,7 +59,6 @@ public:
 
     Renderable(const char* name, const Sprite& texture, int depth) :
         m_sprite(std::make_unique<Sprite>(texture)),
-        //m_sprite(std::make_unique<Sprite>(texture.renderer(), texture.surface())),
         m_width(0),
         m_height(0),
         m_srcRect({ 0,0,0,0 }),
@@ -105,7 +104,6 @@ public:
         m_visible(true)
     {
         assert(false && "Method not allowed");
-        //Renderer::getInstance().addRenderable(this);
     }
 private:
 
@@ -152,7 +150,7 @@ protected:
     void basicAnimate(SDL_Renderer* renderer, const Sprite& texture, Rect<R1> srcRect, Rect<R2> dstRect, int gap, int startFrame, int frameCount, float fps, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        texture.drawSprite(renderer, srcRect, dstRect);
+        texture.drawSprite(srcRect, dstRect);
     }
 
     // Extended animation
@@ -160,7 +158,7 @@ protected:
     void basicAnimateEx(SDL_Renderer* renderer, const Sprite& texture, const Rect<R1>& srcRect, const Rect<R2>& dstRect, int gap, int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        texture.drawSpriteEx(renderer, srcRect, dstRect, angle, SpriteFlip::FLIP_NONE);
+        texture.drawSpriteEx(srcRect, dstRect, angle, SpriteFlip::FLIP_NONE);
     }
 
     // TODO: When the animation finishes, reverse the animation
@@ -185,6 +183,7 @@ protected:
     int m_currentFrame;
     int m_endFrame;
     float m_orientation;
+    // TODO: Use defined flip instead of this
     SDL_RendererFlip m_flip;
     bool m_visible;
 

@@ -34,7 +34,7 @@ void FlameRod::render() noexcept
     };
 
     // The flame
-    m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_orientation, SpriteFlip::FLIP_NONE);
+    m_sprite->drawSpriteEx(flameSrcRect, flameDstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
     auto flameRodSrcRect = m_weaponSpritesSrc[WPN_SPRITE_FLAMEROD];
 
@@ -49,7 +49,7 @@ void FlameRod::render() noexcept
     // The flame rod
     if (m_display)
     {
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), flameSrcRect, flameDstRect, m_flameRodOrientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(flameSrcRect, flameDstRect, m_flameRodOrientation, SpriteFlip::FLIP_NONE);
     }
 
     // Animate the flame rod

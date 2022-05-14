@@ -101,7 +101,7 @@ public:
 
     // Draw a sprite on screen
     template<typename R1, typename R2>
-    void drawSprite(SDL_Renderer* renderer, const Rect<R1>& srcRect, const Rect<R2>& dstRect) const noexcept
+    void drawSprite(const Rect<R1>& srcRect, const Rect<R2>& dstRect) const noexcept
     {
         if (m_renderer)
         {
@@ -121,7 +121,7 @@ public:
     }
 
     template<typename R1, typename R2>
-    void drawSpriteEx(SDL_Renderer* renderer, const Rect<R1>& srcRect, const Rect<R2>& dstRect, double angle, SpriteFlip flip) const noexcept
+    void drawSpriteEx(const Rect<R1>& srcRect, const Rect<R2>& dstRect, const double angle, SpriteFlip flip) const noexcept
     {
         if (m_renderer)
         {

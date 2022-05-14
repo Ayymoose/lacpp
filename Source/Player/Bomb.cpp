@@ -46,7 +46,7 @@ void Bomb::render() noexcept
 
     case BOMB_SPRITE_INERT:
     case BOMB_SPRITE_FLASHING:
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         break;
     case BOMB_SPRITE_INITIAL_CLOUD:
 
@@ -54,15 +54,15 @@ void Bomb::render() noexcept
         dstRect.x -= 4;
         dstRect.y -= 4;
         
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
         dstRect.x += 12;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         dstRect.y += 8;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         dstRect.x -= 12;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         break;
     case BOMB_SPRITE_EXPLOSION:
@@ -71,16 +71,16 @@ void Bomb::render() noexcept
         dstRect.x -= 6;
         dstRect.y -= 6;
 
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         dstRect.x += 16;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_HORIZONTAL);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_HORIZONTAL);
 
         dstRect.y += 16;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, 270, SpriteFlip::FLIP_VERTICAL);
+        m_sprite->drawSpriteEx(srcRect, dstRect, 270, SpriteFlip::FLIP_VERTICAL);
 
         dstRect.x -= 16;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_VERTICAL);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_VERTICAL);
 
         break;
     case BOMB_SPRITE_AFTER_SMOKE:
@@ -89,16 +89,16 @@ void Bomb::render() noexcept
         dstRect.x -= 6;
         dstRect.y -= 6;
 
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         dstRect.x += 16;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         dstRect.y += 16;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         dstRect.x -= 16;
-        m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
+        m_sprite->drawSpriteEx(srcRect, dstRect, m_orientation, SpriteFlip::FLIP_NONE);
 
         break;
     }

@@ -138,7 +138,7 @@ void Link::render() noexcept
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    m_sprite->drawSpriteEx(Renderer::getInstance().getRenderer(), m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
+    m_sprite->drawSpriteEx(m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
 }
 
 void Link::cull() noexcept

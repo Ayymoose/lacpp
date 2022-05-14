@@ -415,7 +415,7 @@ void Dialogue::render() noexcept
 
     // Display the textbox
     // Drawn on top or bottom depending on Link's position
-    m_sprite->drawSprite(Renderer::getInstance().getRenderer(),
+    m_sprite->drawSprite(
         Rect<int>{0,0, m_sprite->width(), m_sprite->height()},
         Rect<int>{m_dialoguePosX,m_dialoguePosY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT});
     
@@ -429,7 +429,7 @@ void Dialogue::render() noexcept
             CHAR_WIDTH,
             CHAR_HEIGHT
         };
-        m_redArrow->drawSprite(Renderer::getInstance().getRenderer(), srcRectArrow, 
+        m_redArrow->drawSprite(srcRectArrow, 
             Rect<int>{m_dialoguePosX + ARROW_POS_X,m_dialoguePosY + ARROW_POS_Y,CHAR_WIDTH,CHAR_HEIGHT});
     }
 
@@ -448,8 +448,7 @@ void Dialogue::render() noexcept
             assert(m_questionXPos <= m_dialoguePosX + DIALOGUE_WIDTH);
             assert(m_questionYPos >= m_dialoguePosY);
             assert(m_questionYPos <= m_dialoguePosY + DIALOGUE_HEIGHT);
-            m_questionMarker->drawSprite(Renderer::getInstance().getRenderer(), 
-                srcQuestionRect, 
+            m_questionMarker->drawSprite(srcQuestionRect, 
                 Rect<int>{ m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT });
         }
     }

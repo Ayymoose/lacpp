@@ -50,7 +50,6 @@ void Tilemap::tile(const Renderer& renderer, const Sprite& tilemapSprite, size_t
 
             // Paste tile from tilemap
             m_sprite->drawSprite(
-                renderer.getRenderer(),
                 Rect<size_t>
                 {
                     srcTileX,

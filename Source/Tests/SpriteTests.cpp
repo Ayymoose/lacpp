@@ -49,22 +49,22 @@ void SpriteTests::spriteTests() noexcept
     {
         Rect srcRect1 = { 0,0,16,16 };
         Rect dstRect1 = { 32,32,16,16 };
-        spriteBall.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect1);
+        spriteBall.drawSprite(srcRect1, dstRect1);
 
         Rect dstRect2 = { 64,32,16,16 };
-        spriteObstacle.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect2);
+        spriteObstacle.drawSprite(srcRect1, dstRect2);
 
         Rect dstRect3 = { 32,64,16,16 };
-        spriteBallCopy.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect3);
+        spriteBallCopy.drawSprite(srcRect1, dstRect3);
 
         Rect dstRect4 = { 64,64,16,16 };
-        spriteObstacleCopy.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect4);
+        spriteObstacleCopy.drawSprite(srcRect1, dstRect4);
 
         Rect dstRect5 = { 64,96,16,16 };
-        spriteObstacleMoveConstructed.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect5);
+        spriteObstacleMoveConstructed.drawSprite(srcRect1, dstRect5);
 
         Rect dstRect6 = { 32, 96, 16, 16 };
-        spriteBallMoveAssigned.drawSprite(Renderer::getInstance().getRenderer(), srcRect1, dstRect6);
+        spriteBallMoveAssigned.drawSprite(srcRect1, dstRect6);
     };
 
     Engine::getInstance().setRenderTestFunction(spriteFunction);

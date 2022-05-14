@@ -30,7 +30,7 @@ void Boomerang::render() noexcept
         m_height
     };
 
-    m_sprite->drawSprite(Renderer::getInstance().getRenderer(), srcRect, dstRect);
+    m_sprite->drawSprite(srcRect, dstRect);
 
     // Return to the player
     if (m_return)
