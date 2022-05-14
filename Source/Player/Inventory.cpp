@@ -49,7 +49,7 @@ Inventory::Inventory() :
     // m_texture is the main texture we draw ontoas
     assert(m_sprite->data());
     Rect<int> srcRect = { 0,0, m_subscreen->width(), m_subscreen->height() };
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), *m_subscreen, srcRect, make_rgb(0, 0, 0));
+    m_subscreen->colourSprite(srcRect, make_rgb(0, 0, 0));
 
     // 7 -> 39 x increases of 32
     // 27 -> 50 y increases by 23
@@ -183,7 +183,7 @@ void Inventory::render() noexcept
     Rect<int> dstRect = { 0, renderY, m_sprite->width() , m_sprite->height() };
     Rect<int> srcRect = { 0, 0,  m_sprite->width() , m_sprite->height() };
     m_sprite->drawSprite(srcRect, dstRect);
-    Sprite::colourSprite(Renderer::getInstance().getRenderer(), *m_sprite, srcRect, make_rgb(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+    m_sprite->colourSprite(srcRect, make_rgb(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
     drawHUD();
 

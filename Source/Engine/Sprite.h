@@ -43,13 +43,14 @@ public:
     // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
     // The dstRect co-ordinates are relative to the srcRect!
     template<typename R1, typename R2>
-    static void copySprite(SDL_Renderer* renderer, const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect, const Rect<R2>& dstRect) noexcept
+    static void copySprite(const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect, const Rect<R2>& dstRect) noexcept
     {
-        if (renderer)
+        assert(dstTexture.m_renderer == srcTexture.m_renderer);
+        if (dstTexture.m_renderer)
         {
             // Push rendering target
-            auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
-            SDL_ASSERT(SDL_SetRenderTarget(renderer, dstTexture.data()));
+            auto const currentRenderingTarget = SDL_GetRenderTarget(dstTexture.m_renderer);
+            SDL_ASSERT(SDL_SetRenderTarget(dstTexture.m_renderer, dstTexture.data()));
 
             // TODO: Allow use of empty rect to specify whole sprite for copying
             assert(srcRect != Rect<R1>());
@@ -64,38 +65,38 @@ public:
             auto rectSrc = rectToSDLRect(srcRect);
             auto rectDst = rectToSDLRect(dstRect);
 
-            SDL_ASSERT(SDL_RenderCopy(renderer, srcTexture.data(), &rectSrc, &rectDst));
+            SDL_ASSERT(SDL_RenderCopy(dstTexture.m_renderer, srcTexture.data(), &rectSrc, &rectDst));
 
             // Pop rendering target
-            SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget));
+            SDL_ASSERT(SDL_SetRenderTarget(dstTexture.m_renderer, currentRenderingTarget));
         }
     }
 
     // Colours a part of a texture (or whole use nullptr with a given colour 
     template<typename R>
-    static void colourSprite(SDL_Renderer* renderer, const Sprite& srcTexture, const Rect<R>& srcRect, Colour colour)
+    void colourSprite(const Rect<R>& srcRect, Colour colour)
     {
-        if (renderer)
+        if (m_renderer)
         {
             // Push rendering target
-            auto const currentRenderingTarget = SDL_GetRenderTarget(renderer);
+            auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
 
-            SDL_ASSERT(SDL_SetRenderTarget(renderer, srcTexture.data()));
+            SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
             // TODO: Add parameter here for opacity with default
-            SDL_ASSERT(SDL_SetRenderDrawColor(renderer, make_red(colour), make_green(colour), make_blue(colour), 255));
+            SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), 255));
 
             assert(srcRect != Rect<R>());
 
             // Check srcRect within boundaries of sprite
-            assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= srcTexture.width());
-            assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= srcTexture.height());
+            assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
+            assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
 
             auto const rectSrc = rectToSDLRect(srcRect);
 
-            SDL_ASSERT(SDL_RenderFillRect(renderer, &rectSrc));
+            SDL_ASSERT(SDL_RenderFillRect(m_renderer, &rectSrc));
 
             // Pop rendering target
-            SDL_ASSERT(SDL_SetRenderTarget(renderer, currentRenderingTarget));
+            SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
         }
     }
 

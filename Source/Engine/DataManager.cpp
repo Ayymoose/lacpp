@@ -10,6 +10,7 @@
 // TODO: Remove when defaults are set
 #include "Link.h"
 #include "Controller.h"
+#include "Dialogue.h"
 
 namespace Zelda
 {
@@ -450,6 +451,8 @@ void DataManager::loadRooms() const noexcept
 	Link::getInstance().setDungeonMarkerLocation(3, 8);
 	Controller::getInstance().setController(&Link::getInstance());
 	Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
+
+	Dialogue::getInstance().message("Level 1--       ""     Tail Cave",0);
 }
 
 

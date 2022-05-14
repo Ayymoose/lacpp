@@ -17,6 +17,8 @@ void SpriteTests::runTests()
 void SpriteTests::spriteTests() noexcept
 {
     constexpr Colour TRANSPARENCY_COLOUR = make_rgb(255, 0, 128);
+
+    auto colouredSprite = Sprite(Renderer::getInstance().getRenderer(), 32, 32);
     
     // Create sprite test
     auto spriteBall = Sprite(Renderer::getInstance().getRenderer(), Resource::loadSprite(RESOURCE_OBJECT_PATH + "ball.png", TRANSPARENCY_COLOUR));
@@ -45,7 +47,8 @@ void SpriteTests::spriteTests() noexcept
         &spriteBallCopy,
         &spriteObstacleCopy, 
         &spriteObstacleMoveConstructed,
-        &spriteBallMoveAssigned]()
+        &spriteBallMoveAssigned,
+        &colouredSprite]()
     {
         Rect srcRect1 = { 0,0,16,16 };
         Rect dstRect1 = { 32,32,16,16 };
@@ -65,6 +68,10 @@ void SpriteTests::spriteTests() noexcept
 
         Rect dstRect6 = { 32, 96, 16, 16 };
         spriteBallMoveAssigned.drawSprite(srcRect1, dstRect6);
+
+        Rect dstRect7 = { 0,0,32,32 };
+        colouredSprite.colourSprite(Rect<int>{0, 0, 32, 32}, make_rgb(255, 0, 0));
+        colouredSprite.drawSprite(Rect<int>{0, 0, 32, 32}, dstRect7);
     };
 
     Engine::getInstance().setRenderTestFunction(spriteFunction);
