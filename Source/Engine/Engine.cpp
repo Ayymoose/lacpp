@@ -10,7 +10,6 @@
 #include "ResourceManager.h"
 #include "Controller.h"
 
-
 namespace Zelda
 {
 void Engine::init() noexcept

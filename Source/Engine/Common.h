@@ -1,16 +1,13 @@
 #pragma once
 
 #include "Timer.h"
-#include <random>
 
 // Common functionality shared across
 
 namespace Zelda
 {
 
-// TODO: Separate class into Random.h/cpp and something else
-
-// Could think of a better name
+// TODO: Think of a better name for this class
 inline void toggleItem(bool& toggle, Timer& clock, float time)
 {
     if (!toggle && clock.elapsed(time))
@@ -25,16 +22,6 @@ inline void toggleItem(bool& toggle, Timer& clock, float time)
             toggle = false;
         }
     }
-}
-
-// Generate a random int between start and end inclusive
-inline int random(int start, int end)
-{
-    assert(start <= end);
-    std::random_device rd; // obtain a random number from hardware
-    std::mt19937 gen(rd()); // seed the generator
-    std::uniform_int_distribution<> distr(start, end); // define the range
-    return distr(gen);
 }
 
 }

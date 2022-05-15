@@ -392,5 +392,8 @@
     <ClInclude Include="..\..\Source\Engine\RoomName.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Random.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

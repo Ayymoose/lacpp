@@ -230,6 +230,7 @@
     <ClInclude Include="..\..\Source\Enemy\Goomba.h" />
     <ClInclude Include="..\..\Source\Enemy\Pairodd.h" />
     <ClInclude Include="..\..\Source\Engine\AnimatedObject.h" />
+    <ClInclude Include="..\..\Source\Engine\Random.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
     <ClInclude Include="..\..\Source\Engine\ResourceManager.h" />
     <ClInclude Include="..\..\Source\Engine\RoomName.h" />
