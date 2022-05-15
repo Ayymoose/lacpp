@@ -15,7 +15,7 @@ public:
     constexpr Vector() : x(0), y(0) {};
     Vector(T x, T y) : x(x), y(y) {}
 
-    constexpr Vector operator/(double scalar) const noexcept
+    constexpr Vector operator/(const double scalar) const noexcept
     {
         assert(scalar != 0);
         return Vector(x / scalar, y / scalar);
@@ -26,19 +26,19 @@ public:
         return Vector(x + other.x, y + other.y);
     }
 
-    Vector operator*(double scalar) const noexcept
+    Vector operator*(const double scalar) const noexcept
     {
         return Vector(x * scalar, y * scalar);
     }
 
-    Vector& operator*=(double scalar) noexcept
+    Vector& operator*=(const double scalar) noexcept
     {
         x *= scalar;
         y *= scalar;
         return *this;
     }
 
-    Vector& operator/=(double scalar) noexcept
+    Vector& operator/=(const double scalar) noexcept
     {
         assert(scalar != 0);
         x /= scalar;

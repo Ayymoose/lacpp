@@ -16,7 +16,7 @@ void Renderer::createRenderer(const Window& window) noexcept
 }
 
 // TODO: Const all these parameters
-void Renderer::clearScreen(int colour) const noexcept
+void Renderer::clearScreen(const Colour colour) const noexcept
 {
     assert(m_renderer);
     SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), 0));
@@ -29,7 +29,7 @@ void Renderer::renderScreen() const noexcept
     SDL_RenderPresent(m_renderer);
 }
 
-void Renderer::setRendererScale(float scaleX, float scaleY) const noexcept
+void Renderer::setRendererScale(const float scaleX, const float scaleY) const noexcept
 {
     assert(m_renderer);
     assert(scaleX > 0 && scaleY > 0);

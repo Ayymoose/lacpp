@@ -12,7 +12,7 @@ void Timer::reset()
     m_startTime = SDL_GetTicks();
 }
 
-bool Timer::elapsed(double ticksMs)
+bool Timer::elapsed(const double ticksMs)
 {
     auto elapsedTime =  ((SDL_GetTicks() - m_startTime) / 1000.0);
     if (elapsedTime > ticksMs)
@@ -23,7 +23,7 @@ bool Timer::elapsed(double ticksMs)
     return false;
 }
 
-bool Timer::elapsed(int tickMs)
+bool Timer::elapsed(const int tickMs)
 {
     auto elapsedTime = SDL_GetTicks() - m_startTime;
     if (elapsedTime > tickMs)

@@ -34,7 +34,7 @@ void Keyboard::eventHandler(SDL_Event event) noexcept
 }
 
 // Updates the internal key state every frame
-void Keyboard::updateKeyStates(int key, bool pushed, bool released) noexcept
+void Keyboard::updateKeyStates(const int key, const bool pushed, const bool released) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     m_keyStatePushed[key] = pushed;
@@ -54,13 +54,13 @@ void Keyboard::updateKeyStates(int key, bool pushed, bool released) noexcept
     }
 }
 
-bool Keyboard::keyPushed(int key) const noexcept
+bool Keyboard::keyPushed(const int key) const noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     return m_keyStatePushed[key];
 }
 
-bool Keyboard::keyPressed(int key) noexcept
+bool Keyboard::keyPressed(const int key) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     // Next round, if the key we recorded pressed was still pressed, return false until it is released
@@ -79,7 +79,7 @@ bool Keyboard::keyPressed(int key) noexcept
     }
 }
 
-bool Keyboard::keyReleased(int key) noexcept
+bool Keyboard::keyReleased(const int key) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     if (m_keyStateReleased[key])
@@ -91,7 +91,7 @@ bool Keyboard::keyReleased(int key) noexcept
     return m_keyStateReleased[key];
 }
 
-int Keyboard::operator[](int key) noexcept
+int Keyboard::operator[](const int key) noexcept
 {
     assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
     return m_keyStatePushed[key];

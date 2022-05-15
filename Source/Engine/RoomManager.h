@@ -42,8 +42,8 @@ public:
         const Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap);
 
     // Load or clear room objects from the current room
-    void roomDo(RoomAction action, size_t roomIndex) noexcept;
-    void transitionObjects(size_t roomIndex, int xTransition, int yTransition) noexcept;
+    void roomDo(RoomAction action, const size_t roomIndex) noexcept;
+    void transitionObjects(size_t roomIndex, const int xTransition, const int yTransition) noexcept;
 
 
     // Room transition related functions

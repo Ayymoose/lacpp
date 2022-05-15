@@ -39,7 +39,7 @@ public:
 
 private:
 
-    void renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, size_t roomIndex) noexcept;
+    void renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, const size_t roomIndex) noexcept;
 
     int m_roomX;
     int m_roomY;

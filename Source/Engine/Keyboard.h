@@ -15,16 +15,16 @@ public:
     void eventHandler(SDL_Event event) noexcept;
 
     // Returns true if a key is being pushed (held)
-    bool keyPushed(int key) const noexcept;
+    bool keyPushed(const int key) const noexcept;
 
-    bool keyPressed(int key) noexcept;
+    bool keyPressed(const int key) noexcept;
 
-    bool keyReleased(int key) noexcept;
-    int operator[](int key) noexcept;
+    bool keyReleased(const int key) noexcept;
+    int operator[](const int key) noexcept;
 private:
     Keyboard();
     // Updates the internal key state for every key
-    void updateKeyStates(int key, bool pushed, bool released) noexcept;
+    void updateKeyStates(const int key, const bool pushed, const bool released) noexcept;
 
     bool m_keyStatePushed[SDL_NUM_SCANCODES];
     bool m_keyStatePressed[SDL_NUM_SCANCODES];

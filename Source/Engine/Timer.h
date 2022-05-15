@@ -10,8 +10,8 @@ class Timer
 public:
     Timer();
     void reset();
-    bool elapsed(double ticksMs);
-    bool elapsed(int ticksMs);
+    bool elapsed(const double ticksMs);
+    bool elapsed(const int ticksMs);
 
 private:
     uint32_t m_startTime;

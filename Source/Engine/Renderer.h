@@ -22,11 +22,11 @@ public:
 
     void createRenderer(const Window& window) noexcept;
 
-    void clearScreen(int colour) const noexcept;
+    void clearScreen(const Colour colour) const noexcept;
 
     void renderScreen() const noexcept;
 
-    void setRendererScale(float scaleX, float scaleY) const noexcept;
+    void setRendererScale(const float scaleX, const float scaleY) const noexcept;
 
     bool inRenderSet(Renderable* renderable) const noexcept;
 

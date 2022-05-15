@@ -10,14 +10,14 @@ namespace Zelda
 {
 
 // Load a PNG image to a texture with a RGB colour used for transparency
-std::unique_ptr<Sprite> Resource::loadSprite(const Renderer& renderer, const std::string& path, Colour transparency) noexcept
+std::unique_ptr<Sprite> Resource::loadSprite(const Renderer& renderer, const std::string& path, const Colour transparency) noexcept
 {
     assert(renderer.getRenderer());
     auto const loadedSurface = loadSprite(path, transparency);
     return std::make_unique<Sprite>(renderer.getRenderer(), loadedSurface);
 }
 
-SDL_Surface* Resource::loadSprite(const std::string& path, Colour transparency) noexcept
+SDL_Surface* Resource::loadSprite(const std::string& path, const Colour transparency) noexcept
 {
     assert(!path.empty());
     // Load image at specified path

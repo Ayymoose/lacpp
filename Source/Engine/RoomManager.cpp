@@ -168,7 +168,7 @@ void RoomManager::roomDo(RoomAction action, size_t roomIndex) noexcept
     }*/
 }
 
-void RoomManager::transitionObjects(size_t roomIndex, int xTransition, int yTransition) noexcept
+void RoomManager::transitionObjects(const size_t roomIndex, const int xTransition, const int yTransition) noexcept
 {
     // Check we have a room
     /*assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");

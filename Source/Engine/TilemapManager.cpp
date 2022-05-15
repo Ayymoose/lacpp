@@ -76,7 +76,7 @@ void TilemapManager::render() noexcept
     }, m_swapCanvas, m_nextRoom);
 }
 
-void TilemapManager::renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, size_t roomIndex) noexcept
+void TilemapManager::renderTileMap(const Rect<int>& dstRect, const Sprite& srcTexture, const size_t roomIndex) noexcept
 {
     assert(m_tilemaps.count(m_currentTilemapname) && "Invalid tilemap");
 
