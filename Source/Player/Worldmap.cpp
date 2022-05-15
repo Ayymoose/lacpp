@@ -250,9 +250,7 @@ void Worldmap::render() noexcept
         Renderer::getInstance().popRenderingTarget(target);
 
         // Render the worldmap
-        m_sprite->drawSprite(
-            Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()},
-            Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height() });
+        m_sprite->drawSprite(Rect<int>{},Rect<int>{});
 
         // Draw the location if we hit upon one
         if (m_worldmapLocation[m_scopeX][m_scopeY].locationType != LT_NONE)

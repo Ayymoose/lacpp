@@ -41,7 +41,6 @@ public:
 
     void loadSprite(SpriteResource resource, const std::string& path, const Colour transparencyColour);
     std::shared_ptr<Sprite> operator[](SpriteResource resource) noexcept;
-    ~ResourceManager();
 
 private:
     ResourceManager() = default;

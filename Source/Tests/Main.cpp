@@ -16,6 +16,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
     Engine::getInstance().initVideo();
     Engine::getInstance().initWindow();
+    Engine::getInstance().initData();
 
     std::vector<std::unique_ptr<Testable::TestUnit>> tests;
     
@@ -24,8 +25,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     //tests.emplace_back(std::make_unique<Testable::InventoryTests>());
     //tests.emplace_back(std::make_unique<Testable::RectTests>());
     //tests.emplace_back(std::make_unique<Testable::DialogueTests>());
-    //tests.emplace_back(std::make_unique<Testable::WorldmapTests>());
-    tests.emplace_back(std::make_unique<Testable::SpriteTests>());
+    tests.emplace_back(std::make_unique<Testable::WorldmapTests>());
+    //tests.emplace_back(std::make_unique<Testable::SpriteTests>());
 
     for (auto const& test : tests)
     {

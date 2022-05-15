@@ -402,35 +402,17 @@ void Dialogue::render() noexcept
 
     }
 
-    const Rect<int> dstRectSubTexture =
-    {
-        0,
-        -m_dstCharY,
-        DIALOGUE_WIDTH,
-        DIALOGUE_HEIGHT
-    };
-
     // Copy sub texture to main textbox
-    Sprite::copySprite(*m_subTexture, *m_sprite, Rect<int>{ 0, 0, m_subTexture->width(), m_subTexture->height() }, dstRectSubTexture);
+    Sprite::copySprite(*m_subTexture, *m_sprite, Rect<int>{}, Rect<int>{0,-m_dstCharY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT});
 
     // Display the textbox
     // Drawn on top or bottom depending on Link's position
-    m_sprite->drawSprite(
-        Rect<int>{0,0, m_sprite->width(), m_sprite->height()},
-        Rect<int>{m_dialoguePosX,m_dialoguePosY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT});
+    m_sprite->drawSprite(Rect<int>{}, Rect<int>{m_dialoguePosX,m_dialoguePosY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT});
     
     // Flashing red arrow 
     if (m_flashArrow && m_continue)
     {
-        const Rect<int> srcRectArrow =
-        {
-            136,
-            16,
-            CHAR_WIDTH,
-            CHAR_HEIGHT
-        };
-        m_redArrow->drawSprite(srcRectArrow, 
-            Rect<int>{m_dialoguePosX + ARROW_POS_X,m_dialoguePosY + ARROW_POS_Y,CHAR_WIDTH,CHAR_HEIGHT});
+        m_redArrow->drawSprite(Rect<int>{136,16,CHAR_WIDTH,CHAR_HEIGHT}, Rect<int>{m_dialoguePosX + ARROW_POS_X,m_dialoguePosY + ARROW_POS_Y,CHAR_WIDTH,CHAR_HEIGHT});
     }
 
     // Flash the continue arrow
@@ -442,14 +424,11 @@ void Dialogue::render() noexcept
         toggleItem(m_flashQuestion, m_questionTimer, INVENTORY_SELECTOR_FPS);
         if (m_flashQuestion && m_currentChar == m_message.length())
         {
-            const Rect<int> srcQuestionRect = { 144,16, CHAR_WIDTH, CHAR_HEIGHT };
-
             assert(m_questionXPos >= m_dialoguePosX);
             assert(m_questionXPos <= m_dialoguePosX + DIALOGUE_WIDTH);
             assert(m_questionYPos >= m_dialoguePosY);
             assert(m_questionYPos <= m_dialoguePosY + DIALOGUE_HEIGHT);
-            m_questionMarker->drawSprite(srcQuestionRect, 
-                Rect<int>{ m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT });
+            m_questionMarker->drawSprite(Rect<int>{144,16, CHAR_WIDTH, CHAR_HEIGHT}, Rect<int>{ m_questionXPos, m_questionYPos, CHAR_WIDTH, CHAR_HEIGHT });
         }
     }
 }

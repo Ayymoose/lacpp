@@ -84,7 +84,7 @@ void TilemapManager::renderTileMap(const Rect<int>& dstRect, const Sprite& srcTe
     m_tilemaps[m_currentTilemapname].tile(Renderer::getInstance(), srcTexture, roomIndex);
 
     // Finally render the canvas
-    srcTexture.drawSprite(Rect<int>{0, 0, srcTexture.width(), srcTexture.height()}, dstRect);
+    srcTexture.drawSprite(Rect<int>{}, dstRect);
 }
 
 TilemapManager::TilemapManager() :

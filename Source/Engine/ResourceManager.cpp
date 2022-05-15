@@ -18,17 +18,9 @@ std::shared_ptr<Sprite> ResourceManager::operator[](SpriteResource resource) noe
 {
     assert(resource > SpriteResource::SPR_RESOURCE_NONE && resource < SpriteResource::SPR_RESOURCE_COUNT);
     auto sprite = m_spriteResources[resource];
+    assert(sprite && "Sprite doesn't exist");
     assert(sprite->data());
     return sprite;
-}
-
-ResourceManager::~ResourceManager()
-{
-    // Free all loaded resources
-    /*for (auto& [spriteResource, sprite]: m_spriteResources)
-    {
-        sprite.free();
-    }*/
 }
 
 }

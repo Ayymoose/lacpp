@@ -42,7 +42,7 @@ public:
     // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
     // The dstRect co-ordinates are relative to the srcRect!
     template<typename R1, typename R2>
-    static void copySprite(const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect, const Rect<R2>& dstRect) noexcept
+    static void copySprite(const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect = Rect<R1>(), const Rect<R2>& dstRect = Rect<R2>()) noexcept
     {
         assert(dstTexture.m_renderer == srcTexture.m_renderer);
         if (dstTexture.m_renderer)
@@ -51,20 +51,25 @@ public:
             auto const currentRenderingTarget = SDL_GetRenderTarget(dstTexture.m_renderer);
             SDL_ASSERT(SDL_SetRenderTarget(dstTexture.m_renderer, dstTexture.data()));
 
-            // TODO: Allow use of empty rect to specify whole sprite for copying
-            assert(srcRect != Rect<R1>());
-            assert(dstRect != Rect<R2>());
+            // Check rects within boundaries of sprite if need be
+            if (srcRect != Rect<R1>())
+            {
+                assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= srcTexture.width());
+                assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= srcTexture.height());
+            }
+            if (dstRect != Rect<R2>())
+            {
+                assert(dstRect.x >= 0 && dstRect.x + dstRect.w <= dstTexture.width());
+                assert(dstRect.y >= 0 && dstRect.y + dstRect.h <= dstTexture.height());
+            }
 
-            // Check rects within boundaries of sprite
-            assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= srcTexture.width());
-            assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= srcTexture.height());
-            assert(dstRect.x >= 0 && dstRect.x + dstRect.w <= dstTexture.width());
-            assert(dstRect.y >= 0 && dstRect.y + dstRect.h <= dstTexture.height());
+            auto sdlRectSrc = rectToSDLRect(srcRect);
+            auto sdlRectDst = rectToSDLRect(dstRect);
 
-            auto rectSrc = rectToSDLRect(srcRect);
-            auto rectDst = rectToSDLRect(dstRect);
+            auto rectSrc = (srcRect != Rect<R1>() ? &sdlRectSrc : nullptr);
+            auto rectDst = (dstRect != Rect<R2>() ? &sdlRectDst : nullptr);
 
-            SDL_ASSERT(SDL_RenderCopy(dstTexture.m_renderer, srcTexture.data(), &rectSrc, &rectDst));
+            SDL_ASSERT(SDL_RenderCopy(dstTexture.m_renderer, srcTexture.data(), rectSrc, rectDst));
 
             // Pop rendering target
             SDL_ASSERT(SDL_SetRenderTarget(dstTexture.m_renderer, currentRenderingTarget));
@@ -84,15 +89,18 @@ public:
             // TODO: Add parameter here for opacity with default
             SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), 255));
 
-            assert(srcRect != Rect<R>());
+            if (srcRect != Rect<R>())
+            {
+                // Check srcRect within boundaries of sprite
+                assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
+                assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
 
-            // Check srcRect within boundaries of sprite
-            assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
-            assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+            }
 
-            auto const rectSrc = rectToSDLRect(srcRect);
+            auto sdlRectSrc = rectToSDLRect(srcRect);
+            auto rectSrc = (srcRect != Rect<R>() ? &sdlRectSrc : nullptr);
 
-            SDL_ASSERT(SDL_RenderFillRect(m_renderer, &rectSrc));
+            SDL_ASSERT(SDL_RenderFillRect(m_renderer, rectSrc));
 
             // Pop rendering target
             SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
@@ -106,17 +114,21 @@ public:
         if (m_renderer)
         {
             assert(m_sprite);
-            assert(srcRect != Rect<R1>());
-            assert(dstRect != Rect<R2>());
 
-            // Check srcRect within boundaries of sprite
-            assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
-            assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+            if (srcRect != Rect<R1>())
+            {
+                // Check srcRect within boundaries of sprite
+                assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
+                assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+            }
 
-            auto rectSrc = rectToSDLRect(srcRect);
-            auto rectDst = rectToSDLRect(dstRect);
+            auto sdlRectSrc = rectToSDLRect(srcRect);
+            auto sdlRectDst = rectToSDLRect(dstRect);
 
-            SDL_ASSERT(SDL_RenderCopy(m_renderer, m_sprite, &rectSrc, &rectDst));
+            auto rectSrc = (srcRect != Rect<R1>() ? &sdlRectSrc : nullptr);
+            auto rectDst = (dstRect != Rect<R2>() ? &sdlRectDst : nullptr);
+
+            SDL_ASSERT(SDL_RenderCopy(m_renderer, m_sprite, rectSrc, rectDst));
         }
     }
 
@@ -126,23 +138,26 @@ public:
         if (m_renderer)
         {
             assert(m_sprite);
-            assert(srcRect != Rect<R1>());
-            assert(dstRect != Rect<R2>());
+            if (srcRect != Rect<R1>())
+            {
+                // Check srcRect within boundaries of sprite
+                assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
+                assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+            }
 
-            // Check srcRect within boundaries of sprite
-            assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
-            assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+            auto sdlRectSrc = rectToSDLRect(srcRect);
+            auto sdlRectDst = rectToSDLRect(dstRect);
 
-            auto rectSrc = rectToSDLRect(srcRect);
-            auto rectDst = rectToSDLRect(dstRect);
+            auto rectSrc = (srcRect != Rect<R1>() ? &sdlRectSrc : nullptr);
+            auto rectDst = (dstRect != Rect<R2>() ? &sdlRectDst : nullptr);
 
             if constexpr (std::is_integral_v<R2>)
             {
-                SDL_ASSERT(SDL_RenderCopyEx(m_renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)));
+                SDL_ASSERT(SDL_RenderCopyEx(m_renderer, m_sprite, rectSrc, rectDst, angle, nullptr, flipToSDLRendererFlip(flip)));
             }
             else
             {
-                SDL_ASSERT(SDL_RenderCopyExF(m_renderer, m_sprite, &rectSrc, &rectDst, angle, nullptr, flipToSDLRendererFlip(flip)));
+                SDL_ASSERT(SDL_RenderCopyExF(m_renderer, m_sprite, rectSrc, rectDst, angle, nullptr, flipToSDLRendererFlip(flip)));
             }
         }
     }

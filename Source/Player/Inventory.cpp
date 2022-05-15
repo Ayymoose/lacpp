@@ -180,10 +180,8 @@ void Inventory::render() noexcept
     }
 
     // Render the inventory background
-    Rect<int> dstRect = { 0, renderY, m_sprite->width() , m_sprite->height() };
-    Rect<int> srcRect = { 0, 0,  m_sprite->width() , m_sprite->height() };
-    m_sprite->drawSprite(srcRect, dstRect);
-    m_sprite->colourSprite(srcRect, make_rgb(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+    m_sprite->drawSprite(Rect<int>{}, Rect<int>{0, renderY, m_sprite->width(), m_sprite->height()});
+    m_sprite->colourSprite(Rect<int>{}, make_rgb(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 
     drawHUD();
 
