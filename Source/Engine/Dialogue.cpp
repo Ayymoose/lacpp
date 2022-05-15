@@ -6,6 +6,7 @@
 #include "Controller.h"
 #include "Keyboard.h"
 #include "InputControl.h"
+#include "Random.h"
 
 namespace Zelda
 {
@@ -330,25 +331,12 @@ void Dialogue::render() noexcept
         else if (m_scrollMessage)
         {
             // Scrolls the message and continues on to the next
-            const Rect<int> srcSubTextureHalf =
-            {
-                0,
-                0,
-                DIALOGUE_WIDTH,
-                DIALOGUE_HEIGHT / 2
-            };
-
+           
             // 1. Hide the top half of the sub texture
-            m_subTexture->colourSprite(srcSubTextureHalf, make_rgb(0, 0, 0));
+            m_subTexture->colourSprite(Rect<int>{0,0,DIALOGUE_WIDTH, DIALOGUE_HEIGHT/2}, make_rgb(0, 0, 0));
 
             // Copy the bottom line of text to the top of the texture
-            const Rect<int> srcRectSubTextureLowerHalf =
-            {
-                0,
-                m_dstCharY,
-                DIALOGUE_WIDTH,
-                DIALOGUE_HEIGHT / 2
-            };
+            const Rect<int> srcRectSubTextureLowerHalf = { 0, m_dstCharY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT / 2 };
 
             // 2. Scroll up LINE_HEIGHT pixels
             if (m_dstCharY % LINE_HEIGHT != 0)
@@ -397,7 +385,9 @@ void Dialogue::render() noexcept
         assert(dstRectChar.y < TEXT_POS_Y + MAX_LINES * LINE_HEIGHT);
         assert(dstRectChar.x >= TEXT_POS_X);
         assert(dstRectChar.x < TEXT_POS_X + MAX_CHAR_PER_LINE * CHAR_WIDTH);
-        Sprite::copySprite(*m_text, *m_subTexture, srcRectChar, dstRectChar);
+
+        // Make text yellow
+        Sprite::copySprite(*m_text, *m_subTexture, srcRectChar, dstRectChar, make_rgb(TEXT_R, TEXT_G, TEXT_B));
 
     }
 
@@ -450,13 +440,13 @@ void Dialogue::reset() noexcept
     m_continue = false;
     m_moreText = false;
 
-    m_subTexture->colourSprite(Rect<int>{ 0, 0, m_subTexture->width(), m_subTexture->height() }, make_rgb(0, 0, 0));
+    m_subTexture->colourSprite(Rect<int>{}, make_rgb(0, 0, 0));
 
     m_isQuestion = false;
     m_questionXPos = 0;
     m_questionYPos = 0;
 
-    // TODO: Correct text colour
+    // TODO: Correct text speed
     // TODO: Add special characters (arrows, items etc)
     // TODO: Add heart container on RHS when acquired
 }

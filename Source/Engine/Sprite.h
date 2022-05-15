@@ -43,7 +43,7 @@ public:
     // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
     // The dstRect co-ordinates are relative to the srcRect!
     template<typename R1, typename R2>
-    static void copySprite(const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect = Rect<R1>(), const Rect<R2>& dstRect = Rect<R2>()) noexcept
+    static void copySprite(const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect, const Rect<R2>& dstRect, const Colour colourMod = 0) noexcept
     {
         assert(dstTexture.m_renderer == srcTexture.m_renderer);
         if (dstTexture.m_renderer)
@@ -58,17 +58,17 @@ public:
                 assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= srcTexture.width());
                 assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= srcTexture.height());
             }
-            if (dstRect != Rect<R2>())
-            {
-                assert(dstRect.x >= 0 && dstRect.x + dstRect.w <= dstTexture.width());
-                assert(dstRect.y >= 0 && dstRect.y + dstRect.h <= dstTexture.height());
-            }
 
             auto sdlRectSrc = rectToSDLRect(srcRect);
             auto sdlRectDst = rectToSDLRect(dstRect);
 
             auto rectSrc = (srcRect != Rect<R1>() ? &sdlRectSrc : nullptr);
             auto rectDst = (dstRect != Rect<R2>() ? &sdlRectDst : nullptr);
+
+            if (colourMod)
+            {
+                SDL_ASSERT(SDL_SetTextureColorMod(srcTexture.data(), make_red(colourMod), make_green(colourMod), make_blue(colourMod)));
+            }
 
             SDL_ASSERT(SDL_RenderCopy(dstTexture.m_renderer, srcTexture.data(), rectSrc, rectDst));
 

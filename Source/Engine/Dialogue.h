@@ -17,6 +17,12 @@
 
 namespace Zelda
 {
+
+// RGB components of text colour
+constexpr int TEXT_R = 248;
+constexpr int TEXT_G = 248;
+constexpr int TEXT_B = 168;
+
 // Texture dimensions
 constexpr int DIALOGUE_WIDTH = 144;
 constexpr int DIALOGUE_HEIGHT = 40;

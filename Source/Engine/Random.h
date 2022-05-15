@@ -36,7 +36,7 @@ struct Random
     static T choose(T arg, Args... args)
     { 
         static_assert(sizeof...(Args) > 0);
-        constexpr size = 1 + sizeof...(Args);
+        constexpr auto size = 1 + sizeof...(Args);
         T arr[size] = { 0 };
 
         int i = 0;

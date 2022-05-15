@@ -452,7 +452,10 @@ void DataManager::loadRooms() const noexcept
 	Controller::getInstance().setController(&Link::getInstance());
 	Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
 
-	Dialogue::getInstance().message("Level 1--       ""     Tail Cave",0);
+
+	Dialogue::getInstance().question("Our colors are  ""never the same! ""If I am red, he ""is blue! If he  ""is red, I am    ""blue! What color""is my cloth?", "Red", "Blue",0);
+
+	//Dialogue::getInstance().message("Level 1--       ""     Tail Cave",0);
 }
 
 

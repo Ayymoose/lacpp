@@ -109,7 +109,7 @@ public:
 
     // Normalise a vector
     // Note this will only work for float and double
-    // SFINAE this out
+    // TODO: SFINAE this out
 
     void /*std::enable_if_t<std::is_integral_v<T>, void>*/ normalise() noexcept
     {
