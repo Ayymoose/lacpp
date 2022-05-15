@@ -142,11 +142,12 @@ SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip) noexcept
 
 void swap(Sprite& sprite1, Sprite& sprite2) noexcept
 {
-    std::swap(sprite1.m_height, sprite2.m_height);
-    std::swap(sprite1.m_width, sprite2.m_width);
-    std::swap(sprite1.m_renderer, sprite2.m_renderer);
-    std::swap(sprite1.m_sprite, sprite2.m_sprite);
-    std::swap(sprite1.m_blendMode, sprite2.m_blendMode);
+    using std::swap;
+    swap(sprite1.m_height, sprite2.m_height);
+    swap(sprite1.m_width, sprite2.m_width);
+    swap(sprite1.m_renderer, sprite2.m_renderer);
+    swap(sprite1.m_sprite, sprite2.m_sprite);
+    swap(sprite1.m_blendMode, sprite2.m_blendMode);
 }
 
 

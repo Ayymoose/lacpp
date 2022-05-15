@@ -162,7 +162,7 @@ public:
         }
     }
 
-    // TODO: Why is this friend?
+    // friended for ADL
     friend void swap(Sprite& sprite1, Sprite& sprite2) noexcept;
 
 private:

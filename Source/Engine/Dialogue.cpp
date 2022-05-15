@@ -94,7 +94,7 @@ bool Dialogue::question(const std::string& question, const std::string& choice1,
 
     // Acceptable characters in the message are only
     // a-z A-Z !?'.,- 0-9 space
-    // TODO: Special characters are for items which are represented by
+    // TODO: Special characters are for items which are represented by ...
 
     if (!Renderer::getInstance().inRenderSet(this))
     {
@@ -281,7 +281,7 @@ void Dialogue::render() noexcept
             if ((m_currentChar && (m_currentChar % MAX_CHAR_PER_LINE == 0)) && !m_moreText)
             {
                 // Advance text onto the next line if not reached the maximum lines
-                if (m_currentLine != MAX_LINES-1)
+                if (m_currentLine != MAX_LINES - 1)
                 {
                     m_currentLine++;
                     m_dstCharX = 0;
@@ -313,7 +313,7 @@ void Dialogue::render() noexcept
             {
                 if (!m_continue)
                 {
-                    m_dstCharX = std::min(m_dstCharX + 1, MAX_CHAR_PER_LINE-1);
+                    m_dstCharX = std::min(m_dstCharX + 1, MAX_CHAR_PER_LINE - 1);
                 }
 
                 if (m_moreText)
@@ -327,13 +327,15 @@ void Dialogue::render() noexcept
             {
                 m_currentChar++;
             }
+
+
         }
         else if (m_scrollMessage)
         {
             // Scrolls the message and continues on to the next
-           
+
             // 1. Hide the top half of the sub texture
-            m_subTexture->colourSprite(Rect<int>{0,0,DIALOGUE_WIDTH, DIALOGUE_HEIGHT/2}, make_rgb(0, 0, 0));
+            m_subTexture->colourSprite(Rect<int>{0, 0, DIALOGUE_WIDTH, DIALOGUE_HEIGHT / 2}, make_rgb(0, 0, 0));
 
             // Copy the bottom line of text to the top of the texture
             const Rect<int> srcRectSubTextureLowerHalf = { 0, m_dstCharY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT / 2 };
@@ -421,6 +423,7 @@ void Dialogue::render() noexcept
         }
     }
 }
+
 
 void Dialogue::update() noexcept
 {
