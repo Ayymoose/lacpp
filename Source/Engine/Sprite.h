@@ -78,7 +78,7 @@ public:
 
     // Colours a part of a texture (or whole use nullptr with a given colour 
     template<typename R>
-    void colourSprite(const Rect<R>& srcRect, Colour colour)
+    void colourSprite(const Rect<R>& srcRect, Colour colour, const int opacity=255)
     {
         if (m_renderer)
         {
@@ -86,8 +86,7 @@ public:
             auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
 
             SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
-            // TODO: Add parameter here for opacity with default
-            SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), 255));
+            SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), opacity));
 
             if (srcRect != Rect<R>())
             {
