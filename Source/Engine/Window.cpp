@@ -1,4 +1,5 @@
-#include <assert.h>
+#include <cassert>
+
 #include "Window.h"
 
 namespace Zelda

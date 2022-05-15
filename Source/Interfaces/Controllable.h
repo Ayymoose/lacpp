@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Debug.h"
+
+#include <string>
 #include <iostream>
 #include <cassert>
 

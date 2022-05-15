@@ -1,7 +1,7 @@
 #include "Timer.h"
+
 #include <SDL.h>
 #include <iostream>
-#include "Camera.h"
 
 Timer::Timer() : m_startTime(SDL_GetTicks())
 {

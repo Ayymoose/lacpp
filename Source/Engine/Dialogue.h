@@ -12,6 +12,7 @@
 #include <string>
 #include <queue>
 #include <variant>
+#include <memory>
 
 
 namespace Zelda
@@ -44,6 +45,8 @@ constexpr int CHAR_HEIGHT = 8;
 
 constexpr float TEXT_SPEED = 1 / 45.0f;
 constexpr int SCROLL_SPEED = 4;
+
+constexpr float SELECTOR_FPS = (1.0f / 4.0f);
 
 class Dialogue : public Renderable, public Controllable, public Singleton<Dialogue>, public Updateable
 {

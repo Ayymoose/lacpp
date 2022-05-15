@@ -95,6 +95,7 @@ enum class EnemyType
 };
 
 // Enemy frames
+// TODO: This should be specific to each enemy to reduce compilation times
 constexpr float ENEMY_SEA_URCHIN_FPS(1.0f / 4.0f);
 constexpr float ENEMY_BEAMOS_FPS(1.0f / 4.0f);
 constexpr float ENEMY_GOPONGA_FLOWER_FPS(1.0f / 2.0f);

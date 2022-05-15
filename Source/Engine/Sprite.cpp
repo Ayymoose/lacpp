@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+
 #include "Sprite.h"
 
 // Wrapper class around an SDL_Texture

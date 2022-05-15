@@ -1,5 +1,7 @@
 #include "AnimatedObject.h"
 #include "ResourceManager.h"
+#include "Depth.h"
+#include "Camera.h"
 
 namespace Zelda
 {

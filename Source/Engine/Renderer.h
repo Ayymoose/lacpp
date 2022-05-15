@@ -2,11 +2,12 @@
 
 #include "Singleton.h"
 #include "Renderable.h"
-#include <set>
-#include <SDL_image.h>
 #include "Sprite.h"
 #include "Debug.h"
 #include "Window.h"
+
+#include <set>
+#include <SDL_image.h>
 
 // Singleton instance of the renderer for the main window
 

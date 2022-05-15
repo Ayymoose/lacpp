@@ -1,6 +1,13 @@
 #include "Worldmap.h"
 #include "Common.h"
 #include "Dialogue.h"
+#include "ResourceManager.h"
+#include "Depth.h"
+#include "Renderer.h"
+#include "InputControl.h"
+#include "Keyboard.h"
+#include "Controller.h"
+#include "Engine.h"
 
 namespace Zelda
 {

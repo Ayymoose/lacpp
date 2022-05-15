@@ -1,13 +1,10 @@
 #include "Camera.h"
-#include "InputControl.h"
-#include <cassert>
-#include "Link.h"
-#include "Renderer.h"
 #include "Depth.h"
-#include "SDL_Assert.h"
-#include "Engine.h"
+#include "Renderer.h"
+#include "Link.h"
 #include "RoomManager.h"
-
+#include "Engine.h"
+#include "Controller.h"
 
 namespace Zelda
 {

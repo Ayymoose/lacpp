@@ -1,10 +1,6 @@
 #pragma once
 
 #include "Renderable.h"
-#include "Resource.h"
-#include "Depth.h"
-#include "Camera.h"
-#include "Engine.h"
 
 namespace Zelda
 {

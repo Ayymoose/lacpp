@@ -8,6 +8,8 @@
 namespace Zelda
 {
 
+// TODO: Separate class into Random.h/cpp and something else
+
 // Could think of a better name
 inline void toggleItem(bool& toggle, Timer& clock, float time)
 {

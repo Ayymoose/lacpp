@@ -1,22 +1,22 @@
 #pragma once
 
-#include "Updateable.h"
 #include "Renderable.h"
 #include "Controllable.h"
-#include "Vector.h"
 #include "Character.h"
+#include "Cullable.h"
+#include "Updateable.h"
 #include "Inventory.h"
-#include "Singleton.h"
-#include "CollisionMap.h"
-#include "Bomb.h"
+#include "Worldmap.h"
+#include "Boomerang.h"
 #include "Arrow.h"
 #include "FlameRod.h"
-#include "Boomerang.h"
-#include "Timer.h"
 #include "Sword.h"
-#include "Cullable.h"
-#include "Worldmap.h"
+#include "Bomb.h"
+#include "Vector.h"
+#include "Timer.h"
+
 #include <memory>
+#include <vector>
 
 namespace Zelda
 {

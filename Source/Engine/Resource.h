@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <memory>
+#include <SDL_surface.h>
+
 #include "Colour.h"
 #include "Renderer.h"
 

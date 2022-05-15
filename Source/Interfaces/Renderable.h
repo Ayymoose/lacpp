@@ -1,13 +1,14 @@
 #pragma once
 
 #include <SDL_image.h>
-#include "Timer.h"
 #include <iostream>
 #include <cassert>
+#include <memory>
+
+#include "Timer.h"
 #include "SDL_Assert.h"
 #include "Vector.h"
 #include "Sprite.h"
-#include <memory>
 
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
@@ -84,7 +85,6 @@ public:
     }
 
     Renderable() :
-        //m_sprite(nullptr),
         m_width(0),
         m_height(0),
         m_srcRect({ 0,0,0,0 }),

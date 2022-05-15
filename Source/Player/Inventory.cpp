@@ -1,13 +1,12 @@
 #include "Inventory.h"
-#include "Resource.h"
-#include "InputControl.h"
 #include "Renderer.h"
 #include "Depth.h"
-#include "Camera.h"
-#include "Link.h"
-#include "SDL_Assert.h"
 #include "Keyboard.h"
+#include "InputControl.h"
+#include "Controller.h"
+#include "Link.h"
 #include "Engine.h"
+#include "ResourceManager.h"
 #include "Common.h"
 
 namespace Zelda

@@ -1,12 +1,11 @@
 #include "Dialogue.h"
-#include "Depth.h"
 #include "Renderer.h"
-#include "Camera.h"
-#include "SDL_Assert.h"
-#include "Resource.h"
+#include "ResourceManager.h"
+#include "Depth.h"
+#include "Engine.h"
+#include "Controller.h"
 #include "Keyboard.h"
 #include "InputControl.h"
-#include "Link.h"
 
 namespace Zelda
 {
@@ -416,12 +415,12 @@ void Dialogue::render() noexcept
     }
 
     // Flash the continue arrow
-    toggleItem(m_flashArrow, m_redArrowTimer, INVENTORY_SELECTOR_FPS);
+    toggleItem(m_flashArrow, m_redArrowTimer, SELECTOR_FPS);
 
     // Flash the question marker if it's a question
     if (m_isQuestion)
     {
-        toggleItem(m_flashQuestion, m_questionTimer, INVENTORY_SELECTOR_FPS);
+        toggleItem(m_flashQuestion, m_questionTimer, SELECTOR_FPS);
         if (m_flashQuestion && m_currentChar == m_message.length())
         {
             assert(m_questionXPos >= m_dialoguePosX);

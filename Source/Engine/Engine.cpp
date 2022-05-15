@@ -7,6 +7,8 @@
 #include "Enemy.h"
 #include "RoomManager.h"
 #include "DataManager.h"
+#include "ResourceManager.h"
+#include "Controller.h"
 
 
 namespace Zelda

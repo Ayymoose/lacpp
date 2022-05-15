@@ -1,13 +1,9 @@
 #pragma once
 
-#include <SDL_image.h>
 #include "Updateable.h"
-#include "Controller.h"
 #include "Renderable.h"
-#include "Character.h"
 #include "Singleton.h"
-#include "Timer.h"
-#include "RoomManager.h"
+#include "Vector.h"
 
 namespace Zelda
 {

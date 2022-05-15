@@ -2,8 +2,10 @@
 
 #include <string>
 #include <cassert>
-
 #include <unordered_map>
+#include <memory>
+
+#include "Colour.h"
 #include "Singleton.h"
 #include "Sprite.h"
 

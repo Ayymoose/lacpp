@@ -1,13 +1,14 @@
 #pragma once
 
-#include "SDL_surface.h"
-#include "SDL_render.h"
+#include <SDL_surface.h>
+#include <SDL_render.h>
+#include <type_traits>
+#include <cassert>
+
 #include "SDL_Assert.h"
 #include "Rect.h"
 #include "Colour.h"
 
-#include <cassert>
-#include <type_traits>
 
 // Wrapper class around an SDL_Texture
 namespace Zelda

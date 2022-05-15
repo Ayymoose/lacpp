@@ -1,16 +1,8 @@
 #include "Link.h"
-#include "Resource.h"
-#include "InputControl.h"
-#include "Vector.h"
-#include "Camera.h"
-#include "Renderer.h"
-#include "Arrow.h"
-#include "Depth.h"
-#include "SDL_Assert.h"
+#include "ResourceManager.h"
 #include "Keyboard.h"
-#include "Engine.h"
-#include "Debug.h"
-
+#include "InputControl.h"
+#include "Controller.h"
 
 #include <set>
 #include <chrono>

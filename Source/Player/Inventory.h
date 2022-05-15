@@ -3,9 +3,10 @@
 #include "Updateable.h"
 #include "Controllable.h"
 #include "Renderable.h"
+#include "Timer.h"
 #include "Vector.h"
+#include "Rect.h"
 #include "Camera.h"
-#include <array>
 
 namespace Zelda
 {
@@ -394,8 +395,6 @@ public:
     void setDungeonLocationMarker(const int x, const int y) noexcept;
     void getDungeonMap(Dungeon dungeon, DungeonMapEntry(&dungeonMapEntry)[DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y]) const noexcept;
     void setDungeonMapEntry(const int x, const int y, const DungeonMapEntry& dungeonMapEntry) noexcept;
-
-    // TODO: May be better off as singleton
 
     void drawSubscreen() const noexcept;
     void moveSelectorRight() noexcept;
