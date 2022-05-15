@@ -415,7 +415,7 @@ private:
     void drawSelector() noexcept;
     void drawInventoryDividers() noexcept;
     void drawHUD() noexcept;
-    
+    void drawInventoryBackground() noexcept;
 
     void drawNumber(const Sprite& srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const noexcept;
     void drawWeaponLevel(const Sprite& srcTexture, WeaponItem weapon, const Rect<int>& dstRect) noexcept;

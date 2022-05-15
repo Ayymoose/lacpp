@@ -98,7 +98,6 @@ TilemapManager::TilemapManager() :
     m_currentTilemapname(RoomName::RM_NONE),
     m_swapCanvas(Renderer::getInstance().getRenderer(), m_sprite->width(), m_sprite->height())
 {
-    // TODO: Free textures on shutdown
     assert(m_sprite->data());
     assert(m_swapCanvas.data());
     Renderer::getInstance().addRenderable(this);

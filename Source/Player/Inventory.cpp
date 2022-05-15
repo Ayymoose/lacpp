@@ -162,26 +162,7 @@ void Inventory::control() noexcept
 
 void Inventory::render() noexcept
 {
-    // if inventory closed
-    // render top 16 pixels at bottom of screen
-    // else
-    // render full screen
-
-    int renderY;
-
-    if (m_open)
-    {
-        renderY = 0;
-    }
-    else
-    {
-        renderY = CAMERA_HEIGHT;
-    }
-
-    // Render the inventory background
-    m_sprite->drawSprite(Rect<int>{}, Rect<int>{0, renderY, m_sprite->width(), m_sprite->height()});
-    m_sprite->colourSprite(Rect<int>{}, make_rgb(INVENTORY_R, INVENTORY_G, INVENTORY_B));
-
+    drawInventoryBackground();
     drawHUD();
 
     // If the inventory is open
@@ -1212,6 +1193,29 @@ void Inventory::drawHUD() noexcept
 
 }
 
+void Inventory::drawInventoryBackground() noexcept
+{
+    // if inventory closed
+    // render top 16 pixels at bottom of screen
+    // else
+    // render full screen
+
+    int renderY;
+
+    if (m_open)
+    {
+        renderY = 0;
+    }
+    else
+    {
+        renderY = CAMERA_HEIGHT;
+    }
+
+    // Render the inventory background
+    m_sprite->drawSprite(Rect<int>{}, Rect<int>{0, renderY, m_sprite->width(), m_sprite->height()});
+    m_sprite->colourSprite(Rect<int>{}, make_rgb(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+}
+
 void Inventory::drawSubscreen() const noexcept
 {
 
@@ -1282,6 +1286,7 @@ void Inventory::drawSubscreen() const noexcept
 // 09
 // 320
 
+// TODO: These drawNumber and drawWeaponLevel functions are used in the shop too so must be moved elsewhere
 void Inventory::drawNumber(const Sprite& srcTexture, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const noexcept
 {
     // drawLevel      = Draw the "L-" text next to the number
