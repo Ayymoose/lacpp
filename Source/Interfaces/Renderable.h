@@ -9,6 +9,7 @@
 #include "SDL_Assert.h"
 #include "Vector.h"
 #include "Sprite.h"
+//#include "Renderer.h"
 
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function
@@ -76,7 +77,7 @@ public:
         m_currentFrame(0),
         m_endFrame(0),
         m_orientation(0.0f),
-        m_flip(SDL_RendererFlip::SDL_FLIP_NONE),
+        m_flip(SpriteFlip::FLIP_NONE),
         m_visible(true)
     {
         assert(depth > 0);
@@ -100,7 +101,7 @@ public:
         m_currentFrame(0),
         m_endFrame(0),
         m_orientation(0.0f),
-        m_flip(SDL_RendererFlip::SDL_FLIP_NONE),
+        m_flip(SpriteFlip::FLIP_NONE),
         m_visible(true)
     {
         assert(false && "Method not allowed");
@@ -183,8 +184,7 @@ protected:
     int m_currentFrame;
     int m_endFrame;
     float m_orientation;
-    // TODO: Use defined flip instead of this
-    SDL_RendererFlip m_flip;
+    SpriteFlip m_flip;
     bool m_visible;
 
     // Updateable
