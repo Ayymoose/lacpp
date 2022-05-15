@@ -12,6 +12,7 @@ Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
     m_width = width;
     m_height = height;
     m_renderer = renderer;
+    m_blendMode = SDL_BLENDMODE_NONE;
     
     if (m_renderer)
     {
@@ -19,6 +20,7 @@ Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
         assert(m_height);
         m_sprite = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
         assert(m_sprite);
+        SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
     }
     else
     {
@@ -53,7 +55,9 @@ Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
     SDL_ASSERT(SDL_RenderCopy(m_renderer, textureCreatedFromSurface, nullptr, nullptr));
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
 
-    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, SDL_BLENDMODE_BLEND));
+    // Default is to blend
+    m_blendMode = SDL_BLENDMODE_BLEND;
+    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 
     SDL_DestroyTexture(textureCreatedFromSurface);
 }
@@ -73,12 +77,14 @@ Sprite::Sprite(const Sprite& sprite) noexcept
     m_width = sprite.m_width;
     m_height = sprite.m_height;
     m_renderer = sprite.m_renderer;
+    m_blendMode = sprite.m_blendMode;
 
     // Free existing texture
     SDL_DestroyTexture(m_sprite);
 
     // Create new texture
     m_sprite = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
+    assert(m_sprite);
 
     // Paste sprite texture onto here
     auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
@@ -86,7 +92,7 @@ Sprite::Sprite(const Sprite& sprite) noexcept
     SDL_ASSERT(SDL_RenderCopy(m_renderer, sprite.m_sprite, nullptr, nullptr));
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
 
-    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, SDL_BLENDMODE_BLEND));
+    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 }
 
 Sprite& Sprite::operator=(Sprite sprite) noexcept
@@ -139,6 +145,7 @@ void swap(Sprite& sprite1, Sprite& sprite2) noexcept
     std::swap(sprite1.m_width, sprite2.m_width);
     std::swap(sprite1.m_renderer, sprite2.m_renderer);
     std::swap(sprite1.m_sprite, sprite2.m_sprite);
+    std::swap(sprite1.m_blendMode, sprite2.m_blendMode);
 }
 
 

@@ -20,7 +20,6 @@ enum class SpriteFlip
     FLIP_VERTICAL
 };
 
-
 class Sprite
 {
 public:
@@ -154,6 +153,7 @@ public:
 private:
     SDL_Renderer* m_renderer;
     SDL_Texture* m_sprite;
+    SDL_BlendMode m_blendMode;
     int m_width;
     int m_height;
 
