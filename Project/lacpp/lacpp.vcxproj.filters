@@ -15,110 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Enemy\Beamos.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\HardhatBeetle.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\GopongaFlower.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Goomba.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Gibdo.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\BuzzBlob.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Bubble.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\BladeTrap.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Zombie.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\WaterTektite.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Vacuum.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\ThreeOfAKind.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Star.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Spark.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\ShroudedStalfos.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\ShyGuy.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\SeaUrchin.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\SandCrab.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\PigWarrior.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Peahat.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Pairodd.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Octorok.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Moblin.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Leever.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\Darknut.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\ArmMimic.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Player\Bomb.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Player\Link.cpp">
       <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Player\Sword.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Player\FlameRod.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Player\Arrow.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Player\Boomerang.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\IronMask.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Enemy\LikeLike.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Engine\AnimatedObject.cpp">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Camera.cpp">
       <Filter>Engine</Filter>
@@ -134,9 +32,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Player\Worldmap.cpp">
       <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Engine\Timer.cpp">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Tilemap.cpp">
       <Filter>Engine</Filter>
@@ -176,21 +71,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Player\FlameRod.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Player\Bomb.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Player\Weapon.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Player\Boomerang.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Player\Sword.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Vector.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -227,9 +107,6 @@
     <ClInclude Include="..\..\Source\Engine\Camera.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Player\Arrow.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\Cullable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
@@ -242,104 +119,14 @@
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\SeaUrchin.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Beamos.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\GopongaFlower.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Gibdo.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\LikeLike.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\HardhatBeetle.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Bubble.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Star.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Vacuum.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\BladeTrap.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\ArmMimic.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\ShyGuy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\WaterTektite.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\IronMask.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\ThreeOfAKind.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Spark.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Leever.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\SandCrab.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\BuzzBlob.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Zombie.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Peahat.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Player\Worldmap.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Tilemap.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\Timer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Engine\RoomManager.h">
       <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\AnimatedObject.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Pairodd.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Goomba.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Octorok.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\PigWarrior.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Moblin.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\Darknut.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Enemy\ShroudedStalfos.h">
-      <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Sprite.h">
       <Filter>Engine</Filter>
