@@ -21,32 +21,32 @@ public:
 
     ~Renderer();
 
-    void createRenderer(const Window& window) noexcept;
+    void createRenderer(const Window& window);
 
-    void clearScreen(const Colour colour) const noexcept;
+    void clearScreen(const Colour colour) const;
 
-    void renderScreen() const noexcept;
+    void renderScreen() const;
 
-    void setRendererScale(const float scaleX, const float scaleY) const noexcept;
+    void setRendererScale(const float scaleX, const float scaleY) const;
 
-    bool inRenderSet(Renderable* renderable) const noexcept;
+    bool inRenderSet(Renderable* renderable) const;
 
-    void addRenderable(Renderable* renderable) noexcept;
+    void addRenderable(Renderable* renderable);
 
-    void removeRenderable(Renderable* renderable) noexcept;
+    void removeRenderable(Renderable* renderable);
 
-    auto getRenderer() const noexcept
+    auto getRenderer() const
     {
         assert(m_renderer);
         return m_renderer;
     }
 
-    auto getRenderSet() const noexcept
+    auto getRenderSet() const
     {
         return m_renderables;
     }
 
-    auto pushRenderingTarget(const Sprite& dstTexture) const noexcept
+    auto pushRenderingTarget(const Sprite& dstTexture) const
     {
         assert(m_renderer);
         assert(dstTexture.data());
@@ -55,7 +55,7 @@ public:
         return currentRenderingTarget;
     }
 
-    void popRenderingTarget(SDL_Texture* srcTexture) const noexcept;
+    void popRenderingTarget(SDL_Texture* srcTexture) const;
 
 private:
     Renderer() : m_renderer(nullptr) {}
@@ -65,7 +65,7 @@ private:
 
     struct RendererComparator
     {
-        bool operator ()(const Renderable* r1, const Renderable* r2) const noexcept
+        bool operator ()(const Renderable* r1, const Renderable* r2) const
         {
             return r1->depth() < r2->depth();
         }

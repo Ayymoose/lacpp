@@ -1,14 +1,12 @@
 #pragma once
 
-#include "Timer.h"
-
 // Common functionality shared across
 
 namespace Zelda
 {
 
 // TODO: Think of a better name for this class
-inline void toggleItem(bool& toggle, Timer& clock, float time)
+/*inline void toggleItem(bool& toggle, Timer& clock, float time)
 {
     if (!toggle && clock.elapsed(time))
     {
@@ -22,6 +20,6 @@ inline void toggleItem(bool& toggle, Timer& clock, float time)
             toggle = false;
         }
     }
-}
+}*/
 
 }

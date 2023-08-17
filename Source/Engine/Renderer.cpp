@@ -6,7 +6,7 @@
 namespace Zelda
 {
 
-void Renderer::createRenderer(const Window& window) noexcept
+void Renderer::createRenderer(const Window& window)
 {
     assert(window.getWindowHandle());
     auto const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE;
@@ -16,20 +16,20 @@ void Renderer::createRenderer(const Window& window) noexcept
 }
 
 // TODO: Const all these parameters
-void Renderer::clearScreen(const Colour colour) const noexcept
+void Renderer::clearScreen(const Colour colour) const
 {
     assert(m_renderer);
     SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), 0));
     SDL_ASSERT(SDL_RenderClear(m_renderer));
 }
 
-void Renderer::renderScreen() const noexcept
+void Renderer::renderScreen() const
 {
     assert(m_renderer);
     SDL_RenderPresent(m_renderer);
 }
 
-void Renderer::setRendererScale(const float scaleX, const float scaleY) const noexcept
+void Renderer::setRendererScale(const float scaleX, const float scaleY) const
 {
     assert(m_renderer);
     assert(scaleX > 0 && scaleY > 0);
@@ -42,7 +42,7 @@ Renderer::~Renderer()
     DEBUG(DBG_INFO, "Renderer destroyed");
 }
 
-bool Renderer::inRenderSet(Renderable* renderable) const noexcept
+bool Renderer::inRenderSet(Renderable* renderable) const
 {
     auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
     {
@@ -51,7 +51,7 @@ bool Renderer::inRenderSet(Renderable* renderable) const noexcept
     return iterator != m_renderables.cend();
 }
 
-void Renderer::addRenderable(Renderable* renderable) noexcept
+void Renderer::addRenderable(Renderable* renderable)
 {
     assert(renderable);
     if (inRenderSet(renderable))
@@ -65,7 +65,7 @@ void Renderer::addRenderable(Renderable* renderable) noexcept
 
 }
 
-void Renderer::removeRenderable(Renderable* renderable) noexcept
+void Renderer::removeRenderable(Renderable* renderable)
 {
     assert(renderable);
     auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
@@ -82,7 +82,7 @@ void Renderer::removeRenderable(Renderable* renderable) noexcept
     }
 }
 
-void Renderer::popRenderingTarget(SDL_Texture* srcTexture) const noexcept
+void Renderer::popRenderingTarget(SDL_Texture* srcTexture) const
 {
     assert(m_renderer);
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture));

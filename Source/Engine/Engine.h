@@ -16,12 +16,12 @@ class Engine : public Singleton<Engine>
 {
     friend class Singleton<Engine>;
 public:
-    void init() noexcept;
+    void init();
 
-    void run() noexcept;
-    void stop() noexcept;
-    void pause(bool pause) noexcept;
-    bool paused() const noexcept;
+    void run();
+    void stop();
+    void pause(bool pause);
+    bool paused() const;
     ~Engine();
 
     void setPreRenderTestFunction(const std::function<void(void)>& function)
@@ -34,25 +34,25 @@ public:
         m_renderTestFunction = function;
     }
 
-    void initVideo() const noexcept;
-    void initWindow() noexcept;
-    void initData() const noexcept;
+    void initVideo() const;
+    void initWindow();
+    void initData() const;
 
 private:
     Engine() : m_enginePaused(false), m_engineRunning(false), m_initialised(false), m_preRenderTestFunction(nullptr)
     {
 
     }
-    void events() noexcept;
-    void update() const noexcept;
-    void render() const noexcept;
+    void events();
+    void update() const;
+    void render() const;
 
-    void initAudio() const noexcept;
-    void initControl() const noexcept;
-    void initSingleton() const noexcept;
+    void initAudio() const;
+    void initControl() const;
+    void initSingleton() const;
     
 
-    void preRenderTestFunction() const noexcept
+    void preRenderTestFunction() const
     {
         if (m_preRenderTestFunction && !m_renderTestFunction)
         {
@@ -60,7 +60,7 @@ private:
         }
     }
 
-    void renderTestFunction() const noexcept
+    void renderTestFunction() const
     {
         if (m_renderTestFunction && !m_preRenderTestFunction)
         {

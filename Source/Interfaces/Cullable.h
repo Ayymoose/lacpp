@@ -6,7 +6,7 @@ class CullableParent
 {
 public:
     virtual ~CullableParent() = default;
-    virtual void cull() noexcept = 0;
+    virtual void cull() = 0;
 };
 
 // CullableChild will return true on cull() if it needs to have it's memory released
@@ -14,5 +14,5 @@ class CullableChild
 {
 public:
     virtual ~CullableChild() = default;
-    virtual bool cull() noexcept = 0;
+    virtual bool cull() = 0;
 };

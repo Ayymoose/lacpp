@@ -7,34 +7,34 @@
 namespace Zelda
 {
 
-// This class is responsible for linking rooms together
+    // This class is responsible for linking rooms together
 
-using RoomIndex = int;
+    using RoomIndex = int;
 
-struct RoomLink
-{
-    RoomIndex left;
-    RoomIndex right;
-    RoomIndex up;
-    RoomIndex down;
-};
+    struct RoomLink
+    {
+        RoomIndex left;
+        RoomIndex right;
+        RoomIndex up;
+        RoomIndex down;
+    };
 
-using RoomLinkMap = std::unordered_map<RoomIndex, RoomLink>;
+    using RoomLinkMap = std::unordered_map<RoomIndex, RoomLink>;
 
-class RoomLinkManager
-{
-public:
-    void createRoomLink(RoomName roomLinkName, const RoomLinkMap& roomLinkMap);
-    void useRoomLink(RoomName roomLinkName);
-    void setRoomLocation(const int roomLocation);
-    RoomIndex currentRoom() const noexcept;
-    RoomLink roomLink() noexcept;
-    RoomLinkManager();
+    class RoomLinkManager
+    {
+    public:
+        void createRoomLink(RoomName roomLinkName, const RoomLinkMap& roomLinkMap);
+        void useRoomLink(RoomName roomLinkName);
+        void setRoomLocation(const int roomLocation);
+        RoomIndex currentRoom() const;
+        RoomLink roomLink();
+        RoomLinkManager();
 
-private:
-    RoomIndex m_currentRoom;
-    RoomName m_currentRoomLink;
-    std::unordered_map<RoomName, RoomLinkMap> m_roomLinkMap;
-};
+    private:
+        RoomIndex m_currentRoom;
+        RoomName m_currentRoomLink;
+        std::unordered_map<RoomName, RoomLinkMap> m_roomLinkMap;
+    };
 
 };

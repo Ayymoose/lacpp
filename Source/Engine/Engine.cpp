@@ -12,7 +12,7 @@
 
 namespace Zelda
 {
-void Engine::init() noexcept
+void Engine::init()
 {
     // Initialise everything
     initVideo();
@@ -27,7 +27,7 @@ void Engine::init() noexcept
     DEBUG(DBG_INFO, "Engine initialised");
 }
 
-void Engine::run() noexcept
+void Engine::run()
 {
     //assert(m_initialised && "Engine is not initialised");
     assert(m_engineRunning == false && "Engine already running");
@@ -45,7 +45,7 @@ void Engine::run() noexcept
 
 }
 
-void Engine::stop() noexcept
+void Engine::stop()
 {
     // Cleanup
     assert(m_engineRunning && "Engine is not running");
@@ -55,12 +55,12 @@ void Engine::stop() noexcept
     m_renderTestFunction = nullptr;
 }
 
-void Engine::pause(bool pause) noexcept
+void Engine::pause(bool pause)
 {
     m_enginePaused = pause;
 }
 
-bool Engine::paused() const noexcept
+bool Engine::paused() const
 {
     return m_enginePaused;
 }
@@ -73,27 +73,27 @@ Engine::~Engine()
     }
 }
 
-void Engine::initVideo() const noexcept
+void Engine::initVideo() const
 {
     SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO));
 }
 
-void Engine::initAudio() const noexcept
+void Engine::initAudio() const
 {
     SDL_ASSERT(SDL_Init(SDL_INIT_AUDIO));
 }
 
-void Engine::initControl() const noexcept
+void Engine::initControl() const
 {
     SDL_ASSERT(SDL_Init(SDL_INIT_GAMECONTROLLER));
 }
 
-void Engine::initData() const noexcept
+void Engine::initData() const
 {
     DataManager::getInstance().loadData();
 }
 
-void Engine::initSingleton() const noexcept
+void Engine::initSingleton() const
 {
     Debug::getInstance();
     Renderer::getInstance();
@@ -106,7 +106,7 @@ void Engine::initSingleton() const noexcept
     Link::getInstance();
 }
 
-void Engine::initWindow() noexcept
+void Engine::initWindow()
 {
     // Create the main window
     m_mainWindow.createWindow(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
@@ -118,7 +118,7 @@ void Engine::initWindow() noexcept
     Renderer::getInstance().setRendererScale(MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH, MAIN_WINDOW_HEIGHT / ((float)CAMERA_HEIGHT + HUD_HEIGHT));
 }
 
-void Engine::events() noexcept
+void Engine::events()
 {
     SDL_Event eventHandler;
     if (SDL_PollEvent(&eventHandler))
@@ -134,7 +134,7 @@ void Engine::events() noexcept
     }
 }
 
-void Engine::update() const noexcept
+void Engine::update() const
 {
     auto const controller = Controller::getInstance().getController();
     if (controller)
@@ -153,14 +153,13 @@ void Engine::update() const noexcept
     }
 }
 
-void Engine::render() const noexcept
+void Engine::render() const
 {
     Renderer::getInstance().clearScreen(COLOUR_BLACK);
     auto const renderables = Renderer::getInstance().getRenderSet();
     for (const auto& renderable : renderables)
     {
         assert(renderable);
-        // Render only visible objects
         if (renderable->visible())
         {
             renderable->render();

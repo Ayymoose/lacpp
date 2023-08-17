@@ -8,21 +8,21 @@
 namespace Zelda
 {
 
-class Character : public BasicCharacter
-{
-public:
-    virtual ~Character() = default;
-protected:
-    Character() = default;
+    class Character : public BasicCharacter
+    {
+    public:
+        virtual ~Character() = default;
+    protected:
+        Character() = default;
 
-    // Attack
-    virtual void attack() = 0;
+        // Attack
+        virtual void attack() = 0;
 
-    // Die
-    virtual void die() = 0;
+        // Die
+        virtual void die() = 0;
 
-    // Move
-    virtual void move() = 0;
-};
+        // Move
+        virtual void move() = 0;
+    };
 
 }

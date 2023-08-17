@@ -2,12 +2,12 @@
 
 namespace Zelda
 {
-class Updateable
-{
-public:
-    virtual ~Updateable() = default;
-    virtual void update() noexcept = 0;
-    Updateable() = default;
-};
+    class Updateable
+    {
+    public:
+        virtual ~Updateable() = default;
+        virtual void update() = 0;
+        Updateable() = default;
+    };
 
 }

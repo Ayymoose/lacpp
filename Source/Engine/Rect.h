@@ -5,57 +5,56 @@
 
 namespace Zelda
 {
-
-template<typename T>
-struct Rect
-{
-    static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "Invalid template type");
-
-    constexpr Rect() : x(0), y(0), w(0), h(0) {};
-    constexpr Rect(T x, T y, T w, T h) : x(x), y(y), w(w), h(h) {}
-
-    bool operator==(const Rect& other) const noexcept
+    template<typename T>
+    struct Rect
     {
-        return (other.x == x) && (other.y == y) && (other.w == w) && (other.h == h);
-    }
+        static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "Invalid template type");
 
-    bool operator!=(const Rect& other) const noexcept
-    {
-        return !operator==(other);
-    }
+        constexpr Rect() : x(0), y(0), w(0), h(0) {};
+        constexpr Rect(T x, T y, T w, T h) : x(x), y(y), w(w), h(h) {}
 
-    // TODO: Add method to check rect within rect
+        bool operator==(const Rect& other) const
+        {
+            return (other.x == x) && (other.y == y) && (other.w == w) && (other.h == h);
+        }
 
-    T x;
-    T y;
-    T w;
-    T h;
-};
+        bool operator!=(const Rect& other) const
+        {
+            return !operator==(other);
+        }
 
-// if RectType is Rect<integral type> then return SDL_Rect
-// if RectType is Rect<floating point type> then return SDL_FRect
+        // TODO: Add method to check rect within rect
 
-template<typename T>
-std::enable_if_t<std::is_integral_v<T>, SDL_Rect> rectToSDLRect(const Rect<T>& rect) noexcept
-{
-    return SDL_Rect
-    {
-        static_cast<int>(rect.x), 
-        static_cast<int>(rect.y), 
-        static_cast<int>(rect.w), 
-        static_cast<int>(rect.h)
+        T x;
+        T y;
+        T w;
+        T h;
     };
-}
-template<typename T>
-std::enable_if_t<std::is_floating_point_v<T>, SDL_FRect> rectToSDLRect(const Rect<T>& rect) noexcept
-{
-    return SDL_FRect
+
+    // if RectType is Rect<integral type> then return SDL_Rect
+    // if RectType is Rect<floating point type> then return SDL_FRect
+
+    template<typename T>
+    std::enable_if_t<std::is_integral_v<T>, SDL_Rect> rectToSDLRect(const Rect<T>& rect)
     {
-        rect.x, 
-        rect.y,
-        rect.w, 
-        rect.h 
-    };
-}
+        return SDL_Rect
+        {
+            static_cast<int>(rect.x), 
+            static_cast<int>(rect.y), 
+            static_cast<int>(rect.w), 
+            static_cast<int>(rect.h)
+        };
+    }
+    template<typename T>
+    std::enable_if_t<std::is_floating_point_v<T>, SDL_FRect> rectToSDLRect(const Rect<T>& rect)
+    {
+        return SDL_FRect
+        {
+            rect.x, 
+            rect.y,
+            rect.w, 
+            rect.h 
+        };
+    }
 
 }

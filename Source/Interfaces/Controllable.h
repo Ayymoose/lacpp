@@ -10,25 +10,25 @@
 namespace Zelda
 {
 
-class Controllable
-{
-public:
-    Controllable(const std::string& name) : m_controllableName(name)
+    class Controllable
     {
-    }
-    Controllable() = default;
-    virtual ~Controllable() = default;
+    public:
+        Controllable(const std::string& name) : m_controllableName(name)
+        {
+        }
+        Controllable() = default;
+        virtual ~Controllable() = default;
 
-    virtual void control() noexcept = 0;
+        virtual void control() = 0;
     
     
-    std::string name() const noexcept
-    {
-        assert(!m_controllableName.empty());
-        return m_controllableName;
-    }
-protected:
-    std::string m_controllableName;
-};
+        std::string name() const
+        {
+            assert(!m_controllableName.empty());
+            return m_controllableName;
+        }
+    protected:
+        std::string m_controllableName;
+    };
 
 }

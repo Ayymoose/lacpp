@@ -5,19 +5,19 @@
 namespace Zelda
 {
 
-class DataManager : public Singleton<DataManager>
-{
-    friend class Singleton<DataManager>;
-public:
-    void loadData() const noexcept;
-private:
-    DataManager() = default;
+    class DataManager : public Singleton<DataManager>
+    {
+        friend class Singleton<DataManager>;
+    public:
+        void loadData() const;
+    private:
+        DataManager() = default;
 
-    void loadSprites() const noexcept;
-    void loadRooms() const noexcept;
+        void loadSprites() const;
+        void loadRooms() const;
 
-    void loadTailCave() const noexcept;
+        void loadTailCave() const;
 
-};
+    };
 
 };
