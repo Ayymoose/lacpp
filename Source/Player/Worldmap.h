@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "Controllable.h"
 
 namespace Zelda
@@ -105,7 +105,7 @@ namespace Zelda
     constexpr float WORLDMAP_LOCATION_FPS = (1.0f / 6.0f);
 
 
-    class Worldmap : public Renderable, public Controllable
+    class Worldmap : public IRenderable, public Controllable
     {
     public:
         Worldmap();

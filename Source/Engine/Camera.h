@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Updateable.h"
-#include "Renderable.h"
+#include "IUpdateable.h"
+#include "IRenderable.h"
 #include "Singleton.h"
 #include "Vector.h"
 
@@ -25,7 +25,7 @@ namespace Zelda
     constexpr int CAMERA_SCROLL_SPEED = 4;
  
 
-    class Camera : public Renderable, public Singleton<Camera>, public Updateable
+    class Camera : public IRenderable, public Singleton<Camera>, public IUpdateable
     {
         friend class Singleton<Camera>;
     public:

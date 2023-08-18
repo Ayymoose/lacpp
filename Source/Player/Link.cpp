@@ -21,7 +21,7 @@ namespace Zelda
     }
 
     Link::Link() : 
-        Renderable("Link", *ResourceManager::getInstance()[SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER),
+        IRenderable("Link", *ResourceManager::getInstance()[SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER),
         Controllable(m_name),
         m_healthMax(3),
         m_speedX(0),
@@ -133,11 +133,6 @@ namespace Zelda
         m_sprite->drawSpriteEx(m_srcRect, m_dstRect, 0, SpriteFlip::FLIP_NONE);
     }
 
-    void Link::cull()
-    {
-        // The owner of objects that can be culled must perform the culling to release the memory of the smart pointers
-
-    }
 
     void Link::control()
     {

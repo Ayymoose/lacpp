@@ -1,0 +1,41 @@
+﻿  Microsoft (R) C/C++ Optimizing Compiler Version 19.36.32537 for x64
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  cl /c /I"D:\Users\Ayman\Desktop\lacpp\Project\lacpp\..\..\Library\SDL\SDL2_image-2.0.5\include" /I"D:\Users\Ayman\Desktop\lacpp\Project\lacpp\..\..\Library\SDL\SDL2-2.0.10\include" /ZI /JMC /W3 /WX- /diagnostics:column /sdl /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /permissive- /Fo"x64\Debug\\" /Fd"x64\Debug\vc143.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt ..\..\Source\Engine\Camera.cpp ..\..\Source\Engine\DataManager.cpp ..\..\Source\Engine\Dialogue.cpp ..\..\Source\Engine\Engine.cpp ..\..\Source\Engine\Main.cpp ..\..\Source\Engine\Renderer.cpp ..\..\Source\Engine\Resource.cpp ..\..\Source\Engine\ResourceManager.cpp ..\..\Source\Engine\RoomManager.cpp ..\..\Source\Engine\Sprite.cpp ..\..\Source\Engine\Tilemap.cpp ..\..\Source\Engine\TilemapManager.cpp ..\..\Source\Player\Inventory.cpp ..\..\Source\Player\Link.cpp ..\..\Source\Player\Worldmap.cpp
+  Camera.cpp
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Camera.cpp(375,41): warning C4244: 'argument': conversion from 'const int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Camera.cpp(375,30): warning C4244: 'argument': conversion from 'const int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  DataManager.cpp
+  Dialogue.cpp
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Dialogue.cpp(133,79): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Dialogue.cpp(133,34): warning C4267: 'initializing': conversion from 'size_t' to 'const int', possible loss of data
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Dialogue.cpp(148,31): warning C4244: 'argument': conversion from 'float' to 'const int', possible loss of data
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Dialogue.cpp(268,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Dialogue.cpp(514,59): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\Dialogue.cpp(524,59): warning C4267: '-=': conversion from 'size_t' to 'int', possible loss of data
+  Engine.cpp
+  Main.cpp
+  Renderer.cpp
+  Resource.cpp
+  ResourceManager.cpp
+  RoomManager.cpp
+  Sprite.cpp
+  Tilemap.cpp
+  TilemapManager.cpp
+D:\Users\Ayman\Desktop\lacpp\Source\Engine\TilemapManager.cpp(50,16): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  Inventory.cpp
+D:\Users\Ayman\Desktop\lacpp\Source\Player\Inventory.cpp(973,69): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Users\Ayman\Desktop\lacpp\Source\Player\Inventory.cpp(973,31): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+  Link.cpp
+  Worldmap.cpp
+D:\Users\Ayman\Desktop\lacpp\Source\Player\Worldmap.cpp(77,66): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Users\Ayman\Desktop\lacpp\Source\Player\Worldmap.cpp(77,30): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+  Generating Code...
+  lacpp.vcxproj -> D:\Users\Ayman\Desktop\lacpp\Project\lacpp\x64\Debug\lacpp.exe

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Updateable.h"
+#include "IUpdateable.h"
 #include "Controllable.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "Vector.h"
 #include "Rect.h"
 #include "Camera.h"
@@ -346,7 +346,7 @@ namespace Zelda
 
     using InventoryWeapon = std::pair<WeaponItem, WeaponLevel>;
 
-    class Inventory : public Renderable, public Controllable, public Updateable
+    class Inventory : public IRenderable, public Controllable, public IUpdateable
     {
     public:
         Inventory();

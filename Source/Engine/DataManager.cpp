@@ -24,7 +24,7 @@ namespace Zelda
 
 	void DataManager::loadSprites() const
 	{
-		constexpr Colour TRANSPARENCY_COLOUR = make_rgb(255, 0, 128);
+		constexpr Colour TRANSPARENCY_COLOUR = makeRGB(255, 0, 128);
 		ResourceManager::getInstance().loadSprite(SpriteResource::SPR_DUNGEON_1_TAIL_CAVE, RESOURCE_DUNGEONS_PATH + "tail-cave.png", TRANSPARENCY_COLOUR);
 		ResourceManager::getInstance().loadSprite(SpriteResource::SPR_WORLD_MAP, RESOURCE_MISC_PATH + "tm_worldmap.png", TRANSPARENCY_COLOUR);
 		ResourceManager::getInstance().loadSprite(SpriteResource::SPR_LINK, RESOURCE_SPRITE_LINK_PATH + "link.png", TRANSPARENCY_COLOUR);
@@ -44,7 +44,6 @@ namespace Zelda
 		tilemapConfig.tileWidth = 16;
 		tilemapConfig.tilesAcross = 10;
 		tilemapConfig.tilesDown = 8;
-		tilemapConfig.tilemapWidth = 160;
 
 		const TileIndexArrays tileIndexArrays =
 		{

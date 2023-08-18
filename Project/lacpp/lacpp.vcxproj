@@ -195,13 +195,11 @@
     <ClInclude Include="..\..\Source\Engine\RoomManager.h" />
     <ClInclude Include="..\..\Source\Engine\Sprite.h" />
     <ClInclude Include="..\..\Source\Engine\TilemapManager.h" />
-    <ClInclude Include="..\..\Source\Interfaces\Updateable.h" />
+    <ClInclude Include="..\..\Source\Interfaces\IUpdateable.h" />
     <ClInclude Include="..\..\Source\Player\Worldmap.h" />
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h" />
-    <ClInclude Include="..\..\Source\Interfaces\Enemy.h" />
     <ClInclude Include="..\..\Source\Engine\Common.h" />
     <ClInclude Include="..\..\Source\Engine\Dialogue.h" />
-    <ClInclude Include="..\..\Source\Interfaces\Cullable.h" />
     <ClInclude Include="..\..\Source\Engine\Controller.h" />
     <ClInclude Include="..\..\Source\Engine\Keyboard.h" />
     <ClInclude Include="..\..\Source\Engine\Renderer.h" />
@@ -216,7 +214,7 @@
     <ClInclude Include="..\..\Source\Engine\SDL_Assert.h" />
     <ClInclude Include="..\..\Source\Interfaces\Character.h" />
     <ClInclude Include="..\..\Source\Interfaces\Controllable.h" />
-    <ClInclude Include="..\..\Source\Interfaces\Renderable.h" />
+    <ClInclude Include="..\..\Source\Interfaces\IRenderable.h" />
     <ClInclude Include="..\..\Source\Player\Inventory.h" />
     <ClInclude Include="..\..\Source\Player\Link.h" />
     <ClInclude Include="..\..\Source\Engine\Tilemap.h" />

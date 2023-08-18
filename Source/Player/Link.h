@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "Controllable.h"
 #include "Character.h"
-#include "Cullable.h"
-#include "Updateable.h"
+#include "IUpdateable.h"
 #include "Inventory.h"
 #include "Worldmap.h"
 #include "Vector.h"
@@ -122,12 +121,11 @@ namespace Zelda
     constexpr float LINK_MAX_HEARTS = 16.0;
     constexpr float LINK_MIN_HEARTS = 3.0;
 
-    class Link : public Renderable, 
+    class Link : public IRenderable, 
         public Controllable, 
         public Character, 
         public Singleton<Link>, 
-        public CullableParent,
-        public Updateable
+        public IUpdateable
     {
         friend class Singleton<Link>;
     public:
@@ -146,9 +144,6 @@ namespace Zelda
 
         // Controllable overrides
         void control() override;
-
-        // CullableParent overrides
-        void cull() override;
 
         void resetAnimation();
         void replenish(float hearts);

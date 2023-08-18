@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Singleton.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "RoomName.h"
 #include "RoomLinkManager.h"
 #include "TilemapManager.h"

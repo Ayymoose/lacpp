@@ -12,7 +12,7 @@ namespace Zelda
 {
 
     Dialogue::Dialogue() :
-        Renderable("Dialogue", Sprite(Renderer::getInstance().getRenderer(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT), ZD_DEPTH_DIALOGUE),
+        IRenderable("Dialogue", Sprite(Renderer::getInstance().getRenderer(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT), ZD_DEPTH_DIALOGUE),
         Controllable(m_name),
         m_dialoguePosX(DIALOGUE_POS_X),
         m_dialoguePosY(DIALOGUE_POS_Y_LOW),
@@ -36,8 +36,8 @@ namespace Zelda
     {
         assert(m_sprite->data());
         assert(m_subTexture->data());
-        m_sprite->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, make_rgb(0, 0, 0));
-        m_subTexture->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, make_rgb(0, 0, 0));
+        m_sprite->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, makeRGB(0, 0, 0));
+        m_subTexture->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, makeRGB(0, 0, 0));
     }
 
     void Dialogue::message(const std::string& message, float yPos)
@@ -335,7 +335,7 @@ namespace Zelda
                 // Scrolls the message and continues on to the next
 
                 // 1. Hide the top half of the sub texture
-                m_subTexture->colourSprite(Rect<int>{0, 0, DIALOGUE_WIDTH, DIALOGUE_HEIGHT / 2}, make_rgb(0, 0, 0));
+                m_subTexture->colourSprite(Rect<int>{0, 0, DIALOGUE_WIDTH, DIALOGUE_HEIGHT / 2}, makeRGB(0, 0, 0));
 
                 // Copy the bottom line of text to the top of the texture
                 const Rect<int> srcRectSubTextureLowerHalf = { 0, m_dstCharY,DIALOGUE_WIDTH,DIALOGUE_HEIGHT / 2 };
@@ -359,7 +359,7 @@ namespace Zelda
                         Sprite::copySprite(*m_subTexture, *m_subTexture, srcRectSubTextureLowerHalf, dstRectSubTextureLowerHalf);
 
                         // Block out the what used to be the bottom line
-                        m_subTexture->colourSprite(srcRectSubTextureLowerHalf, make_rgb(0, 0, 0));
+                        m_subTexture->colourSprite(srcRectSubTextureLowerHalf, makeRGB(0, 0, 0));
 
                         // Reset to the beginning of the line
                         m_currentLine = MAX_LINES - 1;
@@ -389,7 +389,7 @@ namespace Zelda
             assert(dstRectChar.x < TEXT_POS_X + MAX_CHAR_PER_LINE * CHAR_WIDTH);
 
             // Make text yellow
-            Sprite::copySprite(*m_text, *m_subTexture, srcRectChar, dstRectChar, make_rgb(TEXT_R, TEXT_G, TEXT_B));
+            Sprite::copySprite(*m_text, *m_subTexture, srcRectChar, dstRectChar, makeRGB(TEXT_R, TEXT_G, TEXT_B));
 
         }
 
@@ -443,7 +443,7 @@ namespace Zelda
         m_continue = false;
         m_moreText = false;
 
-        m_subTexture->colourSprite(Rect<int>{}, make_rgb(0, 0, 0));
+        m_subTexture->colourSprite(Rect<int>{}, makeRGB(0, 0, 0));
 
         m_isQuestion = false;
         m_questionXPos = 0;

@@ -13,7 +13,7 @@ namespace Zelda
 {
 
     Inventory::Inventory() : 
-        Renderable("Inventory", Sprite(Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT), ZD_DEPTH_INVENTORY),
+        IRenderable("Inventory", Sprite(Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT), ZD_DEPTH_INVENTORY),
         Controllable(m_name),
         m_subscreen(std::make_unique<Sprite>(Renderer::getInstance().getRenderer(), SELECT_SUBSCREEN_WIDTH, SELECT_SUBSCREEN_HEIGHT)),
         m_tradeItem(ITEM_NONE),
@@ -48,7 +48,7 @@ namespace Zelda
         // m_texture is the main texture we draw ontoas
         assert(m_sprite->data());
         Rect<int> srcRect = { 0,0, m_subscreen->width(), m_subscreen->height() };
-        m_subscreen->colourSprite(srcRect, make_rgb(0, 0, 0));
+        m_subscreen->colourSprite(srcRect, makeRGB(0, 0, 0));
 
         // 7 -> 39 x increases of 32
         // 27 -> 50 y increases by 23
@@ -1214,7 +1214,7 @@ namespace Zelda
 
         // Render the inventory background
         m_sprite->drawSprite(Rect<int>{}, Rect<int>{0, renderY, m_sprite->width(), m_sprite->height()});
-        m_sprite->colourSprite(Rect<int>{}, make_rgb(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+        m_sprite->colourSprite(Rect<int>{}, makeRGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
     }
 
     void Inventory::drawSubscreen() const

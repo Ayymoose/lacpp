@@ -10,7 +10,7 @@ namespace Zelda
 {
 
     Camera::Camera() :
-        Renderable("Camera", Sprite(Renderer::getInstance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
+        IRenderable("Camera", Sprite(Renderer::getInstance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
         m_scrollX(0),
         m_scrollY(0),
         m_x(0),

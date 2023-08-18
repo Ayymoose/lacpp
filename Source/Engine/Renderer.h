@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Singleton.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "Sprite.h"
 #include "Debug.h"
 #include "Window.h"
@@ -29,11 +29,11 @@ public:
 
     void setRendererScale(const float scaleX, const float scaleY) const;
 
-    bool inRenderSet(Renderable* renderable) const;
+    bool inRenderSet(IRenderable* renderable) const;
 
-    void addRenderable(Renderable* renderable);
+    void addRenderable(IRenderable* renderable);
 
-    void removeRenderable(Renderable* renderable);
+    void removeRenderable(IRenderable* renderable);
 
     auto getRenderer() const
     {
@@ -65,14 +65,14 @@ private:
 
     struct RendererComparator
     {
-        bool operator ()(const Renderable* r1, const Renderable* r2) const
+        bool operator ()(const IRenderable* r1, const IRenderable* r2) const
         {
             return r1->depth() < r2->depth();
         }
     };
 
     // Multiset of Renderable objects that will be drawn
-    std::multiset<Renderable*, RendererComparator> m_renderables;
+    std::multiset<IRenderable*, RendererComparator> m_renderables;
 
 };
 }

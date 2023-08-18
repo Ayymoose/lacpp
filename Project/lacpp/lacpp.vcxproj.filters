@@ -83,7 +83,7 @@
     <ClInclude Include="..\..\Source\Engine\Controller.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Interfaces\Renderable.h">
+    <ClInclude Include="..\..\Source\Interfaces\IRenderable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Player\Inventory.h">
@@ -107,14 +107,8 @@
     <ClInclude Include="..\..\Source\Engine\Camera.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Interfaces\Cullable.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Common.h">
       <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Interfaces\Enemy.h">
-      <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h">
       <Filter>Interfaces</Filter>
@@ -155,7 +149,7 @@
     <ClInclude Include="..\..\Source\Engine\Dialogue.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Interfaces\Updateable.h">
+    <ClInclude Include="..\..\Source\Interfaces\IUpdateable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\ResourceManager.h">

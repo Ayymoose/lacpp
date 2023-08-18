@@ -66,7 +66,7 @@ namespace Zelda
 
                 if (colourMod)
                 {
-                    SDL_ASSERT(SDL_SetTextureColorMod(srcTexture.data(), make_red(colourMod), make_green(colourMod), make_blue(colourMod)));
+                    SDL_ASSERT(SDL_SetTextureColorMod(srcTexture.data(), makeRed(colourMod), makeGreen(colourMod), makeBlue(colourMod)));
                 }
 
                 SDL_ASSERT(SDL_RenderCopy(dstTexture.m_renderer, srcTexture.data(), rectSrc, rectDst));
@@ -86,7 +86,7 @@ namespace Zelda
                 auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
 
                 SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
-                SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), opacity));
+                SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), opacity));
 
                 if (srcRect != Rect<R>())
                 {

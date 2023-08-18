@@ -13,7 +13,7 @@ namespace Zelda
 {
 
     Worldmap::Worldmap() :
-        Renderable("Worldmap", *ResourceManager::getInstance()[SpriteResource::SPR_WORLD_MAP], ZD_DEPTH_WORLDMAP),
+        IRenderable("Worldmap", *ResourceManager::getInstance()[SpriteResource::SPR_WORLD_MAP], ZD_DEPTH_WORLDMAP),
         Controllable(m_name),
         m_scopeX(WORLDMAP_INITIAL_POS_X),
         m_scopeY(WORLDMAP_INITIAL_POS_Y),

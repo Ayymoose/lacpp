@@ -31,14 +31,14 @@ namespace Zelda
         m_nextRoomY = y;
     }
 
-    void TilemapManager::setRoomLocation(const int roomLocation)
+    void TilemapManager::setRoomLocation(const size_t roomLocation)
     {
         assert(m_tilemaps.count(m_currentTilemapname) && "Invalid tilemap");
         assert(roomLocation < m_tilemaps[m_currentTilemapname].size() && "Invalid location");
         m_currentRoom = roomLocation;
     }
 
-    void TilemapManager::setNextRoomLocation(const int nextLocation)
+    void TilemapManager::setNextRoomLocation(const size_t nextLocation)
     {
         assert(m_tilemaps.count(m_currentTilemapname) && "Invalid tilemap");
         assert(nextLocation < m_tilemaps[m_currentTilemapname].size() && "Invalid location");
@@ -88,7 +88,7 @@ namespace Zelda
     }
 
     TilemapManager::TilemapManager() :
-        Renderable("TilemapManager", Sprite(Renderer::getInstance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
+        IRenderable("TilemapManager", Sprite(Renderer::getInstance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT), ZD_DEPTH_BACKGROUND),
         m_roomX(0),
         m_roomY(0),
         m_nextRoomX(0),

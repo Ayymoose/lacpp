@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "Sprite.h"
 #include "Tilemap.h"
 #include "RoomName.h"
@@ -14,7 +14,7 @@ namespace Zelda
     using TileIndexArrays = std::vector<TileIndexArray>;
     // This class is responsible for displaying the two canvas's on which we draw tiles too
 
-    class TilemapManager : Renderable
+    class TilemapManager : IRenderable
     {
     public:
         // Associates the tilemap data provided with mapName
@@ -27,8 +27,8 @@ namespace Zelda
         void setRoomPosition(const int x, const int y);
         void setNextRoomPosition(const int x, const int y);
 
-        void setRoomLocation(const int roomLocation);
-        void setNextRoomLocation(const int nextLocation);
+        void setRoomLocation(const size_t roomLocation);
+        void setNextRoomLocation(const size_t nextLocation);
 
         int roomLocation() const;
 

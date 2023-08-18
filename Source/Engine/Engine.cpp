@@ -4,7 +4,6 @@
 #include "SDL_Assert.h"
 #include "Dialogue.h"
 #include "Controllable.h"
-#include "Enemy.h"
 #include "RoomManager.h"
 #include "DataManager.h"
 #include "ResourceManager.h"
@@ -145,7 +144,7 @@ void Engine::update() const
     for (const auto& gameObject : gameObjects)
     {
         assert(gameObject);
-        auto const updateableGameObject = dynamic_cast<Updateable*>(gameObject);
+        auto const updateableGameObject = dynamic_cast<IUpdateable*>(gameObject);
         if (updateableGameObject)
         {
             updateableGameObject->update();

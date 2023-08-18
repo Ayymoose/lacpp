@@ -19,7 +19,7 @@ void Renderer::createRenderer(const Window& window)
 void Renderer::clearScreen(const Colour colour) const
 {
     assert(m_renderer);
-    SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, make_red(colour), make_green(colour), make_blue(colour), 0));
+    SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), 0));
     SDL_ASSERT(SDL_RenderClear(m_renderer));
 }
 
@@ -42,16 +42,16 @@ Renderer::~Renderer()
     DEBUG(DBG_INFO, "Renderer destroyed");
 }
 
-bool Renderer::inRenderSet(Renderable* renderable) const
+bool Renderer::inRenderSet(IRenderable* renderable) const
 {
-    auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
+    auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const IRenderable* r1)
     {
         return r1 == renderable;
     });
     return iterator != m_renderables.cend();
 }
 
-void Renderer::addRenderable(Renderable* renderable)
+void Renderer::addRenderable(IRenderable* renderable)
 {
     assert(renderable);
     if (inRenderSet(renderable))
@@ -65,10 +65,10 @@ void Renderer::addRenderable(Renderable* renderable)
 
 }
 
-void Renderer::removeRenderable(Renderable* renderable)
+void Renderer::removeRenderable(IRenderable* renderable)
 {
     assert(renderable);
-    auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const Renderable* r1)
+    auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const IRenderable* r1)
     {
         return r1 == renderable;
     });
