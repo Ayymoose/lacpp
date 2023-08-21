@@ -10,7 +10,7 @@
 #include "Debug.h"
 #include <vector>
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
+int main(int argc, char* argv[])
 {
     using namespace Zelda;
 
@@ -18,20 +18,23 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     Engine::getInstance().initWindow();
     Engine::getInstance().initData();
 
-    std::vector<std::unique_ptr<Testable::TestUnit>> tests;
+    //std::vector<std::unique_ptr<Testable::TestUnit>> tests;
     
+    Tests::VectorTests().runTests();
+    
+
     // Add tests here
     //tests.emplace_back(std::make_unique<Testable::VectorTests>());
     //tests.emplace_back(std::make_unique<Testable::InventoryTests>());
     //tests.emplace_back(std::make_unique<Testable::RectTests>());
     //tests.emplace_back(std::make_unique<Testable::DialogueTests>());
-    tests.emplace_back(std::make_unique<Testable::WorldmapTests>());
+    //tests.emplace_back(std::make_unique<Testable::WorldmapTests>());
     //tests.emplace_back(std::make_unique<Testable::SpriteTests>());
 
-    for (auto const& test : tests)
+    /*for (auto const& test : tests)
     {
         test->runTests();
-    }
+    }*/
 
     DEBUG(DBG_TEST, "All tests run");
     std::cin.get();

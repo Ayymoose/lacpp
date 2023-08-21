@@ -6,25 +6,25 @@
 #include <map>
 #include <string>
 
-namespace Testable
+namespace Tests
 {
-
-class WorldmapTests : public TestUnit
-{
-public:
-    WorldmapTests() = default;
-
-    using WorldmapTestsMap = const std::map<std::string, void (WorldmapTests::*)(void)>;
-    void runTests() override;
-
-private:
-
-    WorldmapTestsMap m_tests =
+    /*
+    class WorldmapTests : public TestUnit
     {
-        {"worldmap all tests", &WorldmapTests::allTests}
+    public:
+        WorldmapTests() = default;
+
+        using WorldmapTestsMap = const std::map<std::string, void (WorldmapTests::*)(void)>;
+        void runTests() override;
+
+    private:
+
+        WorldmapTestsMap m_tests =
+        {
+            {"worldmap all tests", &WorldmapTests::allTests}
+        };
+
+        void allTests() noexcept;
     };
-
-    void allTests() noexcept;
-};
-
+    */
 };

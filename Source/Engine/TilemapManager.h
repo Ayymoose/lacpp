@@ -21,7 +21,7 @@ namespace Zelda
         void createTilemap(RoomName mapName, const Sprite& tilemap, const TileIndexArrays& mapEntry, const Tilemap::TilemapConfig& config);
 
         // Sets the current map to be mapName
-        void useTilemap(RoomName mapName);
+        void setCurrentTilemap(RoomName mapName);
 
         // Sets position of the main and next room canvas on screen
         void setRoomPosition(const int x, const int y);

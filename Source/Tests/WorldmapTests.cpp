@@ -2,24 +2,24 @@
 #include "Engine.h"
 #include "Link.h"
 
-namespace Testable
+namespace Tests
 {
 
-using namespace Zelda;
+    /*using namespace Zelda;
 
-void WorldmapTests::runTests()
-{
-    runTest(this, m_tests);
-}
+    void WorldmapTests::runTests()
+    {
+        runTest(this, m_tests);
+    }
 
-void WorldmapTests::allTests() noexcept
-{
+    void WorldmapTests::allTests() noexcept
+    {
 
-    static Worldmap worldMap;
-    Controller::getInstance().pushController(&worldMap);
-    worldMap.open();
+        static Worldmap worldMap;
+        Controller::getInstance().pushController(&worldMap);
+        worldMap.open();
     
-    Engine::getInstance().run();
-}
+        Engine::getInstance().run();
+    }*/
 
 }

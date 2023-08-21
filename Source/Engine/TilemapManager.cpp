@@ -13,7 +13,7 @@ namespace Zelda
         m_tilemaps[mapName] = Tilemap(tilemap, mapEntries, config);
     }
 
-    void TilemapManager::useTilemap(RoomName mapName)
+    void TilemapManager::setCurrentTilemap(RoomName mapName)
     {
         assert(m_tilemaps.count(mapName) == 1 && "Given mapName does NOT exist");
         m_currentTilemapname = mapName;

@@ -95,7 +95,7 @@ RoomManager::RoomManager()
 
 void RoomManager::useRoom(RoomName room)
 {
-    m_tilemapManager.useTilemap(room);
+    m_tilemapManager.setCurrentTilemap(room);
     m_tilemapManager.setRoomLocation(0);
 
     m_roomLinkManager.useRoomLink(room);

@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -163,57 +163,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Enemy\ShroudedStalfos.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Darknut.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Moblin.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\PigWarrior.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Octorok.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Goomba.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Pairodd.cpp" />
-    <ClCompile Include="..\..\Source\Engine\AnimatedObject.cpp" />
     <ClCompile Include="..\..\Source\Engine\DataManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\Renderer.cpp" />
     <ClCompile Include="..\..\Source\Engine\ResourceManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\RoomLinkManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\RoomManager.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\BuzzBlob.cpp" />
     <ClCompile Include="..\..\Source\Engine\Sprite.cpp" />
     <ClCompile Include="..\..\Source\Engine\TilemapManager.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Peahat.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\SandCrab.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Leever.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\IronMask.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\ShyGuy.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\ArmMimic.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\BladeTrap.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Bubble.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\HardhatBeetle.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\LikeLike.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Gibdo.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\GopongaFlower.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Beamos.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\SeaUrchin.cpp" />
     <ClCompile Include="..\..\Source\Engine\Keyboard.cpp" />
     <ClCompile Include="..\..\Source\Engine\Window.cpp" />
     <ClCompile Include="..\..\Source\Player\Worldmap.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Zombie.cpp" />
     <ClCompile Include="..\..\Source\Engine\Camera.cpp" />
-    <ClCompile Include="..\..\Source\Engine\Timer.cpp" />
     <ClCompile Include="..\..\Source\Engine\Dialogue.cpp" />
     <ClCompile Include="..\..\Source\Engine\Engine.cpp" />
     <ClCompile Include="..\..\Source\Engine\Resource.cpp" />
-    <ClCompile Include="..\..\Source\Player\Bomb.cpp" />
-    <ClCompile Include="..\..\Source\Player\Boomerang.cpp" />
-    <ClCompile Include="..\..\Source\Player\Arrow.cpp" />
-    <ClCompile Include="..\..\Source\Player\FlameRod.cpp" />
     <ClCompile Include="..\..\Source\Player\Inventory.cpp" />
     <ClCompile Include="..\..\Source\Player\Link.cpp" />
-    <ClCompile Include="..\..\Source\Player\Sword.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Star.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Vacuum.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\WaterTektite.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\ThreeOfAKind.cpp" />
-    <ClCompile Include="..\..\Source\Enemy\Spark.cpp" />
     <ClCompile Include="..\..\Source\Engine\Tilemap.cpp" />
     <ClCompile Include="..\..\Source\Tests\DialogueTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\InventoryTests.cpp" />
@@ -226,39 +191,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\Engine\DataManager.h" />
     <ClInclude Include="..\..\Source\Engine\Jenkins.h" />
-    <ClInclude Include="..\..\Source\Enemy\ShroudedStalfos.h" />
-    <ClInclude Include="..\..\Source\Enemy\Darknut.h" />
-    <ClInclude Include="..\..\Source\Enemy\Moblin.h" />
-    <ClInclude Include="..\..\Source\Enemy\PigWarrior.h" />
-    <ClInclude Include="..\..\Source\Enemy\Octorok.h" />
-    <ClInclude Include="..\..\Source\Enemy\Goomba.h" />
-    <ClInclude Include="..\..\Source\Enemy\Pairodd.h" />
-    <ClInclude Include="..\..\Source\Engine\AnimatedObject.h" />
     <ClInclude Include="..\..\Source\Engine\Debug.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
     <ClInclude Include="..\..\Source\Engine\ResourceManager.h" />
     <ClInclude Include="..\..\Source\Engine\RoomLinkManager.h" />
     <ClInclude Include="..\..\Source\Engine\RoomManager.h" />
-    <ClInclude Include="..\..\Source\Enemy\BuzzBlob.h" />
     <ClInclude Include="..\..\Source\Engine\Sprite.h" />
     <ClInclude Include="..\..\Source\Engine\TilemapManager.h" />
-    <ClInclude Include="..\..\Source\Enemy\Peahat.h" />
-    <ClInclude Include="..\..\Source\Enemy\SandCrab.h" />
-    <ClInclude Include="..\..\Source\Enemy\Leever.h" />
-    <ClInclude Include="..\..\Source\Enemy\IronMask.h" />
-    <ClInclude Include="..\..\Source\Enemy\ShyGuy.h" />
-    <ClInclude Include="..\..\Source\Enemy\ArmMimic.h" />
-    <ClInclude Include="..\..\Source\Enemy\BladeTrap.h" />
-    <ClInclude Include="..\..\Source\Enemy\Bubble.h" />
-    <ClInclude Include="..\..\Source\Enemy\HardhatBeetle.h" />
-    <ClInclude Include="..\..\Source\Enemy\LikeLike.h" />
-    <ClInclude Include="..\..\Source\Enemy\Gibdo.h" />
-    <ClInclude Include="..\..\Source\Enemy\GopongaFlower.h" />
-    <ClInclude Include="..\..\Source\Enemy\Beamos.h" />
-    <ClInclude Include="..\..\Source\Enemy\SeaUrchin.h" />
-    <ClInclude Include="..\..\Source\Engine\Timer.h" />
     <ClInclude Include="..\..\Source\Player\Worldmap.h" />
-    <ClInclude Include="..\..\Source\Enemy\Zombie.h" />
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h" />
     <ClInclude Include="..\..\Source\Interfaces\Enemy.h" />
     <ClInclude Include="..\..\Source\Engine\Common.h" />
@@ -278,19 +218,9 @@
     <ClInclude Include="..\..\Source\Interfaces\Character.h" />
     <ClInclude Include="..\..\Source\Interfaces\Controllable.h" />
     <ClInclude Include="..\..\Source\Interfaces\Renderable.h" />
-    <ClInclude Include="..\..\Source\Player\Bomb.h" />
-    <ClInclude Include="..\..\Source\Player\Boomerang.h" />
-    <ClInclude Include="..\..\Source\Player\Arrow.h" />
-    <ClInclude Include="..\..\Source\Player\FlameRod.h" />
     <ClInclude Include="..\..\Source\Player\Inventory.h" />
     <ClInclude Include="..\..\Source\Player\Link.h" />
-    <ClInclude Include="..\..\Source\Player\Sword.h" />
     <ClInclude Include="..\..\Source\Player\Weapon.h" />
-    <ClInclude Include="..\..\Source\Enemy\Star.h" />
-    <ClInclude Include="..\..\Source\Enemy\Vacuum.h" />
-    <ClInclude Include="..\..\Source\Enemy\WaterTektite.h" />
-    <ClInclude Include="..\..\Source\Enemy\ThreeOfAKind.h" />
-    <ClInclude Include="..\..\Source\Enemy\Spark.h" />
     <ClInclude Include="..\..\Source\Engine\Tilemap.h" />
     <ClInclude Include="..\..\Source\Tests\DialogueTests.h" />
     <ClInclude Include="..\..\Source\Tests\InventoryTests.h" />

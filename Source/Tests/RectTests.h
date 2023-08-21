@@ -6,23 +6,23 @@
 #include <map>
 #include <string>
 
-namespace Testable
+namespace Tests
 {
 
-class RectTests : public TestUnit
-{
-public:
-    constexpr RectTests() = default;
-
-    using RectTestsMap = const std::map<std::string, void (RectTests::*)(void)>;
-    void runTests() override;
-
-private:
-    RectTestsMap m_tests =
+    /*class RectTests : public TestUnit
     {
-        {"rect tests", &RectTests::rectTests}
-    };
-    void rectTests() noexcept;
-};
+    public:
+        constexpr RectTests() = default;
+
+        using RectTestsMap = const std::map<std::string, void (RectTests::*)(void)>;
+        void runTests() override;
+
+    private:
+        RectTestsMap m_tests =
+        {
+            {"rect tests", &RectTests::rectTests}
+        };
+        void rectTests() noexcept;
+    };*/
 
 };

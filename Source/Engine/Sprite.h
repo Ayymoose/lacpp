@@ -39,23 +39,23 @@ namespace Zelda
         SDL_Texture* data() const;
         SDL_Renderer* renderer() const;
 
-        // Copies srcTexture to dstTexture using srcRect for srcTexture and dstRect for dstRect
+        // Copies source to dest using srcRect for srcTexture and dstRect for dstRect
         // The dstRect co-ordinates are relative to the srcRect!
         template<typename R1, typename R2>
-        static void copySprite(const Sprite& srcTexture, const Sprite& dstTexture, const Rect<R1>& srcRect, const Rect<R2>& dstRect, const Colour colourMod = 0)
+        static void copySprite(const Sprite& source, const Sprite& dest, const Rect<R1>& srcRect, const Rect<R2>& dstRect, const Colour colourMod = 0)
         {
-            assert(dstTexture.m_renderer == srcTexture.m_renderer);
-            if (dstTexture.m_renderer)
+            assert(dest.m_renderer == source.m_renderer);
+            if (dest.m_renderer)
             {
                 // Push rendering target
-                auto const currentRenderingTarget = SDL_GetRenderTarget(dstTexture.m_renderer);
-                SDL_ASSERT(SDL_SetRenderTarget(dstTexture.m_renderer, dstTexture.data()));
+                auto const currentRenderingTarget = SDL_GetRenderTarget(dest.m_renderer);
+                SDL_ASSERT(SDL_SetRenderTarget(dest.m_renderer, dest.data()));
 
                 // Check rects within boundaries of sprite if need be
                 if (srcRect != Rect<R1>())
                 {
-                    assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= srcTexture.width());
-                    assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= srcTexture.height());
+                    assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= source.width());
+                    assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= source.height());
                 }
 
                 auto sdlRectSrc = rectToSDLRect(srcRect);
@@ -66,17 +66,17 @@ namespace Zelda
 
                 if (colourMod)
                 {
-                    SDL_ASSERT(SDL_SetTextureColorMod(srcTexture.data(), makeRed(colourMod), makeGreen(colourMod), makeBlue(colourMod)));
+                    SDL_ASSERT(SDL_SetTextureColorMod(source.data(), makeRed(colourMod), makeGreen(colourMod), makeBlue(colourMod)));
                 }
 
-                SDL_ASSERT(SDL_RenderCopy(dstTexture.m_renderer, srcTexture.data(), rectSrc, rectDst));
+                SDL_ASSERT(SDL_RenderCopy(dest.m_renderer, source.data(), rectSrc, rectDst));
 
                 // Pop rendering target
-                SDL_ASSERT(SDL_SetRenderTarget(dstTexture.m_renderer, currentRenderingTarget));
+                SDL_ASSERT(SDL_SetRenderTarget(dest.m_renderer, currentRenderingTarget));
             }
         }
 
-        // Colours a part of a texture (or whole use nullptr with a given colour 
+        // Colours a part of a sprite (or whole use nullptr with a given colour) 
         template<typename R>
         void colourSprite(const Rect<R>& srcRect, Colour colour, const int opacity=255)
         {
@@ -160,14 +160,6 @@ namespace Zelda
                 }
             }
         }
-
-
-        // template<typename R1>
-        // void basicAnimate(const Animation& animation, const Rect<R1>& dstRect, const int frames, const int frameSpeed);
-    
-        // template<typename R1, typename R2>
-        // void reverseAnimate(const Animation& animation, const Rect<R1>& dstRect, const int frames, const int frameSpeed, const int replayDelay, const int replayLastNFrames = 0, const int replayCount = 0);
-
 
         friend void swap(Sprite& sprite1, Sprite& sprite2);
 

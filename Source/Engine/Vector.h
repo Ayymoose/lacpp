@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <cassert>
 #include <cmath>
 
@@ -7,13 +8,30 @@ namespace Zelda
 {
     // 2D vector class
     template <typename T>
-    class Vector
+    struct Vector
     {
-    public:
-        static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "Invalid template type");
+        static_assert(std::is_arithmetic_v<T>, "Arithemtic only type allowed");
 
-        constexpr Vector() : x(0), y(0) {};
-        Vector(T x, T y) : x(x), y(y) {}
+        constexpr static bool almostEqual(T a, T b)
+        {
+            if constexpr (std::is_floating_point_v<T>)
+            {
+                return std::fabs(a - b) < std::numeric_limits<T>::epsilon();
+            }
+            else
+            {
+                return a == b;
+            }
+        }
+
+        friend std::ostream& operator<< (std::ostream& ostream, const Vector<T>& v)
+        {
+            ostream << '(' << v.x << ", " << v.y << ')';
+            return ostream;
+        }
+
+        constexpr Vector() : x{}, y{} {}
+        constexpr Vector(T x, T y) : x(x), y(y) {}
 
         constexpr Vector operator/(const double scalar) const
         {
@@ -21,24 +39,24 @@ namespace Zelda
             return Vector(x / scalar, y / scalar);
         }
 
-        Vector operator+(const Vector& other) const
+        constexpr Vector operator+(const Vector& other) const
         {
             return Vector(x + other.x, y + other.y);
         }
 
-        Vector operator*(const double scalar) const
+        constexpr Vector operator*(const double scalar) const
         {
             return Vector(x * scalar, y * scalar);
         }
 
-        Vector& operator*=(const double scalar)
+        constexpr Vector& operator*=(const double scalar)
         {
             x *= scalar;
             y *= scalar;
             return *this;
         }
 
-        Vector& operator/=(const double scalar)
+        constexpr Vector& operator/=(const double scalar)
         {
             assert(scalar != 0);
             x /= scalar;
@@ -46,35 +64,34 @@ namespace Zelda
             return *this;
         }
 
-        Vector operator-() const
+        constexpr Vector operator-() const
         {
             return Vector(-x, -y);
         }
 
-        Vector& operator+=(const Vector& other)
+        constexpr Vector& operator+=(const Vector& other)
         {
             x += other.x;
             y += other.y;
             return *this;
         }
 
-        Vector& operator-=(const Vector& other)
+        constexpr Vector& operator-=(const Vector& other)
         {
             return operator+=(-other);
         }
 
-        Vector operator-(const Vector& other) const
+        constexpr bool operator-(const Vector& other) const
         {
             return Vector(x - other.x, y - other.y);
         }
 
-        bool operator==(const Vector& other) const
+        constexpr bool operator==(const Vector& other) const
         {
-            // EPSILON COMPARISON
-            return ((x == other.x) && (y == other.y));
+            return almostEqual(x, other.x) && almostEqual(y, other.y);
         }
 
-        bool operator!=(const Vector& other) const
+        constexpr bool operator!=(const Vector& other) const
         {
             return !operator==(other);
         }
@@ -102,19 +119,15 @@ namespace Zelda
         static constexpr Vector normalise(const Vector& v)
         {
             auto const len = v.length();
-            // TODO: Double/float epsilon comparison
             assert(len != 0);
             return Vector(v.x / len, v.y / len);
         }
 
-        // Normalise a vector
         // Note this will only work for float and double
-        // TODO: SFINAE this out
-
-        void /*std::enable_if_t<std::is_integral_v<T>, void>*/ normalise()
+        template <typename U = T>
+        constexpr auto normalise() -> std::enable_if_t<std::is_floating_point_v<U>, void>
         {
             auto const len = length();
-            // TODO: Double/float epsilon comparison
             assert(len != 0);
 
             x /= len;
@@ -122,32 +135,21 @@ namespace Zelda
         }
 
         // Get the normal for this vector
-        Vector normal() const
+        constexpr Vector normal() const
         {
-            Vector vNormal = *this;
+            auto thisNormal = *this;
             auto len = length();
-            // TODO: Double/float epsilon comparison
             assert(len != 0);
-
-            return vNormal / len;
+            return thisNormal / len;
         }
 
-        // Vector length
         constexpr auto length() const
         {
-            return std::sqrt((x * x) + (y * y));
-        }
-
-        // Linear interpolate between two vectors
-        // FLOAT DOUBLE only
-        static constexpr Vector lerp(const Vector& A, const Vector& B, double alpha)
-        {
-            // A* t + B * (1.f - t);
-            assert(alpha >= 0.0 && alpha <= 1.0);
-            return Vector((1.0 - alpha) * A.x + alpha * B.x, (1.0 - alpha) * A.y + alpha * B.y);
+            return std::sqrt(x * x + y * y);
         }
 
         T x;
         T y;
     };
+
 }

@@ -1,38 +1,40 @@
 #pragma once
 
 #include <map>
-#include <iostream>
+#include <memory>
+
 #include "Debug.h"
 
-namespace Testable
+namespace Tests
 {
 
-class TestUnit
-{
-public:
-    TestUnit() = default;
-    virtual ~TestUnit() = default;
-    virtual void runTests() = 0;
 
-    template<typename TestType, typename TestList>
-    void runTest(TestType* testType, TestList testList)
+    /*template<typename TestObject, typename TestMap>
+    class TestUnit
     {
-        for (auto const& [testName, testFunction] : testList)
+    public:
+        constexpr TestUnit() : m_testObject(std::make_unique<TestObject>())
         {
-            DEBUG(Zelda::DBG_TEST, "Running test: " + testName);
-            (testType->*testFunction)();
         }
-    }
-};
+        virtual ~TestUnit() = default;
+
+        void runTests()
+        {
+            for (auto const& [testName, testFunction] : m_testMap)
+            {
+                DEBUG(Zelda::DBG_TEST, "Running test: " + testName);
+                (m_testObject.get()->*testFunction)();
+            }
+        }
+    private:
+        TestMap m_testMap;
+        std::unique_ptr<TestObject> m_testObject;
+    };*/
 
 
-#define EXPECT(ACTUAL, EXPECTED) do {if (!compare(ACTUAL,EXPECTED)) { std::cout << "Failed: " << __FILE__ << '(' << __LINE__ << ')' << " Expected " << (EXPECTED) << " but got " << (ACTUAL) << '\n'; }} while (0)
+    #define CHECK(VALUE) do {if (!VALUE) {std::cout << "Failed: " << __FILE__ << '(' << __LINE__ << ')' << " false" << std::endl;} } while (0);
 
-// Provide some type safety
-template<typename E1, typename E2>
-constexpr inline bool compare(E1 e1, E2 e2) noexcept
-{
-    return (e1 == e2);
-}
+    #define CHECK_EQUAL(ACTUAL, EXPECTED) do {if (!((ACTUAL) == (EXPECTED))) { std::cout << "Failed: " << __FILE__ << '(' << __LINE__ << ')' << " Expected " << (EXPECTED) << " but got " << (ACTUAL) << '\n'; }} while (0)
+
 
 };

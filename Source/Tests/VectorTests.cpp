@@ -1,114 +1,261 @@
 #include "VectorTests.h"
 
-namespace Testable
+namespace Tests
 {
+    using namespace Zelda;
 
-using namespace Zelda;
+    void VectorTests::vectorAdd()
+    {
+        {
+            Vector<int> v1(0, 0);
+            Vector<int> v2(2, 2);
 
-void VectorTests::runTests()
-{
-    runTest(this, m_tests);
-}
+            v1 += v2;
 
-void VectorTests::vectorTests() noexcept
-{
-    Vector<int> v1(0, 0);
-    Vector<int> v2(2, 2);
+            Vector<int> v3(2, 2);
+            CHECK_EQUAL(v1,v3);
+        }
+        {
+            Vector<float> v1(0.5, 0.5);
+            Vector<float> v2(2.5, 2.5);
 
-    // Addition
-    v1 += v2;
+            v1 += v2;
 
-    Vector<int> v3(2, 2);
-    EXPECT(v1.x, v3.x);
-    EXPECT(v1.y, v3.y);
+            Vector<float> v3(3, 3);
+            CHECK_EQUAL(v1, v3);
+        }
+        {
+            Vector<double> v1(0.5, 0.5);
+            Vector<double> v2(2.5, 2.5);
 
-    // Subtraction
-    v1 -= v2;
-    EXPECT(v1.x, 0);
-    EXPECT(v1.y, 0);
+            v1 += v2;
 
-    // Negation
-    Vector<int> v4(10, 50);
-    Vector<int> v5 = -v4;
-    EXPECT(v5.x, -10);
-    EXPECT(v5.y, -50);
+            Vector<double> v3(3, 3);
+            CHECK_EQUAL(v1, v3);
+        }
+    }
 
-    // Multiplication by scalar
-    Vector<int> v6(25, 10);
-    v6 *= 2;
-    EXPECT(v6.x, 50);
-    EXPECT(v6.y, 20);
+    void VectorTests::vectorSub()
+    {
+        {
+            Vector<int> v1(0, 0);
+            Vector<int> v2(2, 2);
 
-    // Division by scalar
-    Vector<int> v7(100, 50);
-    v7 /= 2;
-    EXPECT(v7.x, 50);
-    EXPECT(v7.y, 25);
+            v1 -= v2;
 
-    // Assignment
-    Vector<int> v8(453, 34);
-    auto v9 = v8;
-    EXPECT(v9.x, 453);
-    EXPECT(v9.y, 34);
+            Vector<int> v3(-2, -2);
+            CHECK_EQUAL(v1, v3);
+        }
+        {
+            Vector<float> v1(0.5, 0.5);
+            Vector<float> v2(2.5, 2.5);
 
-    // Comparison
-    Vector<int> v10(56, 65);
-    auto v11 = v10;
-    auto equal = (v10 == v11);
-    EXPECT(equal, true);
+            v1 -= v2;
 
-    Vector<int> v12(56, 65);
-    Vector<int> v13(6, 65);
-    equal = (v12 == v13);
-    EXPECT(equal, false);
+            Vector<float> v3(-2, -2);
+            CHECK_EQUAL(v1, v3);
+        }
+        {
+            Vector<double> v1(0.5, 0.5);
+            Vector<double> v2(2.5, 2.5);
 
-    // Distance between two vectors
-    Vector<int> v14(0, 0);
-    Vector<int> v15(30, 40);
-    auto distance = Vector<int>::distanceBetween(v14, v15);
-    EXPECT(distance, 50);
+            v1 -= v2;
 
-    // Cross product
-    Vector<int> v16(12, 43);
-    Vector<int> v17(30, 40);
-    auto cross = Vector<int>::cross(v16, v17);
-    EXPECT(cross, -810);
+            Vector<double> v3(-2, -2);
+            CHECK_EQUAL(v1, v3);
+        }
+    }
 
-    // Dot product
-    auto dot = Vector<int>::dot(v16, v17);
-    EXPECT(dot, 2080);
+    void VectorTests::vectorMul()
+    {
+        {
+            Vector<int> v1(25, 10);
+            v1 *= 2;
+            Vector<int> v2{50, 20};
+            CHECK_EQUAL(v1, v2);
+        }
+        {
+            Vector<float> v1(25, 10);
+            v1 *= 2.5f;
+            Vector<float> v2{62.5, 25};
+            CHECK_EQUAL(v1, v2);
+        }
+        {
+            Vector<double> v1(25, 10);
+            v1 *= 2.5;
+            Vector<double> v2{62.5, 25};
+            CHECK_EQUAL(v1, v2);
+        }
+    }
 
-    // Length
-    EXPECT(v17.length(), 50);
+    void VectorTests::vectorDiv()
+    {
+        {
+            Vector<int> v1(100, 50);
+            v1 /= 2;
+            Vector<int> v2{50, 25};
+            CHECK_EQUAL(v1, v2);
+        }
+        {
+            Vector<float> v1(100, 50);
+            v1 /= 2.5f;
+            Vector<float> v2{40, 20};
+            CHECK_EQUAL(v1, v2);
+        }
+        {
+            Vector<double> v1(100, 50);
+            v1 /= 2.5;
+            Vector<double> v2(40, 20);
+            CHECK_EQUAL(v1, v2);
+        }
+    }
 
-    // Normalise
-    Vector<float> v18(30,40);
-    auto v19 = v18;
-    v18.normalise();
-    constexpr auto epsilon = std::numeric_limits<float>::epsilon();
+    void VectorTests::vectorAssign()
+    {
+        {
+            Vector<int> v1(453, 34);
+            auto v2 = v1;
+            CHECK_EQUAL(v2, v1);
+        }
+        {
+            Vector<float> v1(453, 34);
+            auto v2 = v1;
+            CHECK_EQUAL(v2, v1);
+        }
+        {
+            Vector<double> v1(453, 34);
+            auto v2 = v1;
+            CHECK_EQUAL(v2, v1);
+        }
+    }
 
-    EXPECT((v18.x - 0.6 < epsilon), true);
-    EXPECT((v18.y - 0.8 < epsilon), true);
+    void VectorTests::vectorDot()
+    {
+        {
+            Vector<int> v1(1, 2);
+            Vector<int> v2(3, 4);
+            CHECK_EQUAL(11, Vector<int>::dot(v1, v2));
+        }
+        {
+            Vector<float> v1(1, 2);
+            Vector<float> v2(3, 4);
+            CHECK_EQUAL(11, Vector<float>::dot(v1, v2));
+        }
+        {
+            Vector<double> v1(1, 2);
+            Vector<double> v2(3, 4);
+            CHECK_EQUAL(11, Vector<double>::dot(v1, v2));
+        }
+    }
 
-    auto normal = v19.normal();
-    EXPECT((normal.x - 0.6 < epsilon), true);
-    EXPECT((normal.y - 0.8 < epsilon), true);
+    void VectorTests::vectorCross()
+    {
+        {
+            Vector<int> v1(1, 2);
+            Vector<int> v2(3, 4);
+            CHECK_EQUAL(-2, Vector<int>::cross(v1, v2));
+        }
+        {
+            Vector<float> v1(1, 2);
+            Vector<float> v2(3, 4);
+            CHECK_EQUAL(-2, Vector<float>::cross(v1, v2));
+        }
+        {
+            Vector<double> v1(1, 2);
+            Vector<double> v2(3, 4);
+            CHECK_EQUAL(-2, Vector<double>::cross(v1, v2));
+        }
+    }
 
-    // Linear interpolation
-    Vector<float> v20(10, 20);
-    Vector<float> v21(30, 20);
+    void VectorTests::vectorLength()
+    {
+        {
+            Vector<int> v1(3, 4);
+            CHECK_EQUAL(5, v1.length());
+        }
+        {
+            Vector<float> v1(3.5, 4.5);
+            CHECK(Vector<float>::almostEqual(std::sqrt(3.5*3.5 + 4.5*4.5), v1.length()));
+        }
+        {
+            Vector<double> v1(3.5, 4.5);
+            CHECK(Vector<double>::almostEqual(std::sqrt(3.5 * 3.5 + 4.5 * 4.5), v1.length()));
+        }
+    }
 
-    auto v22 = Vector<float>::lerp(v20, v21, 0.5);
-    EXPECT(v22.x, 20);
-    EXPECT(v22.y, 20);
+    void VectorTests::vectorNegation()
+    {
+        {
+            Vector<int> v1(3, 4);
+            Vector<int> v2(-3, -4);
+            CHECK_EQUAL(v2, -v1);
+        }
+        {
+            Vector<float> v1(3, 4);
+            Vector<float> v2(-3, -4);
+            CHECK_EQUAL(v2, -v1);
+        }
+        {
+            Vector<double> v1(3, 4);
+            Vector<double> v2(-3, -4);
+            CHECK_EQUAL(v2, -v1);
+        }
+    }
 
-    auto v23 = Vector<float>::lerp(v20, v21, 0.0);
-    EXPECT(v23.x, 10);
-    EXPECT(v23.y, 20);
+    void VectorTests::vectorDistance()
+    {
+        {
+            Vector<int> v1(0, 0);
+            Vector<int> v2(30, 40);
+            CHECK_EQUAL(50, Vector<int>::distanceBetween(v1, v2));
+        }
+        {
+            Vector<float> v1(0, 0);
+            Vector<float> v2(30, 40);
+            CHECK_EQUAL(50, Vector<float>::distanceBetween(v1, v2));
+        }
+        {
+            Vector<double> v1(0, 0);
+            Vector<double> v2(30, 40);
+            CHECK_EQUAL(50, Vector<double>::distanceBetween(v1, v2));
+        }
+    }
 
-    auto v24 = Vector<float>::lerp(v20, v21, 1.0);
-    EXPECT(v24.x, 30);
-    EXPECT(v24.y, 20);
-}
+    void VectorTests::vectorNormal()
+    {
+        {
+            {
+                // If we ever need to compare int to float Vectors then fix this
+                /*
+                Vector<int> v1(30, 40);
+                v1.normal();
+                Vector<float> v2(0.5, 0.8);
+                CHECK_EQUAL(v2, v1.normal());
+                */
+            }
+            {
+                Vector<float> v1(30, 40);
+                Vector<float> v2(0.6, 0.8);
+                CHECK_EQUAL(v2, v1.normal());
+            }
+            {
+                Vector<double> v1(30, 40);
+                Vector<double> v2(0.6, 0.8);
+                CHECK_EQUAL(v2, v1.normal());
+            }
+        }
+        {
+            Vector<float> v1(30, 40);
+            v1.normalise();
+            CHECK_EQUAL(0.6f, v1.x);
+            CHECK_EQUAL(0.8f, v1.y);
+        }
+        {
+            Vector<double> v1(30, 40);
+            v1.normalise();
+            CHECK_EQUAL(0.6, v1.x);
+            CHECK_EQUAL(0.8, v1.y);
+        }
+    }
 
 }

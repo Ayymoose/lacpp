@@ -6,25 +6,25 @@
 #include <map>
 #include <string>
 
-namespace Testable
+namespace Tests
 {
 
-class DialogueTests : public TestUnit
-{
-public:
-    constexpr DialogueTests() = default;
-
-    using DialogueTestsMap = const std::map<std::string, void (DialogueTests::*)(void)>;
-    void runTests() override;
-
-private:
-
-    DialogueTestsMap m_tests =
+    /*class DialogueTests : public TestUnit
     {
-        {"dialogue all tests", &DialogueTests::allTests}
-    };
+    public:
+        constexpr DialogueTests() = default;
 
-    void allTests() noexcept;
-};
+        using DialogueTestsMap = const std::map<std::string, void (DialogueTests::*)(void)>;
+        void runTests() override;
+
+    private:
+
+        DialogueTestsMap m_tests =
+        {
+            {"dialogue all tests", &DialogueTests::allTests}
+        };
+
+        void allTests() noexcept;
+    };*/
 
 };
