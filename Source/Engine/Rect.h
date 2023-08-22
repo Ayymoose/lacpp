@@ -1,29 +1,37 @@
 #pragma once
 
 #include <SDL_rect.h>
-#include <type_traits>
+#include <iostream>
+
+#include "FloatingPoint.h"
 
 namespace Zelda
 {
     template<typename T>
     struct Rect
     {
-        static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "Invalid template type");
+        static_assert(std::is_arithmetic_v<T>, "Invalid template type");
 
-        constexpr Rect() : x(0), y(0), w(0), h(0) {};
+        friend std::ostream& operator<< (std::ostream& ostream, const Rect<T>& r)
+        {
+            ostream << '(' << r.x << ',' << r.y << ',' << r.w << ',' << r.h << ')';
+            return ostream;
+        }
+
+        constexpr Rect() : x{}, y{}, w{}, h{} {}
         constexpr Rect(T x, T y, T w, T h) : x(x), y(y), w(w), h(h) {}
 
         bool operator==(const Rect& other) const
         {
-            return (other.x == x) && (other.y == y) && (other.w == w) && (other.h == h);
+            return 
+                FloatingPoint<T>::almostEqual(other.x,x) && FloatingPoint<T>::almostEqual(other.y, y) && 
+                FloatingPoint<T>::almostEqual(other.w,w) && FloatingPoint<T>::almostEqual(other.h, h);
         }
 
         bool operator!=(const Rect& other) const
         {
             return !operator==(other);
         }
-
-        // TODO: Add method to check rect within rect
 
         T x;
         T y;

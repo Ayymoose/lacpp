@@ -2,24 +2,45 @@
 
 namespace Tests
 {
-    /*
+
     using namespace Zelda;
 
-    void RectTests::runTests()
+    void RectTests::rectEqual()
     {
-        runTest(this, m_tests);
+        {
+            {
+                Rect<int> r1{ 1, 2, 3, 4 };
+                Rect<int> r2{ 40, 30, 20, 10 };
+                CHECK(!(r1 == r2));
+            }
+            {
+                Rect<float> r1{ 1, 2, 3, 4 };
+                Rect<float> r2{ 40, 30, 20, 10 };
+                CHECK(!(r1 == r2));
+            }
+            {
+                Rect<double> r1{ 1, 2, 3, 4 };
+                Rect<double> r2{ 40, 30, 20, 10 };
+                CHECK(!(r1 == r2));
+            }
+        }
+        {
+            {
+                Rect<int> r1{ 1, 2, 3, 4 };
+                Rect<int> r2{ 1, 2, 3, 4 };
+                CHECK_EQUAL(r1, r2);
+            }
+            {
+                Rect<float> r1{ 1, 2, 3, 4 };
+                Rect<float> r2{ 1, 2, 3, 4 };
+                CHECK_EQUAL(r1, r2);
+            }
+            {
+                Rect<double> r1{ 1, 2, 3, 4 };
+                Rect<double> r2{ 1, 2, 3, 4 };
+                CHECK_EQUAL(r1, r2);
+            }
+        }
     }
-
-    void RectTests::rectTests() noexcept
-    {
-        Rect<int> r1{ 1,2,3,4 };
-        Rect<int> r2{ 40,30,20,10 };
-        EXPECT(r1 == r2, false);
-
-        Rect<int> r3{ 1,2,3,4 };
-        Rect<int> r4{ 1,2,3,4 };
-        EXPECT(r3 == r4, true);
-
-    }
-    */
+    
 }

@@ -17,16 +17,13 @@ int main(int argc, char* argv[])
     Engine::getInstance().initVideo();
     Engine::getInstance().initWindow();
     Engine::getInstance().initData();
-
-    //std::vector<std::unique_ptr<Testable::TestUnit>> tests;
     
     Tests::VectorTests().runTests();
-    
+    Tests::RectTests().runTests();
+    Tests::WorldmapTests().runTests();
 
     // Add tests here
-    //tests.emplace_back(std::make_unique<Testable::VectorTests>());
     //tests.emplace_back(std::make_unique<Testable::InventoryTests>());
-    //tests.emplace_back(std::make_unique<Testable::RectTests>());
     //tests.emplace_back(std::make_unique<Testable::DialogueTests>());
     //tests.emplace_back(std::make_unique<Testable::WorldmapTests>());
     //tests.emplace_back(std::make_unique<Testable::SpriteTests>());

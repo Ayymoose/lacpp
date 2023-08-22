@@ -178,8 +178,6 @@ namespace Zelda
         float m_speedX;
         float m_speedY;
 
-        Worldmap m_worldmap;
-
         void useWeapon(WeaponItem weapon);
 
         bool m_useShield;

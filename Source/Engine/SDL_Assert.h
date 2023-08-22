@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <type_traits>
 
 #ifdef NDEBUG
     #define SDL_ASSERT(assertion, message) (assertion)

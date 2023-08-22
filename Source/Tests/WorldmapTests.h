@@ -2,29 +2,36 @@
 
 #include "Testable.h"
 #include "Worldmap.h"
+#include "Controller.h"
 
 #include <map>
 #include <string>
 
 namespace Tests
 {
-    /*
-    class WorldmapTests : public TestUnit
+    
+    class WorldmapTests
     {
     public:
         WorldmapTests() = default;
 
-        using WorldmapTestsMap = const std::map<std::string, void (WorldmapTests::*)(void)>;
-        void runTests() override;
+        void runTests()
+        {
+            for (auto const& [testName, testFunction] : m_testMap)
+            {
+                (this->*testFunction)();
+            }
+        }
 
     private:
 
-        WorldmapTestsMap m_tests =
+        using TestMap = std::map<std::string, void (WorldmapTests::*)(void)>;
+        TestMap m_testMap =
         {
-            {"worldmap all tests", &WorldmapTests::allTests}
+            {"worldmap tests", &WorldmapTests::worldmapTests}
         };
 
-        void allTests() noexcept;
+        void worldmapTests();
     };
-    */
+    
 };

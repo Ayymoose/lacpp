@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FloatingPoint.h"
 #include <iostream>
 #include <cassert>
 #include <cmath>
@@ -12,21 +13,9 @@ namespace Zelda
     {
         static_assert(std::is_arithmetic_v<T>, "Arithemtic only type allowed");
 
-        constexpr static bool almostEqual(T a, T b)
-        {
-            if constexpr (std::is_floating_point_v<T>)
-            {
-                return std::fabs(a - b) < std::numeric_limits<T>::epsilon();
-            }
-            else
-            {
-                return a == b;
-            }
-        }
-
         friend std::ostream& operator<< (std::ostream& ostream, const Vector<T>& v)
         {
-            ostream << '(' << v.x << ", " << v.y << ')';
+            ostream << '(' << v.x << ',' << v.y << ')';
             return ostream;
         }
 
@@ -88,7 +77,7 @@ namespace Zelda
 
         constexpr bool operator==(const Vector& other) const
         {
-            return almostEqual(x, other.x) && almostEqual(y, other.y);
+            return FloatingPoint<T>::almostEqual(x, other.x) && FloatingPoint<T>::almostEqual(y, other.y);
         }
 
         constexpr bool operator!=(const Vector& other) const

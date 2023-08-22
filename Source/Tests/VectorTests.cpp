@@ -1,3 +1,4 @@
+#include "FloatingPoint.h"
 #include "VectorTests.h"
 
 namespace Tests
@@ -175,11 +176,11 @@ namespace Tests
         }
         {
             Vector<float> v1(3.5, 4.5);
-            CHECK(Vector<float>::almostEqual(std::sqrt(3.5*3.5 + 4.5*4.5), v1.length()));
+            CHECK(FloatingPoint<float>::almostEqual(std::sqrt(3.5*3.5 + 4.5*4.5), v1.length()));
         }
         {
             Vector<double> v1(3.5, 4.5);
-            CHECK(Vector<double>::almostEqual(std::sqrt(3.5 * 3.5 + 4.5 * 4.5), v1.length()));
+            CHECK(FloatingPoint<double>::almostEqual(std::sqrt(3.5 * 3.5 + 4.5 * 4.5), v1.length()));
         }
     }
 

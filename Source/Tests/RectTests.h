@@ -9,20 +9,29 @@
 namespace Tests
 {
 
-    /*class RectTests : public TestUnit
+    class RectTests
     {
     public:
-        constexpr RectTests() = default;
+        RectTests() = default;
 
-        using RectTestsMap = const std::map<std::string, void (RectTests::*)(void)>;
-        void runTests() override;
+        void runTests()
+        {
+            for (auto const& [testName, testFunction] : m_testMap)
+            {
+                (this->*testFunction)();
+            }
+        }
 
     private:
-        RectTestsMap m_tests =
+
+        using TestMap = std::map<std::string, void (RectTests::*)(void)>;
+        TestMap m_testMap =
         {
-            {"rect tests", &RectTests::rectTests}
+            {"rect equal", &RectTests::rectEqual}
         };
-        void rectTests() noexcept;
-    };*/
+
+        void rectEqual();
+
+    };
 
 };
