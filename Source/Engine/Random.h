@@ -12,7 +12,7 @@ namespace Zelda
         template <typename T>
         static T random(const int start, const int end)
         {
-            static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "Invalid template type");
+            static_assert(std::is_arithmetic_v<T>, "Invalid template type");
 
             assert(start <= end);
             // Seed the generator
