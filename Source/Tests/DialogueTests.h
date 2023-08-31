@@ -1,30 +1,35 @@
 #pragma once
 
-#include "Testable.h"
-#include "Dialogue.h"
-
 #include <map>
 #include <string>
 
 namespace Tests
 {
-
-    /*class DialogueTests : public TestUnit
+    class DialogueTests
     {
     public:
-        constexpr DialogueTests() = default;
+        DialogueTests() = default;
 
-        using DialogueTestsMap = const std::map<std::string, void (DialogueTests::*)(void)>;
-        void runTests() override;
+        void runTests()
+        {
+            for (auto const& [testName, testFunction] : m_testMap)
+            {
+                (this->*testFunction)();
+            }
+        }
 
     private:
 
-        DialogueTestsMap m_tests =
+        using TestMap = std::map<std::string, void (DialogueTests::*)(void)>;
+        TestMap m_testMap =
         {
-            {"dialogue all tests", &DialogueTests::allTests}
+            {"dialogue tests", &DialogueTests::dialogueTests},
+            {"dialogue sanity tests", &DialogueTests::dialogueSanityTests}
         };
 
-        void allTests() noexcept;
-    };*/
+        void dialogueTests();
+        void dialogueSanityTests();
+    };
+
 
 };

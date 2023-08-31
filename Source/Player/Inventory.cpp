@@ -7,7 +7,7 @@
 #include "Link.h"
 #include "Engine.h"
 #include "ResourceManager.h"
-#include "Common.h"
+//#include "Toggle.h"
 
 namespace Zelda
 {

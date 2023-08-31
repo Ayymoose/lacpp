@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Engine\DataManager.cpp" />
+    <ClCompile Include="..\..\Source\Engine\DialogueImpl.cpp" />
     <ClCompile Include="..\..\Source\Engine\Renderer.cpp" />
     <ClCompile Include="..\..\Source\Engine\ResourceManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\RoomLinkManager.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="..\..\Source\Engine\Sprite.cpp" />
     <ClCompile Include="..\..\Source\Engine\TilemapManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\Keyboard.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Toggle.cpp" />
     <ClCompile Include="..\..\Source\Engine\Window.cpp" />
     <ClCompile Include="..\..\Source\Player\Worldmap.cpp" />
     <ClCompile Include="..\..\Source\Engine\Camera.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="..\..\Source\Player\Inventory.cpp" />
     <ClCompile Include="..\..\Source\Player\Link.cpp" />
     <ClCompile Include="..\..\Source\Engine\Tilemap.cpp" />
+    <ClCompile Include="..\..\Source\Player\WorldmapImpl.cpp" />
     <ClCompile Include="..\..\Source\Tests\DialogueTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\InventoryTests.cpp" />
     <ClCompile Include="..\..\Source\Tests\Main.cpp" />
@@ -190,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Engine\DataManager.h" />
+    <ClInclude Include="..\..\Source\Engine\DialogueImpl.h" />
     <ClInclude Include="..\..\Source\Engine\Jenkins.h" />
     <ClInclude Include="..\..\Source\Engine\Debug.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
@@ -198,6 +202,7 @@
     <ClInclude Include="..\..\Source\Engine\RoomManager.h" />
     <ClInclude Include="..\..\Source\Engine\Sprite.h" />
     <ClInclude Include="..\..\Source\Engine\TilemapManager.h" />
+    <ClInclude Include="..\..\Source\Engine\Toggle.h" />
     <ClInclude Include="..\..\Source\Player\Worldmap.h" />
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h" />
     <ClInclude Include="..\..\Source\Interfaces\Enemy.h" />
@@ -222,6 +227,7 @@
     <ClInclude Include="..\..\Source\Player\Link.h" />
     <ClInclude Include="..\..\Source\Player\Weapon.h" />
     <ClInclude Include="..\..\Source\Engine\Tilemap.h" />
+    <ClInclude Include="..\..\Source\Player\WorldmapImpl.h" />
     <ClInclude Include="..\..\Source\Tests\DialogueTests.h" />
     <ClInclude Include="..\..\Source\Tests\InventoryTests.h" />
     <ClInclude Include="..\..\Source\Tests\RectTests.h" />

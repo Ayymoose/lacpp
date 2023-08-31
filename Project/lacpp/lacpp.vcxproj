@@ -164,6 +164,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Engine\DataManager.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Dialogue.cpp" />
+    <ClCompile Include="..\..\Source\Engine\DialogueImpl.cpp" />
     <ClCompile Include="..\..\Source\Engine\Renderer.cpp" />
     <ClCompile Include="..\..\Source\Engine\ResourceManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\RoomLinkManager.cpp" />
@@ -172,20 +174,24 @@
     <ClCompile Include="..\..\Source\Engine\TilemapManager.cpp" />
     <ClCompile Include="..\..\Source\Engine\Keyboard.cpp" />
     <ClCompile Include="..\..\Source\Engine\Main.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Toggle.cpp" />
     <ClCompile Include="..\..\Source\Engine\Window.cpp" />
     <ClCompile Include="..\..\Source\Player\Worldmap.cpp" />
     <ClCompile Include="..\..\Source\Engine\Camera.cpp" />
-    <ClCompile Include="..\..\Source\Engine\Dialogue.cpp" />
     <ClCompile Include="..\..\Source\Engine\Engine.cpp" />
     <ClCompile Include="..\..\Source\Engine\Resource.cpp" />
     <ClCompile Include="..\..\Source\Player\Inventory.cpp" />
     <ClCompile Include="..\..\Source\Player\Link.cpp" />
     <ClCompile Include="..\..\Source\Engine\Tilemap.cpp" />
+    <ClCompile Include="..\..\Source\Player\WorldmapImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Engine\Colour.h" />
     <ClInclude Include="..\..\Source\Engine\DataManager.h" />
     <ClInclude Include="..\..\Source\Engine\Debug.h" />
+    <ClInclude Include="..\..\Source\Engine\Dialogue.h" />
+    <ClInclude Include="..\..\Source\Engine\DialogueImpl.h" />
+    <ClInclude Include="..\..\Source\Engine\FloatingPoint.h" />
     <ClInclude Include="..\..\Source\Engine\Jenkins.h" />
     <ClInclude Include="..\..\Source\Engine\Random.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
@@ -198,8 +204,7 @@
     <ClInclude Include="..\..\Source\Interfaces\IUpdateable.h" />
     <ClInclude Include="..\..\Source\Player\Worldmap.h" />
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h" />
-    <ClInclude Include="..\..\Source\Engine\Common.h" />
-    <ClInclude Include="..\..\Source\Engine\Dialogue.h" />
+    <ClInclude Include="..\..\Source\Engine\Toggle.h" />
     <ClInclude Include="..\..\Source\Engine\Controller.h" />
     <ClInclude Include="..\..\Source\Engine\Keyboard.h" />
     <ClInclude Include="..\..\Source\Engine\Renderer.h" />
@@ -218,6 +223,7 @@
     <ClInclude Include="..\..\Source\Player\Inventory.h" />
     <ClInclude Include="..\..\Source\Player\Link.h" />
     <ClInclude Include="..\..\Source\Engine\Tilemap.h" />
+    <ClInclude Include="..\..\Source\Player\WorldmapImpl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

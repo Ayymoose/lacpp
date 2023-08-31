@@ -1,5 +1,5 @@
 #include "Worldmap.h"
-#include "Common.h"
+//#include "Toggle.h"
 #include "Dialogue.h"
 #include "ResourceManager.h"
 #include "Depth.h"

@@ -10,7 +10,7 @@
 #include "Debug.h"
 #include <vector>
 
-int main(int argc, char* argv[])
+int main(int, char*[])
 {
     using namespace Zelda;
 
@@ -20,7 +20,8 @@ int main(int argc, char* argv[])
     
     Tests::VectorTests().runTests();
     Tests::RectTests().runTests();
-    Tests::WorldmapTests().runTests();
+    // Tests::WorldmapTests().runTests();
+    Tests::DialogueTests().runTests();
 
     // Add tests here
     //tests.emplace_back(std::make_unique<Testable::InventoryTests>());

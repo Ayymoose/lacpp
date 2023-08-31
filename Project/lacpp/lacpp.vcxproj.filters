@@ -51,9 +51,6 @@
     <ClCompile Include="..\..\Source\Engine\Main.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Engine\Dialogue.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Renderer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -67,6 +64,18 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\RoomLinkManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Player\WorldmapImpl.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Dialogue.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\DialogueImpl.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Toggle.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,7 +116,7 @@
     <ClInclude Include="..\..\Source\Engine\Camera.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\Common.h">
+    <ClInclude Include="..\..\Source\Engine\Toggle.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h">
@@ -146,9 +155,6 @@
     <ClInclude Include="..\..\Source\Engine\Jenkins.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Engine\Dialogue.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Interfaces\IUpdateable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
@@ -174,6 +180,18 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Random.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\FloatingPoint.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Player\WorldmapImpl.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Dialogue.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\DialogueImpl.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
