@@ -10,7 +10,7 @@
 namespace Zelda
 {
 
-    void Link::setDungeonMarkerLocation(const int x, const int y)
+    /*void Link::setDungeonMarkerLocation(const int x, const int y)
     {
         m_inventory.setDungeonLocationMarker(x, y);
     }
@@ -18,7 +18,7 @@ namespace Zelda
     Vector<int> Link::dungeonMarkerLocation() const
     {
         return m_inventory.dungeonMarkerLocation();
-    }
+    }*/
 
     Link::Link() : 
         IRenderable("Link", *ResourceManager::getInstance()[SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER),
@@ -66,7 +66,7 @@ namespace Zelda
         return m_health;
     }
 
-    float Link::maxHealth() const
+    float Link::maxHeartPieces() const
     {
         return m_healthMax;
     }
@@ -155,7 +155,7 @@ namespace Zelda
 
         if (Keyboard::getInstance().keyPressed(BUTTON_SELECT))
         {
-            m_inventory.inDungeon(true);
+            //m_inventory.inDungeon(true);
             m_inventory.open();
            // Controller::getInstance().setController();
             Controller::getInstance().pushController(&m_inventory);
@@ -166,29 +166,29 @@ namespace Zelda
     {
         if (Keyboard::getInstance()[BUTTON_A])
         {
-            useWeapon(m_inventory.weaponA().first);
+            //useWeapon(m_inventory.weaponA().first);
         }
         if (Keyboard::getInstance()[BUTTON_B])
         {
-            useWeapon(m_inventory.weaponB().first);
+            //useWeapon(m_inventory.weaponB().first);
         }
 
 
         if (Keyboard::getInstance().keyReleased(BUTTON_A))
         {
-            if (m_inventory.weaponA().first == WPN_SHIELD)
+            /*if (m_inventory.weaponA().first == WPN_SHIELD)
             {
                 m_useShield = false;
                 updateState();
-            }
+            }*/
         }
         if (Keyboard::getInstance().keyReleased(BUTTON_B))
         {
-            if (m_inventory.weaponB().first == WPN_SHIELD)
+            /*if (m_inventory.weaponB().first == WPN_SHIELD)
             {
                 m_useShield = false;
                 updateState();
-            }
+            }*/
         }
     }
 
@@ -237,7 +237,7 @@ namespace Zelda
             {
                 m_dirLockRight = true;
                 // Show shield equipped sprite
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -266,7 +266,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_RIGHT;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_RIGHT;
             }
 
@@ -276,7 +276,7 @@ namespace Zelda
             if (m_state == LINK_PUSH_RIGHT)
             {
                 // Show shield equipped sprite
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -291,7 +291,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_RIGHT;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_RIGHT;
             }
         }
@@ -304,7 +304,7 @@ namespace Zelda
             {
                 m_dirLockLeft = true;
                 // Show shield equipped sprite
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -333,7 +333,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_LEFT;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_LEFT;
             }
 
@@ -343,7 +343,7 @@ namespace Zelda
             if (m_state == LINK_PUSH_LEFT)
             {
                 // Show shield equipped sprite
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -358,7 +358,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_LEFT;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_LEFT;
             }
         }
@@ -370,7 +370,7 @@ namespace Zelda
             {
                 m_dirLockUp = true;
                 // Show shield equipped sprite
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -399,7 +399,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_UP;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_UP;
             }
 
@@ -409,7 +409,7 @@ namespace Zelda
             if (m_state == LINK_PUSH_UP)
             {
                 // Show shield equipped sprite
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -424,7 +424,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_UP;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_UP;
             }
         }
@@ -436,7 +436,7 @@ namespace Zelda
             {
                 m_dirLockDown = true;
                 // Show shield equipped sprite
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -465,7 +465,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_DOWN;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_DOWN;
             }
 
@@ -474,7 +474,7 @@ namespace Zelda
         {
             if (m_state == LINK_PUSH_DOWN)
             {
-                if (m_inventory.shieldEquipped())
+                /*if (m_inventory.shieldEquipped())
                 {
                     WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                     if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
@@ -489,7 +489,7 @@ namespace Zelda
                 else
                 {
                     m_state = LINK_WALK_DOWN;
-                }
+                }*/
                 m_dir = Direction::DIRECTION_DOWN;
             }
         }
@@ -499,7 +499,7 @@ namespace Zelda
     void Link::updateState()
     {
         auto shieldEquipped = false;
-        auto shieldLevel = WeaponLevel::WPN_LEVEL_NONE;
+        //auto shieldLevel = WeaponLevel::WPN_LEVEL_NONE;
         //bool shieldEquipped = m_inventory.shieldEquipped();
         //WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
 
@@ -525,53 +525,53 @@ namespace Zelda
         case LINK_WALK_DOWN:
             if (shieldEquipped)
             {
-                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+                /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_DOWN_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_DOWN_BIG_SHIELD;
-                }
+                }*/
             }
         break;
         case LINK_WALK_UP:
             if (shieldEquipped)
             {
-                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+                /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_UP_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_UP_BIG_SHIELD;
-                }
+                }*/
             }
         break;
         case LINK_WALK_LEFT:
             if (shieldEquipped)
             {
-                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+                /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_LEFT_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_LEFT_BIG_SHIELD;
-                }
+                }*/
             }
         break;
         case LINK_WALK_RIGHT:
             if (shieldEquipped)
             {
-                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+                /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_RIGHT_BIG_SHIELD;
-                }
+                }*/
             }
         break;
         case LINK_WALK_DOWN_BIG_SHIELD:
@@ -632,14 +632,14 @@ namespace Zelda
         case LINK_SWORD_DOWN:
             if (shieldEquipped)
             {
-                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+                /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_DOWN_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_DOWN_BIG_SHIELD;
-                }
+                }*/
             }
             else
             {
@@ -649,14 +649,14 @@ namespace Zelda
         case LINK_SWORD_RIGHT:
             if (shieldEquipped)
             {
-                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+                /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_RIGHT_BIG_SHIELD;
-                }
+                }*/
             }
             else
             {
@@ -669,14 +669,14 @@ namespace Zelda
         case LINK_SWORD_UP:
             if (shieldEquipped)
             {
-                if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
+                /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
                     m_state = LINK_WALK_UP_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     m_state = LINK_WALK_UP_BIG_SHIELD;
-                }
+                }*/
             }
             else
             {
@@ -696,6 +696,7 @@ namespace Zelda
         return m_dir;
     }
 
+    /*
     void Link::useWeapon(WeaponItem weapon)
     {
         WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
@@ -883,6 +884,8 @@ namespace Zelda
             break;
         }
     }
+
+    */
 
     void Link::animate()
     {

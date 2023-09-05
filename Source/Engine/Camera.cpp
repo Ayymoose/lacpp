@@ -142,7 +142,7 @@ namespace Zelda
             RoomManager::getInstance().updateNextRoomLocation(RoomDirection::DOWN);
         }
 
-        auto dungeonMarker = player->dungeonMarkerLocation();
+        //auto dungeonMarker = player->dungeonMarkerLocation();
     
 
         if (m_scrollLeft)
@@ -192,7 +192,7 @@ namespace Zelda
                 // Update room information
                 RoomManager::getInstance().updateCurrentRoomLocation();
 
-                dungeonMarker.x--;
+                //dungeonMarker.x--;
 
             }
         }
@@ -241,7 +241,7 @@ namespace Zelda
                 // Update room information
                 RoomManager::getInstance().updateCurrentRoomLocation();
 
-                dungeonMarker.x++;
+                //dungeonMarker.x++;
             }
         }
         else if (m_scrollDown)
@@ -288,7 +288,7 @@ namespace Zelda
                 // Update room information
                 RoomManager::getInstance().updateCurrentRoomLocation();
 
-                dungeonMarker.y++;
+                //dungeonMarker.y++;
             }
         }
         else if (m_scrollUp)
@@ -336,12 +336,12 @@ namespace Zelda
                 RoomManager::getInstance().updateCurrentRoomLocation();
 
                 // TODO: This needs a mapping from the room position as with looping rooms, this will just keep decrementing
-                dungeonMarker.y--;
+                //dungeonMarker.y--;
             }
         }
 
         // Set position of dungeon marker if Link in dungeon
-        player->setDungeonMarkerLocation(dungeonMarker.x, dungeonMarker.y);
+        //player->setDungeonMarkerLocation(dungeonMarker.x, dungeonMarker.y);
 
         RoomManager::getInstance().updateCurrentRoomPosition(m_screenX - m_scrollX, m_screenY - m_scrollY);
         RoomManager::getInstance().updateNextRoomPosition((m_screenX - m_scrollX) + m_swapX, (m_screenY - m_scrollY) + m_swapY);

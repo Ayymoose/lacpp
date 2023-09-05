@@ -17,32 +17,32 @@ namespace Zelda
         m_worldmapLocation[m_worldX][m_worldY].visited = true;
     }
 
-    void WorldmapImpl::moveMarker(MarkerDirection direction)
+    void WorldmapImpl::moveMarker(Direction direction)
     {
         switch (direction)
         {
-        case MarkerDirection::RIGHT:
+        case Direction::DIRECTION_RIGHT:
             if (m_worldmapLocation[(m_worldX + 1) % WORLDMAP_MAX_X][m_worldY].visited)
             {
                 m_worldX = (m_worldX + 1) % WORLDMAP_MAX_X;
                 assert(m_worldX >= 0 && m_worldX < WORLDMAP_MAX_X);
             }
             break;
-        case MarkerDirection::LEFT:
+        case Direction::DIRECTION_LEFT:
             if (m_worldmapLocation[(m_worldX - 1) % WORLDMAP_MAX_X][m_worldY].visited)
             {
                 m_worldX = (m_worldX - 1) % WORLDMAP_MAX_X;
                 assert(m_worldX >= 0 && m_worldX < WORLDMAP_MAX_X);
             }
             break;
-        case MarkerDirection::UP:
+        case Direction::DIRECTION_UP:
             if (m_worldmapLocation[m_worldX][(m_worldY - 1) % WORLDMAP_MAX_Y].visited)
             {
                 m_worldY = (m_worldY - 1) % WORLDMAP_MAX_Y;
                 assert(m_worldY >= 0 && m_worldY < WORLDMAP_MAX_Y);
             }
             break;
-        case MarkerDirection::DOWN:
+        case Direction::DIRECTION_DOWN:
             if (m_worldmapLocation[m_worldX][(m_worldY + 1) % WORLDMAP_MAX_Y].visited)
             {
                 m_worldY = (m_worldY + 1) % WORLDMAP_MAX_Y;

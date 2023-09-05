@@ -176,6 +176,7 @@
     <ClCompile Include="..\..\Source\Engine\Main.cpp" />
     <ClCompile Include="..\..\Source\Engine\Toggle.cpp" />
     <ClCompile Include="..\..\Source\Engine\Window.cpp" />
+    <ClCompile Include="..\..\Source\Player\InventoryImpl.cpp" />
     <ClCompile Include="..\..\Source\Player\Worldmap.cpp" />
     <ClCompile Include="..\..\Source\Engine\Camera.cpp" />
     <ClCompile Include="..\..\Source\Engine\Engine.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="..\..\Source\Engine\Debug.h" />
     <ClInclude Include="..\..\Source\Engine\Dialogue.h" />
     <ClInclude Include="..\..\Source\Engine\DialogueImpl.h" />
+    <ClInclude Include="..\..\Source\Engine\Enum.h" />
     <ClInclude Include="..\..\Source\Engine\FloatingPoint.h" />
     <ClInclude Include="..\..\Source\Engine\Jenkins.h" />
     <ClInclude Include="..\..\Source\Engine\Random.h" />
@@ -202,6 +204,7 @@
     <ClInclude Include="..\..\Source\Engine\Sprite.h" />
     <ClInclude Include="..\..\Source\Engine\TilemapManager.h" />
     <ClInclude Include="..\..\Source\Interfaces\IUpdateable.h" />
+    <ClInclude Include="..\..\Source\Player\InventoryImpl.h" />
     <ClInclude Include="..\..\Source\Player\Worldmap.h" />
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h" />
     <ClInclude Include="..\..\Source\Engine\Toggle.h" />

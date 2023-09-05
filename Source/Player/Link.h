@@ -137,6 +137,7 @@ namespace Zelda
 
         // Character overrides
         float health() const override;
+
         Vector<float> position() const override;
         void attack() override;
         void die() override;
@@ -163,13 +164,11 @@ namespace Zelda
             m_healthMax = maxHealth;
         }
 
-        float maxHealth() const;
+        float maxHeartPieces() const;
         void updateState();
 
         bool moving() const;
         Direction direction() const;
-        void setDungeonMarkerLocation(const int x, const int y);
-        Vector<int> dungeonMarkerLocation() const;
 
     private:
         Link();
@@ -178,7 +177,7 @@ namespace Zelda
         float m_speedX;
         float m_speedY;
 
-        void useWeapon(WeaponItem weapon);
+        //void useWeapon(WeaponItem weapon);
 
         bool m_useShield;
 

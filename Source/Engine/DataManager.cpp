@@ -445,7 +445,7 @@ namespace Zelda
 		// e.g GameManager
 		RoomManager::getInstance().useRoom(RoomName::RM_TAIL_CAVE);
 		RoomManager::getInstance().setRoomLocation(28);
-		Link::getInstance().setDungeonMarkerLocation(3, 8);
+		//Link::getInstance().setDungeonMarkerLocation(3, 8);
 		Controller::getInstance().setController(&Link::getInstance());
 		Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
 

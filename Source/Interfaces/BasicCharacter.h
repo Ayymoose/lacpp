@@ -2,19 +2,10 @@
 
 #include "Vector.h"
 #include "Depth.h"
+#include "Enum.h"
 
 namespace Zelda
 {
-
-    enum class Direction
-    {
-        DIRECTION_NONE = -1,
-        DIRECTION_RIGHT,
-        DIRECTION_LEFT,
-        DIRECTION_UP,
-        DIRECTION_DOWN,
-        DIRECTION_COUNT
-    };
 
     class BasicCharacter
     {

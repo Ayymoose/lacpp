@@ -36,22 +36,22 @@ namespace Zelda
         // Move scope around map if the area is visited
         if (Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
         {
-            m_worldMapImpl.moveMarker(MarkerDirection::RIGHT);
+            m_worldMapImpl.moveMarker(Direction::DIRECTION_RIGHT);
             std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
         }
         if (Keyboard::getInstance().keyPressed(BUTTON_LEFT))
         {
-            m_worldMapImpl.moveMarker(MarkerDirection::LEFT);
+            m_worldMapImpl.moveMarker(Direction::DIRECTION_LEFT);
             std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
         }
         if (Keyboard::getInstance().keyPressed(BUTTON_UP))
         {
-            m_worldMapImpl.moveMarker(MarkerDirection::UP);
+            m_worldMapImpl.moveMarker(Direction::DIRECTION_UP);
             std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
         }
         if (Keyboard::getInstance().keyPressed(BUTTON_DOWN))
         {
-            m_worldMapImpl.moveMarker(MarkerDirection::DOWN);
+            m_worldMapImpl.moveMarker(Direction::DIRECTION_DOWN);
             std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
         }
 
@@ -63,7 +63,7 @@ namespace Zelda
         }
     }
 
-    void Worldmap::moveMarker(MarkerDirection direction)
+    void Worldmap::moveMarker(Direction direction)
     {
         m_worldMapImpl.moveMarker(direction);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();

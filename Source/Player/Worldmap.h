@@ -41,7 +41,7 @@ namespace Zelda
         void open();
         void close();
 
-        void moveMarker(MarkerDirection direction);
+        void moveMarker(Direction direction);
 
         void setLocation(const int x, const int y);
 

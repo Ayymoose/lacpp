@@ -437,7 +437,7 @@ namespace Tests
                         }
                         else
                         {
-                            inventory.setDungeonMapEntry(3, 5, { 11,true,DungeonRoomItem::ITEM_CHEST_OPEN });
+                            inventory.setDungeonMapEntry(3, 5, { 11,true,DungeonMapItem::ITEM_CHEST_OPEN });
                             Engine::getInstance().stop();
                         }
                     }

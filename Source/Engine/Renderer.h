@@ -65,7 +65,7 @@ private:
 
     struct RendererComparator
     {
-        bool operator ()(const IRenderable* r1, const IRenderable* r2) const
+        bool operator()(const IRenderable* r1, const IRenderable* r2) const
         {
             return r1->depth() < r2->depth();
         }

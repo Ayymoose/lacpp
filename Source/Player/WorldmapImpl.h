@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Enum.h"
+
 #include <utility>
 #include <string>
 
@@ -70,14 +72,6 @@ namespace Zelda
         LT_UNKNOWN
     };
 
-    enum class MarkerDirection
-    {
-        RIGHT,
-        LEFT,
-        UP,
-        DOWN
-    };
-
     struct WorldmapLocation
     {
         bool visited;                   // Did we visit this location
@@ -96,7 +90,7 @@ namespace Zelda
 
         void setLocation(const int x, const int y);
 
-        void moveMarker(MarkerDirection direction);
+        void moveMarker(Direction direction);
 
         bool locationVisited(const int x, const int y) const;
 
