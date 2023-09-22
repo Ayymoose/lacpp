@@ -2,6 +2,7 @@
 
 #include "Vector.h"
 #include "Enum.h"
+#include "Macro.h"
 
 #include <utility>
 #include <array>
@@ -30,6 +31,8 @@ namespace Zelda
 
     // Maximum photographs we are allowed
     constexpr int MAX_PHOTOGRAPHS = 12;
+    constexpr int MAX_SECRET_SEASHELLS = 50;
+    constexpr int MAX_GOLDEN_LEAVES = 5;
 
     // Dungeon map
     constexpr int DUNGEON_MAX_BLOCKS_X = 9;
@@ -48,7 +51,7 @@ namespace Zelda
     enum class UsableItem
     {
         USABLE_ITEM_NONE = -1,
-        USABLE_ITEM_SWORD = 0,
+        USABLE_ITEM_SWORD,
         USABLE_ITEM_SHIELD,
         USABLE_ITEM_BOW,
         USABLE_ITEM_BOOMERANG,
@@ -75,9 +78,30 @@ namespace Zelda
 
     struct InventoryItem
     {
-        UsableItem usuableItem { UsableItem::USABLE_ITEM_NONE };
-        ItemAttribute itemAttribute { ItemAttribute::ITEM_ATTRIBUTE_NONE };
-        int value{ 0 };
+
+        constexpr InventoryItem() :
+            usuableItem(UsableItem::USABLE_ITEM_NONE),
+            itemAttribute(ItemAttribute::ITEM_ATTRIBUTE_NONE),
+            value(0)
+        {
+        }
+
+        constexpr InventoryItem(UsableItem usableItem, ItemAttribute itemAttribute, int value) :
+            usuableItem(usableItem),
+            itemAttribute(itemAttribute),
+            value(value)
+        {
+        }
+
+        UsableItem usuableItem;
+        ItemAttribute itemAttribute;
+        int value;
+
+        friend std::ostream& operator<<(std::ostream& ostream, const InventoryItem& item)
+        {
+            ostream << '(' << ENUM_VALUE(item.usuableItem) << ',' << ENUM_VALUE(item.itemAttribute) << ',' << item.value << ')';
+            return ostream;
+        }
 
         bool operator==(const InventoryItem& item) const
         {
@@ -94,7 +118,7 @@ namespace Zelda
     enum class OcarinaSong
     {
         OCARINA_SONG_NONE = -1,
-        OCARINA_SONG_MARIN = 1,
+        OCARINA_SONG_MARIN,
         OCARINA_SONG_FROG,
         OCARINA_SONG_FISH,
         OCARINA_SONG_COUNT
@@ -251,6 +275,7 @@ namespace Zelda
         void addInventoryItem(const InventoryItem& inventoryItem);
         std::array<InventoryItem, MAX_INVENTORY_ITEMS> inventoryItems() const;
         void removeInventoryItem(const InventoryItem& inventoryItem);
+        bool inventoryItemExists(const InventoryItem& inventoryItem) const;
 
         // Add - When finding the keys
         void addDungeonEntranceKey(DungeonEntranceKey dungeonKey);
@@ -274,8 +299,9 @@ namespace Zelda
         bool miscItemExists(InventoryMiscItem inventoryMiscItem) const;
 
         // Add - Obtain after defeating dungeon boss
+        bool instrumentExists(Instrument instrument) const;
         void addInstrument(Instrument instrument);
-        std::array<Instrument, static_cast<int>(Instrument::INSTRUMENT_COUNT)> instruments() const;
+        std::array<Instrument, ENUM_VALUE(Instrument::INSTRUMENT_COUNT)> instruments() const;
 
         // Add - When finding ruppees
         // Use - When purchasing items (return true if can use rupees amount)
@@ -308,7 +334,8 @@ namespace Zelda
         // Add only
         void setOcarinaSong(OcarinaSong ocarinaSong);
         void addOcarinaSong(OcarinaSong ocarinaSong);
-        std::array<OcarinaSong, static_cast<int>(OcarinaSong::OCARINA_SONG_COUNT)> ocarinaSongs() const;
+        std::array<OcarinaSong, ENUM_VALUE(OcarinaSong::OCARINA_SONG_COUNT)> ocarinaSongs() const;
+
         // Get selected song
         OcarinaSong ocarinaSong() const;
 
@@ -335,7 +362,7 @@ namespace Zelda
 
         // Add only
         void addPhotograph(Photograph photograph);
-        std::array<Photograph, static_cast<int>(Photograph::PHOTOGRAPH_COUNT)> photographs() const;
+        std::array<Photograph, ENUM_VALUE(Photograph::PHOTOGRAPH_COUNT)> photographs() const;
         int photograph() const;
 
         void addGoldenLeaf();
@@ -362,6 +389,9 @@ namespace Zelda
         void setItemA(const InventoryItem& itemA);
         void setItemB(const InventoryItem& itemB);
 
+        void moveInventorySelector(Direction direction);
+
+
         Dungeon dungeon() const;
         void setDungeon(Dungeon dungeon);
         void setDungeonMapLocationVisited(const Vector<int>& location);
@@ -374,16 +404,13 @@ namespace Zelda
         Vector<int> dungeonMapPositionLocation() const;
         void movePositionInDungeonMap(Direction direction);
 
-        void moveSelector(Direction direction);
 
     private:
-        // TODO: Flashing instrument background
+
         // TODO: Dungeon map hidden room connections when discovered
         // TODO: Ocarina song selection window
         // TODO: Chest and nightmare locations for each dungeon map
         // TODO: Every other dungeon map layout
-        // TODO: Transition the subscreen
-        // TODO: Inventory whiteout
 
         // Inventory related variables
         int m_arrows;                   // Number of arrows
@@ -394,17 +421,17 @@ namespace Zelda
         int m_maxMagicPowder;
 
         OcarinaSong m_ocarinaSong;      // Selected ocarina song
-        std::array<OcarinaSong, static_cast<int>(OcarinaSong::OCARINA_SONG_COUNT)> m_ocarinaSongs;
+        std::array<OcarinaSong, ENUM_VALUE(OcarinaSong::OCARINA_SONG_COUNT)> m_ocarinaSongs;
 
         int m_secretSeaShells;                // Number of Seashells
         
-        std::array<InventoryMiscItem, static_cast<int>(InventoryMiscItem::INVENTORY_MISC_ITEM_COUNT)> m_inventoryMiscItems;
+        std::array<InventoryMiscItem, ENUM_VALUE(InventoryMiscItem::INVENTORY_MISC_ITEM_COUNT)> m_inventoryMiscItems;
 
         Tunic m_tunic;                  // Tunic type
         int m_heartContainerPieces;     // Heart container pieces
         int m_goldenLeaves;             // Golden leaves (Shown in Kanalet castle only)
         
-        std::array<Photograph, static_cast<int>(Photograph::PHOTOGRAPH_COUNT)> m_photographs;
+        std::array<Photograph, ENUM_VALUE(Photograph::PHOTOGRAPH_COUNT)> m_photographs;
 
         int m_rupees;                   // Number of rupees 0-999
         TradeItem m_tradeItem;          // Current trade item
@@ -422,23 +449,20 @@ namespace Zelda
 
         std::array<InventoryItem, MAX_INVENTORY_ITEMS> m_inventoryItems;
 
-        // Debug functions
-        bool checkInventoryItemExists(const InventoryItem& inventoryItem) const;
-
         template <typename Enum, size_t Size>
         static bool checkItemExists(const std::array<Enum, Size>& array, Enum item);
 
         // Instruments
-        std::array<Instrument, static_cast<int>(Instrument::INSTRUMENT_COUNT)> m_instruments;
+        std::array<Instrument, ENUM_VALUE(Instrument::INSTRUMENT_COUNT)> m_instruments;
 
         // Dungeon related items
         bool m_inDungeon;   // Are we in a dungeon? 
 
         // The keys used to open dungeon entrances
-        std::array<DungeonEntranceKey, static_cast<int>(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)> m_dungeonEntraceKeys;
+        std::array<DungeonEntranceKey, ENUM_VALUE(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)> m_dungeonEntraceKeys;
 
         // Dungeon items
-        std::array<DungeonItemStruct, static_cast<int>(Dungeon::DUNGEON_COUNT)> m_dungeonItemsStruct;
+        std::array<DungeonItemStruct, ENUM_VALUE(Dungeon::DUNGEON_COUNT)> m_dungeonItemsStruct;
 
         // Link position in dungeon map as a vector position
         Vector<int> m_positionInDungeonMap;
@@ -495,7 +519,7 @@ namespace Zelda
         // Maybe it stays at the last point when we are side scrolling? Verify
         // TODO: Add the treasure remaininng treeassure cheests
 
-        DungeonMapEntry m_dungeonMaps[static_cast<int>(Dungeon::DUNGEON_COUNT)][DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y] =
+        DungeonMapEntry m_dungeonMaps[ENUM_VALUE(Dungeon::DUNGEON_COUNT)][DUNGEON_MAX_BLOCKS_X][DUNGEON_MAX_BLOCKS_Y] =
         {
             {   // Lvl 0 - Colour dungeon
                 { {1,false, DungeonMapItem::DUNGEON_MAP_ITEM_NONE},  {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE}, {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE},  {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE}, {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE}, {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE}, {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE},  {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE}, {1,false,DungeonMapItem::DUNGEON_MAP_ITEM_NONE} },
@@ -605,8 +629,8 @@ namespace Zelda
     bool InventoryImpl::checkItemExists(const std::array<Enum, Size>& array, Enum item)
     {
         return std::any_of(array.cbegin(), array.cend(), [&item](Enum exists)
-            {
-                return item == exists;
-            });
+        {
+            return item == exists;
+        });
     }
 }

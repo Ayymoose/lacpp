@@ -196,8 +196,10 @@
     <ClInclude Include="..\..\Source\Engine\Colour.h" />
     <ClInclude Include="..\..\Source\Engine\DataManager.h" />
     <ClInclude Include="..\..\Source\Engine\DialogueImpl.h" />
+    <ClInclude Include="..\..\Source\Engine\Enum.h" />
     <ClInclude Include="..\..\Source\Engine\Jenkins.h" />
     <ClInclude Include="..\..\Source\Engine\Debug.h" />
+    <ClInclude Include="..\..\Source\Engine\Macro.h" />
     <ClInclude Include="..\..\Source\Engine\Rect.h" />
     <ClInclude Include="..\..\Source\Engine\ResourceManager.h" />
     <ClInclude Include="..\..\Source\Engine\RoomLinkManager.h" />
@@ -208,6 +210,7 @@
     <ClInclude Include="..\..\Source\Interfaces\IRenderable.h" />
     <ClInclude Include="..\..\Source\Interfaces\IUpdateable.h" />
     <ClInclude Include="..\..\Source\Player\InventoryImpl.h" />
+    <ClInclude Include="..\..\Source\Player\InventoryItem.h" />
     <ClInclude Include="..\..\Source\Player\Worldmap.h" />
     <ClInclude Include="..\..\Source\Interfaces\BasicCharacter.h" />
     <ClInclude Include="..\..\Source\Engine\Dialogue.h" />

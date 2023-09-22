@@ -40,7 +40,7 @@ namespace Zelda
 
     void InventoryImpl::addInventoryItem(const InventoryItem& inventoryItem)
     {
-        assert(!checkInventoryItemExists(inventoryItem) && "Trying to add weapon that already exists");
+        assert(!inventoryItemExists(inventoryItem) && "Trying to add weapon that already exists");
         auto nextFreeSpace = std::find(m_inventoryItems.begin(), m_inventoryItems.end(), InventoryItem{});
         assert(nextFreeSpace != m_inventoryItems.end() && "Trying to add weapon to full inventory");
         *nextFreeSpace = inventoryItem;
@@ -53,12 +53,12 @@ namespace Zelda
 
     void InventoryImpl::removeInventoryItem(const InventoryItem& inventoryItem)
     {
-        assert(checkInventoryItemExists(inventoryItem) && "Trying to remove non-existent weapon");
+        assert(inventoryItemExists(inventoryItem) && "Trying to remove non-existent weapon");
         auto weaponToRemove = std::find(m_inventoryItems.begin(), m_inventoryItems.end(), inventoryItem);
         *weaponToRemove = InventoryItem{};
     }
 
-    bool InventoryImpl::checkInventoryItemExists(const InventoryItem& inventoryItem) const
+    bool InventoryImpl::inventoryItemExists(const InventoryItem& inventoryItem) const
     {
         if (m_itemA == inventoryItem || m_itemB == inventoryItem)
         {
@@ -72,14 +72,14 @@ namespace Zelda
 
     void InventoryImpl::addDungeonEntranceKey(DungeonEntranceKey dungeonKey)
     {
-        assert(!(checkItemExists<DungeonEntranceKey, static_cast<int>(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys, dungeonKey)) && "Trying to add dungeon entrance key that already exists");
+        assert(!(checkItemExists<DungeonEntranceKey, ENUM_VALUE(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys, dungeonKey)) && "Trying to add dungeon entrance key that already exists");
         auto nextFreeSpace = std::find(m_dungeonEntraceKeys.begin(), m_dungeonEntraceKeys.end(), DungeonEntranceKey::DUNGEON_ENTRACE_KEY_NONE);
         *nextFreeSpace = dungeonKey;
     }
 
     bool InventoryImpl::dungeonEntranceKey(DungeonEntranceKey dungeonKey) const
     {
-        return checkItemExists<DungeonEntranceKey, static_cast<int>(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys, dungeonKey);
+        return checkItemExists<DungeonEntranceKey, ENUM_VALUE(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys, dungeonKey);
     }
 
     void InventoryImpl::setInDungeon(const bool inDungeon)
@@ -97,7 +97,7 @@ namespace Zelda
         assert(getInDungeon() && "Trying to add dungeon item when not in dungeon");
         assert(m_dungeon != Dungeon::DUNGEON_NONE);
 
-        auto const currentDungeon = static_cast<int>(m_dungeon);
+        auto const currentDungeon = ENUM_VALUE(m_dungeon);
 
         switch (dungeonItem)
         {
@@ -127,7 +127,7 @@ namespace Zelda
         assert(getInDungeon() && "Trying to add dungeon item when not in dungeon");
         assert(m_dungeon != Dungeon::DUNGEON_NONE);
 
-        auto const currentDungeon = static_cast<int>(m_dungeon);
+        auto const currentDungeon = ENUM_VALUE(m_dungeon);
 
         switch (dungeonItem)
         {
@@ -143,7 +143,7 @@ namespace Zelda
     int InventoryImpl::dungeonItem(DungeonItem dungeonItem) const
     {
         assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
-        auto const dungeonItemStruct = m_dungeonItemsStruct[static_cast<int>(m_dungeon)];
+        auto const dungeonItemStruct = m_dungeonItemsStruct[ENUM_VALUE(m_dungeon)];
         switch (dungeonItem)
         {
         case DungeonItem::DUNGEON_ITEM_COMPASS:
@@ -165,57 +165,26 @@ namespace Zelda
     // Trade item up the chain
     void InventoryImpl::tradeItem(TradeItem tradeItem)
     {
-        switch (tradeItem)
+        if (!(m_tradeItem == TradeItem::TRADE_ITEM_NONE && tradeItem == TradeItem::TRADE_ITEM_YOSHI_DOLL
+            || (m_tradeItem == TradeItem::TRADE_ITEM_YOSHI_DOLL && tradeItem == TradeItem::TRADE_ITEM_RIBBON)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_RIBBON && tradeItem == TradeItem::TRADE_ITEM_DOG_FOOD)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_DOG_FOOD && tradeItem == TradeItem::TRADE_ITEM_BANANAS)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_BANANAS && tradeItem == TradeItem::TRADE_ITEM_STICK)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_STICK && tradeItem == TradeItem::TRADE_ITEM_HONEYCOMB)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_HONEYCOMB && tradeItem == TradeItem::TRADE_ITEM_PINEAPPLE)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_PINEAPPLE && tradeItem == TradeItem::TRADE_ITEM_HIBISCUS)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_HIBISCUS && tradeItem == TradeItem::TRADE_ITEM_LETTER)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_LETTER && tradeItem == TradeItem::TRADE_ITEM_BROOM)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_BROOM && tradeItem == TradeItem::TRADE_ITEM_FISHING_HOOK)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_FISHING_HOOK && tradeItem == TradeItem::TRADE_ITEM_MERMAID_NECKLACE)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_MERMAID_NECKLACE && tradeItem == TradeItem::TRADE_ITEM_MERMAID_SCALE)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_MERMAID_SCALE && tradeItem == TradeItem::TRADE_ITEM_MAGNIFYING_LENS)
+            || (m_tradeItem == TradeItem::TRADE_ITEM_MAGNIFYING_LENS && tradeItem == TradeItem::TRADE_ITEM_BOOMERANG)))
         {
-            case TradeItem::TRADE_ITEM_NONE:
-                m_tradeItem = TradeItem::TRADE_ITEM_YOSHI_DOLL;
-                break;
-            case TradeItem::TRADE_ITEM_YOSHI_DOLL:
-                m_tradeItem = TradeItem::TRADE_ITEM_RIBBON;
-                break;
-            case TradeItem::TRADE_ITEM_RIBBON:
-                m_tradeItem = TradeItem::TRADE_ITEM_DOG_FOOD;
-                break;
-            case TradeItem::TRADE_ITEM_DOG_FOOD:
-                m_tradeItem = TradeItem::TRADE_ITEM_BANANAS;
-                break;
-            case TradeItem::TRADE_ITEM_BANANAS:
-                m_tradeItem = TradeItem::TRADE_ITEM_STICK;
-                break;
-            case TradeItem::TRADE_ITEM_STICK:
-                m_tradeItem = TradeItem::TRADE_ITEM_HONEYCOMB;
-                break;
-            case TradeItem::TRADE_ITEM_HONEYCOMB:
-                m_tradeItem = TradeItem::TRADE_ITEM_PINEAPPLE;
-                break;
-            case TradeItem::TRADE_ITEM_PINEAPPLE:
-                m_tradeItem = TradeItem::TRADE_ITEM_HIBISCUS;
-                break;
-            case TradeItem::TRADE_ITEM_HIBISCUS:
-                m_tradeItem = TradeItem::TRADE_ITEM_LETTER;
-                break;
-            case TradeItem::TRADE_ITEM_LETTER:
-                m_tradeItem = TradeItem::TRADE_ITEM_BROOM;
-                break;
-            case TradeItem::TRADE_ITEM_BROOM:
-                m_tradeItem = TradeItem::TRADE_ITEM_FISHING_HOOK;
-                break;
-            case TradeItem::TRADE_ITEM_FISHING_HOOK:
-                m_tradeItem = TradeItem::TRADE_ITEM_MERMAID_NECKLACE;
-                break;
-            case TradeItem::TRADE_ITEM_MERMAID_NECKLACE:
-                m_tradeItem = TradeItem::TRADE_ITEM_MERMAID_SCALE;
-                break;
-            case TradeItem::TRADE_ITEM_MERMAID_SCALE:
-                m_tradeItem = TradeItem::TRADE_ITEM_MAGNIFYING_LENS;
-                break;
-            case TradeItem::TRADE_ITEM_MAGNIFYING_LENS:
-                m_tradeItem = TradeItem::TRADE_ITEM_BOOMERANG;
-                break;
-            case TradeItem::TRADE_ITEM_BOOMERANG:
-                assert(false && "No more items left to trade");
-                break;
+            assert(false && "Bad trade");
         }
+
+        m_tradeItem = tradeItem;
     }
 
     void InventoryImpl::setTradeItem(TradeItem tradeItem)
@@ -230,22 +199,20 @@ namespace Zelda
 
     void InventoryImpl::addInventoryMiscItem(InventoryMiscItem inventoryMiscItem)
     {
-        assert(!(checkItemExists<InventoryMiscItem, static_cast<int>(InventoryMiscItem::INVENTORY_MISC_ITEM_COUNT)>(m_inventoryMiscItems, inventoryMiscItem)) && "Trying to add inventory misc item that already exists");
+        assert(!(checkItemExists<InventoryMiscItem, ENUM_VALUE(InventoryMiscItem::INVENTORY_MISC_ITEM_COUNT)>(m_inventoryMiscItems, inventoryMiscItem)) && "Trying to add item that already exists");
         auto nextFreeSpace = std::find(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), InventoryMiscItem::INVENTORY_MISC_ITEM_NONE);
         *nextFreeSpace = inventoryMiscItem;
     }
 
     void InventoryImpl::useInventoryMiscItem(InventoryMiscItem inventoryMiscItem)
     {
-        assert((checkItemExists<InventoryMiscItem, static_cast<int>(InventoryMiscItem::INVENTORY_MISC_ITEM_COUNT)>(m_inventoryMiscItems, inventoryMiscItem)) && "Trying to use non-existent inventory misc item");
-
+        assert(miscItemExists(inventoryMiscItem) && "Trying to use non-existent misc item");
+        auto it = std::find(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), inventoryMiscItem);
+        
         switch (inventoryMiscItem)
         {
         case InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION:
-            {
-                auto inventoryMiscItemToUse = std::find(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), inventoryMiscItem);
-                *inventoryMiscItemToUse = InventoryMiscItem::INVENTORY_MISC_ITEM_NONE;
-            }
+            *it = InventoryMiscItem::INVENTORY_MISC_ITEM_NONE;
             break;
         default:
             assert(false && "Trying to use non-usable inventory misc item");
@@ -255,18 +222,23 @@ namespace Zelda
 
     bool InventoryImpl::miscItemExists(InventoryMiscItem inventoryMiscItem) const
     {
-        return checkItemExists<InventoryMiscItem, static_cast<int>(InventoryMiscItem::INVENTORY_MISC_ITEM_COUNT)>(m_inventoryMiscItems, inventoryMiscItem);
+        return checkItemExists(m_inventoryMiscItems, inventoryMiscItem);
+    }
+
+    bool InventoryImpl::instrumentExists(Instrument instrument) const
+    {
+        return checkItemExists<Instrument, ENUM_VALUE(Instrument::INSTRUMENT_COUNT)>(m_instruments, instrument);
     }
 
     // Add - Obtain after defeating dungeon boss
     void InventoryImpl::addInstrument(Instrument instrument)
-    {        
-        assert(!(checkItemExists<Instrument, static_cast<int>(Instrument::INSTRUMENT_COUNT)>(m_instruments, instrument)) && "Trying to add instrument that already exists");
+    {      
+        assert(!instrumentExists(instrument) && "Trying to add item that already exists");
         auto nextFreeSpace = std::find(m_instruments.begin(), m_instruments.end(), Instrument::INSTRUMENT_NONE);
         *nextFreeSpace = instrument;
     }
 
-    std::array<Instrument, static_cast<int>(Instrument::INSTRUMENT_COUNT)> InventoryImpl::instruments() const
+    std::array<Instrument, ENUM_VALUE(Instrument::INSTRUMENT_COUNT)> InventoryImpl::instruments() const
     {
         return m_instruments;
     }
@@ -288,7 +260,7 @@ namespace Zelda
 
     void InventoryImpl::setRupees(const int rupees)
     {
-        m_rupees = rupees;
+        m_rupees = std::min(rupees, MAX_RUPEES);
     }
 
     void InventoryImpl::setBombLimit(const int limit)
@@ -298,7 +270,7 @@ namespace Zelda
 
     void InventoryImpl::setBombs(const int bombs)
     {
-        m_bombs = bombs;
+        m_bombs = std::min(bombs, m_maxBombs);
     }
 
     void InventoryImpl::useBomb()
@@ -318,7 +290,7 @@ namespace Zelda
 
     void InventoryImpl::setArrows(const int arrow)
     {
-        m_arrows = arrow;
+        m_arrows = std::min(arrow, m_maxArrows);
     }
 
     void InventoryImpl::useArrow()
@@ -338,7 +310,7 @@ namespace Zelda
 
     void InventoryImpl::setMagicPowder(const int magicPowder)
     {
-        m_magicPowder = magicPowder;
+        m_magicPowder = std::min(magicPowder, m_maxMagicPowder);
     }
 
     void InventoryImpl::useMagicPowder()
@@ -353,12 +325,12 @@ namespace Zelda
 
     void InventoryImpl::addOcarinaSong(OcarinaSong ocarinaSong)
     {
-        assert(!(checkItemExists<OcarinaSong, static_cast<int>(OcarinaSong::OCARINA_SONG_COUNT)>(m_ocarinaSongs, ocarinaSong)) && "Trying to add ocarina song that already exists");
+        assert(!(checkItemExists<OcarinaSong, ENUM_VALUE(OcarinaSong::OCARINA_SONG_COUNT)>(m_ocarinaSongs, ocarinaSong)) && "Trying to add item that already exists");
         auto nextFreeSpace = std::find(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::OCARINA_SONG_NONE);
         *nextFreeSpace = ocarinaSong;
     }
 
-    std::array<OcarinaSong, static_cast<int>(OcarinaSong::OCARINA_SONG_COUNT)> InventoryImpl::ocarinaSongs() const
+    std::array<OcarinaSong, ENUM_VALUE(OcarinaSong::OCARINA_SONG_COUNT)> InventoryImpl::ocarinaSongs() const
     {
         return m_ocarinaSongs;
     }
@@ -394,7 +366,7 @@ namespace Zelda
 
     void InventoryImpl::addHeartContainerPiece()
     {
-        ++m_heartContainerPieces;
+        m_heartContainerPieces = std::min(++m_heartContainerPieces, HEARTS_PIECE_MAX);
     }
 
     void InventoryImpl::setHeartContainerPieces(const int heartContainerPieces)
@@ -410,7 +382,7 @@ namespace Zelda
     // Add heart pieces
     void InventoryImpl::addHeartPiece(const float heartPiece)
     {
-        m_heartPieces += heartPiece;
+        m_heartPieces = std::fmin(m_maxHeartPieces, m_heartPieces + heartPiece);
     }
 
     // "Use" heart piece when damage incurred
@@ -441,12 +413,12 @@ namespace Zelda
 
     void InventoryImpl::addPhotograph(Photograph photograph)
     {
-        assert(!(checkItemExists<Photograph, static_cast<int>(Photograph::PHOTOGRAPH_COUNT)>(m_photographs, photograph)) && "Trying to add photograph that already exists");
+        assert(!(checkItemExists<Photograph, ENUM_VALUE(Photograph::PHOTOGRAPH_COUNT)>(m_photographs, photograph)) && "Trying to add item that already exists");
         auto nextFreeSpace = std::find(m_photographs.begin(), m_photographs.end(), Photograph::PHOTOGRAPH_NONE);
         *nextFreeSpace = photograph;
     }
 
-    std::array<Photograph, static_cast<int>(Photograph::PHOTOGRAPH_COUNT)> InventoryImpl::photographs() const
+    std::array<Photograph, ENUM_VALUE(Photograph::PHOTOGRAPH_COUNT)> InventoryImpl::photographs() const
     {
         return m_photographs;
     }
@@ -456,18 +428,17 @@ namespace Zelda
         int photographs = 0;
         for (auto const& photograph : m_photographs)
         {
-            if (photograph == Photograph::PHOTOGRAPH_NONE)
+            if (photograph != Photograph::PHOTOGRAPH_NONE)
             {
-                break;
+                ++photographs;
             }
-            ++photographs;
         }
         return photographs;
     }
 
     void InventoryImpl::addGoldenLeaf()
     {
-        ++m_goldenLeaves;
+        m_goldenLeaves = std::min(++m_goldenLeaves, MAX_GOLDEN_LEAVES);
     }
 
     // Add golden leaves from Kanalet castle
@@ -484,7 +455,7 @@ namespace Zelda
 
     void InventoryImpl::addSecretSeaShell()
     {
-        ++m_secretSeaShells;
+        m_secretSeaShells = std::min(++m_secretSeaShells, MAX_SECRET_SEASHELLS);
     }
 
     void InventoryImpl::setSecretSeaShells(const int secretShells)
@@ -550,25 +521,25 @@ namespace Zelda
     DungeonMapItem InventoryImpl::dungeonMapLocationRoomItem(const int x, const int y) const
     {
         assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
-        return m_dungeonMaps[static_cast<int>(m_dungeon)][y][x].roomItem;
+        return m_dungeonMaps[ENUM_VALUE(m_dungeon)][y][x].roomItem;
     }
 
     int InventoryImpl::dungeonMapLocationRoomType(const int x, const int y) const
     {
         assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
-        return m_dungeonMaps[static_cast<int>(m_dungeon)][y][x].roomType;
+        return m_dungeonMaps[ENUM_VALUE(m_dungeon)][y][x].roomType;
     }
 
     bool InventoryImpl::dungeonMapLocationVisited(const int x, const int y) const
     {
         assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
-        return m_dungeonMaps[static_cast<int>(m_dungeon)][y][x].visited;
+        return m_dungeonMaps[ENUM_VALUE(m_dungeon)][y][x].visited;
     }
 
     void InventoryImpl::setDungeonMapLocationVisited(const Vector<int>& location)
     {
         assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
-        m_dungeonMaps[static_cast<int>(m_dungeon)][location.y][location.x].visited = true;
+        m_dungeonMaps[ENUM_VALUE(m_dungeon)][location.y][location.x].visited = true;
     }
 
     void InventoryImpl::movePositionInDungeonMap(Direction direction)
@@ -576,50 +547,42 @@ namespace Zelda
         switch (direction)
         {
         case Direction::DIRECTION_DOWN:
-            m_positionInDungeonMap.y++;
+            ++m_positionInDungeonMap.y;
             break;
         case Direction::DIRECTION_UP:
-            m_positionInDungeonMap.y--;
+            --m_positionInDungeonMap.y;
             break;
         case Direction::DIRECTION_RIGHT:
-            m_positionInDungeonMap.x++;
+            ++m_positionInDungeonMap.x;
             break;
         case Direction::DIRECTION_LEFT:
-            m_positionInDungeonMap.x--;
+            --m_positionInDungeonMap.x;
             break;
         }
     }
 
-    void InventoryImpl::moveSelector(Direction direction)
+    void InventoryImpl::moveInventorySelector(Direction direction)
     {
         switch (direction)
         {
         case Direction::DIRECTION_DOWN:
-            if (m_selectorIndex == MAX_INVENTORY_ITEMS-1)
+            if (m_selectorIndex >= MAX_INVENTORY_ITEMS - INVENTORY_COLUMNS)
             {
-                m_selectorIndex = INVENTORY_COLUMNS - 1;
+                m_selectorIndex = 0;
             }
-            else if (m_selectorIndex <= MAX_INVENTORY_ITEMS - INVENTORY_COLUMNS)
+            else
             {
                 m_selectorIndex += INVENTORY_COLUMNS;
-            }
-            else
-            {
-                m_selectorIndex = MAX_INVENTORY_ITEMS - m_selectorIndex;
-            }            
+            }         
             break;
         case Direction::DIRECTION_UP:            
-            if (m_selectorIndex == 0)
+            if (m_selectorIndex < INVENTORY_COLUMNS)
             {
-                m_selectorIndex = MAX_INVENTORY_ITEMS - INVENTORY_COLUMNS;
-            }
-            else if (m_selectorIndex >= INVENTORY_COLUMNS)
-            {
-                m_selectorIndex -= INVENTORY_COLUMNS;
+                m_selectorIndex = MAX_INVENTORY_ITEMS-1;
             }
             else
             {
-                m_selectorIndex = MAX_INVENTORY_ITEMS - m_selectorIndex;
+                m_selectorIndex -= INVENTORY_COLUMNS;
             }
             break;
         case Direction::DIRECTION_RIGHT:
@@ -629,5 +592,7 @@ namespace Zelda
             m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : --m_selectorIndex);
             break;
         }
+
+        assert(m_selectorIndex >= 0 && m_selectorIndex < MAX_INVENTORY_ITEMS);
     }
 }

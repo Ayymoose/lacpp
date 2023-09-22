@@ -589,7 +589,7 @@ namespace Zelda
 
         for (int i = 0; i < instruments.size(); ++i)
         {
-            switch (instruments[i])
+            /*switch (instruments[i])
             {
                 case Instrument::INSTRUMENT_FULL_MOON_CELLO:
                 case Instrument::INSTRUMENT_CONCH_HORN:
@@ -612,7 +612,7 @@ namespace Zelda
                     dstRect.x += 8; dstRect.y += 8; dstRect.w = 8; dstRect.h = 8;
                     drawNumber(*m_sprite, false, true, 0, i, dstRect);
                     break;
-            }
+            }*/
         }
     }
 
@@ -1087,7 +1087,7 @@ namespace Zelda
 
     void Inventory::moveSelector(Direction direction)
     {
-        m_inventoryImpl.moveSelector(direction);
+        m_inventoryImpl.moveInventorySelector(direction);
 
         switch (direction)
         {

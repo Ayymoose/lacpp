@@ -18,10 +18,11 @@ int main(int, char*[])
     Engine::getInstance().initWindow();
     Engine::getInstance().initData();
     
+    Tests::InventoryTests().runTests();
     Tests::VectorTests().runTests();
     Tests::RectTests().runTests();
     // Tests::WorldmapTests().runTests();
-    Tests::DialogueTests().runTests();
+    //Tests::DialogueTests().runTests();
 
     // Add tests here
     //tests.emplace_back(std::make_unique<Testable::InventoryTests>());

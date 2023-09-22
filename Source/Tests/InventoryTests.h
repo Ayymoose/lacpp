@@ -8,41 +8,82 @@
 
 namespace Tests
 {
-    /*
-    class InventoryTests : public TestUnit
+    class InventoryTests
     {
     public:
-        constexpr InventoryTests() = default;
+        InventoryTests() = default;
 
-        using InventoryTestsMap = const std::map<std::string, void (InventoryTests::*)(void)>;
-        void runTests() override;
+        void runTests()
+        {
+            for (auto const& [testName, testFunction] : m_testMap)
+            {
+                (this->*testFunction)();
+            }
+        }
 
     private:
 
-        InventoryTestsMap m_tests =
+        using TestMap = std::map<std::string, void (InventoryTests::*)(void)>;
+        TestMap m_testMap =
         {
-            {"hearts test", &InventoryTests::heartTest},
-            {"weapons item test", &InventoryTests::weaponItemTest},
-            {"dungeons item test", &InventoryTests::dungeonItemsTest},
-            {"trade item test", &InventoryTests::tradeItemTest},
-            {"dungeon key test", &InventoryTests::dungeonKeyTest},
-            {"misc item test", &InventoryTests::miscItemsTest},
-            {"instruments test", &InventoryTests::instrumentsTest},
-            {"ruppees test", &InventoryTests::ruppeesTest},
-            {"subscreen test", &InventoryTests::subscreenTest},
-            {"selector test", &InventoryTests::selectorTest}
+            {"impl heart test", &InventoryTests::heartImplTest},
+            {"impl hearts test", &InventoryTests::heartTest},
+            {"impl tunic test", &InventoryTests::tunicImplTest},
+            {"impl ocarina test", &InventoryTests::ocarinaImplTest},
+            {"impl photograph test", &InventoryTests::photographImplTest},
+            {"impl golden leaf test", &InventoryTests::goldenLeafImplTest},
+            {"impl secret sea shell test", &InventoryTests::secretSeaShellImplTest},
+            {"impl magic powder test", &InventoryTests::magicPowderImplTest},
+            {"impl arrow test", &InventoryTests::arrowImplTest},
+            {"impl bomb test", &InventoryTests::bombImplTest},
+            {"impl rupee test", &InventoryTests::rupeeImplTest},
+            {"impl instrument test", &InventoryTests::instrumentImplTest},
+            {"impl inventory misc item test", &InventoryTests::inventoryMiscItemImplTest},
+            {"impl trade item test", &InventoryTests::tradeItemImplTest},
+            {"impl dungeon item test", &InventoryTests::dungeonItemImplTest},
+            {"impl dungeon map test", &InventoryTests::dungeonMapImplTest},
+            {"impl dungeon entrance key test", &InventoryTests::dungeonEntraceKeyImplTest},
+            {"impl iventory item test", &InventoryTests::inventoryItemImplTest},
+
+            {"ui weapons item test", &InventoryTests::weaponItemTest},
+            {"ui dungeons item test", &InventoryTests::dungeonItemsTest},
+            {"ui trade item test", &InventoryTests::tradeItemTest},
+            {"ui dungeon key test", &InventoryTests::dungeonKeyTest},
+            {"ui misc item test", &InventoryTests::miscItemsTest},
+            {"ui instruments test", &InventoryTests::instrumentsTest},
+            {"ui rupees test", &InventoryTests::rupeesTest},
+            {"ui subscreen test", &InventoryTests::subscreenTest},
+            {"ui selector test", &InventoryTests::selectorTest}
         };
 
-        void heartTest() noexcept;
-        void weaponItemTest() noexcept;
-        void dungeonItemsTest() noexcept;
-        void tradeItemTest() noexcept;
-        void dungeonKeyTest() noexcept;
-        void miscItemsTest() noexcept;
-        void instrumentsTest() noexcept;
-        void ruppeesTest() noexcept;
-        void subscreenTest() noexcept;
-        void selectorTest() noexcept;
+        void heartImplTest();
+        void heartTest(); 
+        void tunicImplTest();
+        void ocarinaImplTest();
+        void photographImplTest();
+        void goldenLeafImplTest();
+        void secretSeaShellImplTest();
+        void magicPowderImplTest();
+        void arrowImplTest();
+        void bombImplTest();
+        void rupeeImplTest();
+        void instrumentImplTest();
+        void inventoryMiscItemImplTest();
+        void tradeItemImplTest();
+        void dungeonItemImplTest();
+        void dungeonEntraceKeyImplTest();
+        void inventoryItemImplTest();
+        void dungeonMapImplTest();
+
+        void weaponItemTest();
+        void dungeonItemsTest();
+        void tradeItemTest();
+        void dungeonKeyTest();
+        void miscItemsTest();
+        void instrumentsTest();
+        void rupeesTest();
+        void subscreenTest();
+        void selectorTest();
     };
-    */
+    
 };

@@ -211,6 +211,15 @@
     <ClInclude Include="..\..\Source\Engine\Colour.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Enum.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Player\InventoryItem.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Macro.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
