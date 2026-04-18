@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="lacpp" ToolsVersion="16.0">
+  <Include Path="cppcorecheckarithmeticrules.ruleset" Action="Default" />
+  <Include Path="cppcorecheckboundsrules.ruleset" Action="Default" />
+  <Include Path="cppcorecheckclassrules.ruleset" Action="Default" />
+  <Include Path="nativeminimumrules.ruleset" Action="Default" />
+  <Include Path="nativerecommendedrules.ruleset" Action="Default" />
+</RuleSet>
