@@ -1,28 +1,48 @@
-# lacpp (Links Awakening C++)
+# Link's Awakening C++
 
-Small ongoing side project of Link's Awakening in C++17 using SDL2.
-Currently building using Visual Studio 2019 on Windows (No Linux support ATM)
+Recreating **The Legend of Zelda: Link's Awakening (1993)** in modern **C++23**.
 
-**Features:**
+## 🧰 Tech Stack
 
-* Dialogue
-* Inventory
-* View scrolling
-* Basic Enemys
-* Basic Collision
-* Basic animations
-* Keyboard control using arrow keys
+- **C++23**
+- **SDL3**
+- **CMake**
+- **Boost**
 
-**Upcoming features:**
+---
 
-* Tilemaps
-* Bosses
-* Worldmap
-* Dungeons
-* Controller input
-* Sound
+## 💻 Platform Support
 
-Some screenshots of progress:
+- ✅ macOS  
+- ✅ Linux  
+- ✅ Windows  
+
+---
+
+## 📦 Prerequisites
+
+- C++23 compatible compiler:
+- CMake
+- SDL3
+- Boost
+
+### Installing dependencies
+
+#### macOS (Homebrew)
+brew install cmake sdl3 ninja
+
+### Windows
+
+### Linux
+
+### Build
+
+MacOS/Linux
+
+Windows
+
+
+Screenshots of existing progress:
 
 ![alt text](Screens/000.png)
 ![alt text](Screens/001.png)
