@@ -2,6 +2,7 @@
 #include "DialogueImpl.h"
 
 #include <cassert>
+#include <algorithm>
 
 namespace
 {

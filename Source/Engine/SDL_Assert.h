@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <exception>
 
     // Use for SDL_* functions which should always return 0 on success
     // TODO: Output file/line information on assert
