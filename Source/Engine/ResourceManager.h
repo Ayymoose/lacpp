@@ -4,6 +4,8 @@
 #include <cassert>
 #include <unordered_map>
 #include <memory>
+#include <filesystem>
+#include <SDL_filesystem.h>
 
 #include "Colour.h"
 #include "Singleton.h"
@@ -11,12 +13,30 @@
 
 namespace Zelda
 {
+    
+namespace fs = std::filesystem;
 
-const std::string RESOURCE_DUNGEONS_PATH = R"(..\..\Resources\Background\Dungeon\)";
-const std::string RESOURCE_SPRITE_LINK_PATH = R"(..\..\Resources\Sprite\Link\)";
-const std::string RESOURCE_OBJECT_PATH = R"(..\..\Resources\Sprite\Object\)";
-const std::string RESOURCE_MISC_PATH = R"(..\..\Resources\Background\Misc\)";
-const std::string RESOURCE_ENEMY_PATH = R"(..\..\Resources\Sprite\Enemy\)";
+// Get base path once
+inline fs::path GetBasePath()
+{
+    char* basePath = SDL_GetBasePath();
+    if (!basePath)
+    {
+        throw std::runtime_error("Failed to get SDL base path");
+    }
+
+    fs::path result(basePath);
+    SDL_free(basePath);
+    return result;
+}
+
+// Build all resource paths from base
+inline fs::path RESOURCE_ROOT = GetBasePath() / ".."/ ".."/ "Resources";
+inline fs::path RESOURCE_DUNGEONS_PATH = RESOURCE_ROOT / "Background" / "Dungeon";
+inline fs::path RESOURCE_SPRITE_LINK_PATH = RESOURCE_ROOT / "Sprite" / "Link";
+inline fs::path RESOURCE_OBJECT_PATH = RESOURCE_ROOT / "Sprite" / "Object";
+inline fs::path RESOURCE_MISC_PATH = RESOURCE_ROOT / "Background" / "Misc";
+inline fs::path RESOURCE_ENEMY_PATH = RESOURCE_ROOT / "Sprite" / "Enemy";
 
 enum class SpriteResource
 {
