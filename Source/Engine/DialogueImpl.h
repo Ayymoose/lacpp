@@ -3,7 +3,6 @@
 #include <string>
 #include <queue>
 #include <variant>
-#include <memory>
 
 namespace Zelda
 {
@@ -23,9 +22,9 @@ namespace Zelda
 
         int charHeight() const;
 
-        int dialogueWidth() const;
+        static int dialogueWidth();
 
-        int dialogueHeight() const;
+        static int dialogueHeight();
 
         // y co-ordinate of the dialogue box
         int dialogueY() const;

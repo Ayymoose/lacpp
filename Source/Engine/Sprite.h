@@ -161,7 +161,7 @@ namespace Zelda
             }
         }
 
-        friend void swap(Sprite& sprite1, Sprite& sprite2);
+        friend void swap(Sprite& sprite1, Sprite& sprite2) noexcept;
 
     private:
         SDL_Renderer* m_renderer;

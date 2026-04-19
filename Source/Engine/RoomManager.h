@@ -1,14 +1,9 @@
 #pragma once
 
 #include "Singleton.h"
-#include "IRenderable.h"
 #include "RoomName.h"
 #include "RoomLinkManager.h"
 #include "TilemapManager.h"
-
-#include <unordered_map>
-#include <vector>
-
 
 namespace Zelda
 {

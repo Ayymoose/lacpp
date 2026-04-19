@@ -12,34 +12,6 @@
 namespace Zelda
 {
 
-    Dialogue::Dialogue() :
-        IRenderable("Dialogue", Sprite(Renderer::getInstance().getRenderer(), m_dialogueImpl.dialogueWidth(), m_dialogueImpl.dialogueHeight()), ZD_DEPTH_DIALOGUE),
-        Controllable(m_name),
-        m_dialoguePosX(m_dialogueImpl.dialoguePosX()),
-        m_dialoguePosY(m_dialogueImpl.dialoguePosYLow()),
-        m_currentChar(0),
-        m_currentLine(0),
-        m_dstCharX(0),
-        m_dstCharY(0),
-        m_text(ResourceManager::getInstance()[SpriteResource::SPR_TEXT]),
-        m_subTexture(std::make_unique<Sprite>(Renderer::getInstance().getRenderer(), m_dialogueImpl.dialogueWidth(), m_dialogueImpl.dialogueHeight())),
-        m_moreText(false),
-        m_toggleQuestion(15),
-        m_questionMarker(ResourceManager::getInstance()[SpriteResource::SPR_TEXT]),
-        m_toggleArrow(30),
-        m_redArrow(ResourceManager::getInstance()[SpriteResource::SPR_TEXT]),
-        m_continue(false),
-        m_scrollMessage(false),
-        m_scrolledLines(0),
-        m_questionXPos(0),
-        m_questionYPos(0)
-    {
-        assert(m_sprite->data());
-        assert(m_subTexture->data());
-        m_sprite->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, makeRGB(0, 0, 0));
-        m_subTexture->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, makeRGB(0, 0, 0));
-    }
-
     void Dialogue::message(const std::string& message, float yPos)
     {
         // Displays a message on screen to the player
@@ -53,7 +25,7 @@ namespace Zelda
 
         m_dialogueImpl.message(message, yPos);
 
-        // Switch controller over to this if there is one 
+        // Switch controller over to this if there is one
         if (Controller::getInstance().getController() != this)
         {
             Controller::getInstance().pushController(this);
@@ -140,8 +112,7 @@ namespace Zelda
             }
             else
             {
-                assert(false && "Unknown character: " + c);
-                return Rect<int>{};
+                assert(false && (std::string("Unknown character: ") + c).c_str());
             }
             return Rect<int>{srcCharX, srcCharY, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()};
         };
@@ -251,7 +222,7 @@ namespace Zelda
                         m_dstCharY = 0;
                         dstRectSubTextureLowerHalf.y = m_dstCharY;
 
-                        // 3. Copy to a bottom half of texture to top half 
+                        // 3. Copy to a bottom half of texture to top half
                         Sprite::copySprite(*m_subTexture, *m_subTexture, srcRectSubTextureLowerHalf, dstRectSubTextureLowerHalf);
 
                         // Block out the what used to be the bottom line
@@ -295,8 +266,8 @@ namespace Zelda
         // Display the textbox
         // Drawn on top or bottom depending on Link's position
         m_sprite->drawSprite(Rect<int>{}, Rect<int>{m_dialoguePosX,m_dialoguePosY, m_dialogueImpl.dialogueWidth(), m_dialogueImpl.dialogueHeight()});
-    
-        // Flash the continue red arrow 
+
+        // Flash the continue red arrow
         if (m_toggleArrow && m_continue)
         {
             drawContinueArrowMarker();
@@ -309,44 +280,9 @@ namespace Zelda
         }
     }
 
-    void Dialogue::drawContinueArrowMarker()
-    {
-        m_redArrow->drawSprite(Rect<int>{136, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()}, Rect<int>{m_dialoguePosX + ARROW_POS_X, m_dialoguePosY + ARROW_POS_Y, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()});
-    }
-
-    void Dialogue::drawQuestionMarker()
-    {
-        assert(m_questionXPos >= m_dialoguePosX);
-        assert(m_questionXPos <= m_dialoguePosX + m_dialogueImpl.dialogueWidth());
-        assert(m_questionYPos >= m_dialoguePosY);
-        assert(m_questionYPos <= m_dialoguePosY + m_dialogueImpl.dialogueHeight());
-        m_questionMarker->drawSprite(Rect<int>{144, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()}, Rect<int>{ m_questionXPos, m_questionYPos, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight() });
-}
-
-
     void Dialogue::update()
     {
 
-    }
-
-    void Dialogue::reset()
-    {
-        m_dstCharX = 0;
-        m_dstCharY = 0;
-        m_currentLine = 0;
-        m_scrollMessage = false;
-
-        m_scrolledLines = 0;
-        m_currentChar = 0;
-        m_toggleArrow.reset();
-        m_continue = false;
-        m_moreText = false;
-
-        m_subTexture->colourSprite(Rect<int>{}, makeRGB(0, 0, 0));
-
-        // TODO: Correct text speed
-        // TODO: Add special characters (arrows, items etc)
-        // TODO: Add heart container on RHS when acquired
     }
 
     void Dialogue::control()
@@ -389,6 +325,69 @@ namespace Zelda
                 m_questionXPos -= (m_dialogueImpl.choice().length() + 2) * m_dialogueImpl.charWidth();
             }
         }
+    }
+
+    Dialogue::Dialogue() :
+        IRenderable("Dialogue", Sprite(Renderer::getInstance().getRenderer(), DialogueImpl::dialogueWidth(),  DialogueImpl::dialogueHeight()), ZD_DEPTH_DIALOGUE),
+        Controllable(m_name),
+        m_dialoguePosX(m_dialogueImpl.dialoguePosX()),
+        m_dialoguePosY(m_dialogueImpl.dialoguePosYLow()),
+        m_currentChar(0),
+        m_currentLine(0),
+        m_dstCharX(0),
+        m_dstCharY(0),
+        m_text(ResourceManager::getInstance()[SpriteResource::SPR_TEXT]),
+        m_subTexture(std::make_unique<Sprite>(Renderer::getInstance().getRenderer(),  DialogueImpl::dialogueWidth(),  DialogueImpl::dialogueHeight())),
+        m_moreText(false),
+        m_toggleQuestion(15),
+        m_questionMarker(ResourceManager::getInstance()[SpriteResource::SPR_TEXT]),
+        m_toggleArrow(30),
+        m_redArrow(ResourceManager::getInstance()[SpriteResource::SPR_TEXT]),
+        m_continue(false),
+        m_scrollMessage(false),
+        m_scrolledLines(0),
+        m_questionXPos(0),
+        m_questionYPos(0)
+    {
+        assert(m_sprite->data());
+        assert(m_subTexture->data());
+        m_sprite->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, makeRGB(0, 0, 0));
+        m_subTexture->colourSprite(Rect<int>{ 0, 0, m_sprite->width(), m_sprite->height()}, makeRGB(0, 0, 0));
+    }
+
+
+    void Dialogue::reset()
+    {
+        m_dstCharX = 0;
+        m_dstCharY = 0;
+        m_currentLine = 0;
+        m_scrollMessage = false;
+
+        m_scrolledLines = 0;
+        m_currentChar = 0;
+        m_toggleArrow.reset();
+        m_continue = false;
+        m_moreText = false;
+
+        m_subTexture->colourSprite(Rect<int>{}, makeRGB(0, 0, 0));
+
+        // TODO: Correct text speed
+        // TODO: Add special characters (arrows, items etc)
+        // TODO: Add heart container on RHS when acquired
+    }
+
+    void Dialogue::drawQuestionMarker() const
+    {
+        assert(m_questionXPos >= m_dialoguePosX);
+        assert(m_questionXPos <= m_dialoguePosX + m_dialogueImpl.dialogueWidth());
+        assert(m_questionYPos >= m_dialoguePosY);
+        assert(m_questionYPos <= m_dialoguePosY + m_dialogueImpl.dialogueHeight());
+        m_questionMarker->drawSprite(Rect<int>{144, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()}, Rect<int>{ m_questionXPos, m_questionYPos, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight() });
+    }
+
+    void Dialogue::drawContinueArrowMarker() const
+    {
+        m_redArrow->drawSprite(Rect<int>{136, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()}, Rect<int>{m_dialoguePosX + ARROW_POS_X, m_dialoguePosY + ARROW_POS_Y, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()});
     }
 
 }

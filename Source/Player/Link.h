@@ -8,9 +8,6 @@
 #include "Worldmap.h"
 #include "Vector.h"
 
-#include <memory>
-#include <vector>
-
 namespace Zelda
 {
 
@@ -130,18 +127,20 @@ namespace Zelda
         friend class Singleton<Link>;
     public:
         // Renderable overrides
-        void render();
+        void render() override;
 
         // Updateable
-        void update();
+        void update() override;
 
         // Character overrides
         float health() const override;
 
         Vector<float> position() const override;
+    protected:
         void attack() override;
         void die() override;
         void move() override;
+    public:
 
         // Controllable overrides
         void control() override;

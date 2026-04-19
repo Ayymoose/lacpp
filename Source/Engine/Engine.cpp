@@ -23,7 +23,7 @@ namespace Zelda
 
         //m_initialised = true;
 
-        DEBUG(DBG_INFO, "Engine initialised");
+        DEBUG_MACRO(DBG_INFO, "Engine initialised");
     }
 
     void Engine::run()
@@ -48,7 +48,7 @@ namespace Zelda
     {
         // Cleanup
         assert(m_engineRunning && "Engine is not running");
-        DEBUG(DBG_INFO, "Engine has stopped running");
+        DEBUG_MACRO(DBG_INFO, "Engine has stopped running");
         m_engineRunning = false;
         m_preRenderTestFunction = nullptr;
         m_renderTestFunction = nullptr;

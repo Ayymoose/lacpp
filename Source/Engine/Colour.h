@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 namespace Zelda
 {
     using Colour = uint32_t;

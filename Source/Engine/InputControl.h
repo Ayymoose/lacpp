@@ -1,6 +1,6 @@
-#include <SDL_scancode.h>
-
 #pragma once
+
+#include <SDL_scancode.h>
 
 // Keyword control for Gameboy controls
 

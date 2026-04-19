@@ -1,7 +1,3 @@
-#pragma once
-
-#include <cstring>
-
 #include "Sprite.h"
 
 // Wrapper class around an SDL_Texture
@@ -136,11 +132,10 @@ namespace Zelda
             return SDL_RendererFlip::SDL_FLIP_NONE;
         default:
             assert(false && "Unknown flip");
-            return SDL_RendererFlip::SDL_FLIP_NONE;
         }
     }
 
-    void swap(Sprite& sprite1, Sprite& sprite2)
+    void swap(Sprite& sprite1, Sprite& sprite2) noexcept
     {
         using std::swap;
         swap(sprite1.m_height, sprite2.m_height);

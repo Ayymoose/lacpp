@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SDL_rect.h>
-#include <iostream>
 
 #include "FloatingPoint.h"
 

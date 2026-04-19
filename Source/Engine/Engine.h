@@ -2,7 +2,7 @@
 
 #include "Singleton.h"
 #include "Window.h"
-#include "Resource.h"
+
 #include <functional>
 
 namespace Zelda

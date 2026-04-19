@@ -4,14 +4,12 @@
 #include "IRenderable.h"
 #include "Controllable.h"
 #include "IUpdateable.h"
-#include "Vector.h"
 #include "Toggle.h"
 #include "Sprite.h"
 #include "DialogueImpl.h"
 
 #include <string>
 #include <queue>
-#include <variant>
 #include <memory>
 
 
@@ -78,8 +76,8 @@ namespace Zelda
 
         void reset();
 
-        void drawQuestionMarker();
-        void drawContinueArrowMarker();
+        void drawQuestionMarker() const;
+        void drawContinueArrowMarker() const;
 
     };
 }

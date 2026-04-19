@@ -70,7 +70,7 @@ namespace Zelda
         // If it's true now, return true then make it false
         if (m_keyStatePressed[key])
         {
-            DEBUG(DBG_INFO, std::to_string(key) + " was pressed");
+            DEBUG_MACRO(DBG_INFO, std::to_string(key) + " was pressed");
             m_keyStatePressed[key] = false;
             return true;
         }
@@ -85,7 +85,7 @@ namespace Zelda
         assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
         if (m_keyStateReleased[key])
         {
-            DEBUG(DBG_INFO, std::to_string(key) + " was released");
+            DEBUG_MACRO(DBG_INFO, std::to_string(key) + " was released");
             m_keyStateReleased[key] = false;
             return true;
         }

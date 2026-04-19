@@ -194,7 +194,7 @@ namespace Zelda
 
     void Link::die()
     {
-        DEBUG(DBG_INFO, "Link died");
+        DEBUG_MACRO(DBG_INFO, "Link died");
     }
 
     void Link::resetAnimation()
@@ -682,6 +682,8 @@ namespace Zelda
             {
                 m_state = LINK_WALK_UP;
             }
+            break;
+        default:
             break;
         }
     }

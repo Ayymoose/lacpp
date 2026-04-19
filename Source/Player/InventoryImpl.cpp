@@ -558,6 +558,8 @@ namespace Zelda
         case Direction::DIRECTION_LEFT:
             --m_positionInDungeonMap.x;
             break;
+        default:
+            break;
         }
     }
 
@@ -590,6 +592,8 @@ namespace Zelda
             break;
         case Direction::DIRECTION_LEFT:
             m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : --m_selectorIndex);
+            break;
+        default:
             break;
         }
 
