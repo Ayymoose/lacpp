@@ -17,7 +17,7 @@ namespace Zelda
         // Add more tests here
     };
 
-    #define DEBUG(MASK, MESSAGE) do { Zelda::Debug::getInstance().log(MASK, MESSAGE); } while (0);
+    #define DEBUG_MACRO(MASK, MESSAGE) do { Zelda::Debug::getInstance().log(MASK, MESSAGE); } while (0);
 
     class Debug : public Singleton<Debug>
     {

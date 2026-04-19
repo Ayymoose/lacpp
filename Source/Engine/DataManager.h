@@ -13,10 +13,10 @@ namespace Zelda
     private:
         DataManager() = default;
 
-        void loadSprites() const;
+        static void loadSprites();
         void loadRooms() const;
 
-        void loadTailCave() const;
+        static void loadTailCave();
 
     };
 

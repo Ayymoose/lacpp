@@ -1,7 +1,5 @@
 #include "Toggle.h"
 
-#include <iostream>
-
 namespace Zelda
 {
     Toggle::Toggle(int toggleAfterTicks) : m_currentTick(0), m_endTick(toggleAfterTicks), m_toggle(false)

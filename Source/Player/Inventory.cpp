@@ -65,7 +65,7 @@ namespace Zelda
             Controller::getInstance().popController();
             Link::getInstance().updateState();
             Engine::getInstance().pause(false);
-            DEBUG(DBG_INFO, "Inventory closed!");
+            DEBUG_MACRO(DBG_INFO, "Inventory closed!");
         }
 
         // How we index the inventory
@@ -358,7 +358,7 @@ namespace Zelda
                     }
                     else
                     {
-                        if (m_inventoryImpl.dungeonMapLocationVisited(x, y) > 1)
+                        if (m_inventoryImpl.dungeonMapLocationVisited(x, y))
                         {
                             // Display a "unvisited" square
                             //srcRect = m_inventorySpritesSrc[INVENTORY_AREA_UNVISITED];
@@ -882,6 +882,8 @@ namespace Zelda
         case Tunic::TUNIC_RED:
             srcRect.x = 2 * (srcRect.w + 2);
             break;
+        default:
+            break;
         }
 
         //dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
@@ -1080,8 +1082,12 @@ namespace Zelda
                 case UsableItem::USABLE_ITEM_OCARINA:
                     drawNumber(srcSprite, false, true, 0, m_inventoryImpl.ocarinaSongs().size(), dstRect);
                     break;
+            default:
+                break;
             }
             break;
+            default:
+                break;
         }
     }
 
@@ -1157,6 +1163,8 @@ namespace Zelda
             {
                 m_selectorX -= SELECTOR_INCREASE_X;
             }
+            break;
+        default:
             break;
         }
     }

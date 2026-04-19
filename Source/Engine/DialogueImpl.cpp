@@ -156,12 +156,12 @@ namespace Zelda
         return CHAR_HEIGHT;
     }
 
-    int DialogueImpl::dialogueWidth() const
+    int DialogueImpl::dialogueWidth()
     {
         return DIALOGUE_WIDTH;
     }
 
-    int DialogueImpl::dialogueHeight() const
+    int DialogueImpl::dialogueHeight()
     {
         return DIALOGUE_HEIGHT;
     }

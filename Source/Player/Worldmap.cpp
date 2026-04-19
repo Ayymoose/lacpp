@@ -30,7 +30,7 @@ namespace Zelda
             close();
             Controller::getInstance().popController();
             Engine::getInstance().pause(false);
-            DEBUG(DBG_INFO, "Worldmap closed!");
+            DEBUG_MACRO(DBG_INFO, "Worldmap closed!");
         }
 
         // Move scope around map if the area is visited

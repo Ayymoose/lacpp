@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <cassert>
 #include <unordered_map>
 #include <memory>
 #include <filesystem>

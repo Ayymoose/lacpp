@@ -10,7 +10,6 @@
 // TODO: Remove when defaults are set
 #include "Link.h"
 #include "Controller.h"
-#include "Dialogue.h"
 
 namespace Zelda
 {
@@ -22,8 +21,7 @@ namespace Zelda
 		loadRooms();
 	}
 
-	void DataManager::loadSprites() const
-	{
+	void DataManager::loadSprites() {
 		constexpr Colour TRANSPARENCY_COLOUR = makeRGB(255, 0, 128);
 		ResourceManager::getInstance().loadSprite(SpriteResource::SPR_DUNGEON_1_TAIL_CAVE, RESOURCE_DUNGEONS_PATH / "dungeon_tail_cave.png", TRANSPARENCY_COLOUR);
 		ResourceManager::getInstance().loadSprite(SpriteResource::SPR_WORLD_MAP, RESOURCE_MISC_PATH / "tm_worldmap.png", TRANSPARENCY_COLOUR);
@@ -35,8 +33,7 @@ namespace Zelda
 
 	}
 
-	void DataManager::loadTailCave() const
-	{
+	void DataManager::loadTailCave() {
 
 		// TODO: const this (constexpr?)
 		Tilemap::TilemapConfig tilemapConfig;
