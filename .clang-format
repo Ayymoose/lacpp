@@ -1,6 +1,5 @@
----
-Language: Cpp
-BasedOnStyle: Chromium
+BasedOnStyle: LLVM
+ColumnLimit: 120
 AccessModifierOffset: -4
 AlignArrayOfStructures: None
 AlignConsecutiveMacros: Consecutive
@@ -29,11 +28,10 @@ BraceWrapping:
   SplitEmptyRecord: false
   SplitEmptyNamespace: false
 BreakBeforeBinaryOperators: NonAssignment
-BreakBeforeInheritanceComma: true
 BreakInheritanceList: AfterColon
 SortIncludes: Never
 BreakConstructorInitializers: BeforeComma
-ConstructorInitializerAllOnOneLineOrOnePerLine: false
+PackConstructorInitializers: Never
 IndentCaseLabels: false
 IndentWidth: 4
 MaxEmptyLinesToKeep: 2
@@ -42,5 +40,5 @@ PenaltyBreakBeforeFirstCallParameter: 500
 PenaltyBreakComment: 200
 PenaltyBreakFirstLessLess: 30
 PenaltyBreakString: 200
-PenaltyExcessCharacter: 2
+PenaltyExcessCharacter: 100
 TabWidth: 4
