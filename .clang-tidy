@@ -1,0 +1,118 @@
+Checks:          '-*,
+                  boost-use-to-string,
+                  bugprone*,
+                  -bugprone-argument-comment,
+                  -bugprone-bad-signal-to-kill-thread,
+                  -bugprone-bool-pointer-implicit-conversion,
+                  -bugprone-copy-constructor-init,
+                  -bugprone-dynamic-static-initializers,
+                  -bugprone-easily-swappable-parameters,
+                  -bugprone-implicit-widening-of-multiplication-result,
+                  -bugprone-narrowing-conversions,
+                  -bugprone-no-escape,
+                  -bugprone-posix-return,
+                  -bugprone-parent-virtual-call,
+                  -bugprone-spuriously-wake-up-functions,
+                  -bugprone-too-small-loop-variable,
+                  -bugprone-unhandled-exception-at-new,
+                  -bugprone-unchecked-optional-access,
+                  cert-err33-c,
+                  cert-mem-57-cpp,
+                  cert-oop57-cpp,
+                  cert-oop58-cpp,
+                  clang-analyzer-core*,
+                  clang-analyzer-cplusplus*,
+                  clang-analyzer-optin-cplusplus*,
+                  clang-analyzer-security*,
+                  concurrency-mt-unsafe,
+                  cppcoreguidelines*,
+                  -cppcoreguidelines-avoid-c-arrays,
+                  -cppcoreguidelines-avoid-magic-numbers,
+                  -cppcoreguidelines-avoid-non-const-global-variables,
+                  -cppcoreguidelines-narrowing-conversion,
+                  -cppcoreguidelines-non-private-member-variables-in-classes,
+                  -cppcoreguidelines-owning-memory,
+                  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+                  -cppcoreguidelines-pro-bounds-constant-array-index,
+                  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+                  -cppcoreguidelines-pro-type-reinterpret-cast,
+                  -cppcoreguidelines-pro-type-static-cast-downcast,
+                  -cppcoreguidelines-pro-type-vararg,
+                  -cppcoreguidelines-special-member-functions,
+                  google-build-namespaces,
+                  google-global-names-in-headers,
+                  google-readability-namespace-comments,
+                  hicpp-avoid-goto,
+                  hicpp-exception-baseclass,
+                  hicpp-no-assembler,
+                  misc*,
+                  -misc-non-private-member-variables-in-classes,
+                  -misc-unused-parameters,
+                  -misc-const-correctness,
+                  modernize*,
+                  -modernize-avoid-c-arrays,
+                  -modernize-replace-disallow-copy-and-assign-macro,
+                  -modernize-use-auto,
+                  -modernize-use-nodiscard,
+                  -modernize-use-trailing-return-type,
+                  performance*,
+                  -performance-inefficient-string-concatenation,
+                  -performance-no-int-to-ptr,
+                  -portability-restrict-system-includes,
+                  -performance-unnecessary-copy-initialization,
+                  -performance-enum-size,
+                  -performance-avoid-endl,
+                  portability*,
+                  readability*,
+                  -readability-avoid-const-params-in-decls,
+                  -readability-braces-around-statements,
+                  -readability-function-size,
+                  -readability-identifier-length,
+                  -readability-identifier-name,
+                  -readability-implicit-bool-conversion,
+                  -readability-magic-numbers,
+                  -readability-named-parameter,
+                  -readability-redundant-access-specifiers,
+                  -readability-uppercase-literal-suffix'
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+FormatStyle:     none
+User:            jenkins-builder
+CheckOptions:
+  - key:             cppcoreguidelines-explicit-virtual-functions.IgnoreDestructors
+    value:           '1'
+  - key:             cppcoreguidelines-explicit-virtual-functions.AllowOverrideAndFinal
+    value:           '1'
+  - key:             modernize-use-override.IgnoreDestructors
+    value:           '1'
+  - key:             modernize-use-override.AllowOverrideAndFinal
+    value:           '1'
+  - key:             cppcoreguidelines-pro-type-member-init.UseAssignment
+    value:           '1'
+  - key:             google-readability-namespace-comments.SpacesBeforeComments
+    value:           '1'
+  - key:             cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
+    value:           '1'
+  - key:             cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions
+    value:           '1'
+  - key:             modernize-loop-convert.MaxCopySize
+    value:           '16'
+  - key:             modernize-loop-convert.MinConfidence
+    value:           reasonable
+  - key:             modernize-loop-convert.NamingStyle
+    value:           CamelCase
+  - key:             modernize-pass-by-value.IncludeStyle
+    value:           llvm
+  - key:             modernize-replace-auto-ptr.IncludeStyle
+    value:           llvm
+  - key:             modernize-use-nullptr.NullMacros
+    value:           'NULL'
+  - key:             performance-unnecessary-value-param.AllowedTypes
+    value:           'ItsDate;DB_id_type;std::string_view'
+  - key:             readability-implicit-bool-conversion.AllowIntegerConditions
+    value:           '1'
+  - key:             readability-implicit-bool-conversion.AllowPointerConditions
+    value:           '1'
+  - key:            misc-const-correctness.AnalyzeValues
+    value:          '0'
+
