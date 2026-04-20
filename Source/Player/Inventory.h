@@ -11,348 +11,354 @@
 
 namespace Zelda
 {
-    // Initial selector position and increases
-    constexpr int SELECTOR_INITIAL_X = 6;
-    constexpr int SELECTOR_INITIAL_Y = 26;
-    constexpr int SELECTOR_INCREASE_X = 32;
-    constexpr int SELECTOR_INCREASE_Y = 23;
+// Initial selector position and increases
+constexpr int SELECTOR_INITIAL_X = 6;
+constexpr int SELECTOR_INITIAL_Y = 26;
+constexpr int SELECTOR_INCREASE_X = 32;
+constexpr int SELECTOR_INCREASE_Y = 23;
 
-    // The entire inventory
-    constexpr int INVENTORY_INTERNAL_X = 0;
-    constexpr int INVENTORY_INTERNAL_Y = 21;
-    constexpr int INVENTORY_WIDTH = CAMERA_WIDTH;
-    constexpr int INVENTORY_HEIGHT = CAMERA_WIDTH - HUD_HEIGHT; // Because of the HUD being at the top of the screen
+// The entire inventory
+constexpr int INVENTORY_INTERNAL_X = 0;
+constexpr int INVENTORY_INTERNAL_Y = 21;
+constexpr int INVENTORY_WIDTH = CAMERA_WIDTH;
+constexpr int INVENTORY_HEIGHT =
+    CAMERA_WIDTH - HUD_HEIGHT;  // Because of the HUD being at the top of the screen
 
-    // Inventory dividers horizontal/vertical
-    constexpr int INVENTORY_DIVIDER_XH = 0;
-    constexpr int INVENTORY_DIVIDER_YH = 18;
-    constexpr int INVENTORY_DIVIDER_XV = 67;
-    constexpr int INVENTORY_DIVIDER_YV = 24;
-    constexpr int INVENTORY_DIVIDER_WIDTH_H = 7;
-    constexpr int INVENTORY_DIVIDER_HEIGHT_H = 3;
-    constexpr int INVENTORY_DIVIDER_WIDTH_V = 3;
-    constexpr int INVENTORY_DIVIDER_HEIGHT_V = 7;
+// Inventory dividers horizontal/vertical
+constexpr int INVENTORY_DIVIDER_XH = 0;
+constexpr int INVENTORY_DIVIDER_YH = 18;
+constexpr int INVENTORY_DIVIDER_XV = 67;
+constexpr int INVENTORY_DIVIDER_YV = 24;
+constexpr int INVENTORY_DIVIDER_WIDTH_H = 7;
+constexpr int INVENTORY_DIVIDER_HEIGHT_H = 3;
+constexpr int INVENTORY_DIVIDER_WIDTH_V = 3;
+constexpr int INVENTORY_DIVIDER_HEIGHT_V = 7;
 
-    // Sprite width/height of the inventory items
-    constexpr int INVENTORY_SPRITE_WIDTH = 8;
-    constexpr int INVENTORY_SPRITE_HEIGHT = 16;
+// Sprite width/height of the inventory items
+constexpr int INVENTORY_SPRITE_WIDTH = 8;
+constexpr int INVENTORY_SPRITE_HEIGHT = 16;
 
-    // Initial position of the inventory sprite item
-    constexpr int INVENTORY_POS_X = 8;
-    constexpr int INVENTORY_POS_Y = 25;
+// Initial position of the inventory sprite item
+constexpr int INVENTORY_POS_X = 8;
+constexpr int INVENTORY_POS_Y = 25;
 
-    // Spacing between each inventory sprite item on the lhs
-    constexpr int INVENTORY_X_SPACING = 32;
-    constexpr int INVENTORY_Y_SPACING = 23;
+// Spacing between each inventory sprite item on the lhs
+constexpr int INVENTORY_X_SPACING = 32;
+constexpr int INVENTORY_Y_SPACING = 23;
 
-    // RGB components of inventory colour
-    constexpr int INVENTORY_R = 248;
-    constexpr int INVENTORY_G = 248;
-    constexpr int INVENTORY_B = 168;
+// RGB components of inventory colour
+constexpr int INVENTORY_R = 248;
+constexpr int INVENTORY_G = 248;
+constexpr int INVENTORY_B = 168;
 
-    // The width/height of the weapon level sprite
-    constexpr int WEAPON_LEVEL_X = 16;
-    constexpr int WEAPON_LEVEL_Y = 33;
-    constexpr int WEAPON_LEVEL_SPACING_X = 32;
-    constexpr int WEAPON_LEVEL_SPACING_Y = 23;
-    constexpr int WEAPON_LEVEL_WIDTH = 8;
-    constexpr int WEAPON_LEVEL_HEIGHT = 8;
+// The width/height of the weapon level sprite
+constexpr int WEAPON_LEVEL_X = 16;
+constexpr int WEAPON_LEVEL_Y = 33;
+constexpr int WEAPON_LEVEL_SPACING_X = 32;
+constexpr int WEAPON_LEVEL_SPACING_Y = 23;
+constexpr int WEAPON_LEVEL_WIDTH = 8;
+constexpr int WEAPON_LEVEL_HEIGHT = 8;
 
-    // Subscreen constants
-    constexpr int SELECT_SUBSCREEN_WIDTH = 80;
-    constexpr int SELECT_SUBSCREEN_HEIGHT = 32;
+// Subscreen constants
+constexpr int SELECT_SUBSCREEN_WIDTH = 80;
+constexpr int SELECT_SUBSCREEN_HEIGHT = 32;
 
-    // Hearts per row
-    constexpr int HEARTS_PER_ROW = 7;
+// Hearts per row
+constexpr int HEARTS_PER_ROW = 7;
 
-    // TODO: Move animation stuff out of here
-    // Animation stuff
-    constexpr int INSTRUMENTS_FRAME = 12;
+// TODO: Move animation stuff out of here
+// Animation stuff
+constexpr int INSTRUMENTS_FRAME = 12;
 
-    constexpr float INVENTORY_SELECTOR_FPS = (1.0f / 4.0f);
-    constexpr float INSTRUMENT_FPS = (1.0f / 6.0f);
-    constexpr float PUSH_SELECTOR_FPS = (1.0f / 2.0f);
+constexpr float INVENTORY_SELECTOR_FPS = (1.0f / 4.0f);
+constexpr float INSTRUMENT_FPS = (1.0f / 6.0f);
+constexpr float PUSH_SELECTOR_FPS = (1.0f / 2.0f);
 
 
-    class Inventory : public IRenderable, public Controllable, public IUpdateable
+class Inventory : public IRenderable, public Controllable, public IUpdateable
+{
+public:
+    Inventory();
+    void control() override;
+    void render() override;
+    void update() override;
+    void open();
+    void close();
+
+
+    void moveSelector(Direction direction);
+
+private:
+    InventoryImpl m_inventoryImpl;
+
+    void drawDungeonMap();
+    void drawSelectStatus();
+    void drawMiscItems();
+    void drawInventoryItems();
+    void drawDungeonItems();
+    void drawInstruments();
+    void drawHealth();
+    void drawInventoryWeapons();
+    void drawSelector();
+    void drawInventoryDividers();
+    void drawHUD();
+    void drawInventoryBackground();
+    void drawSubscreen() const;
+
+    void drawNumber(const Sprite& srcSprite,
+                    bool drawLevel,
+                    bool useNormalFont,
+                    int trailingDigits,
+                    int number,
+                    const Rect<int>& dstRect) const;
+    void drawInventoryItemAttribute(const Sprite& srcSprite,
+                                    const InventoryItem& item,
+                                    const Rect<int>& dstRect);
+
+    std::unique_ptr<Sprite> m_subscreen;  // The select status at the bottom of the screen
+
+    // TODO: Golden leaves in Kanalet castle
+    // TODO: Flashing instrument background
+    // TODO: Dungeon map hidden room connections when discovered
+    // TODO: Ocarina song selection window
+    // TODO: Chest and nightmare locations for each dungeon map
+    // TODO: Every other dungeon map layout
+    // TODO: Transition the subscreen
+    // TODO: Inventory whiteout
+
+    bool m_open;
+
+    // Selector position
+    int m_selectorX;
+    int m_selectorY;
+
+    // Return the source rect for the given item
+    // auto inventoryWeaponSpriteSrc(const InventoryWeapon& item) const;
+
+    // Key press related stuff
+    bool m_flashSelector;
+    bool m_flashSelect;
+    bool m_selectPressed;
+
+    /*
+    // Inventory sprite positions (source Rect from the sprite sheet)
+    Rect<int> m_inventorySpritesSrc[WPN_COUNT + INVENTORY_COUNT] =
     {
-    public:
-        Inventory();
-        void control() override;
-        void render() override;
-        void update() override;
-        void open();
-        void close();
+        {10,20,8,16},   // WPN_SWORD
+        {0, 20,8,16},   // WPN_SHIELD
+        {90,20,8,16},   // WPN_BOW
+        {130,20,8,16},  // WPN_BOOMERANG
+        {20,20,8,16},   // WPN_MAGIC_POWDER
+        {70,20,8,16},   // WPN_BOMBS
+        {40,20,8,16},   // WPN_POWER_BRACELET Level 1
+        {80,20,8,16},   // WPN_POWER_BRACELET Level 2
+        {30,20,8,16},   // WPN_ROC_FEATHER
+        {120,20,8,16},  // WPN_HOOKSHOT
+        {110,20,8,16},  // WPN_OCARINA
+        {50,20,8,16},   // WPN_PEGASUS_BOOT
+        {60,20,8,16},   // WPN_SHOVEL
+        {100,20,8,16},  // WPN_FLAME_ROD
+        {102,126,7,3},  // Inventory divider horizontal
+        {110,126,3,7},  // Inventory divider vertical
+        {109,116,5,8},  // "B"
+        {102,116,5,8},  // "A"
+        {72,116,28,14}, // Inventory selector (next to B)
+        {72,116,28,14}, // Inventory selector (next to A)
+        {116,116,7,7},  // Ruppee icon on HUD
+        {0,0,8,8},      // INVENTORY_LEVEL
+        {10,10,8,8},    // INVENTORY_DIGIT_B
+        {10,0,8,8},     // INVENTORY_DIGIT_W
+        {0,38,8,8},     // INVENTORY_HEART_WHOLE
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_0
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_1
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_2
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_3
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_4
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_5
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_6
+        {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_7
+        {140,0,16,16},  // INVENTORY_INSTRUMENT_0
+        {140,16,16,16},  // INVENTORY_INSTRUMENT_1
+        {140,32,16,16},  // INVENTORY_INSTRUMENT_2
+        {140,48,16,16},  // INVENTORY_INSTRUMENT_3
+        {140,64,16,16},  // INVENTORY_INSTRUMENT_4
+        {140,80,16,16},  // INVENTORY_INSTRUMENT_5
+        {140,96,16,16},  // INVENTORY_INSTRUMENT_6
+        {140,112,16,16},  // INVENTORY_INSTRUMENT_7
+        {120,134,8,16},  // INVENTORY_COMPASS
+        {90,134,8,16},  // INVENTORY_NIGHTMARE_KEY
+        {130,134,8,16},  // INVENTORY_OWL_BEAK
+        {110,134,8,16},  // INVENTORY_DUNGEON_MAP
+        {100,134,8,16}, // INVENTORY_DUNGEON_KEY
+        {70,134,8,16},  // INVENTORY_FLIPPERS
+        {60,134,8,16},  // INVENTORY_POTION
+        {80,134,8,16}, // INVENTORY_SEASHELLS
+        {0,48,16,16}, // INVENTORY_DOLL
+        {18,48,16,16}, // INVENTORY_BOW
+        {36,48,16,16}, // INVENTORY_DOG_FOOD
+        {54,48,16,16}, // INVENTORY_BANANAS
+        {72,48,16,16}, // INVENTORY_STICK
+        {90,48,16,16}, // INVENTORY_HONEYCOMB
+        {108,48,16,16}, // INVENTORY_PINEAPPLE
+        {0,66,16,16}, // INVENTORY_HIBISCUS
+        {18,66,16,16}, // INVENTORY_LETTER
+        {36,66,16,16}, // INVENTORY_BROOM
+        {54,66,16,16}, // INVENTORY_HOOK
+        {72,66,16,16}, // INVENTORY_NECKLACE
+        {90,66,16,16}, // INVENTORY_MERMAID_SCALE
+        {108,66,16,16}, // INVENTORY_LENS
 
+        {0,134,8,16}, // INVENTORY_TAIL_KEY
+        {40,134,8,16}, // INVENTORY_SLIME_KEY
+        {10,134,8,16}, // INVENTORY_ANGLER_KEY
+        {20,134,8,16}, // INVENTORY_FACE_KEY
+        {30,134,8,16}, // INVENTORY_BIRD_KEY
 
-        void moveSelector(Direction direction);
+        {90,162,8,8}, // INVENTORY_RED_ARROW
+        {50,38,58,8}, // INVENTORY_PUSH_SELECT,
 
-    private:
+        {0,0,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, // INVENTORY_SUBSCREEN
+        {0,100,31,14}, // INVENTORY_TUNIC (Green)
+        {0,84,16,14}, // INVENTORY_HEART_PIECES
+        {90,84,14,12}, // INVENTORY_PHOTOGRAPHS
 
-        InventoryImpl m_inventoryImpl;
+        {126,116,8,8}, // INVENTORY_SLASH
 
-        void drawDungeonMap();
-        void drawSelectStatus();
-        void drawMiscItems();
-        void drawInventoryItems();
-        void drawDungeonItems();
-        void drawInstruments();
-        void drawHealth();
-        void drawInventoryWeapons();
-        void drawSelector();
-        void drawInventoryDividers();
-        void drawHUD();
-        void drawInventoryBackground();
-        void drawSubscreen() const;
+        {0,152,8,8}, // INVENTORY_AREA_EXIT_RIGHT
+        {10,152,8,8}, // INVENTORY_AREA_EXIT_LEFT
+        {20,152,8,8}, // INVENTORY_AREA_EXIT_RIGHT_DOWN
+        {30,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN
+        {40,152,8,8}, // INVENTORY_AREA_EXIT_NONE
+        {50,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP_DOWN
+        {60,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
+        {70,152,8,8}, // INVENTORY_AREA_UNVISITED
+        {80,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_RIGHT
+        {90,152,8,8}, // INVENTORY_AREA_TREASURE
+        {100,152,8,8}, // INVENTORY_AREA_NIGHTMARE
+        {0,162,8,8}, // INVENTORY_AREA_EXIT_DOWN
+        {10,162,8,8}, // INVENTORY_AREA_EXIT_UP
+        {20,162,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT
+        {30,162,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP
+        {40,162,8,8}, // INVENTORY_AREA_EXIT_ALL
+        {50,162,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
+        {60,162,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
+        {70,162,8,8}, // INVENTORY_AREA_EMPTY
+        {80,162,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
+        {130,152,8,8},   // INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW
+        {110,152,8,8},  // INVENTORY_DUNGEON_MAP_CURRENT_LOCATION
+        { 130,2,8,16 }  // INVENTORY_ARROW
 
-        void drawNumber(const Sprite& srcSprite, bool drawLevel, bool useNormalFont, int trailingDigits, int number, const Rect<int>& dstRect) const;
-        void drawInventoryItemAttribute(const Sprite& srcSprite, const InventoryItem& item, const Rect<int>& dstRect);
-
-        std::unique_ptr<Sprite> m_subscreen;   // The select status at the bottom of the screen
-
-        // TODO: Golden leaves in Kanalet castle
-        // TODO: Flashing instrument background
-        // TODO: Dungeon map hidden room connections when discovered
-        // TODO: Ocarina song selection window
-        // TODO: Chest and nightmare locations for each dungeon map
-        // TODO: Every other dungeon map layout
-        // TODO: Transition the subscreen
-        // TODO: Inventory whiteout
-
-        bool m_open;
-
-        // Selector position 
-        int m_selectorX;
-        int m_selectorY;
-
-        // Return the source rect for the given item
-        //auto inventoryWeaponSpriteSrc(const InventoryWeapon& item) const;
-
-        // Key press related stuff
-        bool m_flashSelector;
-        bool m_flashSelect;
-        bool m_selectPressed;
-
-        /*
-        // Inventory sprite positions (source Rect from the sprite sheet)
-        Rect<int> m_inventorySpritesSrc[WPN_COUNT + INVENTORY_COUNT] =
-        {
-            {10,20,8,16},   // WPN_SWORD
-            {0, 20,8,16},   // WPN_SHIELD
-            {90,20,8,16},   // WPN_BOW
-            {130,20,8,16},  // WPN_BOOMERANG
-            {20,20,8,16},   // WPN_MAGIC_POWDER
-            {70,20,8,16},   // WPN_BOMBS
-            {40,20,8,16},   // WPN_POWER_BRACELET Level 1
-            {80,20,8,16},   // WPN_POWER_BRACELET Level 2
-            {30,20,8,16},   // WPN_ROC_FEATHER
-            {120,20,8,16},  // WPN_HOOKSHOT
-            {110,20,8,16},  // WPN_OCARINA
-            {50,20,8,16},   // WPN_PEGASUS_BOOT
-            {60,20,8,16},   // WPN_SHOVEL
-            {100,20,8,16},  // WPN_FLAME_ROD
-            {102,126,7,3},  // Inventory divider horizontal
-            {110,126,3,7},  // Inventory divider vertical
-            {109,116,5,8},  // "B"
-            {102,116,5,8},  // "A"
-            {72,116,28,14}, // Inventory selector (next to B)
-            {72,116,28,14}, // Inventory selector (next to A)
-            {116,116,7,7},  // Ruppee icon on HUD
-            {0,0,8,8},      // INVENTORY_LEVEL
-            {10,10,8,8},    // INVENTORY_DIGIT_B
-            {10,0,8,8},     // INVENTORY_DIGIT_W
-            {0,38,8,8},     // INVENTORY_HEART_WHOLE
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_0
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_1
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_2
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_3
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_4
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_5
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_6
-            {110,2,16,16},  // INVENTORY_INSTRUMENT_BACK_7
-            {140,0,16,16},  // INVENTORY_INSTRUMENT_0 
-            {140,16,16,16},  // INVENTORY_INSTRUMENT_1
-            {140,32,16,16},  // INVENTORY_INSTRUMENT_2
-            {140,48,16,16},  // INVENTORY_INSTRUMENT_3
-            {140,64,16,16},  // INVENTORY_INSTRUMENT_4
-            {140,80,16,16},  // INVENTORY_INSTRUMENT_5
-            {140,96,16,16},  // INVENTORY_INSTRUMENT_6
-            {140,112,16,16},  // INVENTORY_INSTRUMENT_7
-            {120,134,8,16},  // INVENTORY_COMPASS
-            {90,134,8,16},  // INVENTORY_NIGHTMARE_KEY
-            {130,134,8,16},  // INVENTORY_OWL_BEAK
-            {110,134,8,16},  // INVENTORY_DUNGEON_MAP
-            {100,134,8,16}, // INVENTORY_DUNGEON_KEY
-            {70,134,8,16},  // INVENTORY_FLIPPERS
-            {60,134,8,16},  // INVENTORY_POTION
-            {80,134,8,16}, // INVENTORY_SEASHELLS
-            {0,48,16,16}, // INVENTORY_DOLL
-            {18,48,16,16}, // INVENTORY_BOW
-            {36,48,16,16}, // INVENTORY_DOG_FOOD
-            {54,48,16,16}, // INVENTORY_BANANAS
-            {72,48,16,16}, // INVENTORY_STICK
-            {90,48,16,16}, // INVENTORY_HONEYCOMB
-            {108,48,16,16}, // INVENTORY_PINEAPPLE
-            {0,66,16,16}, // INVENTORY_HIBISCUS
-            {18,66,16,16}, // INVENTORY_LETTER
-            {36,66,16,16}, // INVENTORY_BROOM
-            {54,66,16,16}, // INVENTORY_HOOK
-            {72,66,16,16}, // INVENTORY_NECKLACE
-            {90,66,16,16}, // INVENTORY_MERMAID_SCALE
-            {108,66,16,16}, // INVENTORY_LENS
-
-            {0,134,8,16}, // INVENTORY_TAIL_KEY
-            {40,134,8,16}, // INVENTORY_SLIME_KEY
-            {10,134,8,16}, // INVENTORY_ANGLER_KEY
-            {20,134,8,16}, // INVENTORY_FACE_KEY
-            {30,134,8,16}, // INVENTORY_BIRD_KEY
-
-            {90,162,8,8}, // INVENTORY_RED_ARROW
-            {50,38,58,8}, // INVENTORY_PUSH_SELECT,
-
-            {0,0,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, // INVENTORY_SUBSCREEN
-            {0,100,31,14}, // INVENTORY_TUNIC (Green)
-            {0,84,16,14}, // INVENTORY_HEART_PIECES
-            {90,84,14,12}, // INVENTORY_PHOTOGRAPHS
-
-            {126,116,8,8}, // INVENTORY_SLASH
-
-            {0,152,8,8}, // INVENTORY_AREA_EXIT_RIGHT
-            {10,152,8,8}, // INVENTORY_AREA_EXIT_LEFT
-            {20,152,8,8}, // INVENTORY_AREA_EXIT_RIGHT_DOWN
-            {30,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN
-            {40,152,8,8}, // INVENTORY_AREA_EXIT_NONE
-            {50,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP_DOWN
-            {60,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
-            {70,152,8,8}, // INVENTORY_AREA_UNVISITED
-            {80,152,8,8}, // INVENTORY_AREA_EXIT_LEFT_RIGHT
-            {90,152,8,8}, // INVENTORY_AREA_TREASURE
-            {100,152,8,8}, // INVENTORY_AREA_NIGHTMARE
-            {0,162,8,8}, // INVENTORY_AREA_EXIT_DOWN
-            {10,162,8,8}, // INVENTORY_AREA_EXIT_UP
-            {20,162,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT
-            {30,162,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP
-            {40,162,8,8}, // INVENTORY_AREA_EXIT_ALL
-            {50,162,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
-            {60,162,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
-            {70,162,8,8}, // INVENTORY_AREA_EMPTY
-            {80,162,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
-            {130,152,8,8},   // INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW
-            {110,152,8,8},  // INVENTORY_DUNGEON_MAP_CURRENT_LOCATION
-            { 130,2,8,16 }  // INVENTORY_ARROW
-
-
-        };
-
-        Rect<int> m_inventorySpritesDst[sizeof(m_inventorySpritesSrc) / sizeof(m_inventorySpritesSrc[0])] =
-        {
-            {0,0,0,0},     // WPN_SWORD
-            {0,0,0,0},     // WPN_SHIELD
-            {0,0,0,0},     // WPN_BOW
-            {0,0,0,0},     // WPN_BOOMERANG
-            {0,0,0,0},     // WPN_MAGIC_POWDER
-            {0,0,0,0},     // WPN_BOMBS
-            {0,0,0,0},     // WPN_POWER_BRACELET_1
-            {0,0,0,0},     // WPN_POWER_BRACELET_2
-            {0,0,0,0},     // WPN_ROC_FEATHER
-            {0,0,0,0},     // WPN_HOOKSHOT
-            {0,0,0,0},     // WPN_OCARINA
-            {0,0,0,0},     // WPN_PEGASUS_BOOT
-            {0,0,0,0},     // WPN_SHOVEL
-            {0,0,0,0},     // WPN_FLAME_ROD
-            {0,0,0,0},
-            {0,0,0,0},
-            {1,1,5,8},     // "B"
-            {41,1,5,8},    // "A"
-            {6,1,28,14},   // Inventory selector (next to B)
-            {46,1,28,14},  // Inventory selector (next to A)
-            {81,1,7,7},    // Ruppee icon on HUD
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {104,0,8,8},     // INVENTORY_HEART_WHOLE
-            {120,64,16,16},  // INVENTORY_INSTRUMENT_BACK_0
-            {136,80,16,16},  // INVENTORY_INSTRUMENT_BACK_1
-            {136,104,16,16}, // INVENTORY_INSTRUMENT_BACK_2
-            {120,120,16,16}, // INVENTORY_INSTRUMENT_BACK_3
-            {96,120,16,16},  // INVENTORY_INSTRUMENT_BACK_4
-            {80,104,16,16},  // INVENTORY_INSTRUMENT_BACK_5
-            {80,80,16,16},   // INVENTORY_INSTRUMENT_BACK_6
-            {96,64,16,16},   // INVENTORY_INSTRUMENT_BACK_7
-            {120,64,16,16},  // INVENTORY_INSTRUMENT_0
-            {136,80,16,16},  // INVENTORY_INSTRUMENT_1
-            {136,104,16,16}, // INVENTORY_INSTRUMENT_2
-            {120,120,16,16}, // INVENTORY_INSTRUMENT_3
-            {96,120,16,16},  // INVENTORY_INSTRUMENT_4
-            {80,104,16,16},  // INVENTORY_INSTRUMENT_5
-            {80,80,16,16},   // INVENTORY_INSTRUMENT_6
-            {96,64,16,16},   // INVENTORY_INSTRUMENT_7
-            {96,40,8,16},  // INVENTORY_COMPASS
-            {128,40,8,16},  // INVENTORY_NIGHTMARE_KEY
-            {112,40,8,16},  // INVENTORY_OWL_BEAK
-            {80,40,8,16},  // INVENTORY_DUNGEON_MAP
-            {144,40,8,16}, // INVENTORY_DUNGEON_KEY
-            {80,24,8,16},  // INVENTORY_FLIPPERS
-            {96,24,8,16},  // INVENTORY_POTION
-            {136,24,8,16}, // INVENTORY_SEASHELLS
-
-            {112,24,16,16}, // INVENTORY_DOLL
-            {112,24,16,16}, // INVENTORY_BOW
-            {112,24,16,16}, // INVENTORY_DOG_FOOD
-            {112,24,16,16}, // INVENTORY_BANANAS
-            {112,24,16,16}, // INVENTORY_STICK
-            {112,24,16,16}, // INVENTORY_HONEYCOMB
-            {112,24,16,16}, // INVENTORY_PINEAPPLE
-            {112,24,16,16}, // INVENTORY_HIBISCUS
-            {112,24,16,16}, // INVENTORY_LETTER
-            {112,24,16,16}, // INVENTORY_BROOM
-            {112,24,16,16}, // INVENTORY_HOOK
-            {112,24,16,16}, // INVENTORY_NECKLACE
-            {112,24,16,16}, // INVENTORY_MERMAID_SCALE
-            {112,24,16,16}, // INVENTORY_LENS
-
-            {80,40,8,16}, // INVENTORY_TAIL_KEY
-            {144,40,8,16}, // INVENTORY_SLIME_KEY
-            {96,40,8,16}, // INVENTORY_ANGLER_KEY
-            {112,40,8,16}, // INVENTORY_FACE_KEY
-            {128,40,8,16}, // INVENTORY_BIRD_KEY
-
-            {75,136,8,8}, // INVENTORY_RED_ARROW
-            {86,136,58,8}, // INVENTORY_PUSH_SELECT,
-
-            {75,104,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, //INVENTORY_SUBSCREEN
-            {1,1,31,14}, // INVENTORY_TUNIC (Green)
-            {41,1,16,14}, // INVENTORY_HEART_PIECES
-            {9,18,14,12}, // INVENTORY_PHOTOGRAPHS
-
-            {40,24,8,8}, // INVENTORY_SLASH
-
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_RIGHT
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_RIGHT_DOWN
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_NONE
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP_DOWN
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
-            {88,56,8,8}, // INVENTORY_AREA_UNVISITED
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_RIGHT
-            {88,56,8,8}, // INVENTORY_AREA_TREASURE
-            {88,56,8,8}, // INVENTORY_AREA_NIGHTMARE
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_DOWN
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_UP
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_ALL
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
-            {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
-            {88,56,8,8}, // INVENTORY_AREA_EMPTY
-            {88,56,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
-            {88,128,8,8},   // INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW
-            {0, 0, 8, 8},  // INVENTORY_DUNGEON_MAP_CURRENT_LOCATION
-            { 0,0,8,16 }  // INVENTORY_ARROW
-        };
-
-        */
 
     };
-}
+
+    Rect<int> m_inventorySpritesDst[sizeof(m_inventorySpritesSrc) / sizeof(m_inventorySpritesSrc[0])] =
+    {
+        {0,0,0,0},     // WPN_SWORD
+        {0,0,0,0},     // WPN_SHIELD
+        {0,0,0,0},     // WPN_BOW
+        {0,0,0,0},     // WPN_BOOMERANG
+        {0,0,0,0},     // WPN_MAGIC_POWDER
+        {0,0,0,0},     // WPN_BOMBS
+        {0,0,0,0},     // WPN_POWER_BRACELET_1
+        {0,0,0,0},     // WPN_POWER_BRACELET_2
+        {0,0,0,0},     // WPN_ROC_FEATHER
+        {0,0,0,0},     // WPN_HOOKSHOT
+        {0,0,0,0},     // WPN_OCARINA
+        {0,0,0,0},     // WPN_PEGASUS_BOOT
+        {0,0,0,0},     // WPN_SHOVEL
+        {0,0,0,0},     // WPN_FLAME_ROD
+        {0,0,0,0},
+        {0,0,0,0},
+        {1,1,5,8},     // "B"
+        {41,1,5,8},    // "A"
+        {6,1,28,14},   // Inventory selector (next to B)
+        {46,1,28,14},  // Inventory selector (next to A)
+        {81,1,7,7},    // Ruppee icon on HUD
+        {0,0,0,0},
+        {0,0,0,0},
+        {0,0,0,0},
+        {104,0,8,8},     // INVENTORY_HEART_WHOLE
+        {120,64,16,16},  // INVENTORY_INSTRUMENT_BACK_0
+        {136,80,16,16},  // INVENTORY_INSTRUMENT_BACK_1
+        {136,104,16,16}, // INVENTORY_INSTRUMENT_BACK_2
+        {120,120,16,16}, // INVENTORY_INSTRUMENT_BACK_3
+        {96,120,16,16},  // INVENTORY_INSTRUMENT_BACK_4
+        {80,104,16,16},  // INVENTORY_INSTRUMENT_BACK_5
+        {80,80,16,16},   // INVENTORY_INSTRUMENT_BACK_6
+        {96,64,16,16},   // INVENTORY_INSTRUMENT_BACK_7
+        {120,64,16,16},  // INVENTORY_INSTRUMENT_0
+        {136,80,16,16},  // INVENTORY_INSTRUMENT_1
+        {136,104,16,16}, // INVENTORY_INSTRUMENT_2
+        {120,120,16,16}, // INVENTORY_INSTRUMENT_3
+        {96,120,16,16},  // INVENTORY_INSTRUMENT_4
+        {80,104,16,16},  // INVENTORY_INSTRUMENT_5
+        {80,80,16,16},   // INVENTORY_INSTRUMENT_6
+        {96,64,16,16},   // INVENTORY_INSTRUMENT_7
+        {96,40,8,16},  // INVENTORY_COMPASS
+        {128,40,8,16},  // INVENTORY_NIGHTMARE_KEY
+        {112,40,8,16},  // INVENTORY_OWL_BEAK
+        {80,40,8,16},  // INVENTORY_DUNGEON_MAP
+        {144,40,8,16}, // INVENTORY_DUNGEON_KEY
+        {80,24,8,16},  // INVENTORY_FLIPPERS
+        {96,24,8,16},  // INVENTORY_POTION
+        {136,24,8,16}, // INVENTORY_SEASHELLS
+
+        {112,24,16,16}, // INVENTORY_DOLL
+        {112,24,16,16}, // INVENTORY_BOW
+        {112,24,16,16}, // INVENTORY_DOG_FOOD
+        {112,24,16,16}, // INVENTORY_BANANAS
+        {112,24,16,16}, // INVENTORY_STICK
+        {112,24,16,16}, // INVENTORY_HONEYCOMB
+        {112,24,16,16}, // INVENTORY_PINEAPPLE
+        {112,24,16,16}, // INVENTORY_HIBISCUS
+        {112,24,16,16}, // INVENTORY_LETTER
+        {112,24,16,16}, // INVENTORY_BROOM
+        {112,24,16,16}, // INVENTORY_HOOK
+        {112,24,16,16}, // INVENTORY_NECKLACE
+        {112,24,16,16}, // INVENTORY_MERMAID_SCALE
+        {112,24,16,16}, // INVENTORY_LENS
+
+        {80,40,8,16}, // INVENTORY_TAIL_KEY
+        {144,40,8,16}, // INVENTORY_SLIME_KEY
+        {96,40,8,16}, // INVENTORY_ANGLER_KEY
+        {112,40,8,16}, // INVENTORY_FACE_KEY
+        {128,40,8,16}, // INVENTORY_BIRD_KEY
+
+        {75,136,8,8}, // INVENTORY_RED_ARROW
+        {86,136,58,8}, // INVENTORY_PUSH_SELECT,
+
+        {75,104,SELECT_SUBSCREEN_WIDTH,SELECT_SUBSCREEN_HEIGHT}, //INVENTORY_SUBSCREEN
+        {1,1,31,14}, // INVENTORY_TUNIC (Green)
+        {41,1,16,14}, // INVENTORY_HEART_PIECES
+        {9,18,14,12}, // INVENTORY_PHOTOGRAPHS
+
+        {40,24,8,8}, // INVENTORY_SLASH
+
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_RIGHT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_NONE
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_DOWN_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_UNVISITED
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_TREASURE
+        {88,56,8,8}, // INVENTORY_AREA_NIGHTMARE
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_LEFT_UP
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_ALL
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_RIGHT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EXIT_UP_LEFT_DOWN
+        {88,56,8,8}, // INVENTORY_AREA_EMPTY
+        {88,56,8,8 }, // INVENTORY_AREA_EXIT_UP_DOWN
+        {88,128,8,8},   // INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW
+        {0, 0, 8, 8},  // INVENTORY_DUNGEON_MAP_CURRENT_LOCATION
+        { 0,0,8,16 }  // INVENTORY_ARROW
+    };
+
+    */
+};
+}  // namespace Zelda

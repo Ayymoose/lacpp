@@ -47,7 +47,7 @@ RoomManager::RoomManager()
            // new AnimatedObject(AnimatedClass::AN_TORCH,144,32,0,90),
            // new AnimatedObject(AnimatedClass::AN_TORCH,144,80,0,90),
         },
-        { 
+        {
            // new ShyGuy(64,64),
            // new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
            // new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
@@ -65,8 +65,8 @@ RoomManager::RoomManager()
            // new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
            // new AnimatedObject(AnimatedClass::AN_CANDLE,80,96,0,0),
         },
-        { 
-           // new Gibdo(32,32), 
+        {
+           // new Gibdo(32,32),
            // new Gibdo(64,32),
            // new AnimatedObject(AnimatedClass::AN_TORCH,0,32,0,-90),
            // new AnimatedObject(AnimatedClass::AN_TORCH,0,80,0,-90)
@@ -107,7 +107,11 @@ void RoomManager::setRoomLocation(const int roomLocation)
     m_roomLinkManager.setRoomLocation(roomLocation);
 }
 
-void RoomManager::createRoom(RoomName roomName, const Sprite& tilemap, const TileIndexArrays& tileIndexArrays, const Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap)
+void RoomManager::createRoom(RoomName roomName,
+                             const Sprite& tilemap,
+                             const TileIndexArrays& tileIndexArrays,
+                             const Tilemap::TilemapConfig& tilemapConfig,
+                             const RoomLinkMap& roomLinkMap)
 {
     m_tilemapManager.createTilemap(roomName, tilemap, tileIndexArrays, tilemapConfig);
     m_roomLinkManager.createRoomLink(roomName, roomLinkMap);
@@ -134,7 +138,9 @@ void RoomManager::roomDo(RoomAction action, size_t roomIndex)
     }*/
 }
 
-void RoomManager::transitionObjects(const size_t roomIndex, const int xTransition, const int yTransition)
+void RoomManager::transitionObjects(const size_t roomIndex,
+                                    const int xTransition,
+                                    const int yTransition)
 {
     // Check we have a room
     /*assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");
@@ -152,10 +158,10 @@ void RoomManager::updateNextRoomLocation(RoomDirection direction)
     int nextRoomIndex;
     switch (direction)
     {
-    case RoomDirection::LEFT: 
+    case RoomDirection::LEFT:
         nextRoomIndex = m_roomLinkManager.roomLink().left;
         break;
-    case RoomDirection::RIGHT: 
+    case RoomDirection::RIGHT:
         nextRoomIndex = m_roomLinkManager.roomLink().right;
         break;
     case RoomDirection::UP:
@@ -164,8 +170,8 @@ void RoomManager::updateNextRoomLocation(RoomDirection direction)
     case RoomDirection::DOWN:
         nextRoomIndex = m_roomLinkManager.roomLink().down;
         break;
-    default: 
-        nextRoomIndex = -1; 
+    default:
+        nextRoomIndex = -1;
         assert(false);
     }
     if (nextRoomIndex == -1)
@@ -199,18 +205,17 @@ void RoomManager::updateCurrentRoomLocation()
 RoomManager::~RoomManager()
 {
     // Free all newed objects in each room
-   /* for (auto const& [roomName, room] : m_rooms)
-    {
-        for (auto const& roomObjects : room)
-        {
-            for (auto const& roomObject : roomObjects)
-            {
-                delete roomObject;
-            }
-        }
-    }*/
+    /* for (auto const& [roomName, room] : m_rooms)
+     {
+         for (auto const& roomObjects : room)
+         {
+             for (auto const& roomObject : roomObjects)
+             {
+                 delete roomObject;
+             }
+         }
+     }*/
     // m_currentRoom is now dangling!
 }
 
-}
-
+}  // namespace Zelda

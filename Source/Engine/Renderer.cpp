@@ -9,7 +9,8 @@ namespace Zelda
 void Renderer::createRenderer(const Window& window)
 {
     assert(window.getWindowHandle());
-    auto const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE;
+    auto const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+                       | SDL_RENDERER_TARGETTEXTURE;
     m_renderer = SDL_CreateRenderer(window.getWindowHandle(), -1, flags);
     assert(m_renderer);
     DEBUG_MACRO(DBG_INFO, "Renderer created");
@@ -19,7 +20,11 @@ void Renderer::createRenderer(const Window& window)
 void Renderer::clearScreen(const Colour colour) const
 {
     assert(m_renderer);
-    SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), 0));
+    SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer,
+                                      makeRed(colour),
+                                      makeGreen(colour),
+                                      makeBlue(colour),
+                                      0));
     SDL_ASSERT(SDL_RenderClear(m_renderer));
 }
 
@@ -33,7 +38,7 @@ void Renderer::setRendererScale(const float scaleX, const float scaleY) const
 {
     assert(m_renderer);
     assert(scaleX > 0 && scaleY > 0);
-    SDL_ASSERT(SDL_RenderSetScale(m_renderer,scaleX,scaleY));
+    SDL_ASSERT(SDL_RenderSetScale(m_renderer, scaleX, scaleY));
 }
 
 Renderer::~Renderer()
@@ -44,10 +49,10 @@ Renderer::~Renderer()
 
 bool Renderer::inRenderSet(IRenderable* renderable) const
 {
-    auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const IRenderable* r1)
-    {
-        return r1 == renderable;
-    });
+    auto iterator = std::find_if(m_renderables.cbegin(),
+                                 m_renderables.cend(),
+                                 [renderable](const IRenderable* r1)
+                                 { return r1 == renderable; });
     return iterator != m_renderables.cend();
 }
 
@@ -62,16 +67,15 @@ void Renderer::addRenderable(IRenderable* renderable)
     {
         m_renderables.emplace(renderable);
     }
-
 }
 
 void Renderer::removeRenderable(IRenderable* renderable)
 {
     assert(renderable);
-    auto iterator = std::find_if(m_renderables.cbegin(), m_renderables.cend(), [renderable](const IRenderable* r1)
-    {
-        return r1 == renderable;
-    });
+    auto iterator = std::find_if(m_renderables.cbegin(),
+                                 m_renderables.cend(),
+                                 [renderable](const IRenderable* r1)
+                                 { return r1 == renderable; });
     if (iterator != m_renderables.cend())
     {
         m_renderables.erase(iterator);
@@ -89,4 +93,4 @@ void Renderer::popRenderingTarget(SDL_Texture* srcTexture) const
 }
 
 
-}
+}  // namespace Zelda

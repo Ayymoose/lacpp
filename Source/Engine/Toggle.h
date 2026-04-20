@@ -2,20 +2,19 @@
 
 namespace Zelda
 {
-    class Toggle
-    {
-    public:
-        Toggle(int toggleAfterTicks);
+class Toggle
+{
+public:
+    Toggle(int toggleAfterTicks);
 
-        operator bool();
+    operator bool();
 
-        void reset();
+    void reset();
 
-    private:
-        int m_currentTick;
-        int m_endTick;
-        bool m_toggle;
+private:
+    int m_currentTick;
+    int m_endTick;
+    bool m_toggle;
+};
 
-    };
-
-}
+}  // namespace Zelda
