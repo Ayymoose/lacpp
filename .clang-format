@@ -1,0 +1,46 @@
+---
+Language: Cpp
+BasedOnStyle: Chromium
+AccessModifierOffset: -4
+AlignArrayOfStructures: None
+AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Right
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortLambdasOnASingleLine: Inline
+AlwaysBreakBeforeMultilineStrings: false
+BinPackArguments: false
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterObjCDeclaration: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: true
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeInheritanceComma: true
+BreakInheritanceList: AfterColon
+SortIncludes: Never
+BreakConstructorInitializers: BeforeComma
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+IndentCaseLabels: false
+IndentWidth: 4
+MaxEmptyLinesToKeep: 2
+PenaltyBreakAssignment: 10
+PenaltyBreakBeforeFirstCallParameter: 500
+PenaltyBreakComment: 200
+PenaltyBreakFirstLessLess: 30
+PenaltyBreakString: 200
+PenaltyExcessCharacter: 2
+TabWidth: 4
