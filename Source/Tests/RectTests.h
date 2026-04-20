@@ -9,29 +9,24 @@
 namespace Tests
 {
 
-    class RectTests
+class RectTests
+{
+public:
+    RectTests() = default;
+
+    void runTests()
     {
-    public:
-        RectTests() = default;
-
-        void runTests()
+        for (auto const& [testName, testFunction] : m_testMap)
         {
-            for (auto const& [testName, testFunction] : m_testMap)
-            {
-                (this->*testFunction)();
-            }
+            (this->*testFunction)();
         }
+    }
 
-    private:
+private:
+    using TestMap = std::map<std::string, void (RectTests::*)(void)>;
+    TestMap m_testMap = {{"rect equal", &RectTests::rectEqual}};
 
-        using TestMap = std::map<std::string, void (RectTests::*)(void)>;
-        TestMap m_testMap =
-        {
-            {"rect equal", &RectTests::rectEqual}
-        };
-
-        void rectEqual();
-
-    };
-
+    void rectEqual();
 };
+
+};  // namespace Tests

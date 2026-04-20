@@ -4,23 +4,22 @@
 
 namespace Tests
 {
-    using namespace Zelda;
+using namespace Zelda;
 
-    void WorldmapTests::worldmapTests()
+void WorldmapTests::worldmapTests()
+{
+    Controller::getInstance().pushController(&Worldmap::getInstance());
+
+    for (int x = 2; x < 8; ++x)
     {
-
-        Controller::getInstance().pushController(&Worldmap::getInstance());
-
-        for (int x = 2; x < 8; ++x)
+        for (int y = 10; y < 13; ++y)
         {
-            for (int y = 10; y < 13; ++y)
-            {
-                Worldmap::getInstance().setLocation(x, y);
-            }
+            Worldmap::getInstance().setLocation(x, y);
         }
-
-        Worldmap::getInstance().open();
-    
-        Engine::getInstance().run();
     }
+
+    Worldmap::getInstance().open();
+
+    Engine::getInstance().run();
 }
+}  // namespace Tests

@@ -7,29 +7,32 @@
 namespace Zelda
 {
 
-    class BasicCharacter
-    {
-    public:
-        virtual ~BasicCharacter() = default;
-        virtual float health() const = 0;
-        virtual Vector<float> position() const = 0;
-    protected:
-        BasicCharacter() : m_dir(Direction::DIRECTION_NONE), m_health(0), m_speed(0)
-        {
-        }
+class BasicCharacter
+{
+public:
+    virtual ~BasicCharacter() = default;
+    virtual float health() const = 0;
+    virtual Vector<float> position() const = 0;
 
-        // Character direction
-        Direction m_dir;
+protected:
+    BasicCharacter()
+        : m_dir(Direction::DIRECTION_NONE)
+        , m_health(0)
+        , m_speed(0)
+    {}
 
-        // Character health
-        float m_health;
-        float m_speed;
+    // Character direction
+    Direction m_dir;
 
-        // Position vector
-        Vector<float> m_position;
+    // Character health
+    float m_health;
+    float m_speed;
 
-        // Direction vector
-        Vector<float> m_direction;
-    };
+    // Position vector
+    Vector<float> m_position;
 
-}
+    // Direction vector
+    Vector<float> m_direction;
+};
+
+}  // namespace Zelda

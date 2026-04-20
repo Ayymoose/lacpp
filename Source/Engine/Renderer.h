@@ -17,8 +17,8 @@ namespace Zelda
 class Renderer : public Singleton<Renderer>
 {
     friend class Singleton<Renderer>;
-public:
 
+public:
     ~Renderer();
 
     void createRenderer(const Window& window);
@@ -41,10 +41,7 @@ public:
         return m_renderer;
     }
 
-    auto getRenderSet() const
-    {
-        return m_renderables;
-    }
+    auto getRenderSet() const { return m_renderables; }
 
     auto pushRenderingTarget(const Sprite& dstTexture) const
     {
@@ -58,7 +55,9 @@ public:
     void popRenderingTarget(SDL_Texture* srcTexture) const;
 
 private:
-    Renderer() : m_renderer(nullptr) {}
+    Renderer()
+        : m_renderer(nullptr)
+    {}
 
     // Global renderer
     SDL_Renderer* m_renderer;
@@ -73,6 +72,5 @@ private:
 
     // Multiset of Renderable objects that will be drawn
     std::multiset<IRenderable*, RendererComparator> m_renderables;
-
 };
-}
+}  // namespace Zelda

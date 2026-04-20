@@ -8,70 +8,71 @@
 namespace Zelda
 {
 
-    class Controller : public Singleton<Controller>
+class Controller : public Singleton<Controller>
+{
+    friend class Singleton<Controller>;
+
+public:
+    void setController(Controllable* controller)
     {
-        friend class Singleton<Controller>;
-
-    public:
-        void setController(Controllable* controller)
+        m_controller = controller;
+        if (controller)
         {
-            m_controller = controller;
-            if (controller)
-            {
-                DEBUG_MACRO(DBG_INFO, "Controller is now " + m_controller->name());
-            }
-            else
-            {
-                DEBUG_MACRO(DBG_INFO, "No one has control");
-            }
-
-            // Clear stack
-            auto emptyStack = std::stack<Controllable*>();
-            m_stack.swap(emptyStack);
+            DEBUG_MACRO(DBG_INFO, "Controller is now " + m_controller->name());
+        }
+        else
+        {
+            DEBUG_MACRO(DBG_INFO, "No one has control");
         }
 
-        void pushController(Controllable* controller)
-        {
-            // TODO: There must be an existing controller in place
-            //assert(m_controller && "No existing controller in place");
-            assert(controller);
-            DEBUG_MACRO(DBG_INFO, "Controller is now " + controller->name());
-            m_stack.push(controller);
-        }
+        // Clear stack
+        auto emptyStack = std::stack<Controllable*>();
+        m_stack.swap(emptyStack);
+    }
 
-        void popController()
-        {
-            assert(!m_stack.empty());
-            m_stack.pop();
-            if (!m_stack.empty())
-            {
-                DEBUG_MACRO(DBG_INFO, "Controller is now " + m_stack.top()->name());
-            }
-            else
-            {
-                DEBUG_MACRO(DBG_INFO, "No one has control");
-            }
-        }
+    void pushController(Controllable* controller)
+    {
+        // TODO: There must be an existing controller in place
+        // assert(m_controller && "No existing controller in place");
+        assert(controller);
+        DEBUG_MACRO(DBG_INFO, "Controller is now " + controller->name());
+        m_stack.push(controller);
+    }
 
-        Controllable* getController() const
+    void popController()
+    {
+        assert(!m_stack.empty());
+        m_stack.pop();
+        if (!m_stack.empty())
         {
-            if (m_stack.empty())
-            {
-                return m_controller;
-            }
-            else
-            {
-                return m_stack.top();
-            }
+            DEBUG_MACRO(DBG_INFO, "Controller is now " + m_stack.top()->name());
         }
-
-    private:
-        Controller() : m_controller(nullptr)
+        else
         {
-            DEBUG_MACRO(DBG_INFO, "Controller is no-one");
+            DEBUG_MACRO(DBG_INFO, "No one has control");
         }
-        Controllable* m_controller;
-        std::stack<Controllable*> m_stack;
-    };
+    }
 
-}
+    Controllable* getController() const
+    {
+        if (m_stack.empty())
+        {
+            return m_controller;
+        }
+        else
+        {
+            return m_stack.top();
+        }
+    }
+
+private:
+    Controller()
+        : m_controller(nullptr)
+    {
+        DEBUG_MACRO(DBG_INFO, "Controller is no-one");
+    }
+    Controllable* m_controller;
+    std::stack<Controllable*> m_stack;
+};
+
+}  // namespace Zelda
