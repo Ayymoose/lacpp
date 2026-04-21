@@ -10,7 +10,7 @@
 #include "Debug.h"
 #include <vector>
 
-int main(int, char*[])
+int main(int, char *[])
 {
     using namespace Zelda;
 

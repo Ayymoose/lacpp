@@ -176,13 +176,11 @@ void VectorTests::vectorLength()
     }
     {
         Vector<float> v1(3.5, 4.5);
-        CHECK(FloatingPoint<float>::almostEqual(std::sqrt(3.5 * 3.5 + 4.5 * 4.5),
-                                                v1.length()));
+        CHECK(FloatingPoint<float>::almostEqual(std::sqrt(3.5 * 3.5 + 4.5 * 4.5), v1.length()));
     }
     {
         Vector<double> v1(3.5, 4.5);
-        CHECK(FloatingPoint<double>::almostEqual(std::sqrt(3.5 * 3.5 + 4.5 * 4.5),
-                                                 v1.length()));
+        CHECK(FloatingPoint<double>::almostEqual(std::sqrt(3.5 * 3.5 + 4.5 * 4.5), v1.length()));
     }
 }
 
@@ -261,4 +259,4 @@ void VectorTests::vectorNormal()
     }
 }
 
-}  // namespace Tests
+} // namespace Tests

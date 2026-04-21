@@ -15,7 +15,7 @@ public:
 
     void runTests()
     {
-        for (auto const& [testName, testFunction] : m_testMap)
+        for (auto const &[testName, testFunction] : m_testMap)
         {
             (this->*testFunction)();
         }
@@ -23,35 +23,34 @@ public:
 
 private:
     using TestMap = std::map<std::string, void (InventoryTests::*)(void)>;
-    TestMap m_testMap =
-        {{"impl heart test", &InventoryTests::heartImplTest},
-         {"impl hearts test", &InventoryTests::heartTest},
-         {"impl tunic test", &InventoryTests::tunicImplTest},
-         {"impl ocarina test", &InventoryTests::ocarinaImplTest},
-         {"impl photograph test", &InventoryTests::photographImplTest},
-         {"impl golden leaf test", &InventoryTests::goldenLeafImplTest},
-         {"impl secret sea shell test", &InventoryTests::secretSeaShellImplTest},
-         {"impl magic powder test", &InventoryTests::magicPowderImplTest},
-         {"impl arrow test", &InventoryTests::arrowImplTest},
-         {"impl bomb test", &InventoryTests::bombImplTest},
-         {"impl rupee test", &InventoryTests::rupeeImplTest},
-         {"impl instrument test", &InventoryTests::instrumentImplTest},
-         {"impl inventory misc item test", &InventoryTests::inventoryMiscItemImplTest},
-         {"impl trade item test", &InventoryTests::tradeItemImplTest},
-         {"impl dungeon item test", &InventoryTests::dungeonItemImplTest},
-         {"impl dungeon map test", &InventoryTests::dungeonMapImplTest},
-         {"impl dungeon entrance key test", &InventoryTests::dungeonEntraceKeyImplTest},
-         {"impl iventory item test", &InventoryTests::inventoryItemImplTest},
+    TestMap m_testMap = {{"impl heart test", &InventoryTests::heartImplTest},
+                         {"impl hearts test", &InventoryTests::heartTest},
+                         {"impl tunic test", &InventoryTests::tunicImplTest},
+                         {"impl ocarina test", &InventoryTests::ocarinaImplTest},
+                         {"impl photograph test", &InventoryTests::photographImplTest},
+                         {"impl golden leaf test", &InventoryTests::goldenLeafImplTest},
+                         {"impl secret sea shell test", &InventoryTests::secretSeaShellImplTest},
+                         {"impl magic powder test", &InventoryTests::magicPowderImplTest},
+                         {"impl arrow test", &InventoryTests::arrowImplTest},
+                         {"impl bomb test", &InventoryTests::bombImplTest},
+                         {"impl rupee test", &InventoryTests::rupeeImplTest},
+                         {"impl instrument test", &InventoryTests::instrumentImplTest},
+                         {"impl inventory misc item test", &InventoryTests::inventoryMiscItemImplTest},
+                         {"impl trade item test", &InventoryTests::tradeItemImplTest},
+                         {"impl dungeon item test", &InventoryTests::dungeonItemImplTest},
+                         {"impl dungeon map test", &InventoryTests::dungeonMapImplTest},
+                         {"impl dungeon entrance key test", &InventoryTests::dungeonEntraceKeyImplTest},
+                         {"impl iventory item test", &InventoryTests::inventoryItemImplTest},
 
-         {"ui weapons item test", &InventoryTests::weaponItemTest},
-         {"ui dungeons item test", &InventoryTests::dungeonItemsTest},
-         {"ui trade item test", &InventoryTests::tradeItemTest},
-         {"ui dungeon key test", &InventoryTests::dungeonKeyTest},
-         {"ui misc item test", &InventoryTests::miscItemsTest},
-         {"ui instruments test", &InventoryTests::instrumentsTest},
-         {"ui rupees test", &InventoryTests::rupeesTest},
-         {"ui subscreen test", &InventoryTests::subscreenTest},
-         {"ui selector test", &InventoryTests::selectorTest}};
+                         {"ui weapons item test", &InventoryTests::weaponItemTest},
+                         {"ui dungeons item test", &InventoryTests::dungeonItemsTest},
+                         {"ui trade item test", &InventoryTests::tradeItemTest},
+                         {"ui dungeon key test", &InventoryTests::dungeonKeyTest},
+                         {"ui misc item test", &InventoryTests::miscItemsTest},
+                         {"ui instruments test", &InventoryTests::instrumentsTest},
+                         {"ui rupees test", &InventoryTests::rupeesTest},
+                         {"ui subscreen test", &InventoryTests::subscreenTest},
+                         {"ui selector test", &InventoryTests::selectorTest}};
 
     void heartImplTest();
     void heartTest();
@@ -83,4 +82,4 @@ private:
     void selectorTest();
 };
 
-}  // namespace Tests
+} // namespace Tests

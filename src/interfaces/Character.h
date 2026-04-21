@@ -26,4 +26,4 @@ protected:
     virtual void move() = 0;
 };
 
-}  // namespace zelda
+} // namespace zelda

@@ -53,8 +53,8 @@ public:
         m_yTransition = yTransition;
     }
 
-    IRenderable(const char *name, const Sprite &texture, int depth)
-        : m_sprite(std::make_unique<Sprite>(texture))
+    IRenderable(const char *name, const engine::Sprite &texture, int depth)
+        : m_sprite(std::make_unique<engine::Sprite>(texture))
         , m_width(0)
         , m_height(0)
         , m_srcRect({0, 0, 0, 0})
@@ -71,7 +71,7 @@ public:
         , m_currentFrame(0)
         , m_endFrame(0)
         , m_orientation(0.0f)
-        , m_flip(SpriteFlip::FLIP_NONE)
+        , m_flip(engine::SpriteFlip::FLIP_NONE)
         , m_visible(true)
     {
         assert(depth > 0);
@@ -95,7 +95,7 @@ public:
         , m_currentFrame(0)
         , m_endFrame(0)
         , m_orientation(0.0f)
-        , m_flip(SpriteFlip::FLIP_NONE)
+        , m_flip(engine::SpriteFlip::FLIP_NONE)
         , m_visible(true)
     {
         assert(false && "Method not allowed");
@@ -104,7 +104,7 @@ public:
 private:
     // pause is to have the animation keep running or not when the engine is paused
     // gap is the number of pixels between each sprite in sheet (usually 0 and should be :|)
-    template <typename R> void basicAnimateHelper(Rect<R> &srcRect, int gap, int startFrame, int frameCount)
+    template <typename R> void basicAnimateHelper(engine::Rect<R> &srcRect, int gap, int startFrame, int frameCount)
     {
         // static Timer animationTimer;
         static int frameCounter = 0;
@@ -117,15 +117,15 @@ private:
 
 protected:
     // Default texture to render
-    std::unique_ptr<Sprite> m_sprite;
+    std::unique_ptr<engine::Sprite> m_sprite;
 
     // Dimensions
     int m_width;
     int m_height;
 
     // For sprite
-    Rect<int> m_srcRect;
-    Rect<float> m_dstRect;
+    engine::Rect<int> m_srcRect;
+    engine::Rect<float> m_dstRect;
 
     int m_xTransition;
     int m_yTransition;
@@ -140,8 +140,8 @@ protected:
 
     // Basic horizontal strip animation
     template <typename R1, typename R2>
-    void basicAnimate(const Sprite &texture, Rect<R1> srcRect, Rect<R2> dstRect, int gap, int startFrame,
-                      int frameCount, float fps, bool pause)
+    void basicAnimate(const engine::Sprite &texture, engine::Rect<R1> srcRect, engine::Rect<R2> dstRect, int gap,
+                      int startFrame, int frameCount, float fps, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
         texture.drawSprite(srcRect, dstRect);
@@ -149,11 +149,11 @@ protected:
 
     // Extended animation
     template <typename R1, typename R2>
-    void basicAnimateEx(const Sprite &texture, const Rect<R1> &srcRect, const Rect<R2> &dstRect, int gap,
-                        int startFrame, int frameCount, float fps, float angle, bool pause)
+    void basicAnimateEx(const engine::Sprite &texture, const engine::Rect<R1> &srcRect, const engine::Rect<R2> &dstRect,
+                        int gap, int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        texture.drawSpriteEx(srcRect, dstRect, angle, SpriteFlip::FLIP_NONE);
+        texture.drawSpriteEx(srcRect, dstRect, angle, engine::SpriteFlip::FLIP_NONE);
     }
 
     // TODO: When the animation finishes, reverse the animation
@@ -178,7 +178,7 @@ protected:
     int m_currentFrame;
     int m_endFrame;
     float m_orientation;
-    SpriteFlip m_flip;
+    engine::SpriteFlip m_flip;
     bool m_visible;
 
     // Updateable

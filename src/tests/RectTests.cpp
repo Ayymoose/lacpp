@@ -43,4 +43,4 @@ void RectTests::rectEqual()
     }
 }
 
-}  // namespace Tests
+} // namespace Tests
