@@ -20,11 +20,11 @@ namespace Zelda
 
 struct Animation
 {
-    int x;           // Initial X-position in sprite sheet for this animation
-    int y;           // Initial Y-position in sprite sheet for this animation
-    int startFrame;  // Start frame in this animation
-    int endFrame;    // End frame number for this animation
-    float animationFPS;  // Animation rate in FPS
+    int x;              // Initial X-position in sprite sheet for this animation
+    int y;              // Initial Y-position in sprite sheet for this animation
+    int startFrame;     // Start frame in this animation
+    int endFrame;       // End frame number for this animation
+    float animationFPS; // Animation rate in FPS
 };
 
 class IRenderable
@@ -53,7 +53,7 @@ public:
         m_yTransition = yTransition;
     }
 
-    IRenderable(const char* name, const Sprite& texture, int depth)
+    IRenderable(const char *name, const Sprite &texture, int depth)
         : m_sprite(std::make_unique<Sprite>(texture))
         , m_width(0)
         , m_height(0)
@@ -104,9 +104,7 @@ public:
 private:
     // pause is to have the animation keep running or not when the engine is paused
     // gap is the number of pixels between each sprite in sheet (usually 0 and should be :|)
-    template <typename R>
-    void basicAnimateHelper(
-        Rect<R>& srcRect, int gap, int startFrame, int frameCount, float fps, bool pause)
+    template <typename R> void basicAnimateHelper(Rect<R> &srcRect, int gap, int startFrame, int frameCount)
     {
         // static Timer animationTimer;
         static int frameCounter = 0;
@@ -142,15 +140,8 @@ protected:
 
     // Basic horizontal strip animation
     template <typename R1, typename R2>
-    void basicAnimate(SDL_Renderer* renderer,
-                      const Sprite& texture,
-                      Rect<R1> srcRect,
-                      Rect<R2> dstRect,
-                      int gap,
-                      int startFrame,
-                      int frameCount,
-                      float fps,
-                      bool pause)
+    void basicAnimate(const Sprite &texture, Rect<R1> srcRect, Rect<R2> dstRect, int gap, int startFrame,
+                      int frameCount, float fps, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
         texture.drawSprite(srcRect, dstRect);
@@ -158,23 +149,16 @@ protected:
 
     // Extended animation
     template <typename R1, typename R2>
-    void basicAnimateEx(SDL_Renderer* renderer,
-                        const Sprite& texture,
-                        const Rect<R1>& srcRect,
-                        const Rect<R2>& dstRect,
-                        int gap,
-                        int startFrame,
-                        int frameCount,
-                        float fps,
-                        float angle,
-                        bool pause)
+    void basicAnimateEx(const Sprite &texture, const Rect<R1> &srcRect, const Rect<R2> &dstRect, int gap,
+                        int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
         texture.drawSpriteEx(srcRect, dstRect, angle, SpriteFlip::FLIP_NONE);
     }
 
     // TODO: When the animation finishes, reverse the animation
-    /*void reverseAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& srcRect, SDL_Rect dstRect, int gap, int startFrame, int frameCount, float fps)
+    /*void reverseAnimate(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect& srcRect, SDL_Rect dstRect, int gap,
+    int startFrame, int frameCount, float fps)
     {
         static Timer animationTimer;
         static int frameCounter = 0;
@@ -206,4 +190,4 @@ protected:
     Vector<float> m_lerpPrevious;*/
 };
 
-}  // namespace Zelda
+} // namespace Zelda

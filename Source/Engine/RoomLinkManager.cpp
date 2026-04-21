@@ -3,7 +3,7 @@
 
 namespace Zelda
 {
-void RoomLinkManager::createRoomLink(RoomName roomLinkName, const RoomLinkMap& roomLinkMap)
+void RoomLinkManager::createRoomLink(RoomName roomLinkName, const RoomLinkMap &roomLinkMap)
 {
     assert(m_roomLinkMap.count(roomLinkName) == 0 && "Invalid roomLinkName");
     m_roomLinkMap[roomLinkName] = roomLinkMap;
@@ -27,10 +27,8 @@ RoomIndex RoomLinkManager::currentRoom() const
 
 RoomLink RoomLinkManager::roomLink()
 {
-    assert(m_roomLinkMap.count(m_currentRoomLink) == 1
-           && "Given roomLinkName does NOT exist");
-    assert(m_currentRoom < m_roomLinkMap[m_currentRoomLink].size()
-           && "Invalid room location");
+    assert(m_roomLinkMap.count(m_currentRoomLink) == 1 && "Given roomLinkName does NOT exist");
+    assert(m_currentRoom < std::ssize(m_roomLinkMap[m_currentRoomLink]) && "Invalid room location");
     return m_roomLinkMap[m_currentRoomLink][m_currentRoom];
 }
 

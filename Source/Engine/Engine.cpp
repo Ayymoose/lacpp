@@ -113,9 +113,8 @@ void Engine::initWindow()
     Renderer::getInstance().createRenderer(m_mainWindow);
 
     // Stretch the textures to the window size
-    Renderer::getInstance().setRendererScale(MAIN_WINDOW_WIDTH / (float)CAMERA_WIDTH,
-                                             MAIN_WINDOW_HEIGHT
-                                                 / ((float)CAMERA_HEIGHT + HUD_HEIGHT));
+    Renderer::getInstance().setRendererScale(MAIN_WINDOW_WIDTH / static_cast<float>(CAMERA_WIDTH),
+                                             MAIN_WINDOW_HEIGHT / (static_cast<float>(CAMERA_HEIGHT) + HUD_HEIGHT));
 }
 
 void Engine::events()
@@ -142,10 +141,10 @@ void Engine::update() const
         controller->control();
     }
     auto const gameObjects = Renderer::getInstance().getRenderSet();
-    for (const auto& gameObject : gameObjects)
+    for (const auto &gameObject : gameObjects)
     {
         assert(gameObject);
-        auto const updateableGameObject = dynamic_cast<IUpdateable*>(gameObject);
+        auto const updateableGameObject = dynamic_cast<IUpdateable *>(gameObject);
         if (updateableGameObject)
         {
             updateableGameObject->update();
@@ -157,7 +156,7 @@ void Engine::render() const
 {
     Renderer::getInstance().clearScreen(COLOUR_BLACK);
     auto const renderables = Renderer::getInstance().getRenderSet();
-    for (const auto& renderable : renderables)
+    for (const auto &renderable : renderables)
     {
         assert(renderable);
         if (renderable->visible())
@@ -169,4 +168,4 @@ void Engine::render() const
     Renderer::getInstance().renderScreen();
 }
 
-}  // namespace Zelda
+} // namespace Zelda

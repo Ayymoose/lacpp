@@ -30,28 +30,19 @@ InventoryImpl::InventoryImpl()
     , m_dungeon(Dungeon::DUNGEON_NONE)
 {
     std::fill(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::OCARINA_SONG_NONE);
-    std::fill(m_inventoryMiscItems.begin(),
-              m_inventoryMiscItems.end(),
-              InventoryMiscItem::INVENTORY_MISC_ITEM_NONE);
+    std::fill(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), InventoryMiscItem::INVENTORY_MISC_ITEM_NONE);
     std::fill(m_photographs.begin(), m_photographs.end(), Photograph::PHOTOGRAPH_NONE);
     std::fill(m_inventoryItems.begin(), m_inventoryItems.end(), InventoryItem{});
     std::fill(m_instruments.begin(), m_instruments.end(), Instrument::INSTRUMENT_NONE);
-    std::fill(m_dungeonEntraceKeys.begin(),
-              m_dungeonEntraceKeys.end(),
-              DungeonEntranceKey::DUNGEON_ENTRACE_KEY_NONE);
-    std::fill(m_dungeonItemsStruct.begin(),
-              m_dungeonItemsStruct.end(),
-              DungeonItemStruct{});
+    std::fill(m_dungeonEntraceKeys.begin(), m_dungeonEntraceKeys.end(), DungeonEntranceKey::DUNGEON_ENTRACE_KEY_NONE);
+    std::fill(m_dungeonItemsStruct.begin(), m_dungeonItemsStruct.end(), DungeonItemStruct{});
 }
 
-void InventoryImpl::addInventoryItem(const InventoryItem& inventoryItem)
+void InventoryImpl::addInventoryItem(const InventoryItem &inventoryItem)
 {
-    assert(!inventoryItemExists(inventoryItem)
-           && "Trying to add weapon that already exists");
-    auto nextFreeSpace =
-        std::find(m_inventoryItems.begin(), m_inventoryItems.end(), InventoryItem{});
-    assert(nextFreeSpace != m_inventoryItems.end()
-           && "Trying to add weapon to full inventory");
+    assert(!inventoryItemExists(inventoryItem) && "Trying to add weapon that already exists");
+    auto nextFreeSpace = std::find(m_inventoryItems.begin(), m_inventoryItems.end(), InventoryItem{});
+    assert(nextFreeSpace != m_inventoryItems.end() && "Trying to add weapon to full inventory");
     *nextFreeSpace = inventoryItem;
 }
 
@@ -60,15 +51,14 @@ std::array<InventoryItem, MAX_INVENTORY_ITEMS> InventoryImpl::inventoryItems() c
     return m_inventoryItems;
 }
 
-void InventoryImpl::removeInventoryItem(const InventoryItem& inventoryItem)
+void InventoryImpl::removeInventoryItem(const InventoryItem &inventoryItem)
 {
     assert(inventoryItemExists(inventoryItem) && "Trying to remove non-existent weapon");
-    auto weaponToRemove =
-        std::find(m_inventoryItems.begin(), m_inventoryItems.end(), inventoryItem);
+    auto weaponToRemove = std::find(m_inventoryItems.begin(), m_inventoryItems.end(), inventoryItem);
     *weaponToRemove = InventoryItem{};
 }
 
-bool InventoryImpl::inventoryItemExists(const InventoryItem& inventoryItem) const
+bool InventoryImpl::inventoryItemExists(const InventoryItem &inventoryItem) const
 {
     if (m_itemA == inventoryItem || m_itemB == inventoryItem)
     {
@@ -76,16 +66,15 @@ bool InventoryImpl::inventoryItemExists(const InventoryItem& inventoryItem) cons
     }
     return std::any_of(m_inventoryItems.cbegin(),
                        m_inventoryItems.cend(),
-                       [&inventoryItem](const InventoryItem& item)
-                       { return item == inventoryItem; });
+                       [&inventoryItem](const InventoryItem &item) { return item == inventoryItem; });
 }
 
 void InventoryImpl::addDungeonEntranceKey(DungeonEntranceKey dungeonKey)
 {
-    assert(!(checkItemExists<DungeonEntranceKey,
-                             ENUM_VALUE(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys,
-                                                                                        dungeonKey))
-           && "Trying to add dungeon entrance key that already exists");
+    assert(
+        !(checkItemExists<DungeonEntranceKey,
+                          ENUM_VALUE(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys, dungeonKey))
+        && "Trying to add dungeon entrance key that already exists");
     auto nextFreeSpace = std::find(m_dungeonEntraceKeys.begin(),
                                    m_dungeonEntraceKeys.end(),
                                    DungeonEntranceKey::DUNGEON_ENTRACE_KEY_NONE);
@@ -95,8 +84,7 @@ void InventoryImpl::addDungeonEntranceKey(DungeonEntranceKey dungeonKey)
 bool InventoryImpl::dungeonEntranceKey(DungeonEntranceKey dungeonKey) const
 {
     return checkItemExists<DungeonEntranceKey,
-                           ENUM_VALUE(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys,
-                                                                                      dungeonKey);
+                           ENUM_VALUE(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys, dungeonKey);
 }
 
 void InventoryImpl::setInDungeon(const bool inDungeon)
@@ -180,39 +168,7 @@ int InventoryImpl::dungeonItem(DungeonItem dungeonItem) const
 // Trade item up the chain
 void InventoryImpl::tradeItem(TradeItem tradeItem)
 {
-    if (!(m_tradeItem == TradeItem::TRADE_ITEM_NONE && tradeItem == TradeItem::TRADE_ITEM_YOSHI_DOLL
-          || (m_tradeItem == TradeItem::TRADE_ITEM_YOSHI_DOLL
-              && tradeItem == TradeItem::TRADE_ITEM_RIBBON)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_RIBBON
-              && tradeItem == TradeItem::TRADE_ITEM_DOG_FOOD)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_DOG_FOOD
-              && tradeItem == TradeItem::TRADE_ITEM_BANANAS)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_BANANAS
-              && tradeItem == TradeItem::TRADE_ITEM_STICK)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_STICK
-              && tradeItem == TradeItem::TRADE_ITEM_HONEYCOMB)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_HONEYCOMB
-              && tradeItem == TradeItem::TRADE_ITEM_PINEAPPLE)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_PINEAPPLE
-              && tradeItem == TradeItem::TRADE_ITEM_HIBISCUS)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_HIBISCUS
-              && tradeItem == TradeItem::TRADE_ITEM_LETTER)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_LETTER
-              && tradeItem == TradeItem::TRADE_ITEM_BROOM)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_BROOM
-              && tradeItem == TradeItem::TRADE_ITEM_FISHING_HOOK)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_FISHING_HOOK
-              && tradeItem == TradeItem::TRADE_ITEM_MERMAID_NECKLACE)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_MERMAID_NECKLACE
-              && tradeItem == TradeItem::TRADE_ITEM_MERMAID_SCALE)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_MERMAID_SCALE
-              && tradeItem == TradeItem::TRADE_ITEM_MAGNIFYING_LENS)
-          || (m_tradeItem == TradeItem::TRADE_ITEM_MAGNIFYING_LENS
-              && tradeItem == TradeItem::TRADE_ITEM_BOOMERANG)))
-    {
-        assert(false && "Bad trade");
-    }
-
+    // TODO: Check bad trade
     m_tradeItem = tradeItem;
 }
 
@@ -241,9 +197,7 @@ void InventoryImpl::addInventoryMiscItem(InventoryMiscItem inventoryMiscItem)
 void InventoryImpl::useInventoryMiscItem(InventoryMiscItem inventoryMiscItem)
 {
     assert(miscItemExists(inventoryMiscItem) && "Trying to use non-existent misc item");
-    auto it = std::find(m_inventoryMiscItems.begin(),
-                        m_inventoryMiscItems.end(),
-                        inventoryMiscItem);
+    auto it = std::find(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), inventoryMiscItem);
 
     switch (inventoryMiscItem)
     {
@@ -262,17 +216,14 @@ bool InventoryImpl::miscItemExists(InventoryMiscItem inventoryMiscItem) const
 
 bool InventoryImpl::instrumentExists(Instrument instrument) const
 {
-    return checkItemExists<Instrument, ENUM_VALUE(Instrument::INSTRUMENT_COUNT)>(m_instruments,
-                                                                                 instrument);
+    return checkItemExists<Instrument, ENUM_VALUE(Instrument::INSTRUMENT_COUNT)>(m_instruments, instrument);
 }
 
 // Add - Obtain after defeating dungeon boss
 void InventoryImpl::addInstrument(Instrument instrument)
 {
     assert(!instrumentExists(instrument) && "Trying to add item that already exists");
-    auto nextFreeSpace = std::find(m_instruments.begin(),
-                                   m_instruments.end(),
-                                   Instrument::INSTRUMENT_NONE);
+    auto nextFreeSpace = std::find(m_instruments.begin(), m_instruments.end(), Instrument::INSTRUMENT_NONE);
     *nextFreeSpace = instrument;
 }
 
@@ -365,9 +316,7 @@ void InventoryImpl::addOcarinaSong(OcarinaSong ocarinaSong)
 {
     assert(!(checkItemExists<OcarinaSong, ENUM_VALUE(OcarinaSong::OCARINA_SONG_COUNT)>(m_ocarinaSongs, ocarinaSong))
            && "Trying to add item that already exists");
-    auto nextFreeSpace = std::find(m_ocarinaSongs.begin(),
-                                   m_ocarinaSongs.end(),
-                                   OcarinaSong::OCARINA_SONG_NONE);
+    auto nextFreeSpace = std::find(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::OCARINA_SONG_NONE);
     *nextFreeSpace = ocarinaSong;
 }
 
@@ -456,9 +405,7 @@ void InventoryImpl::addPhotograph(Photograph photograph)
 {
     assert(!(checkItemExists<Photograph, ENUM_VALUE(Photograph::PHOTOGRAPH_COUNT)>(m_photographs, photograph))
            && "Trying to add item that already exists");
-    auto nextFreeSpace = std::find(m_photographs.begin(),
-                                   m_photographs.end(),
-                                   Photograph::PHOTOGRAPH_NONE);
+    auto nextFreeSpace = std::find(m_photographs.begin(), m_photographs.end(), Photograph::PHOTOGRAPH_NONE);
     *nextFreeSpace = photograph;
 }
 
@@ -470,7 +417,7 @@ std::array<Photograph, ENUM_VALUE(Photograph::PHOTOGRAPH_COUNT)> InventoryImpl::
 int InventoryImpl::photograph() const
 {
     int photographs = 0;
-    for (auto const& photograph : m_photographs)
+    for (auto const &photograph : m_photographs)
     {
         if (photograph != Photograph::PHOTOGRAPH_NONE)
         {
@@ -532,17 +479,17 @@ void InventoryImpl::swapItemB()
     std::swap(m_itemB, m_inventoryItems[m_selectorIndex]);
 }
 
-void InventoryImpl::setItemA(const InventoryItem& itemA)
+void InventoryImpl::setItemA(const InventoryItem &itemA)
 {
     m_itemA = itemA;
 }
 
-void InventoryImpl::setItemB(const InventoryItem& itemB)
+void InventoryImpl::setItemB(const InventoryItem &itemB)
 {
     m_itemB = itemB;
 }
 
-void InventoryImpl::setPositionInDungeonMap(const Vector<int>& location)
+void InventoryImpl::setPositionInDungeonMap(const Vector<int> &location)
 {
     m_positionInDungeonMap = location;
 }
@@ -580,7 +527,7 @@ bool InventoryImpl::dungeonMapLocationVisited(const int x, const int y) const
     return m_dungeonMaps[ENUM_VALUE(m_dungeon)][y][x].visited;
 }
 
-void InventoryImpl::setDungeonMapLocationVisited(const Vector<int>& location)
+void InventoryImpl::setDungeonMapLocationVisited(const Vector<int> &location)
 {
     assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
     m_dungeonMaps[ENUM_VALUE(m_dungeon)][location.y][location.x].visited = true;
@@ -632,12 +579,10 @@ void InventoryImpl::moveInventorySelector(Direction direction)
         }
         break;
     case Direction::DIRECTION_RIGHT:
-        m_selectorIndex =
-            (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : ++m_selectorIndex);
+        m_selectorIndex = (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : ++m_selectorIndex);
         break;
     case Direction::DIRECTION_LEFT:
-        m_selectorIndex =
-            (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : --m_selectorIndex);
+        m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : --m_selectorIndex);
         break;
     default:
         break;
@@ -645,4 +590,4 @@ void InventoryImpl::moveInventorySelector(Direction direction)
 
     assert(m_selectorIndex >= 0 && m_selectorIndex < MAX_INVENTORY_ITEMS);
 }
-}  // namespace Zelda
+} // namespace Zelda

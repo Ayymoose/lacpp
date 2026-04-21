@@ -10,22 +10,18 @@ Tilemap::Tilemap()
     , m_tilesDown(0)
 {}
 
-Tilemap::Tilemap(const Sprite& tilemap,
-                 const std::vector<TileIndexArray>& mapEntries,
-                 const TilemapConfig& config)
+Tilemap::Tilemap(const Sprite &tilemap, const std::vector<TileIndexArray> &mapEntries, const TilemapConfig &config)
     : m_sprite(std::make_unique<Sprite>(tilemap))
-    , m_mapEntries(mapEntries)
     , m_tileWidth(config.tileWidth)
     , m_tileHeight(config.tileHeight)
     , m_tilesAcross(config.tilesAcross)
     , m_tilesDown(config.tilesDown)
+    , m_mapEntries(mapEntries)
 {
     assert(m_sprite->data());
 }
 
-void Tilemap::tile(const Renderer& renderer,
-                   const Sprite& tilemapSprite,
-                   const size_t mapIndex) const
+void Tilemap::tile(const Renderer &renderer, const Sprite &tilemapSprite, const size_t mapIndex) const
 {
     assert(mapIndex >= 0 && mapIndex < m_mapEntries.size());
     assert(tilemapSprite.data());
@@ -52,10 +48,7 @@ void Tilemap::tile(const Renderer& renderer,
 
             // Paste tile from tilemap
             m_sprite->drawSprite(Rect<size_t>{srcTileX, srcTileY, m_tileWidth, m_tileHeight},
-                                 Rect<size_t>{tileX * m_tileWidth,
-                                              tileY * m_tileHeight,
-                                              m_tileWidth,
-                                              m_tileHeight});
+                                 Rect<size_t>{tileX * m_tileWidth, tileY * m_tileHeight, m_tileWidth, m_tileHeight});
         }
     }
 
@@ -68,4 +61,4 @@ size_t Tilemap::size() const
 }
 
 
-}  // namespace Zelda
+} // namespace Zelda
