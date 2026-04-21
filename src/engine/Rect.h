@@ -4,7 +4,7 @@
 
 #include "FloatingPoint.h"
 
-namespace Zelda
+namespace zelda
 {
 template <typename T>
 struct Rect
@@ -63,4 +63,4 @@ std::enable_if_t<std::is_floating_point_v<T>, SDL_FRect> rectToSDLRect(const Rec
     return SDL_FRect{rect.x, rect.y, rect.w, rect.h};
 }
 
-}  // namespace Zelda
+}  // namespace zelda

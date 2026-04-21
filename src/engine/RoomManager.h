@@ -5,7 +5,7 @@
 #include "RoomLinkManager.h"
 #include "TilemapManager.h"
 
-namespace Zelda
+namespace zelda
 {
 // using RoomObjects = std::vector<Renderable*>;
 // using Room = std::vector<RoomObjects>;
@@ -75,4 +75,4 @@ private:
     // Room m_currentRoom;
     // std::unordered_map<RoomName, Room> m_rooms;
 };
-}  // namespace Zelda
+}  // namespace zelda

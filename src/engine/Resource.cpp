@@ -6,7 +6,7 @@
 #include <cassert>
 #include <SDL_image.h>
 
-namespace Zelda
+namespace zelda
 {
 
 // Load a PNG image to a texture with a RGB colour used for transparency
@@ -45,4 +45,4 @@ SDL_Surface* Resource::loadSprite(const std::string& path, const Colour transpar
 }
 
 
-}  // namespace Zelda
+}  // namespace zelda

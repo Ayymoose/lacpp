@@ -1,6 +1,6 @@
 #include "Tilemap.h"
 
-namespace Zelda
+namespace zelda
 {
 
 Tilemap::Tilemap()
@@ -61,4 +61,4 @@ size_t Tilemap::size() const
 }
 
 
-} // namespace Zelda
+} // namespace zelda

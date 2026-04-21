@@ -10,7 +10,7 @@
 #include "Colour.h"
 
 
-namespace Zelda
+namespace zelda
 {
 
 enum class SpriteFlip
@@ -190,4 +190,4 @@ private:
 };
 
 
-} // namespace Zelda
+} // namespace zelda

@@ -5,7 +5,7 @@
 
 #include <functional>
 
-namespace Zelda
+namespace zelda
 {
 
 constexpr int MAIN_WINDOW_WIDTH = 160 * 6;
@@ -79,4 +79,4 @@ private:
     std::function<void(void)> m_preRenderTestFunction;
     std::function<void(void)> m_renderTestFunction;
 };
-}  // namespace Zelda
+}  // namespace zelda

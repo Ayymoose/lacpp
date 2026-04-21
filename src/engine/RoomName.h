@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Zelda
+namespace zelda
 {
 
 enum class RoomName
@@ -23,4 +23,4 @@ enum class RoomName
     RM_COUNT
 };
 
-} // namespace Zelda
+} // namespace zelda

@@ -2,7 +2,7 @@
 
 // Shared enums
 
-namespace Zelda
+namespace zelda
 {
 enum class Direction
 {
@@ -12,4 +12,4 @@ enum class Direction
     DIRECTION_DOWN,
     DIRECTION_UP
 };
-} // namespace Zelda
+} // namespace zelda

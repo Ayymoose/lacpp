@@ -8,7 +8,7 @@
 #include "Worldmap.h"
 #include "Vector.h"
 
-namespace Zelda
+namespace zelda
 {
 
 enum PlayerState
@@ -269,4 +269,4 @@ private:
     };
 };
 
-}  // namespace Zelda
+}  // namespace zelda

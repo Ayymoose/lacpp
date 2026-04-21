@@ -5,7 +5,7 @@
 #include "Singleton.h"
 #include "WorldmapImpl.h"
 
-namespace Zelda
+namespace zelda
 {
 enum WorldmapSprites
 {
@@ -73,4 +73,4 @@ private:
     void drawUnvisitedLocations() const;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

@@ -7,7 +7,7 @@
 
 #include <unordered_map>
 
-namespace Zelda
+namespace zelda
 {
 
 using TileIndexArray = std::vector<std::vector<int>>;
@@ -58,4 +58,4 @@ private:
     std::unordered_map<RoomName, Tilemap> m_tilemaps;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

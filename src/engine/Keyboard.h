@@ -4,7 +4,7 @@
 #include <SDL_scancode.h>
 #include <SDL_events.h>
 
-namespace Zelda
+namespace zelda
 {
 
 class Keyboard : public Singleton<Keyboard>
@@ -33,4 +33,4 @@ private:
     bool m_keyStateReleased[SDL_NUM_SCANCODES];
 };
 
-}  // namespace Zelda
+}  // namespace zelda

@@ -1,7 +1,7 @@
 #include "RoomLinkManager.h"
 #include <cassert>
 
-namespace Zelda
+namespace zelda
 {
 void RoomLinkManager::createRoomLink(RoomName roomLinkName, const RoomLinkMap &roomLinkMap)
 {
@@ -37,4 +37,4 @@ RoomLinkManager::RoomLinkManager()
     , m_currentRoomLink(RoomName::RM_NONE)
 {}
 
-} // namespace Zelda
+} // namespace zelda

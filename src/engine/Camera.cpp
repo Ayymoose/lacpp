@@ -6,7 +6,7 @@
 #include "Engine.h"
 #include "Controller.h"
 
-namespace Zelda
+namespace zelda
 {
 
 Camera::Camera()
@@ -383,4 +383,4 @@ Vector<float> Camera::position() const
     return Vector<float>(m_scrollX, m_scrollY);
 }
 
-}  // namespace Zelda
+}  // namespace zelda

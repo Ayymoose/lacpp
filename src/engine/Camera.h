@@ -5,7 +5,7 @@
 #include "Singleton.h"
 #include "Vector.h"
 
-namespace Zelda
+namespace zelda
 {
 // The "viewing region" dimensions
 constexpr int CAMERA_WIDTH = 160;
@@ -95,4 +95,4 @@ private:
     // How many we scrolled by
     int m_scrolled;
 };
-}  // namespace Zelda
+}  // namespace zelda

@@ -7,7 +7,7 @@
 #include <cassert>
 
 // Allows an object to receive control depending on whether it is the controller or not
-namespace Zelda
+namespace zelda
 {
 
 class Controllable
@@ -32,4 +32,4 @@ protected:
     std::string m_controllableName;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

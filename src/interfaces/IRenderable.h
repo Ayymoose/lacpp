@@ -15,7 +15,7 @@
 
 // A Renderable can also be animated too
 
-namespace Zelda
+namespace zelda
 {
 
 struct Animation
@@ -190,4 +190,4 @@ protected:
     Vector<float> m_lerpPrevious;*/
 };
 
-} // namespace Zelda
+} // namespace zelda

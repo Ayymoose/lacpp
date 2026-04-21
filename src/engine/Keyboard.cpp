@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cassert>
 
-namespace Zelda
+namespace zelda
 {
 
 Keyboard::Keyboard()
@@ -97,4 +97,4 @@ int Keyboard::operator[](const int key)
     return m_keyStatePushed[key];
 }
 
-}  // namespace Zelda
+}  // namespace zelda

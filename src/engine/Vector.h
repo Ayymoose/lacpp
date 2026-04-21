@@ -5,7 +5,7 @@
 #include <cassert>
 #include <cmath>
 
-namespace Zelda
+namespace zelda
 {
 // 2D vector class
 template <typename T>
@@ -142,4 +142,4 @@ struct Vector
     T y;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

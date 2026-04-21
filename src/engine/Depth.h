@@ -9,7 +9,7 @@
 // Higher depth = Rendered later on (on top of everything else)
 // Lower depth  = Renderer earlier on (everything is renderer on top of this)
 
-namespace Zelda
+namespace zelda
 {
 enum ZOrdering
 {
@@ -28,4 +28,4 @@ enum ZOrdering
     // Dialogue
     ZD_DEPTH_DIALOGUE
 };
-} // namespace Zelda
+} // namespace zelda

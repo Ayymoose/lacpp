@@ -4,7 +4,7 @@
 #include "Depth.h"
 #include "Enum.h"
 
-namespace Zelda
+namespace zelda
 {
 
 class BasicCharacter
@@ -35,4 +35,4 @@ protected:
     Vector<float> m_direction;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

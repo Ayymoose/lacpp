@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-namespace Zelda
+namespace zelda
 {
 WorldmapImpl::WorldmapImpl()
     : m_worldX(0)
@@ -201,4 +201,4 @@ std::string WorldmapImpl::locationName() const
 }
 
 
-}  // namespace Zelda
+}  // namespace zelda

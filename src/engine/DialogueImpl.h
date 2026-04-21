@@ -4,7 +4,7 @@
 #include <queue>
 #include <variant>
 
-namespace Zelda
+namespace zelda
 {
 
 class DialogueImpl
@@ -114,4 +114,4 @@ private:
 
     static void checkCharacters(const std::string& string);
 };
-}  // namespace Zelda
+}  // namespace zelda

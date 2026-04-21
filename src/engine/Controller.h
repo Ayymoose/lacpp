@@ -5,7 +5,7 @@
 #include "Debug.h"
 #include <stack>
 
-namespace Zelda
+namespace zelda
 {
 
 class Controller : public Singleton<Controller>
@@ -75,4 +75,4 @@ private:
     std::stack<Controllable*> m_stack;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

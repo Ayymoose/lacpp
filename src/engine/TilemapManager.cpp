@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include <cassert>
 
-namespace Zelda
+namespace zelda
 {
 
 void TilemapManager::createTilemap(RoomName mapName,
@@ -107,4 +107,4 @@ TilemapManager::TilemapManager()
     Renderer::getInstance().addRenderable(this);
 }
 
-};  // namespace Zelda
+};  // namespace zelda

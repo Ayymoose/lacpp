@@ -11,7 +11,7 @@
 #include "Link.h"
 #include "Controller.h"
 
-namespace Zelda
+namespace zelda
 {
 
 void DataManager::loadData() const
@@ -393,4 +393,4 @@ void DataManager::loadRooms() const
 }
 
 
-};  // namespace Zelda
+};  // namespace zelda

@@ -5,7 +5,7 @@
 #include <utility>
 #include <string>
 
-namespace Zelda
+namespace zelda
 {
 // All locations
 enum LocationName
@@ -369,4 +369,4 @@ private:
     int m_worldY;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

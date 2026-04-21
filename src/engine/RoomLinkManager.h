@@ -4,7 +4,7 @@
 
 #include <unordered_map>
 
-namespace Zelda
+namespace zelda
 {
 
 // This class is responsible for linking rooms together
@@ -37,4 +37,4 @@ private:
     std::unordered_map<RoomName, RoomLinkMap> m_roomLinkMap;
 };
 
-};  // namespace Zelda
+};  // namespace zelda

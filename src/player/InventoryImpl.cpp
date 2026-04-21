@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cassert>
 
-namespace Zelda
+namespace zelda
 {
 
 InventoryImpl::InventoryImpl()
@@ -592,4 +592,4 @@ void InventoryImpl::moveInventorySelector(Direction direction)
 
     assert(m_selectorIndex >= 0 && m_selectorIndex < MAX_INVENTORY_ITEMS);
 }
-} // namespace Zelda
+} // namespace zelda

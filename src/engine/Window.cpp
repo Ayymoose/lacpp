@@ -2,7 +2,7 @@
 
 #include "Window.h"
 
-namespace Zelda
+namespace zelda
 {
 
 Window::~Window()
@@ -21,4 +21,4 @@ void Window::createWindow(const char* title, const int width, const int height)
     assert(m_mainWindow);
 }
 
-}  // namespace Zelda
+}  // namespace zelda

@@ -8,7 +8,7 @@
 #include <memory>
 #include <algorithm>
 
-namespace Zelda
+namespace zelda
 {
 // Maximum "storable" items in inventory
 constexpr int INVENTORY_COLUMNS = 2;
@@ -1262,4 +1262,4 @@ bool InventoryImpl::checkItemExists(const std::array<Enum, Size> &array, Enum it
 {
     return std::any_of(array.cbegin(), array.cend(), [&item](Enum exists) { return item == exists; });
 }
-} // namespace Zelda
+} // namespace zelda

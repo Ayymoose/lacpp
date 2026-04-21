@@ -4,7 +4,7 @@
 #include <limits>
 #include <type_traits>
 
-namespace Zelda
+namespace zelda
 {
 template <typename T>
 struct FloatingPoint
@@ -24,4 +24,4 @@ struct FloatingPoint
     }
 };
 
-}  // namespace Zelda
+}  // namespace zelda

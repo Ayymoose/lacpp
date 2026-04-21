@@ -7,7 +7,7 @@
 #include "Colour.h"
 #include "Renderer.h"
 
-namespace Zelda
+namespace zelda
 {
 
 class Resource
@@ -22,4 +22,4 @@ public:
 };
 
 
-}  // namespace Zelda
+}  // namespace zelda

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Zelda
+namespace zelda
 {
 template <typename T>
 class Singleton
@@ -25,4 +25,4 @@ protected:
     Singleton() = default;
     virtual ~Singleton() = default;
 };
-}  // namespace Zelda
+}  // namespace zelda

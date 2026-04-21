@@ -2,7 +2,7 @@
 
 #include <SDL_video.h>
 
-namespace Zelda
+namespace zelda
 {
 
 class Window
@@ -18,4 +18,4 @@ public:
 private:
     SDL_Window* m_mainWindow;
 };
-}  // namespace Zelda
+}  // namespace zelda

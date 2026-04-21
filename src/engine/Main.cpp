@@ -2,7 +2,7 @@
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
-    Zelda::Engine::getInstance().init();
-    Zelda::Engine::getInstance().run();
+    zelda::Engine::getInstance().init();
+    zelda::Engine::getInstance().run();
     return 0;
 }

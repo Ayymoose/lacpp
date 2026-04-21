@@ -7,7 +7,7 @@
 #include <set>
 #include <chrono>
 
-namespace Zelda
+namespace zelda
 {
 
 /*void Link::setDungeonMarkerLocation(const int x, const int y)
@@ -902,4 +902,4 @@ void Link::animate()
     }*/
 }
 
-}  // namespace Zelda
+}  // namespace zelda
