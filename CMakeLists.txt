@@ -22,19 +22,19 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # Source files
 file(GLOB_RECURSE SOURCES
-        "${CMAKE_SOURCE_DIR}/Source/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/*.cpp"
 )
 
-list(FILTER SOURCES EXCLUDE REGEX ".*/Source/Tests/.*")
+list(FILTER SOURCES EXCLUDE REGEX ".*/src/tests/.*")
 
 add_executable(${APP_NAME} ${SOURCES})
 
 # Include directories
 target_include_directories(${APP_NAME} PRIVATE
-        "${CMAKE_SOURCE_DIR}/Source"
-        "${CMAKE_SOURCE_DIR}/Source/Engine"
-        "${CMAKE_SOURCE_DIR}/Source/Player"
-        "${CMAKE_SOURCE_DIR}/Source/Interfaces"
+        "${CMAKE_SOURCE_DIR}/src"
+        "${CMAKE_SOURCE_DIR}/src/engine"
+        "${CMAKE_SOURCE_DIR}/src/player"
+        "${CMAKE_SOURCE_DIR}/src/interfaces"
 )
 
 # -------------------------

@@ -30,12 +30,12 @@ inline fs::path GetBasePath()
 }
 
 // Build all resource paths from base
-inline fs::path RESOURCE_ROOT = GetBasePath() / ".." / ".." / "Resources";
-inline fs::path RESOURCE_DUNGEONS_PATH = RESOURCE_ROOT / "Background" / "Dungeon";
-inline fs::path RESOURCE_SPRITE_LINK_PATH = RESOURCE_ROOT / "Sprite" / "Link";
-inline fs::path RESOURCE_OBJECT_PATH = RESOURCE_ROOT / "Sprite" / "Object";
-inline fs::path RESOURCE_MISC_PATH = RESOURCE_ROOT / "Background" / "Misc";
-inline fs::path RESOURCE_ENEMY_PATH = RESOURCE_ROOT / "Sprite" / "Enemy";
+inline fs::path RESOURCE_ROOT = GetBasePath() / ".." / ".." / "resources";
+inline fs::path RESOURCE_DUNGEONS_PATH = RESOURCE_ROOT / "background" / "dungeon";
+inline fs::path RESOURCE_SPRITE_LINK_PATH = RESOURCE_ROOT / "sprite" / "link";
+inline fs::path RESOURCE_OBJECT_PATH = RESOURCE_ROOT / "sprite" / "object";
+inline fs::path RESOURCE_MISC_PATH = RESOURCE_ROOT / "background" / "misc";
+inline fs::path RESOURCE_ENEMY_PATH = RESOURCE_ROOT / "sprite" / "enemy";
 
 enum class SpriteResource
 {
