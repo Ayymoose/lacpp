@@ -16,7 +16,7 @@ public:
 
     void runTests()
     {
-        for (auto const& [testName, testFunction] : m_testMap)
+        for (auto const &[testName, testFunction] : m_testMap)
         {
             (this->*testFunction)();
         }
@@ -29,4 +29,4 @@ private:
     void rectEqual();
 };
 
-};  // namespace Tests
+}; // namespace Tests

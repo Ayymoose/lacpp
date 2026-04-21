@@ -63,8 +63,7 @@ void InventoryTests::ocarinaImplTest()
     CHECK_EQUAL(inventoryImpl.ocarinaSongs().size(), 3);
 
     inventoryImpl.setOcarinaSong(OcarinaSong::OCARINA_SONG_FROG);
-    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.ocarinaSong()),
-                ENUM_VALUE(OcarinaSong::OCARINA_SONG_FROG));
+    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.ocarinaSong()), ENUM_VALUE(OcarinaSong::OCARINA_SONG_FROG));
 }
 
 void InventoryTests::photographImplTest()
@@ -175,22 +174,18 @@ void InventoryTests::inventoryMiscItemImplTest()
 
     if (inventoryImpl.miscItemExists(InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION))
     {
-        inventoryImpl.useInventoryMiscItem(
-            InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION);
+        inventoryImpl.useInventoryMiscItem(InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION);
     }
 
-    CHECK_EQUAL(inventoryImpl.miscItemExists(InventoryMiscItem::INVENTORY_MISC_ITEM_FLIPPERS),
-                true);
-    CHECK_EQUAL(inventoryImpl.miscItemExists(InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION),
-                false);
+    CHECK_EQUAL(inventoryImpl.miscItemExists(InventoryMiscItem::INVENTORY_MISC_ITEM_FLIPPERS), true);
+    CHECK_EQUAL(inventoryImpl.miscItemExists(InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION), false);
 }
 
 void InventoryTests::tradeItemImplTest()
 {
     InventoryImpl inventoryImpl;
     inventoryImpl.setTradeItem(TradeItem::TRADE_ITEM_NONE);
-    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.tradedItem()),
-                ENUM_VALUE(TradeItem::TRADE_ITEM_NONE));
+    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.tradedItem()), ENUM_VALUE(TradeItem::TRADE_ITEM_NONE));
 
     inventoryImpl.tradeItem(TradeItem::TRADE_ITEM_YOSHI_DOLL);
     inventoryImpl.tradeItem(TradeItem::TRADE_ITEM_RIBBON);
@@ -208,8 +203,7 @@ void InventoryTests::tradeItemImplTest()
     inventoryImpl.tradeItem(TradeItem::TRADE_ITEM_MAGNIFYING_LENS);
     inventoryImpl.tradeItem(TradeItem::TRADE_ITEM_BOOMERANG);
 
-    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.tradedItem()),
-                ENUM_VALUE(TradeItem::TRADE_ITEM_BOOMERANG));
+    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.tradedItem()), ENUM_VALUE(TradeItem::TRADE_ITEM_BOOMERANG));
 }
 
 void InventoryTests::dungeonItemImplTest()
@@ -248,17 +242,11 @@ void InventoryTests::dungeonEntraceKeyImplTest()
     inventoryImpl.addDungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_SLIME);
     inventoryImpl.addDungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_TAIL);
 
-    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(
-                    DungeonEntranceKey::DUNGEON_ENTRACE_KEY_ANGLER),
-                true);
-    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_BIRD),
-                true);
-    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_SLIME),
-                true);
-    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_TAIL),
-                true);
-    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_FACE),
-                false);
+    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_ANGLER), true);
+    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_BIRD), true);
+    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_SLIME), true);
+    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_TAIL), true);
+    CHECK_EQUAL(inventoryImpl.dungeonEntranceKey(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_FACE), false);
 }
 
 void InventoryTests::inventoryItemImplTest()
@@ -376,31 +364,26 @@ void InventoryTests::dungeonMapImplTest()
 {
     InventoryImpl inventoryImpl;
     inventoryImpl.setDungeon(Dungeon::DUNGEON_TAIL_CAVE);
-    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.dungeon()),
-                ENUM_VALUE(Dungeon::DUNGEON_TAIL_CAVE));
+    CHECK_EQUAL(ENUM_VALUE(inventoryImpl.dungeon()), ENUM_VALUE(Dungeon::DUNGEON_TAIL_CAVE));
 
     inventoryImpl.setPositionInDungeonMap({3, 8});
     inventoryImpl.movePositionInDungeonMap(Direction::DIRECTION_RIGHT);
-    inventoryImpl.setDungeonMapLocationVisited(
-        inventoryImpl.dungeonMapPositionLocation());
+    inventoryImpl.setDungeonMapLocationVisited(inventoryImpl.dungeonMapPositionLocation());
     inventoryImpl.movePositionInDungeonMap(Direction::DIRECTION_DOWN);
-    inventoryImpl.setDungeonMapLocationVisited(
-        inventoryImpl.dungeonMapPositionLocation());
+    inventoryImpl.setDungeonMapLocationVisited(inventoryImpl.dungeonMapPositionLocation());
     inventoryImpl.movePositionInDungeonMap(Direction::DIRECTION_LEFT);
-    inventoryImpl.setDungeonMapLocationVisited(
-        inventoryImpl.dungeonMapPositionLocation());
+    inventoryImpl.setDungeonMapLocationVisited(inventoryImpl.dungeonMapPositionLocation());
     inventoryImpl.movePositionInDungeonMap(Direction::DIRECTION_UP);
-    inventoryImpl.setDungeonMapLocationVisited(
-        inventoryImpl.dungeonMapPositionLocation());
+    inventoryImpl.setDungeonMapLocationVisited(inventoryImpl.dungeonMapPositionLocation());
 
     // TODO: Fix macro expand issue with braces
     const auto position = Vector<int>{3, 8};
     CHECK_EQUAL(inventoryImpl.dungeonMapPositionLocation(), position);
 
     CHECK(inventoryImpl.dungeonMapLocationVisited(3, 8));
-    CHECK(inventoryImpl.dungeonMapLocationVisited(3, 9));  // Right
-    CHECK(inventoryImpl.dungeonMapLocationVisited(4, 9));  // Down
-    CHECK(inventoryImpl.dungeonMapLocationVisited(4, 8));  // Left
+    CHECK(inventoryImpl.dungeonMapLocationVisited(3, 9)); // Right
+    CHECK(inventoryImpl.dungeonMapLocationVisited(4, 9)); // Down
+    CHECK(inventoryImpl.dungeonMapLocationVisited(4, 8)); // Left
 
     CHECK_EQUAL(ENUM_VALUE(inventoryImpl.dungeonMapLocationRoomItem(3, 8)),
                 ENUM_VALUE(DungeonMapItem::DUNGEON_MAP_ITEM_NONE));
@@ -865,4 +848,4 @@ void InventoryTests::tradeItemTest()
     */
 }
 
-}  // namespace Tests
+} // namespace Tests

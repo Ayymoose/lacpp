@@ -32,8 +32,8 @@ add_executable(${APP_NAME} ${SOURCES})
 # Include directories
 target_include_directories(${APP_NAME} PRIVATE
         "${CMAKE_SOURCE_DIR}/src"
-        "${CMAKE_SOURCE_DIR}/src/engine"
-        "${CMAKE_SOURCE_DIR}/src/player"
+        "${CMAKE_SOURCE_DIR}/src/core"
+        "${CMAKE_SOURCE_DIR}/src/zelda_core"
         "${CMAKE_SOURCE_DIR}/src/interfaces"
 )
 

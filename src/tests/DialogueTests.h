@@ -12,7 +12,7 @@ public:
 
     void runTests()
     {
-        for (auto const& [testName, testFunction] : m_testMap)
+        for (auto const &[testName, testFunction] : m_testMap)
         {
             (this->*testFunction)();
         }
@@ -28,4 +28,4 @@ private:
 };
 
 
-};  // namespace Tests
+}; // namespace Tests

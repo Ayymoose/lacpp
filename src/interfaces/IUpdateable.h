@@ -10,4 +10,4 @@ public:
     IUpdateable() = default;
 };
 
-}  // namespace zelda
+} // namespace zelda

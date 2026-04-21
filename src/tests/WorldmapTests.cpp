@@ -22,4 +22,4 @@ void WorldmapTests::worldmapTests()
 
     Engine::getInstance().run();
 }
-}  // namespace Tests
+} // namespace Tests
