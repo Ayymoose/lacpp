@@ -55,6 +55,7 @@ target_compile_options(PROJECT_WARNINGS INTERFACE
         -Woverloaded-virtual
         -Wnon-virtual-dtor
         -Wmisleading-indentation
+        -Werror
 
         # Debug flags
         $<$<CONFIG:Debug>:-O0 -g -fsanitize=address,undefined>

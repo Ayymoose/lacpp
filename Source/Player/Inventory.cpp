@@ -12,12 +12,10 @@
 namespace Zelda
 {
 Inventory::Inventory()
-    : IRenderable("Inventory",
-                  Sprite(Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
+    : IRenderable("Inventory", Sprite(Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
                   ZD_DEPTH_INVENTORY)
     , Controllable(m_name)
-    , m_subscreen(std::make_unique<Sprite>(Renderer::getInstance().getRenderer(),
-                                           SELECT_SUBSCREEN_WIDTH,
+    , m_subscreen(std::make_unique<Sprite>(Renderer::getInstance().getRenderer(), SELECT_SUBSCREEN_WIDTH,
                                            SELECT_SUBSCREEN_HEIGHT))
     , m_open(false)
     , m_selectorX(SELECTOR_INITIAL_X)
@@ -101,10 +99,8 @@ void Inventory::control()
     }
 
     // If any select keys pressed, reset the flashing animation
-    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT)
-        || Keyboard::getInstance().keyPushed(BUTTON_LEFT)
-        || Keyboard::getInstance().keyPushed(BUTTON_DOWN)
-        || Keyboard::getInstance().keyPushed(BUTTON_UP))
+    if (Keyboard::getInstance().keyPushed(BUTTON_RIGHT) || Keyboard::getInstance().keyPushed(BUTTON_LEFT)
+        || Keyboard::getInstance().keyPushed(BUTTON_DOWN) || Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
         m_flashSelector = true;
     }
@@ -399,8 +395,7 @@ void Inventory::drawDungeonMap()
             // If we have the compass, show the nightmare and treasure chests
             if (m_inventoryImpl.dungeonItem(DungeonItem::DUNGEON_ITEM_COMPASS))
             {
-                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y)
-                    == DungeonMapItem::DUNGEON_MAP_ITEM_NIGHTMARE_KEY)
+                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y) == DungeonMapItem::DUNGEON_MAP_ITEM_NIGHTMARE_KEY)
                 {
                     // srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
                     // dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
@@ -416,16 +411,16 @@ void Inventory::drawDungeonMap()
             dstRect.x += x * srcRect.w;
             dstRect.y += y * srcRect.w;
 
-            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]
-                ->drawSprite(srcRect, dstRect);
+            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
             auto const dungeonPosition = m_inventoryImpl.dungeonMapPositionLocation();
             // Draw current location flashing
             if (dungeonPosition.x == x && dungeonPosition.y == y)
             {
                 // srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_CURRENT_LOCATION];
-                // basicAnimate(Renderer::getInstance().getRenderer(), *ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY],
-                // srcRect, dstRect, 2, 0, 2, INSTRUMENT_FPS, Engine::getInstance().paused());
+                // basicAnimate(Renderer::getInstance().getRenderer(),
+                // *ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY], srcRect, dstRect, 2, 0, 2,
+                // INSTRUMENT_FPS, Engine::getInstance().paused());
             }
         }
     }
@@ -594,7 +589,7 @@ void Inventory::drawDungeonItems()
 
 void Inventory::drawInstruments()
 {
-    Rect<int> srcRect, dstRect;
+    // Rect<int> srcRect, dstRect;
 
     // Instrument positions
     // 1st 120,60
@@ -608,7 +603,7 @@ void Inventory::drawInstruments()
 
     auto const instruments = m_inventoryImpl.instruments();
 
-    for (int i = 0; i < instruments.size(); ++i)
+    for (int i = 0; i < std::ssize(instruments); ++i)
     {
         /*switch (instruments[i])
         {
@@ -622,10 +617,9 @@ void Inventory::drawInstruments()
             case Instrument::INSTRUMENT_THUNDER_DRUM:
                 //srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_0 + (i-1)];
                 //dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_0 + (i-1)];
-                //basicAnimate(Renderer::getInstance().getRenderer(), *ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY],
-        srcRect, dstRect, 0, 0, INSTRUMENTS_FRAME, INSTRUMENT_FPS, Engine::getInstance().paused());
-                break;
-            default:
+                //basicAnimate(Renderer::getInstance().getRenderer(),
+        *ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY], srcRect, dstRect, 0, 0, INSTRUMENTS_FRAME,
+        INSTRUMENT_FPS, Engine::getInstance().paused()); break; default:
                 // If we don't have the instrument yet
                 //srcRect = m_inventorySpritesSrc[INVENTORY_INSTRUMENT_BACK_0];
                 //dstRect = m_inventorySpritesDst[INVENTORY_INSTRUMENT_BACK_0 + i - 1];
@@ -645,10 +639,9 @@ void Inventory::drawHealth()
     auto const halfHearts = currentHeartPieces - static_cast<int>(currentHeartPieces);
 
     auto const wholeHearts = static_cast<int>(currentHeartPieces);
-    auto const emptyHearts =
-        (currentHeartPieces - static_cast<int>(currentHeartPieces) > 0
-             ? maxHeartPieces - std::ceil(currentHeartPieces)
-             : maxHeartPieces - wholeHearts);
+    auto const emptyHearts = (currentHeartPieces - static_cast<int>(currentHeartPieces) > 0
+                                  ? maxHeartPieces - std::ceil(currentHeartPieces)
+                                  : maxHeartPieces - wholeHearts);
 
     Rect<int> srcRect, dstRect;
 
@@ -700,11 +693,10 @@ void Inventory::drawInventoryWeapons()
     // Instead of creating an object for each item we have
     // We just render the items we have to a single texture
     // and render that instead
-    auto const currentRenderingTarget =
-        Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(*m_sprite);
     auto const inventoryItems = m_inventoryImpl.inventoryItems();
 
-    for (int i = 0; i < inventoryItems.size(); ++i)
+    for (int i = 0; i < std::ssize(inventoryItems); ++i)
     {
         if (inventoryItems[i] != InventoryItem{})
         {
@@ -717,14 +709,13 @@ void Inventory::drawInventoryWeapons()
                        INVENTORY_SPRITE_WIDTH,
                        INVENTORY_SPRITE_HEIGHT};
             // Draw the inventory items onto the internal inventory
-            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]
-                ->drawSprite(srcRect, dstRect);
+            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
         }
     }
 
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
 
-    for (int i = 0; i < inventoryItems.size(); ++i)
+    for (int i = 0; i < std::ssize(inventoryItems); ++i)
     {
         if (inventoryItems[i] != InventoryItem{})
         {
@@ -740,8 +731,7 @@ void Inventory::drawInventoryWeapons()
 
 void Inventory::drawSelector()
 {
-    auto const currentRenderingTarget =
-        Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(*m_sprite);
 
     Rect<int> srcRect, dstRect;
     // Render the selector
@@ -761,8 +751,7 @@ void Inventory::drawSelector()
 void Inventory::drawInventoryDividers()
 {
     Rect<int> srcRect, dstRect;
-    auto const currentRenderingTarget =
-        Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(*m_sprite);
 
     // srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
 
@@ -777,9 +766,7 @@ void Inventory::drawInventoryDividers()
     }
     // srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
     //  Draw vertical divider
-    for (int i = 0;
-         i < ((INVENTORY_HEIGHT - INVENTORY_DIVIDER_YV) / INVENTORY_DIVIDER_WIDTH_V);
-         ++i)
+    for (int i = 0; i < ((INVENTORY_HEIGHT - INVENTORY_DIVIDER_YV) / INVENTORY_DIVIDER_WIDTH_V); ++i)
     {
         dstRect = {INVENTORY_DIVIDER_XV,
                    INVENTORY_DIVIDER_YV + i + INVENTORY_DIVIDER_HEIGHT_V * i,
@@ -793,8 +780,7 @@ void Inventory::drawInventoryDividers()
 
 void Inventory::drawHUD()
 {
-    auto const currentRenderingTarget =
-        Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(*m_sprite);
     Rect<int> srcRect, dstRect;
 
     // Copy "B"
@@ -875,18 +861,16 @@ void Inventory::drawInventoryBackground()
     }
 
     // Render the inventory background
-    m_sprite->drawSprite(Rect<int>{},
-                         Rect<int>{0, renderY, m_sprite->width(), m_sprite->height()});
+    m_sprite->drawSprite(Rect<int>{}, Rect<int>{0, renderY, m_sprite->width(), m_sprite->height()});
     m_sprite->colourSprite(Rect<int>{}, makeRGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 }
 
 void Inventory::drawSubscreen() const
 {
-    Rect<int> dstRect;  // = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
+    Rect<int> dstRect; // = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
     Rect<int> srcRect = {0, 0, dstRect.w, dstRect.h};
     m_subscreen->drawSprite(srcRect, dstRect);
-    auto currentRenderingTarget =
-        Renderer::getInstance().pushRenderingTarget(*m_subscreen);
+    auto currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(*m_subscreen);
 
     // Tunic
     // srcRect = m_inventorySpritesSrc[INVENTORY_TUNIC];
@@ -952,12 +936,8 @@ void Inventory::drawSubscreen() const
 // 320
 
 // TODO: These drawNumber and drawWeaponLevel functions are used in the shop too so must be moved elsewhere
-void Inventory::drawNumber(const Sprite& srcSprite,
-                           bool drawLevel,
-                           bool useNormalFont,
-                           int trailingDigits,
-                           int number,
-                           const Rect<int>& dstRect) const
+void Inventory::drawNumber(const Sprite &srcSprite, bool drawLevel, bool useNormalFont, int trailingDigits, int number,
+                           const Rect<int> &dstRect) const
 {
     // drawLevel      = Draw the "L-" text next to the number
     // useNormalFont  = Use the normal digit text or text with black background
@@ -968,8 +948,7 @@ void Inventory::drawNumber(const Sprite& srcSprite,
     assert(dstRect != Rect<int>());
 
     // Save the current renderering target
-    auto const currentRenderingTarget =
-        Renderer::getInstance().pushRenderingTarget(srcSprite);
+    auto const currentRenderingTarget = Renderer::getInstance().pushRenderingTarget(srcSprite);
 
     Rect<int> srcRect;
     auto rectDst = dstRect;
@@ -1038,12 +1017,9 @@ void Inventory::drawNumber(const Sprite& srcSprite,
         }
 
         // Add any trailing digits if needed in front of the number
-        for (int i = 0;
-             i < (number == 0 ? trailingDigits : trailingDigits + 1 - numberLength);
-             i++)
+        for (int i = 0; i < (number == 0 ? trailingDigits : trailingDigits + 1 - numberLength); i++)
         {
-            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]
-                ->drawSprite(srcRect, rectDst);
+            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
             rectDst.x += srcRect.w;
         }
 
@@ -1060,8 +1036,7 @@ void Inventory::drawNumber(const Sprite& srcSprite,
             }
 
             srcRect.x += 2 * (number % 10) + srcRect.w * (number % 10);
-            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]
-                ->drawSprite(srcRect, rectDst);
+            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
             rectDst.x += srcRect.w;
             number /= 10;
         } while (number != 0);
@@ -1078,8 +1053,7 @@ void Inventory::drawNumber(const Sprite& srcSprite,
         // Draw any reversed number whose 0 was lost
         for (int i = 0; i < trailingZeros; i++)
         {
-            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]
-                ->drawSprite(srcRect, rectDst);
+            ResourceManager::getInstance()[SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
             rectDst.x += srcRect.w;
         }
     }
@@ -1087,9 +1061,7 @@ void Inventory::drawNumber(const Sprite& srcSprite,
     Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
 }
 
-void Inventory::drawInventoryItemAttribute(const Sprite& srcSprite,
-                                           const InventoryItem& item,
-                                           const Rect<int>& dstRect)
+void Inventory::drawInventoryItemAttribute(const Sprite &srcSprite, const InventoryItem &item, const Rect<int> &dstRect)
 {
     switch (item.itemAttribute)
     {
@@ -1187,8 +1159,7 @@ void Inventory::moveSelector(Direction direction)
             }
             else
             {
-                m_selectorY = SELECTOR_INITIAL_Y
-                              + (INVENTORY_ROWS - 1) * SELECTOR_INCREASE_Y;
+                m_selectorY = SELECTOR_INITIAL_Y + (INVENTORY_ROWS - 1) * SELECTOR_INCREASE_Y;
             }
         }
         else
@@ -1201,4 +1172,4 @@ void Inventory::moveSelector(Direction direction)
     }
 }
 
-}  // namespace Zelda
+} // namespace Zelda

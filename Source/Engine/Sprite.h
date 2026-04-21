@@ -23,29 +23,26 @@ enum class SpriteFlip
 class Sprite
 {
 public:
-    Sprite(SDL_Renderer* renderer, const int width, const int height);
-    Sprite(SDL_Renderer* renderer, SDL_Surface* surface);
+    Sprite(SDL_Renderer *renderer, const int width, const int height);
+    Sprite(SDL_Renderer *renderer, SDL_Surface *surface);
 
     // All Sprites must be tied to a renderer
     Sprite() = delete;
 
-    Sprite(const Sprite& sprite);
-    Sprite& operator=(Sprite sprite);
-    Sprite(Sprite&& sprite) noexcept;
+    Sprite(const Sprite &sprite);
+    Sprite &operator=(Sprite sprite);
+    Sprite(Sprite &&sprite) noexcept;
     ~Sprite() noexcept;
 
     int width() const;
     int height() const;
-    SDL_Texture* data() const;
-    SDL_Renderer* renderer() const;
+    SDL_Texture *data() const;
+    SDL_Renderer *renderer() const;
 
     // Copies source to dest using srcRect for srcTexture and dstRect for
     // dstRect The dstRect co-ordinates are relative to the srcRect!
     template <typename R1, typename R2>
-    static void copySprite(const Sprite& source,
-                           const Sprite& dest,
-                           const Rect<R1>& srcRect,
-                           const Rect<R2>& dstRect,
+    static void copySprite(const Sprite &source, const Sprite &dest, const Rect<R1> &srcRect, const Rect<R2> &dstRect,
                            const Colour colourMod = 0)
     {
         assert(dest.m_renderer == source.m_renderer);
@@ -84,8 +81,7 @@ public:
     }
 
     // Colours a part of a sprite (or whole use nullptr with a given colour)
-    template <typename R>
-    void colourSprite(const Rect<R>& srcRect, Colour colour, const int opacity = 255)
+    template <typename R> void colourSprite(const Rect<R> &srcRect, Colour colour, const int opacity = 255)
     {
         if (m_renderer)
         {
@@ -93,11 +89,8 @@ public:
             auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
 
             SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
-            SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer,
-                                              makeRed(colour),
-                                              makeGreen(colour),
-                                              makeBlue(colour),
-                                              opacity));
+            SDL_ASSERT(
+                SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), opacity));
 
             if (srcRect != Rect<R>())
             {
@@ -117,8 +110,7 @@ public:
     }
 
     // Draw a sprite on screen
-    template <typename R1, typename R2>
-    void drawSprite(const Rect<R1>& srcRect, const Rect<R2>& dstRect) const
+    template <typename R1, typename R2> void drawSprite(const Rect<R1> &srcRect, const Rect<R2> &dstRect) const
     {
         if (m_renderer)
         {
@@ -127,8 +119,10 @@ public:
             if (srcRect != Rect<R1>())
             {
                 // Check srcRect within boundaries of sprite
-                assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
-                assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
+                assert(srcRect.x >= 0
+                       && static_cast<long long>(srcRect.x + srcRect.w) <= static_cast<long long>(m_width));
+                assert(srcRect.y >= 0
+                       && static_cast<long long>(srcRect.y + srcRect.h) <= static_cast<long long>(m_height));
             }
 
             auto sdlRectSrc = rectToSDLRect(srcRect);
@@ -142,10 +136,7 @@ public:
     }
 
     template <typename R1, typename R2>
-    void drawSpriteEx(const Rect<R1>& srcRect,
-                      const Rect<R2>& dstRect,
-                      const double angle,
-                      SpriteFlip flip) const
+    void drawSpriteEx(const Rect<R1> &srcRect, const Rect<R2> &dstRect, const double angle, SpriteFlip flip) const
     {
         if (m_renderer)
         {
@@ -186,11 +177,11 @@ public:
         }
     }
 
-    friend void swap(Sprite& sprite1, Sprite& sprite2) noexcept;
+    friend void swap(Sprite &sprite1, Sprite &sprite2) noexcept;
 
 private:
-    SDL_Renderer* m_renderer;
-    SDL_Texture* m_sprite;
+    SDL_Renderer *m_renderer;
+    SDL_Texture *m_sprite;
     SDL_BlendMode m_blendMode;
     int m_width;
     int m_height;
@@ -199,4 +190,4 @@ private:
 };
 
 
-}  // namespace Zelda
+} // namespace Zelda

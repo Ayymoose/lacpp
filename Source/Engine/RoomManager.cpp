@@ -107,18 +107,15 @@ void RoomManager::setRoomLocation(const int roomLocation)
     m_roomLinkManager.setRoomLocation(roomLocation);
 }
 
-void RoomManager::createRoom(RoomName roomName,
-                             const Sprite& tilemap,
-                             const TileIndexArrays& tileIndexArrays,
-                             const Tilemap::TilemapConfig& tilemapConfig,
-                             const RoomLinkMap& roomLinkMap)
+void RoomManager::createRoom(RoomName roomName, const Sprite &tilemap, const TileIndexArrays &tileIndexArrays,
+                             const Tilemap::TilemapConfig &tilemapConfig, const RoomLinkMap &roomLinkMap)
 {
     m_tilemapManager.createTilemap(roomName, tilemap, tileIndexArrays, tilemapConfig);
     m_roomLinkManager.createRoomLink(roomName, roomLinkMap);
 }
 
 // Loads the room objects for the current room at roomIndex
-void RoomManager::roomDo(RoomAction action, size_t roomIndex)
+void RoomManager::roomDo(RoomAction, size_t)
 {
     // Check we have a room
     /*assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");
@@ -138,9 +135,7 @@ void RoomManager::roomDo(RoomAction action, size_t roomIndex)
     }*/
 }
 
-void RoomManager::transitionObjects(const size_t roomIndex,
-                                    const int xTransition,
-                                    const int yTransition)
+void RoomManager::transitionObjects(const size_t, const int, const int)
 {
     // Check we have a room
     /*assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");
@@ -218,4 +213,4 @@ RoomManager::~RoomManager()
     // m_currentRoom is now dangling!
 }
 
-}  // namespace Zelda
+} // namespace Zelda
