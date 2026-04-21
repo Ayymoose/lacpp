@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Zelda
+namespace zelda
 {
 class IUpdateable
 {
@@ -10,4 +10,4 @@ public:
     IUpdateable() = default;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Zelda
+namespace zelda
 {
 using Colour = uint32_t;
 
@@ -26,4 +26,4 @@ constexpr inline Colour makeBlue(const Colour colour)
     return (((colour) >> 16) & 0x0000FF);
 }
 
-}  // namespace Zelda
+}  // namespace zelda

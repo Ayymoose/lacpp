@@ -3,7 +3,7 @@
 #include <cassert>
 
 
-namespace Zelda
+namespace zelda
 {
 
 RoomManager::RoomManager()
@@ -213,4 +213,4 @@ RoomManager::~RoomManager()
     // m_currentRoom is now dangling!
 }
 
-} // namespace Zelda
+} // namespace zelda

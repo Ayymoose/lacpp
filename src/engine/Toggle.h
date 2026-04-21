@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Zelda
+namespace zelda
 {
 class Toggle
 {
@@ -17,4 +17,4 @@ private:
     bool m_toggle;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

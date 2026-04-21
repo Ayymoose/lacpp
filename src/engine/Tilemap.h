@@ -6,7 +6,7 @@
 #include "Sprite.h"
 #include "Renderer.h"
 
-namespace Zelda
+namespace zelda
 {
 
 class Tilemap
@@ -42,4 +42,4 @@ private:
 };
 
 
-}  // namespace Zelda
+}  // namespace zelda

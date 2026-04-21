@@ -2,7 +2,7 @@
 
 #include "Singleton.h"
 
-namespace Zelda
+namespace zelda
 {
 
 class DataManager : public Singleton<DataManager>
@@ -21,4 +21,4 @@ private:
     static void loadTailCave();
 };
 
-};  // namespace Zelda
+};  // namespace zelda

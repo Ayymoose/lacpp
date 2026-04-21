@@ -6,7 +6,7 @@
 
 // Debug output for logging
 
-namespace Zelda
+namespace zelda
 {
 
 enum DebugMask
@@ -20,7 +20,7 @@ enum DebugMask
 #define DEBUG_MACRO(MASK, MESSAGE)                                             \
     do                                                                         \
     {                                                                          \
-        Zelda::Debug::getInstance().log(MASK, MESSAGE);                        \
+        zelda::Debug::getInstance().log(MASK, MESSAGE);                        \
     } while (0);
 
 class Debug : public Singleton<Debug>
@@ -51,4 +51,4 @@ private:
     uint32_t m_currentMask;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

@@ -9,7 +9,7 @@
 #include "ResourceManager.h"
 #include "Controller.h"
 
-namespace Zelda
+namespace zelda
 {
 void Engine::init()
 {
@@ -168,4 +168,4 @@ void Engine::render() const
     Renderer::getInstance().renderScreen();
 }
 
-} // namespace Zelda
+} // namespace zelda

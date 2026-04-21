@@ -9,7 +9,7 @@
 #include "Controller.h"
 #include "Engine.h"
 
-namespace Zelda
+namespace zelda
 {
 Worldmap::Worldmap()
     : IRenderable("Worldmap",
@@ -230,4 +230,4 @@ void Worldmap::drawScope() const
     }
 }
 
-}  // namespace Zelda
+}  // namespace zelda

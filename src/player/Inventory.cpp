@@ -9,7 +9,7 @@
 #include "ResourceManager.h"
 // #include "Toggle.h"
 
-namespace Zelda
+namespace zelda
 {
 Inventory::Inventory()
     : IRenderable("Inventory", Sprite(Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
@@ -1172,4 +1172,4 @@ void Inventory::moveSelector(Direction direction)
     }
 }
 
-} // namespace Zelda
+} // namespace zelda

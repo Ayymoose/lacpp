@@ -3,7 +3,7 @@
 
 // Singleton instance of the renderer for the main window
 
-namespace Zelda
+namespace zelda
 {
 
 void Renderer::createRenderer(const Window& window)
@@ -93,4 +93,4 @@ void Renderer::popRenderingTarget(SDL_Texture* srcTexture) const
 }
 
 
-}  // namespace Zelda
+}  // namespace zelda

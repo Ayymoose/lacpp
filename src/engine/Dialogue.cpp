@@ -9,7 +9,7 @@
 #include "Random.h"
 #include "Toggle.h"
 
-namespace Zelda
+namespace zelda
 {
 
 void Dialogue::message(const std::string& message, float yPos)
@@ -452,4 +452,4 @@ void Dialogue::drawContinueArrowMarker() const
                                      m_dialogueImpl.charHeight()});
 }
 
-}  // namespace Zelda
+}  // namespace zelda

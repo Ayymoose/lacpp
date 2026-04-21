@@ -3,7 +3,7 @@
 #include "Renderer.h"
 #include <SDL_image.h>
 
-namespace Zelda
+namespace zelda
 {
 
 void ResourceManager::loadSprite(SpriteResource resource,
@@ -30,4 +30,4 @@ std::shared_ptr<Sprite> ResourceManager::operator[](SpriteResource resource)
     return sprite;
 }
 
-}  // namespace Zelda
+}  // namespace zelda

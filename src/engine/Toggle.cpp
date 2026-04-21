@@ -1,6 +1,6 @@
 #include "Toggle.h"
 
-namespace Zelda
+namespace zelda
 {
 Toggle::Toggle(int toggleAfterTicks)
     : m_currentTick(0)
@@ -28,4 +28,4 @@ Toggle::operator bool()
 
     return m_toggle;
 }
-}  // namespace Zelda
+}  // namespace zelda

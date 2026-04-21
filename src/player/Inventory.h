@@ -9,7 +9,7 @@
 
 #include "InventoryImpl.h"
 
-namespace Zelda
+namespace zelda
 {
 // Initial selector position and increases
 constexpr int SELECTOR_INITIAL_X = 6;
@@ -361,4 +361,4 @@ private:
 
     */
 };
-}  // namespace Zelda
+}  // namespace zelda

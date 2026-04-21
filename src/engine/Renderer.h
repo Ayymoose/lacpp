@@ -11,7 +11,7 @@
 
 // Singleton instance of the renderer for the main window
 
-namespace Zelda
+namespace zelda
 {
 
 class Renderer : public Singleton<Renderer>
@@ -73,4 +73,4 @@ private:
     // Multiset of Renderable objects that will be drawn
     std::multiset<IRenderable*, RendererComparator> m_renderables;
 };
-}  // namespace Zelda
+}  // namespace zelda

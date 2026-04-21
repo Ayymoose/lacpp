@@ -13,7 +13,7 @@
 #include <memory>
 
 
-namespace Zelda
+namespace zelda
 {
 // RGB components of text colour
 constexpr int TEXT_R = 248;
@@ -83,4 +83,4 @@ private:
     void drawQuestionMarker() const;
     void drawContinueArrowMarker() const;
 };
-}  // namespace Zelda
+}  // namespace zelda

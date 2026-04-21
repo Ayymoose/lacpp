@@ -3,7 +3,7 @@
 #include <random>
 #include <cassert>
 
-namespace Zelda
+namespace zelda
 {
 
 struct Random
@@ -53,4 +53,4 @@ struct Random
     }
 };
 
-}  // namespace Zelda
+}  // namespace zelda

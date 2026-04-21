@@ -25,7 +25,7 @@ constexpr int CHAR_WIDTH = 8;
 constexpr int CHAR_HEIGHT = 8;
 }  // namespace
 
-namespace Zelda
+namespace zelda
 {
 DialogueImpl::DialogueImpl()
     : m_optionPaddingLength(0)
@@ -260,4 +260,4 @@ void DialogueImpl::checkForNewMessages(const int currentChar)
     }
 }
 
-}  // namespace Zelda
+}  // namespace zelda

@@ -10,7 +10,7 @@
 #include "Singleton.h"
 #include "Sprite.h"
 
-namespace Zelda
+namespace zelda
 {
 
 namespace fs = std::filesystem;
@@ -71,4 +71,4 @@ private:
     // Map between resources and pointer to all textures
     std::unordered_map<SpriteResource, std::shared_ptr<Sprite>> m_spriteResources;
 };
-}  // namespace Zelda
+}  // namespace zelda

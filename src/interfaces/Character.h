@@ -5,7 +5,7 @@
 
 // Defines a base class for which NPC, Boss, enemies inherit from
 
-namespace Zelda
+namespace zelda
 {
 
 class Character : public BasicCharacter
@@ -26,4 +26,4 @@ protected:
     virtual void move() = 0;
 };
 
-}  // namespace Zelda
+}  // namespace zelda

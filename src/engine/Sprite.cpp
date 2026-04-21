@@ -1,7 +1,7 @@
 #include "Sprite.h"
 
 // Wrapper class around an SDL_Texture
-namespace Zelda
+namespace zelda
 {
 
 Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
@@ -160,4 +160,4 @@ void swap(Sprite& sprite1, Sprite& sprite2) noexcept
 }
 
 
-}  // namespace Zelda
+}  // namespace zelda
