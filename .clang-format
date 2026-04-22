@@ -10,6 +10,8 @@ AllowShortLambdasOnASingleLine: Inline
 AlwaysBreakBeforeMultilineStrings: false
 BinPackArguments: false
 BreakBeforeBraces: Custom
+PointerAlignment: Left
+AlwaysBreakTemplateDeclarations: Yes
 BraceWrapping:
   AfterCaseLabel: true
   AfterClass: true
