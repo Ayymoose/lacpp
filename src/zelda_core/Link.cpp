@@ -21,24 +21,12 @@ Vector<int> Link::dungeonMarkerLocation() const
 }*/
 
 Link::Link()
-    : IRenderable("Link", *engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER)
+    : IRenderable("Link", *engine::ResourceManager::instance()[engine::SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER)
     , Controllable(m_name)
     , m_healthMax(3)
     , m_speedX(0)
     , m_speedY(0)
-    , m_useShield(false)
-    , m_dirLockRight(false)
-    , m_dirLockUp(false)
-    , m_dirLockDown(false)
-    , m_dirLockLeft(false)
-    , m_canUseArrow(true)
-    , m_usingArrow(false)
-    , m_moveable(true)
-    , m_moving(false)
-    , m_usingSword(false)
     , m_state(LINK_WALK_UP)
-    , m_useWeapon(false)
-    , m_usingWeapon(false)
 {
     // TODO: m_width/height is for the renderable element only so we do nned it
     m_width = 16;
@@ -57,7 +45,7 @@ Link::Link()
 
     // m_inventory.addItem(DungeonItem::ITEM_NIGHTMARE_KEY);
 
-    engine::Renderer::getInstance().addRenderable(this);
+    engine::Renderer::instance().addRenderable(this);
 }
 
 float Link::health() const
@@ -106,8 +94,8 @@ void Link::render()
     // Where to draw on screen
     m_dstRect = {// TODO: Create method that returns the destRect in camera
                  // co-ordinates e.g cameraCoordinate()
-                 m_position.x - engine::Camera::getInstance().getX(),
-                 m_position.y - engine::Camera::getInstance().getY(),
+                 m_position.x - engine::Camera::instance().getX(),
+                 m_position.y - engine::Camera::instance().getY(),
                  static_cast<float>(m_width),
                  static_cast<float>(m_height)};
 
@@ -124,45 +112,45 @@ void Link::render()
 
 void Link::control()
 {
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_LEFT))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_LEFT))
     {
         m_position.x -= 1;
     }
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_RIGHT))
     {
         m_position.x += 1;
     }
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_DOWN))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_DOWN))
     {
         m_position.y += 1;
     }
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_UP))
     {
         m_position.y -= 1;
     }
 
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_SELECT))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_SELECT))
     {
         // m_inventory.inDungeon(true);
         m_inventory.open();
         // Controller::getInstance().setController();
-        engine::Controller::getInstance().pushController(&m_inventory);
+        engine::Controller::instance().pushController(&m_inventory);
     }
 }
 
 void Link::attack()
 {
-    if (engine::Keyboard::getInstance()[BUTTON_A])
+    if (engine::Keyboard::instance()[BUTTON_A])
     {
         // useWeapon(m_inventory.weaponA().first);
     }
-    if (engine::Keyboard::getInstance()[BUTTON_B])
+    if (engine::Keyboard::instance()[BUTTON_B])
     {
         // useWeapon(m_inventory.weaponB().first);
     }
 
 
-    if (engine::Keyboard::getInstance().keyReleased(BUTTON_A))
+    if (engine::Keyboard::instance().keyReleased(BUTTON_A))
     {
         /*if (m_inventory.weaponA().first == WPN_SHIELD)
         {
@@ -170,7 +158,7 @@ void Link::attack()
             updateState();
         }*/
     }
-    if (engine::Keyboard::getInstance().keyReleased(BUTTON_B))
+    if (engine::Keyboard::instance().keyReleased(BUTTON_B))
     {
         /*if (m_inventory.weaponB().first == WPN_SHIELD)
         {
@@ -215,7 +203,7 @@ void Link::replenish(float hearts)
 // Link control
 void Link::move()
 {
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_RIGHT))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_RIGHT))
     {
         // TODO: Diagonal speed lock
         m_speedX = m_speed;
@@ -282,7 +270,7 @@ void Link::move()
         }
     }
 
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_LEFT))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_LEFT))
     {
         m_speedX = -m_speed;
 
@@ -347,7 +335,7 @@ void Link::move()
             m_dir = Direction::DIRECTION_LEFT;
         }
     }
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_UP))
     {
         m_speedY = -m_speed;
 
@@ -412,7 +400,7 @@ void Link::move()
             m_dir = Direction::DIRECTION_UP;
         }
     }
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_DOWN))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_DOWN))
     {
         m_speedY = m_speed;
 

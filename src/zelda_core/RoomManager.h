@@ -26,9 +26,9 @@ enum class RoomDirection
 
 class RoomManager : public engine::Singleton<RoomManager>
 {
-    friend class Singleton<RoomManager>;
-
 public:
+    RoomManager();
+    ~RoomManager();
     // Sets the room to use
     void useRoom(RoomName roomName);
     void setRoomLocation(const int roomLocation);
@@ -48,8 +48,6 @@ public:
     void updateNextRoomPosition(const int x, const int y);
 
 private:
-    RoomManager();
-    ~RoomManager();
 
     RoomLinkManager m_roomLinkManager;
     TilemapManager m_tilemapManager;

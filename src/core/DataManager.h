@@ -7,13 +7,12 @@ namespace zelda::engine
 
 class DataManager : public Singleton<DataManager>
 {
-    friend class Singleton<DataManager>;
-
 public:
+    DataManager() = default;
+
     void loadData() const;
 
 private:
-    DataManager() = default;
 
     static void loadSprites();
     void loadRooms() const;

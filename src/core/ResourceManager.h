@@ -57,14 +57,13 @@ enum class SpriteResource
 
 class ResourceManager : public Singleton<ResourceManager>
 {
-    friend class Singleton<ResourceManager>;
-
 public:
+    ResourceManager() = default;
+
     void loadSprite(SpriteResource resource, const std::string& path, const Colour transparencyColour);
     std::shared_ptr<Sprite> operator[](SpriteResource resource);
 
 private:
-    ResourceManager() = default;
 
     // Map between resources and pointer to all textures
     std::unordered_map<SpriteResource, std::shared_ptr<Sprite>> m_spriteResources;

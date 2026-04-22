@@ -14,9 +14,13 @@ constexpr const char* MAIN_WINDOW_TITLE = "Link's Awakening";
 
 class Engine : public Singleton<Engine>
 {
-    friend class Singleton<Engine>;
-
 public:
+    Engine()
+        : m_enginePaused(false)
+        , m_engineRunning(false)
+        , m_initialised(false)
+        , m_preRenderTestFunction(nullptr)
+    {}
     void init();
 
     void run();
@@ -34,12 +38,6 @@ public:
     void initData() const;
 
 private:
-    Engine()
-        : m_enginePaused(false)
-        , m_engineRunning(false)
-        , m_initialised(false)
-        , m_preRenderTestFunction(nullptr)
-    {}
     void events();
     void update() const;
     void render() const;

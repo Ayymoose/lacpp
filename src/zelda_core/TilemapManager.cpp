@@ -74,7 +74,7 @@ void TilemapManager::renderTileMap(const engine::Rect<int>& dstRect, const engin
     assert(m_tilemaps.count(m_currentTilemapname) && "Invalid tilemap");
 
     // Tile the texture
-    m_tilemaps[m_currentTilemapname].tile(engine::Renderer::getInstance(), srcTexture, roomIndex);
+    m_tilemaps[m_currentTilemapname].tile(engine::Renderer::instance(), srcTexture, roomIndex);
 
     // Finally render the canvas
     srcTexture.drawSprite(engine::Rect<int>{}, dstRect);
@@ -82,7 +82,7 @@ void TilemapManager::renderTileMap(const engine::Rect<int>& dstRect, const engin
 
 TilemapManager::TilemapManager()
     : IRenderable("TilemapManager",
-                  engine::Sprite(engine::Renderer::getInstance().getRenderer(), engine::CAMERA_WIDTH,
+                  engine::Sprite(engine::Renderer::instance().getRenderer(), engine::CAMERA_WIDTH,
                                  engine::CAMERA_HEIGHT),
                   ZD_DEPTH_BACKGROUND)
     , m_roomX(0)
@@ -92,11 +92,11 @@ TilemapManager::TilemapManager()
     , m_currentRoom(0)
     , m_nextRoom(0)
     , m_currentTilemapname(RoomName::RM_NONE)
-    , m_swapCanvas(engine::Renderer::getInstance().getRenderer(), m_sprite->width(), m_sprite->height())
+    , m_swapCanvas(engine::Renderer::instance().getRenderer(), m_sprite->width(), m_sprite->height())
 {
     assert(m_sprite->data());
     assert(m_swapCanvas.data());
-    engine::Renderer::getInstance().addRenderable(this);
+    engine::Renderer::instance().addRenderable(this);
 }
 
 }; // namespace zelda::core

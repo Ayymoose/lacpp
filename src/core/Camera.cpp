@@ -10,7 +10,7 @@ namespace zelda::engine
 {
 
 Camera::Camera()
-    : IRenderable("Camera", Sprite(Renderer::getInstance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT),
+    : IRenderable("Camera", Sprite(Renderer::instance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT),
                   core::ZD_DEPTH_BACKGROUND)
     , m_scrollX(0)
     , m_scrollY(0)
@@ -29,7 +29,7 @@ Camera::Camera()
 {
     assert(m_sprite->data());
     // TODO: Remove Camera from Renderable
-    Renderer::getInstance().addRenderable(this);
+    Renderer::instance().addRenderable(this);
 }
 
 void Camera::setPosition(const int x, const int y)
@@ -43,7 +43,7 @@ void Camera::setPosition(const int x, const int y)
 void Camera::render()
 {
     // We will only ever track the player
-    auto player = &core::Link::getInstance();
+    auto player = &core::Link::instance();
     auto const position = player->position();
     auto const x = position.x;
     auto const y = position.y;
@@ -62,10 +62,10 @@ void Camera::render()
     {
         // Scroll left
         m_scrollLeft = true;
-        Controller::getInstance().setController(nullptr);
+        Controller::instance().setController(nullptr);
 
         // Pause engine
-        Engine::getInstance().pause(true);
+        Engine::instance().pause(true);
 
         // Load next room objects
         // RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex - 1);
@@ -76,16 +76,16 @@ void Camera::render()
         m_swapY = 0;
 
         // Find out if we can scroll left
-        core::RoomManager::getInstance().updateNextRoomLocation(core::RoomDirection::LEFT);
+        core::RoomManager::instance().updateNextRoomLocation(core::RoomDirection::LEFT);
     }
     else if (x > m_scrollX + CAMERA_WIDTH - SCROLL_RIGHT_EDGE && !m_scrollRight)
     {
         // Scroll right
         m_scrollRight = true;
-        Controller::getInstance().setController(nullptr);
+        Controller::instance().setController(nullptr);
 
         // Pause engine
-        Engine::getInstance().pause(true);
+        Engine::instance().pause(true);
 
         // Load next room objects
         // RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD, m_nextRoomIndex + 1);
@@ -96,16 +96,16 @@ void Camera::render()
         m_swapY = 0;
 
         // Find out if we can scroll right
-        core::RoomManager::getInstance().updateNextRoomLocation(core::RoomDirection::RIGHT);
+        core::RoomManager::instance().updateNextRoomLocation(core::RoomDirection::RIGHT);
     }
     else if (y < m_scrollY - SCROLL_UP_EDGE && !m_scrollUp)
     {
         // Scroll up
         m_scrollUp = true;
-        Controller::getInstance().setController(nullptr);
+        Controller::instance().setController(nullptr);
 
         // Pause engine
-        Engine::getInstance().pause(true);
+        Engine::instance().pause(true);
 
         // Load next room objects
         // RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD,
@@ -119,7 +119,7 @@ void Camera::render()
         m_swapY = -CAMERA_HEIGHT;
 
         // Find out if we can scroll up
-        core::RoomManager::getInstance().updateNextRoomLocation(core::RoomDirection::UP);
+        core::RoomManager::instance().updateNextRoomLocation(core::RoomDirection::UP);
     }
     else if (y > m_scrollY + CAMERA_HEIGHT - SCROLL_DOWN_EDGE && !m_scrollDown)
     {
@@ -127,10 +127,10 @@ void Camera::render()
 
         // Scroll down
         m_scrollDown = true;
-        Controller::getInstance().setController(nullptr);
+        Controller::instance().setController(nullptr);
 
         // Pause engine
-        Engine::getInstance().pause(true);
+        Engine::instance().pause(true);
 
         // Load next room objects
         // RoomManager::getInstance().roomDo(RoomAction::ROOM_LOAD,
@@ -142,7 +142,7 @@ void Camera::render()
         m_swapY = CAMERA_HEIGHT;
 
         // Find out if we can scroll down
-        core::RoomManager::getInstance().updateNextRoomLocation(core::RoomDirection::DOWN);
+        core::RoomManager::instance().updateNextRoomLocation(core::RoomDirection::DOWN);
     }
 
     // auto dungeonMarker = player->dungeonMarkerLocation();
@@ -185,15 +185,15 @@ void Camera::render()
             player->setPosition(CAMERA_WIDTH + player->position().x, player->position().y);
 
             // Unpause engine
-            Engine::getInstance().pause(false);
+            Engine::instance().pause(false);
 
             m_scrollLeft = false;
             m_scrolled = 0;
-            Controller::getInstance().setController(player);
+            Controller::instance().setController(player);
             player->resetAnimation();
 
             // Update room information
-            core::RoomManager::getInstance().updateCurrentRoomLocation();
+            core::RoomManager::instance().updateCurrentRoomLocation();
 
             // dungeonMarker.x--;
         }
@@ -232,15 +232,15 @@ void Camera::render()
             player->setPosition(player->position().x - CAMERA_WIDTH, player->position().y);
 
             // Unpause engine
-            Engine::getInstance().pause(false);
+            Engine::instance().pause(false);
 
             m_scrollRight = false;
             m_scrolled = 0;
-            Controller::getInstance().setController(player);
+            Controller::instance().setController(player);
             player->resetAnimation();
 
             // Update room information
-            core::RoomManager::getInstance().updateCurrentRoomLocation();
+            core::RoomManager::instance().updateCurrentRoomLocation();
 
             // dungeonMarker.x++;
         }
@@ -261,7 +261,7 @@ void Camera::render()
         else
         {
             // Unpause engine
-            Engine::getInstance().pause(false);
+            Engine::instance().pause(false);
 
             // Clear previous room's objects
             // Shift previous object's out of view otherwise they will flicker on screen before disappearing
@@ -283,11 +283,11 @@ void Camera::render()
 
             m_scrollDown = false;
             m_scrolled = 0;
-            Controller::getInstance().setController(player);
+            Controller::instance().setController(player);
             player->resetAnimation();
 
             // Update room information
-            core::RoomManager::getInstance().updateCurrentRoomLocation();
+            core::RoomManager::instance().updateCurrentRoomLocation();
 
             // dungeonMarker.y++;
         }
@@ -326,15 +326,15 @@ void Camera::render()
             player->setPosition(player->position().x, CAMERA_HEIGHT + player->position().y);
 
             // Unpause engine
-            Engine::getInstance().pause(false);
+            Engine::instance().pause(false);
 
             m_scrollUp = false;
             m_scrolled = 0;
-            Controller::getInstance().setController(player);
+            Controller::instance().setController(player);
             player->resetAnimation();
 
             // Update room information
-            core::RoomManager::getInstance().updateCurrentRoomLocation();
+            core::RoomManager::instance().updateCurrentRoomLocation();
 
             // TODO: This needs a mapping from the room position as with looping
             // rooms, this will just keep decrementing dungeonMarker.y--;
@@ -344,8 +344,8 @@ void Camera::render()
     // Set position of dungeon marker if Link in dungeon
     // player->setDungeonMarkerLocation(dungeonMarker.x, dungeonMarker.y);
 
-    core::RoomManager::getInstance().updateCurrentRoomPosition(m_screenX - m_scrollX, m_screenY - m_scrollY);
-    core::RoomManager::getInstance().updateNextRoomPosition((m_screenX - m_scrollX) + m_swapX,
+    core::RoomManager::instance().updateCurrentRoomPosition(m_screenX - m_scrollX, m_screenY - m_scrollY);
+    core::RoomManager::instance().updateNextRoomPosition((m_screenX - m_scrollX) + m_swapX,
                                                             (m_screenY - m_scrollY) + m_swapY);
 }
 

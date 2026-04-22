@@ -34,9 +34,8 @@ constexpr float WORLDMAP_LOCATION_FPS = (1.0f / 6.0f);
 
 class Worldmap : public IRenderable, public Controllable, public engine::Singleton<Worldmap>
 {
-    friend class Singleton<Worldmap>;
-
 public:
+    Worldmap();
     void control() override;
     void render() override;
     void open();
@@ -47,7 +46,6 @@ public:
     void setLocation(const int x, const int y);
 
 private:
-    Worldmap();
 
     uint8_t m_scopeX;
     uint8_t m_scopeY;

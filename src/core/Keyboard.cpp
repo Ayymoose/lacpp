@@ -22,11 +22,11 @@ void Keyboard::eventHandler(SDL_Event event)
     switch (event.type)
     {
     case SDL_KEYDOWN:
-        Keyboard::getInstance().updateKeyStates(event.key.keysym.scancode, true, false);
+        Keyboard::instance().updateKeyStates(event.key.keysym.scancode, true, false);
         // If key was released in the next frame, set it to not released now
         break;
     case SDL_KEYUP:
-        Keyboard::getInstance().updateKeyStates(event.key.keysym.scancode, false, true);
+        Keyboard::instance().updateKeyStates(event.key.keysym.scancode, false, true);
         // Set key released to true on this frame
         break;
     }

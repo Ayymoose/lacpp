@@ -27,9 +27,8 @@ constexpr int CAMERA_SCROLL_SPEED = 4;
 
 class Camera : public IRenderable, public Singleton<Camera>, public IUpdateable
 {
-    friend class Singleton<Camera>;
-
 public:
+    Camera();
     void setPosition(const int x, const int y);
     void setScrollSpeed(const int scrollSpeed);
 
@@ -66,7 +65,6 @@ public:
     Vector<float> position() const;
 
 private:
-    Camera();
 
     // m_scrollX and m_scrollY are manipulated to achieve scrolling
     int m_scrollX;

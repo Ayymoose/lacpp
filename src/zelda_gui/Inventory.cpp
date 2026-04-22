@@ -13,10 +13,10 @@ namespace zelda::gui
 {
 Inventory::Inventory()
     : IRenderable("Inventory",
-                  engine::Sprite(engine::Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
+                  engine::Sprite(engine::Renderer::instance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
                   core::ZD_DEPTH_INVENTORY)
     , Controllable(m_name)
-    , m_subscreen(std::make_unique<engine::Sprite>(engine::Renderer::getInstance().getRenderer(),
+    , m_subscreen(std::make_unique<engine::Sprite>(engine::Renderer::instance().getRenderer(),
                                                    SELECT_SUBSCREEN_WIDTH, SELECT_SUBSCREEN_HEIGHT))
     , m_open(false)
     , m_selectorX(SELECTOR_INITIAL_X)
@@ -37,37 +37,37 @@ Inventory::Inventory()
 
     // Initialise inventory
 
-    engine::Renderer::getInstance().addRenderable(this);
+    engine::Renderer::instance().addRenderable(this);
 }
 
 void Inventory::control()
 {
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_A))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_A))
     {
         m_inventoryImpl.swapItemA();
     }
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_B))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_B))
     {
         m_inventoryImpl.swapItemB();
     }
 
     // Show the subscreen only when the select key is pushed
     // TODO: Transition it in
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_SELECT))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_SELECT))
     {
         m_selectPressed = true;
     }
-    else if (engine::Keyboard::getInstance().keyReleased(BUTTON_SELECT))
+    else if (engine::Keyboard::instance().keyReleased(BUTTON_SELECT))
     {
         m_selectPressed = false;
     }
 
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_START))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_START))
     {
         close();
-        engine::Controller::getInstance().popController();
-        core::Link::getInstance().updateState();
-        engine::Engine::getInstance().pause(false);
+        engine::Controller::instance().popController();
+        core::Link::instance().updateState();
+        engine::Engine::instance().pause(false);
         DEBUG_MACRO(engine::DBG_INFO, "Inventory closed!");
     }
 
@@ -82,33 +82,33 @@ void Inventory::control()
     // If it was pressed and hadn't been released yet,
 
     // This code controls the selector through arrow keys
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
     {
         moveSelector(core::Direction::DIRECTION_RIGHT);
     }
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_LEFT))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
     {
         moveSelector(core::Direction::DIRECTION_LEFT);
     }
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
     {
         moveSelector(core::Direction::DIRECTION_UP);
     }
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_DOWN))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
     {
         moveSelector(core::Direction::DIRECTION_DOWN);
     }
 
     // If any select keys pressed, reset the flashing animation
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_RIGHT)
-        || engine::Keyboard::getInstance().keyPushed(BUTTON_LEFT)
-        || engine::Keyboard::getInstance().keyPushed(BUTTON_DOWN)
-        || engine::Keyboard::getInstance().keyPushed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_RIGHT)
+        || engine::Keyboard::instance().keyPushed(BUTTON_LEFT)
+        || engine::Keyboard::instance().keyPushed(BUTTON_DOWN)
+        || engine::Keyboard::instance().keyPushed(BUTTON_UP))
     {
         m_flashSelector = true;
     }
 
-    if (engine::Keyboard::getInstance().keyReleased(BUTTON_SELECT))
+    if (engine::Keyboard::instance().keyReleased(BUTTON_SELECT))
     {
         m_selectPressed = true;
     }
@@ -254,7 +254,7 @@ void Inventory::drawDungeonMap()
         assert(false);
     }
 
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Draw dungeon map level
     engine::Rect<int> dstRectMapLevel = {72, 64, 8, 8};
@@ -415,7 +415,7 @@ void Inventory::drawDungeonMap()
             dstRect.x += x * srcRect.w;
             dstRect.y += y * srcRect.w;
 
-            engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+            engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
             auto const dungeonPosition = m_inventoryImpl.dungeonMapPositionLocation();
             // Draw current location flashing
@@ -438,10 +438,10 @@ void Inventory::drawSelectStatus()
     // srcRect = m_inventorySpritesSrc[INVENTORY_RED_ARROW];
     // dstRect = m_inventorySpritesDst[INVENTORY_RED_ARROW];
 
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     dstRect.x += 73;
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // srcRect = m_inventorySpritesSrc[INVENTORY_PUSH_SELECT];
     // dstRect = m_inventorySpritesDst[INVENTORY_PUSH_SELECT];
@@ -451,7 +451,7 @@ void Inventory::drawSelectStatus()
     // Draw "PUSH SELECT"
     if (m_flashSelect)
     {
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 }
 
@@ -463,20 +463,20 @@ void Inventory::drawMiscItems()
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_FLIPPERS];
         // dstRect = m_inventorySpritesDst[INVENTORY_FLIPPERS];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.miscItemExists(core::InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_POTION];
         // dstRect = m_inventorySpritesDst[INVENTORY_POTION];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     // Draw number of seashells
     // srcRect = m_inventorySpritesSrc[INVENTORY_SEASHELLS];
     // dstRect = m_inventorySpritesDst[INVENTORY_SEASHELLS];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     dstRect.w = 8;
     dstRect.h = 8;
@@ -505,35 +505,35 @@ void Inventory::drawInventoryItems()
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_TAIL_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_TAIL_KEY];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::DUNGEON_ENTRACE_KEY_SLIME))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_SLIME_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_SLIME_KEY];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::DUNGEON_ENTRACE_KEY_ANGLER))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_ANGLER_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_ANGLER_KEY];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::DUNGEON_ENTRACE_KEY_FACE))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_FACE_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_FACE_KEY];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::DUNGEON_ENTRACE_KEY_BIRD))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_BIRD_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_BIRD_KEY];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     drawInstruments();
@@ -547,28 +547,28 @@ void Inventory::drawDungeonItems()
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
         // dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.dungeonItem(core::DungeonItem::DUNGEON_ITEM_NIGHTMARE_KEY))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.dungeonItem(core::DungeonItem::DUNGEON_ITEM_OWL_BEAK))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
         // dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     if (m_inventoryImpl.dungeonItem(core::DungeonItem::DUNGEON_ITEM_MAP))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
         // dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
     // Draw the dungeon map
@@ -577,7 +577,7 @@ void Inventory::drawDungeonItems()
     // Draw dungeon keys
     // srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_KEY];
     // dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_KEY];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     dstRect.w = 8;
     dstRect.h = 8;
@@ -656,7 +656,7 @@ void Inventory::drawHealth()
 
     auto drawHeart = [&]()
     {
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
         dstRect.x += srcRect.w;
 
         // Append to new row of hearts
@@ -697,7 +697,7 @@ void Inventory::drawInventoryWeapons()
     // Instead of creating an object for each item we have
     // We just render the items we have to a single texture
     // and render that instead
-    auto const currentRenderingTarget = engine::Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
     auto const inventoryItems = m_inventoryImpl.inventoryItems();
 
     for (int i = 0; i < std::ssize(inventoryItems); ++i)
@@ -713,11 +713,11 @@ void Inventory::drawInventoryWeapons()
                        INVENTORY_SPRITE_WIDTH,
                        INVENTORY_SPRITE_HEIGHT};
             // Draw the inventory items onto the internal inventory
-            engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+            engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
         }
     }
 
-    engine::Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
+    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 
     for (int i = 0; i < std::ssize(inventoryItems); ++i)
     {
@@ -735,7 +735,7 @@ void Inventory::drawInventoryWeapons()
 
 void Inventory::drawSelector()
 {
-    auto const currentRenderingTarget = engine::Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
 
     engine::Rect<int> srcRect, dstRect;
     // Render the selector
@@ -747,15 +747,15 @@ void Inventory::drawSelector()
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
         dstRect = {m_selectorX, m_selectorY, srcRect.w, srcRect.h};
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
-    engine::Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
+    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawInventoryDividers()
 {
     engine::Rect<int> srcRect, dstRect;
-    auto const currentRenderingTarget = engine::Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
 
     // srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
 
@@ -766,7 +766,7 @@ void Inventory::drawInventoryDividers()
                    INVENTORY_DIVIDER_YH,
                    INVENTORY_DIVIDER_WIDTH_H,
                    INVENTORY_DIVIDER_HEIGHT_H};
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
     // srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_V];
     //  Draw vertical divider
@@ -776,40 +776,40 @@ void Inventory::drawInventoryDividers()
                    INVENTORY_DIVIDER_YV + i + INVENTORY_DIVIDER_HEIGHT_V * i,
                    INVENTORY_DIVIDER_WIDTH_V,
                    INVENTORY_DIVIDER_HEIGHT_V};
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
     }
 
-    engine::Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
+    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawHUD()
 {
-    auto const currentRenderingTarget = engine::Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
     engine::Rect<int> srcRect, dstRect;
 
     // Copy "B"
     // srcRect = m_inventorySpritesSrc[INVENTORY_B_BUTTON];
     // dstRect = m_inventorySpritesDst[INVENTORY_B_BUTTON];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Copy "A"
     // srcRect = m_inventorySpritesSrc[INVENTORY_A_BUTTON];
     // dstRect = m_inventorySpritesDst[INVENTORY_A_BUTTON];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Copy selector
     // srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_1];
     // dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_1];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // srcRect = m_inventorySpritesSrc[INVENTORY_SELECTOR_BUTTON_2];
     // dstRect = m_inventorySpritesDst[INVENTORY_SELECTOR_BUTTON_2];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Ruppee icon
     // srcRect = m_inventorySpritesSrc[INVENTORY_RUPPEE];
     // dstRect = m_inventorySpritesDst[INVENTORY_RUPPEE];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Draw health
     drawHealth();
@@ -820,7 +820,7 @@ void Inventory::drawHUD()
         // Draw the actual weapon
         // srcRect = inventoryWeaponSpriteSrc(m_weaponA);
         dstRect = {48, 0, srcRect.w, srcRect.h};
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
         // Draw the weapon level
         dstRect = {56, 8, 8, 8};
@@ -832,7 +832,7 @@ void Inventory::drawHUD()
     {
         // srcRect = inventoryWeaponSpriteSrc(m_weaponB);
         dstRect = {8, 0, srcRect.w, srcRect.h};
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
         dstRect = {16, 8, 8, 8};
         drawInventoryItemAttribute(*m_sprite, m_inventoryImpl.itemB(), dstRect);
@@ -843,7 +843,7 @@ void Inventory::drawHUD()
     drawNumber(*m_sprite, false, true, 2, m_inventoryImpl.rupees(), dstRect);
 
     // Pop rendering target
-    engine::Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
+    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawInventoryBackground()
@@ -874,7 +874,7 @@ void Inventory::drawSubscreen() const
     engine::Rect<int> dstRect; // = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
     engine::Rect<int> srcRect = {0, 0, dstRect.w, dstRect.h};
     m_subscreen->drawSprite(srcRect, dstRect);
-    auto currentRenderingTarget = engine::Renderer::getInstance().pushRenderingTarget(*m_subscreen);
+    auto currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_subscreen);
 
     // Tunic
     // srcRect = m_inventorySpritesSrc[INVENTORY_TUNIC];
@@ -893,28 +893,28 @@ void Inventory::drawSubscreen() const
     }
 
     // dstRect = m_inventorySpritesDst[INVENTORY_TUNIC];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Heart pieces
     // srcRect = m_inventorySpritesSrc[INVENTORY_HEART_PIECES];
     // dstRect = m_inventorySpritesDst[INVENTORY_HEART_PIECES];
 
     srcRect.x += (m_inventoryImpl.heartPieces() * (srcRect.w + 2));
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Photographs
     // srcRect = m_inventorySpritesSrc[INVENTORY_PHOTOGRAPHS];
     // dstRect = m_inventorySpritesDst[INVENTORY_PHOTOGRAPHS];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Inventory "/"
     // srcRect = m_inventorySpritesSrc[INVENTORY_SLASH];
     // dstRect = m_inventorySpritesDst[INVENTORY_SLASH];
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     dstRect.x = 64;
     dstRect.y = 8;
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, dstRect);
 
     // Draw how many heart pieces we have (out of 4)
     dstRect = {56, 7, 8, 8};
@@ -929,7 +929,7 @@ void Inventory::drawSubscreen() const
     drawNumber(*m_subscreen, false, false, 1, core::MAX_PHOTOGRAPHS, dstRect);
 
     // Remember! This resets the drawing target to the screen
-    engine::Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
+    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 // Draw a number or level onto a texture
@@ -952,7 +952,7 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
     assert(dstRect != engine::Rect<int>());
 
     // Save the current renderering target
-    auto const currentRenderingTarget = engine::Renderer::getInstance().pushRenderingTarget(srcSprite);
+    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(srcSprite);
 
     engine::Rect<int> srcRect;
     auto rectDst = dstRect;
@@ -962,7 +962,7 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
     {
         // Draw the "L-"
         // srcRect = m_inventorySpritesSrc[INVENTORY_LEVEL];
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
 
         if (useNormalFont)
         {
@@ -975,7 +975,7 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
 
         srcRect.x += 2 * number + srcRect.w * number;
         rectDst.x += srcRect.w;
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
     }
     else
     {
@@ -1023,7 +1023,7 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
         // Add any trailing digits if needed in front of the number
         for (int i = 0; i < (number == 0 ? trailingDigits : trailingDigits + 1 - numberLength); i++)
         {
-            engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
+            engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
             rectDst.x += srcRect.w;
         }
 
@@ -1040,7 +1040,7 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
             }
 
             srcRect.x += 2 * (number % 10) + srcRect.w * (number % 10);
-            engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
+            engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
             rectDst.x += srcRect.w;
             number /= 10;
         } while (number != 0);
@@ -1057,12 +1057,12 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
         // Draw any reversed number whose 0 was lost
         for (int i = 0; i < trailingZeros; i++)
         {
-            engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
+            engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]->drawSprite(srcRect, rectDst);
             rectDst.x += srcRect.w;
         }
     }
     // Restore "pop" the target backk
-    engine::Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
+    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawInventoryItemAttribute(const engine::Sprite& srcSprite, const core::InventoryItem& item,

@@ -16,19 +16,19 @@ void Dialogue::message(const std::string& message, float yPos)
 {
     // Displays a message on screen to the player
     // Engine is paused while the message is being displayed
-    engine::Engine::getInstance().pause(true);
+    engine::Engine::instance().pause(true);
 
-    if (!engine::Renderer::getInstance().inRenderSet(this))
+    if (!engine::Renderer::instance().inRenderSet(this))
     {
-        engine::Renderer::getInstance().addRenderable(this);
+        engine::Renderer::instance().addRenderable(this);
     }
 
     m_dialogueImpl.message(message, yPos);
 
     // Switch controller over to this if there is one
-    if (engine::Controller::getInstance().getController() != this)
+    if (engine::Controller::instance().getController() != this)
     {
-        engine::Controller::getInstance().pushController(this);
+        engine::Controller::instance().pushController(this);
     }
 }
 
@@ -36,19 +36,19 @@ void Dialogue::question(const std::string& question, const std::string& choice1,
 {
     // Displays a message on screen to the player
     // Engine is paused while the message is being displayed
-    engine::Engine::getInstance().pause(true);
+    engine::Engine::instance().pause(true);
 
-    if (!engine::Renderer::getInstance().inRenderSet(this))
+    if (!engine::Renderer::instance().inRenderSet(this))
     {
-        engine::Renderer::getInstance().addRenderable(this);
+        engine::Renderer::instance().addRenderable(this);
     }
 
     m_dialogueImpl.question(question, choice1, choice2, yPos);
 
     // Switch controller over to this if there is one
-    if (engine::Controller::getInstance().getController() != this)
+    if (engine::Controller::instance().getController() != this)
     {
-        engine::Controller::getInstance().pushController(this);
+        engine::Controller::instance().pushController(this);
     }
 }
 
@@ -300,7 +300,7 @@ void Dialogue::update()
 
 void Dialogue::control()
 {
-    if (m_continue && engine::Keyboard::getInstance().keyPressed(BUTTON_B))
+    if (m_continue && engine::Keyboard::instance().keyPressed(BUTTON_B))
     {
         m_scrollMessage = true;
         m_continue = false;
@@ -308,23 +308,23 @@ void Dialogue::control()
         m_toggleArrow.reset();
     }
     else if ((m_currentChar == m_dialogueImpl.message().length())
-             && engine::Keyboard::getInstance().keyPressed(BUTTON_B))
+             && engine::Keyboard::instance().keyPressed(BUTTON_B))
     {
         reset();
 
         if (m_dialogueImpl.messages() == 0)
         {
             // Close dialogue box and restore control
-            engine::Controller::getInstance().popController();
+            engine::Controller::instance().popController();
 
-            engine::Renderer::getInstance().removeRenderable(this);
+            engine::Renderer::instance().removeRenderable(this);
 
-            engine::Engine::getInstance().pause(false);
+            engine::Engine::instance().pause(false);
         }
     }
     else if (m_dialogueImpl.isQuestion() && m_currentChar == m_dialogueImpl.message().length())
     {
-        if (engine::Keyboard::getInstance().keyPressed(BUTTON_RIGHT)
+        if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT)
             && m_dialogueImpl.choice() != m_dialogueImpl.choice2())
         {
             m_questionXPos += (m_dialogueImpl.choice().length() + 2) * m_dialogueImpl.charWidth();
@@ -332,7 +332,7 @@ void Dialogue::control()
             // If pressed right once
             // Choice is 2
         }
-        else if (engine::Keyboard::getInstance().keyPressed(BUTTON_LEFT)
+        else if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT)
                  && m_dialogueImpl.choice() != m_dialogueImpl.choice1())
         {
             // If pressed left once
@@ -345,7 +345,7 @@ void Dialogue::control()
 
 Dialogue::Dialogue()
     : IRenderable("Dialogue",
-                  engine::Sprite(engine::Renderer::getInstance().getRenderer(), core::Dialogue::dialogueWidth(),
+                  engine::Sprite(engine::Renderer::instance().getRenderer(), core::Dialogue::dialogueWidth(),
                                  core::Dialogue::dialogueHeight()),
                   core::ZD_DEPTH_DIALOGUE)
     , Controllable(m_name)
@@ -355,14 +355,14 @@ Dialogue::Dialogue()
     , m_currentLine(0)
     , m_dstCharX(0)
     , m_dstCharY(0)
-    , m_text(engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_TEXT])
-    , m_subTexture(std::make_unique<engine::Sprite>(engine::Renderer::getInstance().getRenderer(),
+    , m_text(engine::ResourceManager::instance()[engine::SpriteResource::SPR_TEXT])
+    , m_subTexture(std::make_unique<engine::Sprite>(engine::Renderer::instance().getRenderer(),
                                                     core::Dialogue::dialogueWidth(), core::Dialogue::dialogueHeight()))
     , m_moreText(false)
     , m_toggleQuestion(15)
-    , m_questionMarker(engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_TEXT])
+    , m_questionMarker(engine::ResourceManager::instance()[engine::SpriteResource::SPR_TEXT])
     , m_toggleArrow(30)
-    , m_redArrow(engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_TEXT])
+    , m_redArrow(engine::ResourceManager::instance()[engine::SpriteResource::SPR_TEXT])
     , m_continue(false)
     , m_scrollMessage(false)
     , m_scrolledLines(0)
