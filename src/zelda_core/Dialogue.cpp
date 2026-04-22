@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <algorithm>
+#include <expected>
 
 namespace
 {
@@ -113,8 +114,11 @@ void Dialogue::checkCharacters(const std::string &message)
 
                       // TODO: Check each character for its usage
                       bool isSpecialCharacter = (c == '#' || c == '<' || c == '>' || c == '@');
-                      assert(isSpecialCharacter || isLowerCaseCharacter || isUppperCaseCharacter || isDigit
-                             || isPunctuation || isSpace);
+                      if (!(isSpecialCharacter || isLowerCaseCharacter || isUppperCaseCharacter || isDigit
+                            || isPunctuation || isSpace))
+                      {
+                          std::unreachable();
+                      }
                   });
 }
 

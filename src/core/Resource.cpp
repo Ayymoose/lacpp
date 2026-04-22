@@ -27,7 +27,7 @@ SDL_Surface *Resource::loadSprite(const std::string &path, const Colour transpar
     if (!loadedSurface)
     {
         DEBUG_MACRO(DBG_ERROR, IMG_GetError());
-        assert(false);
+        return nullptr;
     }
     else
     {
