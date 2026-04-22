@@ -80,9 +80,9 @@ private:
         std::string message;
         int y;
 
-        Message(const std::string &message, const float y)
-            : message(message)
-            , y(y)
+        Message(const std::string &messageName, const float dy)
+            : message(messageName)
+            , y(dy)
         {}
     };
 
@@ -94,13 +94,13 @@ private:
         std::string choice2;
         int optionPaddingLength;
 
-        Question(const std::string &question, const int y, const std::string &choice1, const std::string &choice2,
-                 const int optionPaddingLength)
-            : question(question)
-            , y(y)
-            , choice1(choice1)
-            , choice2(choice2)
-            , optionPaddingLength(optionPaddingLength)
+        Question(const std::string &questionMessage, const int dy, const std::string &first, const std::string &second,
+                 const int paddingLength)
+            : question(questionMessage)
+            , y(dy)
+            , choice1(first)
+            , choice2(second)
+            , optionPaddingLength(paddingLength)
         {}
     };
 

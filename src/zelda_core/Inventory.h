@@ -83,10 +83,10 @@ struct InventoryItem
         , value(0)
     {}
 
-    constexpr InventoryItem(UsableItem usableItem, ItemAttribute itemAttribute, int value)
+    constexpr InventoryItem(UsableItem usableItem, ItemAttribute attribute, int itemValue)
         : usuableItem(usableItem)
-        , itemAttribute(itemAttribute)
-        , value(value)
+        , itemAttribute(attribute)
+        , value(itemValue)
     {}
 
     UsableItem usuableItem;

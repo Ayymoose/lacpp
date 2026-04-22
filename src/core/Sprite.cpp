@@ -128,10 +128,8 @@ SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip)
         return SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
     case SpriteFlip::FLIP_VERTICAL:
         return SDL_RendererFlip::SDL_FLIP_VERTICAL;
-    case SpriteFlip::FLIP_NONE:
-        return SDL_RendererFlip::SDL_FLIP_NONE;
     default:
-        assert(false && "Unknown flip");
+        return SDL_RendererFlip::SDL_FLIP_NONE;
     }
 }
 

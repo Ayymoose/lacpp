@@ -18,6 +18,7 @@ target_compile_options(PROJECT_WARNINGS INTERFACE
         -Wnon-virtual-dtor
         -Wmisleading-indentation
         -Werror
+        -Wno-c2y-extensions
 
         $<$<CONFIG:Debug>:-O0 -g -fsanitize=address,undefined>
         $<$<CONFIG:Release>:-O2>

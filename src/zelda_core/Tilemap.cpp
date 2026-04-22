@@ -24,7 +24,7 @@ Tilemap::Tilemap(const engine::Sprite &tilemap, const std::vector<TileIndexArray
 
 void Tilemap::tile(const engine::Renderer &renderer, const engine::Sprite &tilemapSprite, const size_t mapIndex) const
 {
-    assert(mapIndex >= 0 && mapIndex < m_mapEntries.size());
+    assert(static_cast<int>(mapIndex) >= 0 && mapIndex < m_mapEntries.size());
     assert(tilemapSprite.data());
 
     assert(m_tilesDown != 0);

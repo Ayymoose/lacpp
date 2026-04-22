@@ -22,11 +22,11 @@ template <typename T> struct Rect
         , w{}
         , h{}
     {}
-    constexpr Rect(T x, T y, T w, T h)
-        : x(x)
-        , y(y)
-        , w(w)
-        , h(h)
+    constexpr Rect(T dx, T dy, T dw, T dh)
+        : x(dx)
+        , y(dy)
+        , w(dw)
+        , h(dh)
     {}
 
     bool operator==(const Rect &other) const

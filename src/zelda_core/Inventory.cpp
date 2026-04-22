@@ -235,12 +235,12 @@ std::array<Instrument, std::to_underlying(Instrument::INSTRUMENT_COUNT)> Invento
 
 void Inventory::addRupee()
 {
-    m_rupees = std::min(++m_rupees, MAX_RUPEES);
+    m_rupees = std::min(m_rupees+1, MAX_RUPEES);
 }
 
 void Inventory::useRupee()
 {
-    m_rupees = std::max(--m_rupees, 0);
+    m_rupees = std::max(m_rupees-1, 0);
 }
 
 int Inventory::rupees() const
@@ -265,7 +265,7 @@ void Inventory::setBombs(const int bombs)
 
 void Inventory::useBomb()
 {
-    m_bombs = std::max(--m_bombs, 0);
+    m_bombs = std::max(m_bombs-1, 0);
 }
 
 int Inventory::bombs() const
@@ -285,7 +285,7 @@ void Inventory::setArrows(const int arrow)
 
 void Inventory::useArrow()
 {
-    m_arrows = std::max(--m_arrows, 0);
+    m_arrows = std::max(m_arrows-1, 0);
 }
 
 int Inventory::arrows() const
@@ -305,7 +305,7 @@ void Inventory::setMagicPowder(const int magicPowder)
 
 void Inventory::useMagicPowder()
 {
-    m_magicPowder = std::max(--m_magicPowder, 0);
+    m_magicPowder = std::max(m_magicPowder-1, 0);
 }
 
 int Inventory::magicPowder() const
@@ -358,7 +358,7 @@ void Inventory::setTunic(Tunic tunic)
 
 void Inventory::addHeartContainerPiece()
 {
-    m_heartContainerPieces = std::min(++m_heartContainerPieces, HEARTS_PIECE_MAX);
+    m_heartContainerPieces = std::min(m_heartContainerPieces+1, HEARTS_PIECE_MAX);
 }
 
 void Inventory::setHeartContainerPieces(const int heartContainerPieces)
@@ -431,7 +431,7 @@ int Inventory::photograph() const
 
 void Inventory::addGoldenLeaf()
 {
-    m_goldenLeaves = std::min(++m_goldenLeaves, MAX_GOLDEN_LEAVES);
+    m_goldenLeaves = std::min(m_goldenLeaves+1, MAX_GOLDEN_LEAVES);
 }
 
 // Add golden leaves from Kanalet castle
@@ -448,7 +448,7 @@ int Inventory::goldenLeaves() const
 
 void Inventory::addSecretSeaShell()
 {
-    m_secretSeaShells = std::min(++m_secretSeaShells, MAX_SECRET_SEASHELLS);
+    m_secretSeaShells = std::min(m_secretSeaShells+1, MAX_SECRET_SEASHELLS);
 }
 
 void Inventory::setSecretSeaShells(const int secretShells)
@@ -581,10 +581,10 @@ void Inventory::moveInventorySelector(Direction direction)
         }
         break;
     case Direction::DIRECTION_RIGHT:
-        m_selectorIndex = (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : ++m_selectorIndex);
+        m_selectorIndex = (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : m_selectorIndex+1);
         break;
     case Direction::DIRECTION_LEFT:
-        m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : --m_selectorIndex);
+        m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : m_selectorIndex-1);
         break;
     default:
         break;
