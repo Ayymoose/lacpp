@@ -4,6 +4,7 @@
 #include "core/Vector.h"
 #include "core/Rect.h"
 #include "core/FloatingPoint.h"
+#include <sstream>
 
 using namespace zelda::engine;
 
@@ -349,6 +350,126 @@ BOOST_AUTO_TEST_CASE(NormaliseInPlaceDouble)
 BOOST_AUTO_TEST_CASE(NormalisedVectorHasLengthOne)
 {
     BOOST_TEST(FloatingPoint<double>::almostEqual(1.0, Vector<double>(30.0, 40.0).normal().length()));
+}
+
+// -------------------------
+// Default constructor
+// -------------------------
+BOOST_AUTO_TEST_CASE(DefaultConstructorZeroInitialises)
+{
+    Vector<int> vi;
+    BOOST_TEST(vi.x == 0);
+    BOOST_TEST(vi.y == 0);
+
+    Vector<float> vf;
+    BOOST_TEST(vf.x == 0.0f);
+    BOOST_TEST(vf.y == 0.0f);
+}
+
+// -------------------------
+// Binary operator+ (returns new vector)
+// -------------------------
+BOOST_AUTO_TEST_CASE(AddBinaryInt)
+{
+    const Vector<int> v1(3, 4);
+    const Vector<int> v2(1, 2);
+    BOOST_TEST(v1 + v2 == Vector<int>(4, 6));
+}
+
+BOOST_AUTO_TEST_CASE(AddBinaryFloat)
+{
+    const Vector<float> v1(1.5f, 2.5f);
+    const Vector<float> v2(0.5f, 0.5f);
+    BOOST_TEST(v1 + v2 == Vector<float>(2.0f, 3.0f));
+}
+
+// -------------------------
+// Binary operator* (returns new vector)
+// -------------------------
+BOOST_AUTO_TEST_CASE(MulBinaryInt)
+{
+    const Vector<int> v(3, 4);
+    BOOST_TEST(v * 2 == Vector<int>(6, 8));
+}
+
+BOOST_AUTO_TEST_CASE(MulBinaryFloat)
+{
+    const Vector<float> v(3.0f, 4.0f);
+    BOOST_TEST(v * 2.0f == Vector<float>(6.0f, 8.0f));
+}
+
+BOOST_AUTO_TEST_CASE(MulBinaryDouble)
+{
+    const Vector<double> v(3.0, 4.0);
+    BOOST_TEST(v * 2.5 == Vector<double>(7.5, 10.0));
+}
+
+// -------------------------
+// Binary operator/ (returns new vector)
+// -------------------------
+BOOST_AUTO_TEST_CASE(DivBinaryInt)
+{
+    const Vector<int> v(100, 50);
+    BOOST_TEST(v / 2 == Vector<int>(50, 25));
+}
+
+BOOST_AUTO_TEST_CASE(DivBinaryFloat)
+{
+    const Vector<float> v(100.0f, 50.0f);
+    BOOST_TEST(v / 2.0f == Vector<float>(50.0f, 25.0f));
+}
+
+BOOST_AUTO_TEST_CASE(DivBinaryDouble)
+{
+    const Vector<double> v(100.0, 50.0);
+    BOOST_TEST(v / 2.5 == Vector<double>(40.0, 20.0));
+}
+
+// -------------------------
+// operator!=
+// -------------------------
+BOOST_AUTO_TEST_CASE(NotEqualInt)
+{
+    BOOST_TEST(Vector<int>(1, 2) != Vector<int>(3, 4));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualFloat)
+{
+    BOOST_TEST(Vector<float>(1.0f, 2.0f) != Vector<float>(3.0f, 4.0f));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualDiffersOnlyInX)
+{
+    BOOST_TEST(Vector<int>(99, 2) != Vector<int>(1, 2));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualDiffersOnlyInY)
+{
+    BOOST_TEST(Vector<int>(1, 99) != Vector<int>(1, 2));
+}
+
+// -------------------------
+// operator<<
+// -------------------------
+BOOST_AUTO_TEST_CASE(StreamOutputInt)
+{
+    std::ostringstream oss;
+    oss << Vector<int>(3, 4);
+    BOOST_TEST(oss.str() == "(3,4)");
+}
+
+BOOST_AUTO_TEST_CASE(StreamOutputFloat)
+{
+    std::ostringstream oss;
+    oss << Vector<float>(1.5f, 2.5f);
+    BOOST_TEST(oss.str() == "(1.5,2.5)");
+}
+
+BOOST_AUTO_TEST_CASE(StreamOutputZeroVector)
+{
+    std::ostringstream oss;
+    oss << Vector<int>(0, 0);
+    BOOST_TEST(oss.str() == "(0,0)");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

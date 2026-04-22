@@ -1,53 +1,66 @@
 #pragma once
 
 #include "FloatingPoint.h"
-#include <iostream>
+
 #include <cassert>
 #include <cmath>
+#include <concepts>
+#include <iostream>
 
 namespace zelda::engine
 {
 // 2D vector class
 template <typename T>
+    requires std::is_arithmetic_v<T>
 struct Vector
 {
-    static_assert(std::is_arithmetic_v<T>, "Arithemtic only type allowed");
+    T x{};
+    T y{};
 
-    friend std::ostream& operator<<(std::ostream& ostream, const Vector<T>& v)
+    friend std::ostream& operator<<(std::ostream& ostream, const Vector& v)
     {
         ostream << '(' << v.x << ',' << v.y << ')';
         return ostream;
     }
 
-    constexpr Vector()
-        : x{}
-        , y{}
-    {}
+    constexpr Vector() = default;
+
     constexpr Vector(T dx, T dy)
         : x(dx)
         , y(dy)
     {}
 
-    constexpr Vector operator/(const double scalar) const
+    template <typename U>
+        requires std::is_arithmetic_v<U>
+    [[nodiscard]] constexpr Vector operator/(const U scalar) const
     {
         assert(scalar != 0);
         return Vector(x / scalar, y / scalar);
     }
 
-    constexpr Vector operator+(const Vector& other) const { return Vector(x + other.x, y + other.y); }
+    [[nodiscard]] constexpr Vector operator+(const Vector& other) const { return Vector(x + other.x, y + other.y); }
 
-    constexpr Vector operator-(const Vector& other) const { return Vector(x - other.x, y - other.y); }
+    [[nodiscard]] constexpr Vector operator-(const Vector& other) const { return Vector(x - other.x, y - other.y); }
 
-    constexpr Vector operator*(const double scalar) const { return Vector(x * scalar, y * scalar); }
+    template <typename U>
+        requires std::is_arithmetic_v<U>
+    [[nodiscard]] constexpr Vector operator*(const U scalar) const
+    {
+        return Vector(x * scalar, y * scalar);
+    }
 
-    constexpr Vector& operator*=(const double scalar)
+    template <typename U>
+        requires std::is_arithmetic_v<U>
+    constexpr Vector& operator*=(const U scalar)
     {
         x *= scalar;
         y *= scalar;
         return *this;
     }
 
-    constexpr Vector& operator/=(const double scalar)
+    template <typename U>
+        requires std::is_arithmetic_v<U>
+    constexpr Vector& operator/=(const U scalar)
     {
         assert(scalar != 0);
         x /= scalar;
@@ -55,7 +68,7 @@ struct Vector
         return *this;
     }
 
-    constexpr Vector operator-() const { return Vector(-x, -y); }
+    [[nodiscard]] constexpr Vector operator-() const { return Vector(-x, -y); }
 
     constexpr Vector& operator+=(const Vector& other)
     {
@@ -66,58 +79,43 @@ struct Vector
 
     constexpr Vector& operator-=(const Vector& other) { return operator+=(-other); }
 
-    constexpr bool operator==(const Vector& other) const
+    [[nodiscard]] constexpr bool operator==(const Vector& other) const
     {
         return FloatingPoint<T>::almostEqual(x, other.x) && FloatingPoint<T>::almostEqual(y, other.y);
     }
 
-    constexpr bool operator!=(const Vector& other) const { return !operator==(other); }
-
     // Distance between two vectors
-    static constexpr auto distanceBetween(const Vector& v1, const Vector& v2)
+    [[nodiscard]] static constexpr auto distanceBetween(const Vector& v1, const Vector& v2)
     {
         const auto dx = v1.x - v2.x;
         const auto dy = v1.y - v2.y;
-        return std::sqrt((dx * dx) + (dy * dy));
+        return std::sqrt(dx * dx + dy * dy);
     }
 
     // Cross product of 2 2D vectors
-    static constexpr T cross(const Vector& v1, const Vector& v2) { return (v1.x * v2.y) - (v1.y * v2.x); }
+    [[nodiscard]] static constexpr T cross(const Vector& v1, const Vector& v2) { return (v1.x * v2.y) - (v1.y * v2.x); }
 
     // Dot product of 2 2D vectors
-    static constexpr T dot(const Vector& v1, const Vector& v2) { return (v1.x * v2.x) + (v1.y * v2.y); }
+    [[nodiscard]] static constexpr T dot(const Vector& v1, const Vector& v2) { return (v1.x * v2.x) + (v1.y * v2.y); }
 
-    static constexpr Vector normalise(const Vector& v)
+    constexpr void normalise()
+        requires std::floating_point<T>
     {
-        auto const len = v.length();
+        const auto len = length();
         assert(len != 0);
-        return Vector(v.x / len, v.y / len);
-    }
-
-    // Note this will only work for float and double
-    template <typename U = T>
-    constexpr auto normalise() -> std::enable_if_t<std::is_floating_point_v<U>, void>
-    {
-        auto const len = length();
-        assert(len != 0);
-
         x /= len;
         y /= len;
     }
 
     // Get the normal for this vector
-    constexpr Vector normal() const
+    [[nodiscard]] constexpr Vector normal() const
     {
-        auto thisNormal = *this;
-        auto len = length();
+        const auto len = length();
         assert(len != 0);
-        return thisNormal / len;
+        return *this / len;
     }
 
-    constexpr auto length() const { return std::sqrt(x * x + y * y); }
-
-    T x;
-    T y;
+    [[nodiscard]] constexpr auto length() const { return std::sqrt(x * x + y * y); }
 };
 
 } // namespace zelda::engine
