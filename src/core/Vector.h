@@ -22,9 +22,9 @@ template <typename T> struct Vector
         : x{}
         , y{}
     {}
-    constexpr Vector(T x, T y)
-        : x(x)
-        , y(y)
+    constexpr Vector(T dx, T dy)
+        : x(dx)
+        , y(dy)
     {}
 
     constexpr Vector operator/(const double scalar) const
