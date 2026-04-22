@@ -6,10 +6,10 @@ namespace zelda::core
 {
 enum class Direction
 {
-    DIRECTION_NONE,
-    DIRECTION_RIGHT,
-    DIRECTION_LEFT,
-    DIRECTION_DOWN,
-    DIRECTION_UP
+    NONE,
+    RIGHT,
+    LEFT,
+    DOWN,
+    UP
 };
 } // namespace zelda::core

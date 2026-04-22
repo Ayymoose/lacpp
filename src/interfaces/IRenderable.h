@@ -71,7 +71,7 @@ public:
         , m_currentFrame(0)
         , m_endFrame(0)
         , m_orientation(0.0f)
-        , m_flip(engine::SpriteFlip::FLIP_NONE)
+        , m_flip(engine::SpriteFlip::NONE)
         , m_visible(true)
     {
         assert(depth > 0);
@@ -95,7 +95,7 @@ public:
         , m_currentFrame(0)
         , m_endFrame(0)
         , m_orientation(0.0f)
-        , m_flip(engine::SpriteFlip::FLIP_NONE)
+        , m_flip(engine::SpriteFlip::NONE)
         , m_visible(true)
     {
         assert(false && "Method not allowed");
@@ -154,7 +154,7 @@ protected:
                         int gap, int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        texture.drawSpriteEx(srcRect, dstRect, angle, engine::SpriteFlip::FLIP_NONE);
+        texture.drawSpriteEx(srcRect, dstRect, angle, engine::SpriteFlip::NONE);
     }
 
     // TODO: When the animation finishes, reverse the animation

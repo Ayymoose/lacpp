@@ -4,34 +4,21 @@
 
 namespace zelda::core
 {
-constexpr InventoryItem LEVEL_1_SWORD =
-    InventoryItem(UsableItem::USABLE_ITEM_SWORD, ItemAttribute::ITEM_ATTRIBUTE_LEVEL, 1);
-constexpr InventoryItem LEVEL_2_SWORD =
-    InventoryItem(UsableItem::USABLE_ITEM_SWORD, ItemAttribute::ITEM_ATTRIBUTE_LEVEL, 2);
-constexpr InventoryItem LEVEL_1_SHIELD =
-    InventoryItem(UsableItem::USABLE_ITEM_SHIELD, ItemAttribute::ITEM_ATTRIBUTE_LEVEL, 1);
-constexpr InventoryItem LEVEL_2_SHIELD =
-    InventoryItem(UsableItem::USABLE_ITEM_SHIELD, ItemAttribute::ITEM_ATTRIBUTE_LEVEL, 2);
-constexpr InventoryItem LEVEL_1_POWER_BRACELET =
-    InventoryItem(UsableItem::USABLE_ITEM_POWER_BRACELET, ItemAttribute::ITEM_ATTRIBUTE_LEVEL, 1);
-constexpr InventoryItem LEVEL_2_POWER_BRACELET =
-    InventoryItem(UsableItem::USABLE_ITEM_POWER_BRACELET, ItemAttribute::ITEM_ATTRIBUTE_LEVEL, 2);
-constexpr InventoryItem SHOVEL = InventoryItem(UsableItem::USABLE_ITEM_SHOVEL, ItemAttribute::ITEM_ATTRIBUTE_NONE, 0);
-constexpr InventoryItem HOOKSHOT =
-    InventoryItem(UsableItem::USABLE_ITEM_HOOKSHOT, ItemAttribute::ITEM_ATTRIBUTE_NONE, 0);
-constexpr InventoryItem BOW = InventoryItem(UsableItem::USABLE_ITEM_BOW, ItemAttribute::ITEM_ATTRIBUTE_QUANTITY, 0);
-constexpr InventoryItem MAGIC_POWDER =
-    InventoryItem(UsableItem::USABLE_ITEM_MAGIC_POWDER, ItemAttribute::ITEM_ATTRIBUTE_QUANTITY, 0);
-constexpr InventoryItem ROC_FEATHER =
-    InventoryItem(UsableItem::USABLE_ITEM_ROC_FEATHER, ItemAttribute::ITEM_ATTRIBUTE_NONE, 0);
-constexpr InventoryItem BOOMERANG =
-    InventoryItem(UsableItem::USABLE_ITEM_BOOMERANG, ItemAttribute::ITEM_ATTRIBUTE_NONE, 0);
-constexpr InventoryItem OCARINA = InventoryItem(UsableItem::USABLE_ITEM_OCARINA, ItemAttribute::ITEM_ATTRIBUTE_SONG, 0);
-constexpr InventoryItem BOMBS = InventoryItem(UsableItem::USABLE_ITEM_BOMBS, ItemAttribute::ITEM_ATTRIBUTE_QUANTITY, 0);
-constexpr InventoryItem MUSHROOM =
-    InventoryItem(UsableItem::USABLE_ITEM_MUSHROOM, ItemAttribute::ITEM_ATTRIBUTE_NONE, 0);
-constexpr InventoryItem FLAME_ROD =
-    InventoryItem(UsableItem::USABLE_ITEM_FLAME_ROD, ItemAttribute::ITEM_ATTRIBUTE_NONE, 0);
-constexpr InventoryItem PEGASUS_BOOT =
-    InventoryItem(UsableItem::USABLE_ITEM_PEGASUS_BOOT, ItemAttribute::ITEM_ATTRIBUTE_NONE, 0);
+constexpr auto LEVEL_1_SWORD = InventoryItem(UsableItem::SWORD, ItemAttribute::LEVEL, 1);
+constexpr auto LEVEL_2_SWORD = InventoryItem(UsableItem::SWORD, ItemAttribute::LEVEL, 2);
+constexpr auto LEVEL_1_SHIELD = InventoryItem(UsableItem::SHIELD, ItemAttribute::LEVEL, 1);
+constexpr auto LEVEL_2_SHIELD = InventoryItem(UsableItem::SHIELD, ItemAttribute::LEVEL, 2);
+constexpr auto LEVEL_1_POWER_BRACELET = InventoryItem(UsableItem::POWER_BRACELET, ItemAttribute::LEVEL, 1);
+constexpr auto LEVEL_2_POWER_BRACELET = InventoryItem(UsableItem::POWER_BRACELET, ItemAttribute::LEVEL, 2);
+constexpr auto SHOVEL = InventoryItem(UsableItem::SHOVEL, ItemAttribute::NONE, 0);
+constexpr auto HOOKSHOT = InventoryItem(UsableItem::HOOKSHOT, ItemAttribute::NONE, 0);
+constexpr auto BOW = InventoryItem(UsableItem::BOW, ItemAttribute::QUANTITY, 0);
+constexpr auto MAGIC_POWDER = InventoryItem(UsableItem::MAGIC_POWDER, ItemAttribute::QUANTITY, 0);
+constexpr auto ROC_FEATHER = InventoryItem(UsableItem::ROC_FEATHER, ItemAttribute::NONE, 0);
+constexpr auto BOOMERANG = InventoryItem(UsableItem::BOOMERANG, ItemAttribute::NONE, 0);
+constexpr auto OCARINA = InventoryItem(UsableItem::OCARINA, ItemAttribute::SONG, 0);
+constexpr auto BOMBS = InventoryItem(UsableItem::BOMBS, ItemAttribute::QUANTITY, 0);
+constexpr auto MUSHROOM = InventoryItem(UsableItem::MUSHROOM, ItemAttribute::NONE, 0);
+constexpr auto FLAME_ROD = InventoryItem(UsableItem::FLAME_ROD, ItemAttribute::NONE, 0);
+constexpr auto PEGASUS_BOOT = InventoryItem(UsableItem::PEGASUS_BOOT, ItemAttribute::NONE, 0);
 } // namespace zelda::core

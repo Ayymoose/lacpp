@@ -39,19 +39,19 @@ inline fs::path RESOURCE_ENEMY_PATH = RESOURCE_ROOT / "sprite" / "enemy";
 
 enum class SpriteResource
 {
-    SPR_RESOURCE_NONE = -1,
-    SPR_DUNGEON_1_TAIL_CAVE,
-    SPR_WORLD_MAP,
-    SPR_TEXT,
-    SPR_INVENTORY,
-    SPR_WEAPON,
-    SPR_LINK,
-    SPR_ANIMATED_TILES,
-    SPR_ENEMY,
+    NONE = -1,
+    TAIL_CAVE,
+    WORLD_MAP,
+    TEXT,
+    INVENTORY,
+    WEAPON,
+    LINK,
+    ANIMATED_TILES,
+    ENEMY,
 
     // TEST
-    SPR_BALL,
-    SPR_RESOURCE_COUNT
+    BALL,
+    COUNT
 };
 
 

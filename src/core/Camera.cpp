@@ -11,7 +11,7 @@ namespace zelda::engine
 
 Camera::Camera()
     : IRenderable("Camera", Sprite(Renderer::instance().getRenderer(), CAMERA_WIDTH, CAMERA_HEIGHT),
-                  core::ZD_DEPTH_BACKGROUND)
+                  core::BACKGROUND)
     , m_scrollX(0)
     , m_scrollY(0)
     , m_x(0)

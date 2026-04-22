@@ -11,9 +11,9 @@ namespace zelda::engine
 
 enum DebugMask
 {
-    DBG_ERROR = 0x1,
-    DBG_INFO = 0x2,
-    DBG_TEST = 0x4
+    ERROR = 0x1,
+    INFO = 0x2,
+    TEST = 0x4
     // Add more tests here
 };
 

@@ -11,8 +11,8 @@
 namespace zelda::gui
 {
 Worldmap::Worldmap()
-    : IRenderable("Worldmap", *engine::ResourceManager::instance()[engine::SpriteResource::SPR_WORLD_MAP],
-                  core::ZD_DEPTH_WORLDMAP)
+    : IRenderable("Worldmap", *engine::ResourceManager::instance()[engine::SpriteResource::WORLD_MAP],
+                  core::WORLDMAP)
     , Controllable(m_name)
     , m_show(false)
     , m_scopeSelect(false)
@@ -30,28 +30,28 @@ void Worldmap::control()
         close();
         engine::Controller::instance().popController();
         engine::Engine::instance().pause(false);
-        DEBUG_MACRO(engine::DBG_INFO, "Worldmap closed!");
+        DEBUG_MACRO(engine::INFO, "Worldmap closed!");
     }
 
     // Move scope around map if the area is visited
     if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
     {
-        m_worldMapImpl.moveMarker(core::Direction::DIRECTION_RIGHT);
+        m_worldMapImpl.moveMarker(core::Direction::RIGHT);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
     {
-        m_worldMapImpl.moveMarker(core::Direction::DIRECTION_LEFT);
+        m_worldMapImpl.moveMarker(core::Direction::LEFT);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
     {
-        m_worldMapImpl.moveMarker(core::Direction::DIRECTION_UP);
+        m_worldMapImpl.moveMarker(core::Direction::UP);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
     {
-        m_worldMapImpl.moveMarker(core::Direction::DIRECTION_DOWN);
+        m_worldMapImpl.moveMarker(core::Direction::DOWN);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
 
@@ -114,8 +114,8 @@ void Worldmap::drawUnvisitedLocations() const
             // If the location isn't visited then mark it as an unvisited square
             if (!m_worldMapImpl.locationVisited(x, y))
             {
-                engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
-                    ->drawSprite(m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED],
+                engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
+                    ->drawSprite(m_worldmapSrcSprites[UNVISITED],
                                  engine::Rect<int>{WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7, 7});
             }
         }
@@ -127,22 +127,22 @@ void Worldmap::drawUnvisitedLocations() const
 void Worldmap::drawLocationImage() const
 {
     // Draw the location if we hit upon one
-    if (m_worldMapImpl.locationType() != core::LT_NONE)
+    if (m_worldMapImpl.locationType() != core::NONE)
     {
         engine::Rect<int> srcRectLocation;
         switch (m_worldMapImpl.locationType())
         {
-        case core::LT_SHOP:
-            srcRectLocation = m_worldmapSrcSprites[WORLDMAP_AREA_SHOP];
+        case core::SHOP:
+            srcRectLocation = m_worldmapSrcSprites[SHOP];
             break;
-        case core::LT_UNKNOWN:
-            srcRectLocation = m_worldmapSrcSprites[WORLDMAP_AREA_UNKNOWN];
+        case core::UNKNOWN:
+            srcRectLocation = m_worldmapSrcSprites[UNKNOWN];
             break;
-        case core::LT_DUNGEON:
-            srcRectLocation = m_worldmapSrcSprites[WORLDMAP_AREA_DUNGEON];
+        case core::DUNGEON:
+            srcRectLocation = m_worldmapSrcSprites[DUNGEON];
             break;
-        case core::LT_OWL:
-            srcRectLocation = m_worldmapSrcSprites[WORLDMAP_AREA_OWL];
+        case core::OWL:
+            srcRectLocation = m_worldmapSrcSprites[OWL];
             break;
         default:
             assert(false);
@@ -169,15 +169,15 @@ void Worldmap::drawLocationImage() const
             sy = 97;
         }
 
-        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
             ->drawSprite(srcRectLocation, engine::Rect<int>{sx, sy, 30, 30});
     }
 }
 
 void Worldmap::drawScope() const
 {
-    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
-        ->drawSprite(m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE],
+    engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
+        ->drawSprite(m_worldmapSrcSprites[SCOPE],
                      engine::Rect<int>{(WORLDMAP_START_X + m_scopeX * 8) - 5,
                                        (WORLDMAP_START_Y + m_scopeY * 8) - 5,
                                        16,
@@ -190,7 +190,7 @@ void Worldmap::drawScope() const
     if (m_scopeSelect)
     {
         // Draw the flashing arrows
-        auto srcRect = m_worldmapSrcSprites[WORLDMAP_AREA_ARROW];
+        auto srcRect = m_worldmapSrcSprites[ARROW];
         engine::Rect<int> dstRect = {(WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5, 8, 8};
         dstRect.w = 9;
         dstRect.h = 8;
@@ -198,26 +198,26 @@ void Worldmap::drawScope() const
         dstRect.y -= 10;
 
         // Up arrow
-        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 0, engine::SpriteFlip::FLIP_NONE);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
+            ->drawSpriteEx(srcRect, dstRect, 0, engine::SpriteFlip::NONE);
 
         // Right arrow
         dstRect.x += 15;
         dstRect.y += 14;
-        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 90, engine::SpriteFlip::FLIP_NONE);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
+            ->drawSpriteEx(srcRect, dstRect, 90, engine::SpriteFlip::NONE);
 
         // Down arrow
         dstRect.x -= 15;
         dstRect.y += 15;
-        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 180, engine::SpriteFlip::FLIP_NONE);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
+            ->drawSpriteEx(srcRect, dstRect, 180, engine::SpriteFlip::NONE);
 
         // Left arrow
         dstRect.x -= 15;
         dstRect.y -= 15;
-        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 270, engine::SpriteFlip::FLIP_NONE);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
+            ->drawSpriteEx(srcRect, dstRect, 270, engine::SpriteFlip::NONE);
     }
 }
 

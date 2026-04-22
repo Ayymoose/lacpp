@@ -12,8 +12,8 @@ namespace zelda::core
 
 enum class RoomAction
 {
-    ROOM_LOAD,
-    ROOM_CLEAR
+    LOAD,
+    CLEAR
 };
 
 enum class RoomDirection

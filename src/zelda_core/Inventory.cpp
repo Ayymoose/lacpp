@@ -13,13 +13,13 @@ Inventory::Inventory()
     , m_maxBombs(0)
     , m_magicPowder(0)
     , m_maxMagicPowder(0)
-    , m_ocarinaSong(OcarinaSong::OCARINA_SONG_NONE)
+    , m_ocarinaSong(OcarinaSong::NONE)
     , m_secretSeaShells(0)
-    , m_tunic(Tunic::TUNIC_GREEN)
+    , m_tunic(Tunic::GREEN)
     , m_heartContainerPieces(0)
     , m_goldenLeaves(0)
     , m_rupees(0)
-    , m_tradeItem(TradeItem::TRADE_ITEM_NONE)
+    , m_tradeItem(TradeItem::NONE)
     , m_heartPieces(0)
     , m_maxHeartPieces(0)
     , m_itemA(InventoryItem{})
@@ -27,14 +27,14 @@ Inventory::Inventory()
     , m_selectorIndex(0)
     , m_inDungeon(false)
     , m_positionInDungeonMap(0, 0)
-    , m_dungeon(Dungeon::DUNGEON_NONE)
+    , m_dungeon(Dungeon::NONE)
 {
-    std::fill(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::OCARINA_SONG_NONE);
-    std::fill(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), InventoryMiscItem::INVENTORY_MISC_ITEM_NONE);
-    std::fill(m_photographs.begin(), m_photographs.end(), Photograph::PHOTOGRAPH_NONE);
+    std::fill(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::NONE);
+    std::fill(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), InventoryMiscItem::NONE);
+    std::fill(m_photographs.begin(), m_photographs.end(), Photograph::NONE);
     std::fill(m_inventoryItems.begin(), m_inventoryItems.end(), InventoryItem{});
-    std::fill(m_instruments.begin(), m_instruments.end(), Instrument::INSTRUMENT_NONE);
-    std::fill(m_dungeonEntraceKeys.begin(), m_dungeonEntraceKeys.end(), DungeonEntranceKey::DUNGEON_ENTRACE_KEY_NONE);
+    std::fill(m_instruments.begin(), m_instruments.end(), Instrument::NONE);
+    std::fill(m_dungeonEntraceKeys.begin(), m_dungeonEntraceKeys.end(), DungeonEntranceKey::NONE);
     std::fill(m_dungeonItemsStruct.begin(), m_dungeonItemsStruct.end(), DungeonItemStruct{});
 }
 
@@ -72,19 +72,19 @@ bool Inventory::inventoryItemExists(const InventoryItem& inventoryItem) const
 void Inventory::addDungeonEntranceKey(DungeonEntranceKey dungeonKey)
 {
     assert(!(checkItemExists<DungeonEntranceKey,
-                             std::to_underlying(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys,
+                             std::to_underlying(DungeonEntranceKey::COUNT)>(m_dungeonEntraceKeys,
                                                                                                 dungeonKey))
            && "Trying to add dungeon entrance key that already exists");
     auto nextFreeSpace = std::find(m_dungeonEntraceKeys.begin(),
                                    m_dungeonEntraceKeys.end(),
-                                   DungeonEntranceKey::DUNGEON_ENTRACE_KEY_NONE);
+                                   DungeonEntranceKey::NONE);
     *nextFreeSpace = dungeonKey;
 }
 
 bool Inventory::dungeonEntranceKey(DungeonEntranceKey dungeonKey) const
 {
     return checkItemExists<DungeonEntranceKey,
-                           std::to_underlying(DungeonEntranceKey::DUNGEON_ENTRACE_KEY_COUNT)>(m_dungeonEntraceKeys,
+                           std::to_underlying(DungeonEntranceKey::COUNT)>(m_dungeonEntraceKeys,
                                                                                               dungeonKey);
 }
 
@@ -101,25 +101,25 @@ bool Inventory::getInDungeon() const
 void Inventory::addDungeonItem(DungeonItem dungeonItem)
 {
     assert(getInDungeon() && "Trying to add dungeon item when not in dungeon");
-    assert(m_dungeon != Dungeon::DUNGEON_NONE);
+    assert(m_dungeon != Dungeon::NONE);
 
     auto const currentDungeon = std::to_underlying(m_dungeon);
 
     switch (dungeonItem)
     {
-    case DungeonItem::DUNGEON_ITEM_LOCKED_DOOR_KEY:
+    case DungeonItem::LOCKED_DOOR_KEY:
         ++m_dungeonItemsStruct[currentDungeon].lockedDoorKeys;
         break;
-    case DungeonItem::DUNGEON_ITEM_COMPASS:
+    case DungeonItem::COMPASS:
         m_dungeonItemsStruct[currentDungeon].compass = 1;
         break;
-    case DungeonItem::DUNGEON_ITEM_MAP:
+    case DungeonItem::MAP:
         m_dungeonItemsStruct[currentDungeon].dungeonMap = 1;
         break;
-    case DungeonItem::DUNGEON_ITEM_NIGHTMARE_KEY:
+    case DungeonItem::NIGHTMARE_KEY:
         m_dungeonItemsStruct[currentDungeon].nightmareKey = 1;
         break;
-    case DungeonItem::DUNGEON_ITEM_OWL_BEAK:
+    case DungeonItem::OWL_BEAK:
         m_dungeonItemsStruct[currentDungeon].owlBeak = 1;
         break;
     default:
@@ -130,13 +130,13 @@ void Inventory::addDungeonItem(DungeonItem dungeonItem)
 void Inventory::useDungeonItem(DungeonItem dungeonItem)
 {
     assert(getInDungeon() && "Trying to add dungeon item when not in dungeon");
-    assert(m_dungeon != Dungeon::DUNGEON_NONE);
+    assert(m_dungeon != Dungeon::NONE);
 
     auto const currentDungeon = std::to_underlying(m_dungeon);
 
     switch (dungeonItem)
     {
-    case DungeonItem::DUNGEON_ITEM_LOCKED_DOOR_KEY:
+    case DungeonItem::LOCKED_DOOR_KEY:
         m_dungeonItemsStruct[currentDungeon].lockedDoorKeys--;
         break;
     default:
@@ -146,19 +146,19 @@ void Inventory::useDungeonItem(DungeonItem dungeonItem)
 
 int Inventory::dungeonItem(DungeonItem dungeonItem) const
 {
-    assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
+    assert(m_dungeon > Dungeon::NONE && m_dungeon < Dungeon::COUNT);
     auto const dungeonItemStruct = m_dungeonItemsStruct[std::to_underlying(m_dungeon)];
     switch (dungeonItem)
     {
-    case DungeonItem::DUNGEON_ITEM_COMPASS:
+    case DungeonItem::COMPASS:
         return dungeonItemStruct.compass;
-    case DungeonItem::DUNGEON_ITEM_MAP:
+    case DungeonItem::MAP:
         return dungeonItemStruct.dungeonMap;
-    case DungeonItem::DUNGEON_ITEM_OWL_BEAK:
+    case DungeonItem::OWL_BEAK:
         return dungeonItemStruct.owlBeak;
-    case DungeonItem::DUNGEON_ITEM_NIGHTMARE_KEY:
+    case DungeonItem::NIGHTMARE_KEY:
         return dungeonItemStruct.nightmareKey;
-    case DungeonItem::DUNGEON_ITEM_LOCKED_DOOR_KEY:
+    case DungeonItem::LOCKED_DOOR_KEY:
         return dungeonItemStruct.lockedDoorKeys;
     default:
         assert(false);
@@ -186,12 +186,12 @@ TradeItem Inventory::tradedItem() const
 void Inventory::addInventoryMiscItem(InventoryMiscItem inventoryMiscItem)
 {
     assert(!(checkItemExists<InventoryMiscItem,
-                             std::to_underlying(InventoryMiscItem::INVENTORY_MISC_ITEM_COUNT)>(m_inventoryMiscItems,
+                             std::to_underlying(InventoryMiscItem::COUNT)>(m_inventoryMiscItems,
                                                                                                inventoryMiscItem))
            && "Trying to add item that already exists");
     auto nextFreeSpace = std::find(m_inventoryMiscItems.begin(),
                                    m_inventoryMiscItems.end(),
-                                   InventoryMiscItem::INVENTORY_MISC_ITEM_NONE);
+                                   InventoryMiscItem::NONE);
     *nextFreeSpace = inventoryMiscItem;
 }
 
@@ -202,8 +202,8 @@ void Inventory::useInventoryMiscItem(InventoryMiscItem inventoryMiscItem)
 
     switch (inventoryMiscItem)
     {
-    case InventoryMiscItem::INVENTORY_MISC_ITEM_RED_POTION:
-        *it = InventoryMiscItem::INVENTORY_MISC_ITEM_NONE;
+    case InventoryMiscItem::RED_POTION:
+        *it = InventoryMiscItem::NONE;
         break;
     default:
         assert(false && "Trying to use non-usable inventory misc item");
@@ -217,18 +217,18 @@ bool Inventory::miscItemExists(InventoryMiscItem inventoryMiscItem) const
 
 bool Inventory::instrumentExists(Instrument instrument) const
 {
-    return checkItemExists<Instrument, std::to_underlying(Instrument::INSTRUMENT_COUNT)>(m_instruments, instrument);
+    return checkItemExists<Instrument, std::to_underlying(Instrument::COUNT)>(m_instruments, instrument);
 }
 
 // Add - Obtain after defeating dungeon boss
 void Inventory::addInstrument(Instrument instrument)
 {
     assert(!instrumentExists(instrument) && "Trying to add item that already exists");
-    auto nextFreeSpace = std::find(m_instruments.begin(), m_instruments.end(), Instrument::INSTRUMENT_NONE);
+    auto nextFreeSpace = std::find(m_instruments.begin(), m_instruments.end(), Instrument::NONE);
     *nextFreeSpace = instrument;
 }
 
-std::array<Instrument, std::to_underlying(Instrument::INSTRUMENT_COUNT)> Inventory::instruments() const
+std::array<Instrument, std::to_underlying(Instrument::COUNT)> Inventory::instruments() const
 {
     return m_instruments;
 }
@@ -315,14 +315,14 @@ int Inventory::magicPowder() const
 
 void Inventory::addOcarinaSong(OcarinaSong ocarinaSong)
 {
-    assert(!(checkItemExists<OcarinaSong, std::to_underlying(OcarinaSong::OCARINA_SONG_COUNT)>(m_ocarinaSongs,
+    assert(!(checkItemExists<OcarinaSong, std::to_underlying(OcarinaSong::COUNT)>(m_ocarinaSongs,
                                                                                                ocarinaSong))
            && "Trying to add item that already exists");
-    auto nextFreeSpace = std::find(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::OCARINA_SONG_NONE);
+    auto nextFreeSpace = std::find(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::NONE);
     *nextFreeSpace = ocarinaSong;
 }
 
-std::array<OcarinaSong, std::to_underlying(OcarinaSong::OCARINA_SONG_COUNT)> Inventory::ocarinaSongs() const
+std::array<OcarinaSong, std::to_underlying(OcarinaSong::COUNT)> Inventory::ocarinaSongs() const
 {
     return m_ocarinaSongs;
 }
@@ -405,13 +405,13 @@ float Inventory::maxHeartPieces() const
 
 void Inventory::addPhotograph(Photograph photograph)
 {
-    assert(!(checkItemExists<Photograph, std::to_underlying(Photograph::PHOTOGRAPH_COUNT)>(m_photographs, photograph))
+    assert(!(checkItemExists<Photograph, std::to_underlying(Photograph::COUNT)>(m_photographs, photograph))
            && "Trying to add item that already exists");
-    auto nextFreeSpace = std::find(m_photographs.begin(), m_photographs.end(), Photograph::PHOTOGRAPH_NONE);
+    auto nextFreeSpace = std::find(m_photographs.begin(), m_photographs.end(), Photograph::NONE);
     *nextFreeSpace = photograph;
 }
 
-std::array<Photograph, std::to_underlying(Photograph::PHOTOGRAPH_COUNT)> Inventory::photographs() const
+std::array<Photograph, std::to_underlying(Photograph::COUNT)> Inventory::photographs() const
 {
     return m_photographs;
 }
@@ -421,7 +421,7 @@ int Inventory::photograph() const
     int photographs = 0;
     for (auto const& photograph : m_photographs)
     {
-        if (photograph != Photograph::PHOTOGRAPH_NONE)
+        if (photograph != Photograph::NONE)
         {
             ++photographs;
         }
@@ -513,25 +513,25 @@ Dungeon Inventory::dungeon() const
 
 DungeonMapItem Inventory::dungeonMapLocationRoomItem(const int x, const int y) const
 {
-    assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
+    assert(m_dungeon > Dungeon::NONE && m_dungeon < Dungeon::COUNT);
     return m_dungeonMaps[std::to_underlying(m_dungeon)][y][x].roomItem;
 }
 
 int Inventory::dungeonMapLocationRoomType(const int x, const int y) const
 {
-    assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
+    assert(m_dungeon > Dungeon::NONE && m_dungeon < Dungeon::COUNT);
     return m_dungeonMaps[std::to_underlying(m_dungeon)][y][x].roomType;
 }
 
 bool Inventory::dungeonMapLocationVisited(const int x, const int y) const
 {
-    assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
+    assert(m_dungeon > Dungeon::NONE && m_dungeon < Dungeon::COUNT);
     return m_dungeonMaps[std::to_underlying(m_dungeon)][y][x].visited;
 }
 
 void Inventory::setDungeonMapLocationVisited(const engine::Vector<int>& location)
 {
-    assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
+    assert(m_dungeon > Dungeon::NONE && m_dungeon < Dungeon::COUNT);
     m_dungeonMaps[std::to_underlying(m_dungeon)][location.y][location.x].visited = true;
 }
 
@@ -539,16 +539,16 @@ void Inventory::movePositionInDungeonMap(Direction direction)
 {
     switch (direction)
     {
-    case Direction::DIRECTION_DOWN:
+    case Direction::DOWN:
         ++m_positionInDungeonMap.y;
         break;
-    case Direction::DIRECTION_UP:
+    case Direction::UP:
         --m_positionInDungeonMap.y;
         break;
-    case Direction::DIRECTION_RIGHT:
+    case Direction::RIGHT:
         ++m_positionInDungeonMap.x;
         break;
-    case Direction::DIRECTION_LEFT:
+    case Direction::LEFT:
         --m_positionInDungeonMap.x;
         break;
     default:
@@ -560,7 +560,7 @@ void Inventory::moveInventorySelector(Direction direction)
 {
     switch (direction)
     {
-    case Direction::DIRECTION_DOWN:
+    case Direction::DOWN:
         if (m_selectorIndex >= MAX_INVENTORY_ITEMS - INVENTORY_COLUMNS)
         {
             m_selectorIndex = 0;
@@ -570,7 +570,7 @@ void Inventory::moveInventorySelector(Direction direction)
             m_selectorIndex += INVENTORY_COLUMNS;
         }
         break;
-    case Direction::DIRECTION_UP:
+    case Direction::UP:
         if (m_selectorIndex < INVENTORY_COLUMNS)
         {
             m_selectorIndex = MAX_INVENTORY_ITEMS - 1;
@@ -580,10 +580,10 @@ void Inventory::moveInventorySelector(Direction direction)
             m_selectorIndex -= INVENTORY_COLUMNS;
         }
         break;
-    case Direction::DIRECTION_RIGHT:
+    case Direction::RIGHT:
         m_selectorIndex = (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : m_selectorIndex + 1);
         break;
-    case Direction::DIRECTION_LEFT:
+    case Direction::LEFT:
         m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : m_selectorIndex - 1);
         break;
     default:

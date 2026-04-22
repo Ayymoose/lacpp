@@ -34,7 +34,7 @@ RoomLink RoomLinkManager::roomLink()
 
 RoomLinkManager::RoomLinkManager()
     : m_currentRoom(0)
-    , m_currentRoomLink(RoomName::RM_NONE)
+    , m_currentRoomLink(RoomName::NONE)
 {}
 
 } // namespace zelda::core

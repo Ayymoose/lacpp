@@ -124,9 +124,9 @@ SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip)
 {
     switch (flip)
     {
-    case SpriteFlip::FLIP_HORIZONTAL:
+    case SpriteFlip::HORIZONTAL:
         return SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-    case SpriteFlip::FLIP_VERTICAL:
+    case SpriteFlip::VERTICAL:
         return SDL_RendererFlip::SDL_FLIP_VERTICAL;
     default:
         return SDL_RendererFlip::SDL_FLIP_NONE;

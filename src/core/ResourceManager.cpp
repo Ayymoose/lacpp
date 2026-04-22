@@ -10,13 +10,13 @@ void ResourceManager::loadSprite(SpriteResource resource, const std::string& pat
 {
     // A pinkish colour is used for transpareny
     assert(!path.empty());
-    assert(resource > SpriteResource::SPR_RESOURCE_NONE && resource < SpriteResource::SPR_RESOURCE_COUNT);
+    assert(resource > SpriteResource::NONE && resource < SpriteResource::COUNT);
     m_spriteResources.emplace(resource, Resource::loadSprite(Renderer::instance(), path, transparencyColour));
 }
 
 std::shared_ptr<Sprite> ResourceManager::operator[](SpriteResource resource)
 {
-    assert(resource > SpriteResource::SPR_RESOURCE_NONE && resource < SpriteResource::SPR_RESOURCE_COUNT);
+    assert(resource > SpriteResource::NONE && resource < SpriteResource::COUNT);
     auto sprite = m_spriteResources[resource];
     assert(sprite && "Sprite doesn't exist");
     assert(sprite->data());

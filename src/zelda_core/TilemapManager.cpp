@@ -54,7 +54,7 @@ int TilemapManager::roomLocation() const
 
 void TilemapManager::render()
 {
-    if (m_currentTilemapname == RoomName::RM_NONE)
+    if (m_currentTilemapname == RoomName::NONE)
     {
         return;
     }
@@ -84,14 +84,14 @@ TilemapManager::TilemapManager()
     : IRenderable("TilemapManager",
                   engine::Sprite(engine::Renderer::instance().getRenderer(), engine::CAMERA_WIDTH,
                                  engine::CAMERA_HEIGHT),
-                  ZD_DEPTH_BACKGROUND)
+                  BACKGROUND)
     , m_roomX(0)
     , m_roomY(0)
     , m_nextRoomX(0)
     , m_nextRoomY(0)
     , m_currentRoom(0)
     , m_nextRoom(0)
-    , m_currentTilemapname(RoomName::RM_NONE)
+    , m_currentTilemapname(RoomName::NONE)
     , m_swapCanvas(engine::Renderer::instance().getRenderer(), m_sprite->width(), m_sprite->height())
 {
     assert(m_sprite->data());
