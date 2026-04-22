@@ -4,6 +4,7 @@
 #include "core/Vector.h"
 #include "core/Rect.h"
 #include "core/FloatingPoint.h"
+#include "core/Random.h"
 #include <sstream>
 
 using namespace zelda::engine;
@@ -588,3 +589,53 @@ BOOST_AUTO_TEST_CASE(ToSDLFRectDouble)
 BOOST_AUTO_TEST_SUITE_END()
 
 } // namespace rect_tests
+
+namespace random_tests
+{
+
+BOOST_AUTO_TEST_SUITE(RandomTests)
+
+// -------------------------
+// random()
+// -------------------------
+BOOST_AUTO_TEST_CASE(RandomIntInRange)
+{
+
+    const int result = Random::random<int>(1, 10);
+    BOOST_TEST(result >= 1);
+    BOOST_TEST(result <= 10);
+}
+
+BOOST_AUTO_TEST_CASE(RandomIntSingleValue)
+{
+    // When start == end the only possible result is that value
+    BOOST_TEST(Random::random<int>(5, 5) == 5);
+}
+
+// -------------------------
+// choose()
+// -------------------------
+BOOST_AUTO_TEST_CASE(ChooseResultIsOneOfTheArguments)
+{
+    const int result = Random::choose(1, 2, 3);
+    BOOST_TEST((result == 1 || result == 2 || result == 3));
+}
+
+BOOST_AUTO_TEST_CASE(ChooseFromTwoOptions)
+{
+    for (int i = 0; i < 100; ++i)
+    {
+        const int result = Random::choose(0, 1);
+        BOOST_TEST((result == 0 || result == 1));
+    }
+}
+
+BOOST_AUTO_TEST_CASE(ChooseSinglePair)
+{
+    // With identical values the result must always be that value
+    BOOST_TEST(Random::choose(42, 42) == 42);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+} // namespace random_tests
