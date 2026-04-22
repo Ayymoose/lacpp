@@ -25,7 +25,8 @@ list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
-find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+find_package(Boost 1.90 REQUIRED COMPONENTS unit_test_framework)
+
 
 # Subdirectories
 add_subdirectory(src)
