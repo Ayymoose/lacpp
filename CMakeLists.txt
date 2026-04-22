@@ -27,6 +27,9 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(Boost 1.90 REQUIRED COMPONENTS unit_test_framework)
 
+message(STATUS "SDL2 version: ${SDL2_VERSION}")
+message(STATUS "SDL2_image version: ${SDL2_image_VERSION}")
+message(STATUS "Boost version: ${Boost_VERSION}")
 
 # Subdirectories
 add_subdirectory(src)
