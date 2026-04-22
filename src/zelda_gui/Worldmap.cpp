@@ -1,12 +1,12 @@
 #include "Worldmap.h"
 #include "Dialogue.h"
-#include "ResourceManager.h"
+#include "core/ResourceManager.h"
 #include "Depth.h"
-#include "Renderer.h"
-#include "InputControl.h"
-#include "Keyboard.h"
-#include "Controller.h"
-#include "Engine.h"
+#include "core/Renderer.h"
+#include "core/InputControl.h"
+#include "core/Keyboard.h"
+#include "core/Controller.h"
+#include "core/Engine.h"
 
 namespace zelda::gui
 {

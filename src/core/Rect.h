@@ -53,9 +53,14 @@ template <typename T> std::enable_if_t<std::is_integral_v<T>, SDL_Rect> rectToSD
                     static_cast<int>(rect.w),
                     static_cast<int>(rect.h)};
 }
+
+// Note: SDL_FRect uses float fields, so Rect<double> values will be narrowed to float precision
 template <typename T> std::enable_if_t<std::is_floating_point_v<T>, SDL_FRect> rectToSDLRect(const Rect<T> &rect)
 {
-    return SDL_FRect{rect.x, rect.y, rect.w, rect.h};
+    return SDL_FRect{static_cast<float>(rect.x),
+                     static_cast<float>(rect.y),
+                     static_cast<float>(rect.w),
+                     static_cast<float>(rect.h)};
 }
 
 } // namespace zelda::engine

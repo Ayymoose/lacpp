@@ -3,7 +3,7 @@
 #include "IUpdateable.h"
 #include "IRenderable.h"
 #include "Singleton.h"
-#include "Vector.h"
+#include "core/Vector.h"
 
 namespace zelda::engine
 {

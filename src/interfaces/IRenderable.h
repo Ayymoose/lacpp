@@ -6,8 +6,8 @@
 #include <memory>
 
 #include "SDL_Assert.h"
-#include "Vector.h"
-#include "Sprite.h"
+#include "core/Vector.h"
+#include "core/Sprite.h"
 
 // A Renderable is an object that will be rendered on the screen
 // Any object that implements this class should override the render() function

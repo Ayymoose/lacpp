@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector.h"
+#include "core/Vector.h"
 #include "BasicCharacter.h"
 
 // Defines a base class for which NPC, Boss, enemies inherit from

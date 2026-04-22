@@ -35,6 +35,8 @@ template <typename T> struct Vector
 
     constexpr Vector operator+(const Vector &other) const { return Vector(x + other.x, y + other.y); }
 
+    constexpr Vector operator-(const Vector &other) const { return Vector(x - other.x, y - other.y); }
+
     constexpr Vector operator*(const double scalar) const { return Vector(x * scalar, y * scalar); }
 
     constexpr Vector &operator*=(const double scalar)
@@ -62,8 +64,6 @@ template <typename T> struct Vector
     }
 
     constexpr Vector &operator-=(const Vector &other) { return operator+=(-other); }
-
-    constexpr bool operator-(const Vector &other) const { return Vector(x - other.x, y - other.y); }
 
     constexpr bool operator==(const Vector &other) const
     {

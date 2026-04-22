@@ -1,9 +1,9 @@
 #include "Link.h"
-#include "ResourceManager.h"
-#include "Keyboard.h"
-#include "InputControl.h"
-#include "Controller.h"
-#include "Renderer.h"
+#include "core/ResourceManager.h"
+#include "core/Keyboard.h"
+#include "core/InputControl.h"
+#include "core/Controller.h"
+#include "core/Renderer.h"
 #include <set>
 #include <chrono>
 

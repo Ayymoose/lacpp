@@ -1,12 +1,12 @@
 #include "zelda_core/Inventory.h"
-#include "Renderer.h"
+#include "core/Renderer.h"
 #include "Depth.h"
-#include "Keyboard.h"
-#include "InputControl.h"
-#include "Controller.h"
+#include "core/Keyboard.h"
+#include "core/InputControl.h"
+#include "core/Controller.h"
 #include "Link.h"
-#include "Engine.h"
-#include "ResourceManager.h"
+#include "core/Engine.h"
+#include "core/ResourceManager.h"
 // #include "Toggle.h"
 
 namespace zelda::gui
