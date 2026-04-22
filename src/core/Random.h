@@ -1,7 +1,9 @@
 #pragma once
 
-#include <random>
+#include <array>
 #include <cassert>
+#include <concepts>
+#include <random>
 
 namespace zelda::engine
 {
@@ -10,46 +12,36 @@ struct Random
 {
     // Generate a random int/float between start and end inclusive
     template <typename T>
-    static T random(const int start, const int end)
+        requires std::is_arithmetic_v<T>
+    [[nodiscard]] static T random(const int start, const int end)
     {
-        static_assert(std::is_arithmetic_v<T>, "Invalid template type");
-
         assert(start <= end);
-        // Seed the generator
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        // Define the range
-        if constexpr (std::is_integral_v<T>)
+        if constexpr (std::integral<T>)
         {
             std::uniform_int_distribution<T> distr(start, end);
-            return distr(gen);
+            return distr(generator());
         }
         else
         {
             std::uniform_real_distribution<T> distr(start, end);
-            return distr(gen);
+            return distr(generator());
         }
     }
 
     // Choose a random argument from a given list of items
     template <typename T, typename... Args>
-    static T choose(T arg, Args... args)
+        requires(sizeof...(Args) > 0) && (std::convertible_to<Args, T> && ...)
+    [[nodiscard]] static T choose(T arg, Args... args)
     {
-        static_assert(sizeof...(Args) > 0);
-        constexpr auto size = 1 + sizeof...(Args);
+        const std::array<T, 1 + sizeof...(Args)> arr{arg, args...};
+        return arr[random<std::size_t>(0, arr.size() - 1)];
+    }
 
-        // TODO Why do we need init this array here when we're folding below?
-        T arr[size] = {0};
-
-        int i = 0;
-        // Don't forget the first arg
-
-        arr[i++] = arg;
-        // Fold using comma operator
-        (void(arr[i++] = args), ...);
-
-        // Return a random index
-        return arr[random<int>(0, size - 1)];
+private:
+    [[nodiscard]] static std::mt19937& generator()
+    {
+        static std::mt19937 gen{std::random_device{}()};
+        return gen;
     }
 };
 
