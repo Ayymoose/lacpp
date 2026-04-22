@@ -767,7 +767,7 @@ BOOST_AUTO_TEST_CASE(MoveLeft_WrapsAtStart)
     inv.moveInventorySelector(Direction::DIRECTION_LEFT);
     // Move back right 9 times to get to slot 0
     for (int i = 0; i < 9; ++i)
-        inv.moveInventorySelector(Direction::DIRECTION_RIGHT);
+        inv.moveInventorySelector(Direction::DIRECTION_LEFT);
     inv.setItemA(makeShield());
     inv.swapItemA();
     BOOST_TEST(inv.itemA() == makeSword());
@@ -790,9 +790,8 @@ BOOST_AUTO_TEST_CASE(MoveUp_WrapsAtTop)
     Inventory inv;
     // selector starts at 0 - moving up should wrap to MAX_INVENTORY_ITEMS-1
     inv.moveInventorySelector(Direction::DIRECTION_UP);
-    // Move down MAX_INVENTORY_ITEMS-1 times to return to slot 0
-    for (int i = 0; i < MAX_INVENTORY_ITEMS - 1; ++i)
-        inv.moveInventorySelector(Direction::DIRECTION_DOWN);
+    // Slot 9 is in the last row, so one DOWN wraps back to slot 0
+    inv.moveInventorySelector(Direction::DIRECTION_DOWN);
     // Selector should now be at 0; add sword there and confirm swap
     inv.addInventoryItem(makeSword());
     inv.setItemA(makeShield());
