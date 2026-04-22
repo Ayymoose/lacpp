@@ -4,33 +4,6 @@ set(APP_NAME LinksAwakening)
 
 project(${APP_NAME} LANGUAGES CXX)
 
-cmake_policy(SET CMP0167 NEW)
-
-# C++ Standard
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-message(STATUS "C++ compiler: ${CMAKE_CXX_COMPILER}")
-message(STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
-message(STATUS "Compiler version: ${CMAKE_CXX_COMPILER_VERSION}")
-
-# Default build type
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
-endif ()
-
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-
-# Homebrew prefix for find_package
-list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew")
-
-# -------------------------
-# SDL2
-# -------------------------
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-
 add_library(PROJECT_WARNINGS INTERFACE)
 
 target_compile_options(PROJECT_WARNINGS INTERFACE
@@ -75,8 +48,6 @@ set_target_properties(${APP_NAME} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/Release
 )
 
-##
-
 add_library(GAME_CORE STATIC
         core/Camera.cpp
         core/DataManager.cpp
@@ -111,7 +82,7 @@ target_include_directories(GAME_CORE PUBLIC
 )
 
 target_link_libraries(GAME_CORE PUBLIC
-        project_warnings
+        PROJECT_WARNINGS
         SDL2::SDL2
         SDL2_image::SDL2_image
 )
