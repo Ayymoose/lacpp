@@ -38,7 +38,7 @@ Inventory::Inventory()
     std::fill(m_dungeonItemsStruct.begin(), m_dungeonItemsStruct.end(), DungeonItemStruct{});
 }
 
-void Inventory::addInventoryItem(const InventoryItem &inventoryItem)
+void Inventory::addInventoryItem(const InventoryItem& inventoryItem)
 {
     assert(!inventoryItemExists(inventoryItem) && "Trying to add weapon that already exists");
     auto nextFreeSpace = std::find(m_inventoryItems.begin(), m_inventoryItems.end(), InventoryItem{});
@@ -51,14 +51,14 @@ std::array<InventoryItem, MAX_INVENTORY_ITEMS> Inventory::inventoryItems() const
     return m_inventoryItems;
 }
 
-void Inventory::removeInventoryItem(const InventoryItem &inventoryItem)
+void Inventory::removeInventoryItem(const InventoryItem& inventoryItem)
 {
     assert(inventoryItemExists(inventoryItem) && "Trying to remove non-existent weapon");
     auto weaponToRemove = std::find(m_inventoryItems.begin(), m_inventoryItems.end(), inventoryItem);
     *weaponToRemove = InventoryItem{};
 }
 
-bool Inventory::inventoryItemExists(const InventoryItem &inventoryItem) const
+bool Inventory::inventoryItemExists(const InventoryItem& inventoryItem) const
 {
     if (m_itemA == inventoryItem || m_itemB == inventoryItem)
     {
@@ -66,7 +66,7 @@ bool Inventory::inventoryItemExists(const InventoryItem &inventoryItem) const
     }
     return std::any_of(m_inventoryItems.cbegin(),
                        m_inventoryItems.cend(),
-                       [&inventoryItem](const InventoryItem &item) { return item == inventoryItem; });
+                       [&inventoryItem](const InventoryItem& item) { return item == inventoryItem; });
 }
 
 void Inventory::addDungeonEntranceKey(DungeonEntranceKey dungeonKey)
@@ -235,12 +235,12 @@ std::array<Instrument, std::to_underlying(Instrument::INSTRUMENT_COUNT)> Invento
 
 void Inventory::addRupee()
 {
-    m_rupees = std::min(m_rupees+1, MAX_RUPEES);
+    m_rupees = std::min(m_rupees + 1, MAX_RUPEES);
 }
 
 void Inventory::useRupee()
 {
-    m_rupees = std::max(m_rupees-1, 0);
+    m_rupees = std::max(m_rupees - 1, 0);
 }
 
 int Inventory::rupees() const
@@ -265,7 +265,7 @@ void Inventory::setBombs(const int bombs)
 
 void Inventory::useBomb()
 {
-    m_bombs = std::max(m_bombs-1, 0);
+    m_bombs = std::max(m_bombs - 1, 0);
 }
 
 int Inventory::bombs() const
@@ -285,7 +285,7 @@ void Inventory::setArrows(const int arrow)
 
 void Inventory::useArrow()
 {
-    m_arrows = std::max(m_arrows-1, 0);
+    m_arrows = std::max(m_arrows - 1, 0);
 }
 
 int Inventory::arrows() const
@@ -305,7 +305,7 @@ void Inventory::setMagicPowder(const int magicPowder)
 
 void Inventory::useMagicPowder()
 {
-    m_magicPowder = std::max(m_magicPowder-1, 0);
+    m_magicPowder = std::max(m_magicPowder - 1, 0);
 }
 
 int Inventory::magicPowder() const
@@ -358,7 +358,7 @@ void Inventory::setTunic(Tunic tunic)
 
 void Inventory::addHeartContainerPiece()
 {
-    m_heartContainerPieces = std::min(m_heartContainerPieces+1, HEARTS_PIECE_MAX);
+    m_heartContainerPieces = std::min(m_heartContainerPieces + 1, HEARTS_PIECE_MAX);
 }
 
 void Inventory::setHeartContainerPieces(const int heartContainerPieces)
@@ -419,7 +419,7 @@ std::array<Photograph, std::to_underlying(Photograph::PHOTOGRAPH_COUNT)> Invento
 int Inventory::photograph() const
 {
     int photographs = 0;
-    for (auto const &photograph : m_photographs)
+    for (auto const& photograph : m_photographs)
     {
         if (photograph != Photograph::PHOTOGRAPH_NONE)
         {
@@ -431,7 +431,7 @@ int Inventory::photograph() const
 
 void Inventory::addGoldenLeaf()
 {
-    m_goldenLeaves = std::min(m_goldenLeaves+1, MAX_GOLDEN_LEAVES);
+    m_goldenLeaves = std::min(m_goldenLeaves + 1, MAX_GOLDEN_LEAVES);
 }
 
 // Add golden leaves from Kanalet castle
@@ -448,7 +448,7 @@ int Inventory::goldenLeaves() const
 
 void Inventory::addSecretSeaShell()
 {
-    m_secretSeaShells = std::min(m_secretSeaShells+1, MAX_SECRET_SEASHELLS);
+    m_secretSeaShells = std::min(m_secretSeaShells + 1, MAX_SECRET_SEASHELLS);
 }
 
 void Inventory::setSecretSeaShells(const int secretShells)
@@ -481,17 +481,17 @@ void Inventory::swapItemB()
     std::swap(m_itemB, m_inventoryItems[m_selectorIndex]);
 }
 
-void Inventory::setItemA(const InventoryItem &itemA)
+void Inventory::setItemA(const InventoryItem& itemA)
 {
     m_itemA = itemA;
 }
 
-void Inventory::setItemB(const InventoryItem &itemB)
+void Inventory::setItemB(const InventoryItem& itemB)
 {
     m_itemB = itemB;
 }
 
-void Inventory::setPositionInDungeonMap(const engine::Vector<int> &location)
+void Inventory::setPositionInDungeonMap(const engine::Vector<int>& location)
 {
     m_positionInDungeonMap = location;
 }
@@ -529,7 +529,7 @@ bool Inventory::dungeonMapLocationVisited(const int x, const int y) const
     return m_dungeonMaps[std::to_underlying(m_dungeon)][y][x].visited;
 }
 
-void Inventory::setDungeonMapLocationVisited(const engine::Vector<int> &location)
+void Inventory::setDungeonMapLocationVisited(const engine::Vector<int>& location)
 {
     assert(m_dungeon > Dungeon::DUNGEON_NONE && m_dungeon < Dungeon::DUNGEON_COUNT);
     m_dungeonMaps[std::to_underlying(m_dungeon)][location.y][location.x].visited = true;
@@ -581,10 +581,10 @@ void Inventory::moveInventorySelector(Direction direction)
         }
         break;
     case Direction::DIRECTION_RIGHT:
-        m_selectorIndex = (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : m_selectorIndex+1);
+        m_selectorIndex = (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : m_selectorIndex + 1);
         break;
     case Direction::DIRECTION_LEFT:
-        m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : m_selectorIndex-1);
+        m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : m_selectorIndex - 1);
         break;
     default:
         break;

@@ -10,8 +10,8 @@ Tilemap::Tilemap()
     , m_tilesDown(0)
 {}
 
-Tilemap::Tilemap(const engine::Sprite &tilemap, const std::vector<TileIndexArray> &mapEntries,
-                 const TilemapConfig &config)
+Tilemap::Tilemap(const engine::Sprite& tilemap, const std::vector<TileIndexArray>& mapEntries,
+                 const TilemapConfig& config)
     : m_sprite(std::make_unique<engine::Sprite>(tilemap))
     , m_tileWidth(config.tileWidth)
     , m_tileHeight(config.tileHeight)
@@ -22,7 +22,7 @@ Tilemap::Tilemap(const engine::Sprite &tilemap, const std::vector<TileIndexArray
     assert(m_sprite->data());
 }
 
-void Tilemap::tile(const engine::Renderer &renderer, const engine::Sprite &tilemapSprite, const size_t mapIndex) const
+void Tilemap::tile(const engine::Renderer& renderer, const engine::Sprite& tilemapSprite, const size_t mapIndex) const
 {
     assert(static_cast<int>(mapIndex) >= 0 && mapIndex < m_mapEntries.size());
     assert(tilemapSprite.data());

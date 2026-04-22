@@ -53,7 +53,7 @@ public:
         m_yTransition = yTransition;
     }
 
-    IRenderable(const char *name, const engine::Sprite &texture, int depth)
+    IRenderable(const char* name, const engine::Sprite& texture, int depth)
         : m_sprite(std::make_unique<engine::Sprite>(texture))
         , m_width(0)
         , m_height(0)
@@ -104,7 +104,8 @@ public:
 private:
     // pause is to have the animation keep running or not when the engine is paused
     // gap is the number of pixels between each sprite in sheet (usually 0 and should be :|)
-    template <typename R> void basicAnimateHelper(engine::Rect<R> &srcRect, int gap, int startFrame, int frameCount)
+    template <typename R>
+    void basicAnimateHelper(engine::Rect<R>& srcRect, int gap, int startFrame, int frameCount)
     {
         // static Timer animationTimer;
         static int frameCounter = 0;
@@ -140,7 +141,7 @@ protected:
 
     // Basic horizontal strip animation
     template <typename R1, typename R2>
-    void basicAnimate(const engine::Sprite &texture, engine::Rect<R1> srcRect, engine::Rect<R2> dstRect, int gap,
+    void basicAnimate(const engine::Sprite& texture, engine::Rect<R1> srcRect, engine::Rect<R2> dstRect, int gap,
                       int startFrame, int frameCount, float fps, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
@@ -149,7 +150,7 @@ protected:
 
     // Extended animation
     template <typename R1, typename R2>
-    void basicAnimateEx(const engine::Sprite &texture, const engine::Rect<R1> &srcRect, const engine::Rect<R2> &dstRect,
+    void basicAnimateEx(const engine::Sprite& texture, const engine::Rect<R1>& srcRect, const engine::Rect<R2>& dstRect,
                         int gap, int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);

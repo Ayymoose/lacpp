@@ -12,7 +12,7 @@
 namespace zelda::gui
 {
 
-void Dialogue::message(const std::string &message, float yPos)
+void Dialogue::message(const std::string& message, float yPos)
 {
     // Displays a message on screen to the player
     // Engine is paused while the message is being displayed
@@ -32,7 +32,7 @@ void Dialogue::message(const std::string &message, float yPos)
     }
 }
 
-void Dialogue::question(const std::string &question, const std::string &choice1, const std::string &choice2, float yPos)
+void Dialogue::question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos)
 {
     // Displays a message on screen to the player
     // Engine is paused while the message is being displayed
@@ -133,7 +133,7 @@ void Dialogue::render()
     m_dialoguePosY = m_dialogueImpl.dialogueY();
 
     // If there is a message to display
-    auto const &message = m_dialogueImpl.message();
+    auto const& message = m_dialogueImpl.message();
     if (m_currentChar < message.length())
     {
         auto srcRectChar = charSrcRect(message[m_currentChar]);

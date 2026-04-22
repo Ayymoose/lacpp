@@ -24,7 +24,7 @@ using RoomLinkMap = std::unordered_map<RoomIndex, RoomLink>;
 class RoomLinkManager
 {
 public:
-    void createRoomLink(RoomName roomLinkName, const RoomLinkMap &roomLinkMap);
+    void createRoomLink(RoomName roomLinkName, const RoomLinkMap& roomLinkMap);
     void useRoomLink(RoomName roomLinkName);
     void setRoomLocation(const int roomLocation);
     RoomIndex currentRoom() const;

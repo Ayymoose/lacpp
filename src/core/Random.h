@@ -9,7 +9,8 @@ namespace zelda::engine
 struct Random
 {
     // Generate a random int/float between start and end inclusive
-    template <typename T> static T random(const int start, const int end)
+    template <typename T>
+    static T random(const int start, const int end)
     {
         static_assert(std::is_arithmetic_v<T>, "Invalid template type");
 
@@ -31,7 +32,8 @@ struct Random
     }
 
     // Choose a random argument from a given list of items
-    template <typename T, typename... Args> static T choose(T arg, Args... args)
+    template <typename T, typename... Args>
+    static T choose(T arg, Args... args)
     {
         static_assert(sizeof...(Args) > 0);
         constexpr auto size = 1 + sizeof...(Args);

@@ -10,7 +10,7 @@ namespace zelda::engine
 
 constexpr int MAIN_WINDOW_WIDTH = 160 * 6;
 constexpr int MAIN_WINDOW_HEIGHT = 144 * 6;
-constexpr const char *MAIN_WINDOW_TITLE = "Link's Awakening";
+constexpr const char* MAIN_WINDOW_TITLE = "Link's Awakening";
 
 class Engine : public Singleton<Engine>
 {
@@ -25,9 +25,9 @@ public:
     bool paused() const;
     ~Engine();
 
-    void setPreRenderTestFunction(const std::function<void(void)> &function) { m_preRenderTestFunction = function; }
+    void setPreRenderTestFunction(const std::function<void(void)>& function) { m_preRenderTestFunction = function; }
 
-    void setRenderTestFunction(const std::function<void(void)> &function) { m_renderTestFunction = function; }
+    void setRenderTestFunction(const std::function<void(void)>& function) { m_renderTestFunction = function; }
 
     void initVideo() const;
     void initWindow();

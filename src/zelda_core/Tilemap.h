@@ -23,9 +23,9 @@ public:
     };
 
     Tilemap();
-    Tilemap(const engine::Sprite &tilemap, const std::vector<TileIndexArray> &mapEntries, const TilemapConfig &config);
+    Tilemap(const engine::Sprite& tilemap, const std::vector<TileIndexArray>& mapEntries, const TilemapConfig& config);
 
-    void tile(const engine::Renderer &renderer, const engine::Sprite &tilemapSprite, const size_t mapIndex) const;
+    void tile(const engine::Renderer& renderer, const engine::Sprite& tilemapSprite, const size_t mapIndex) const;
     size_t size() const;
 
 private:

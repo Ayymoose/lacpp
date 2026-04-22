@@ -4,7 +4,7 @@
 namespace zelda::engine
 {
 
-Sprite::Sprite(SDL_Renderer *renderer, const int width, const int height)
+Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
 {
     m_width = width;
     m_height = height;
@@ -27,7 +27,7 @@ Sprite::Sprite(SDL_Renderer *renderer, const int width, const int height)
     }
 }
 
-Sprite::Sprite(SDL_Renderer *renderer, SDL_Surface *surface)
+Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
 {
     assert(renderer);
     m_renderer = renderer;
@@ -59,17 +59,17 @@ Sprite::Sprite(SDL_Renderer *renderer, SDL_Surface *surface)
     SDL_DestroyTexture(textureCreatedFromSurface);
 }
 
-SDL_Texture *Sprite::data() const
+SDL_Texture* Sprite::data() const
 {
     return m_sprite;
 }
 
-SDL_Renderer *Sprite::renderer() const
+SDL_Renderer* Sprite::renderer() const
 {
     return m_renderer;
 }
 
-Sprite::Sprite(const Sprite &sprite)
+Sprite::Sprite(const Sprite& sprite)
 {
     m_width = sprite.m_width;
     m_height = sprite.m_height;
@@ -92,13 +92,13 @@ Sprite::Sprite(const Sprite &sprite)
     SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 }
 
-Sprite &Sprite::operator=(Sprite sprite)
+Sprite& Sprite::operator=(Sprite sprite)
 {
     swap(*this, sprite);
     return *this;
 }
 
-Sprite::Sprite(Sprite &&sprite) noexcept
+Sprite::Sprite(Sprite&& sprite) noexcept
     : Sprite(nullptr, 0, 0)
 {
     swap(*this, sprite);
@@ -133,7 +133,7 @@ SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip)
     }
 }
 
-void swap(Sprite &sprite1, Sprite &sprite2) noexcept
+void swap(Sprite& sprite1, Sprite& sprite2) noexcept
 {
     using std::swap;
     swap(sprite1.m_height, sprite2.m_height);

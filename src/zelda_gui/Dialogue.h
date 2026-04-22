@@ -35,8 +35,8 @@ class Dialogue : public IRenderable, public Controllable, public engine::Singlet
     friend class Singleton<Dialogue>;
 
 public:
-    void message(const std::string &message, float yPos);
-    void question(const std::string &question, const std::string &choice1, const std::string &choice2, float yPos);
+    void message(const std::string& message, float yPos);
+    void question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos);
 
     void render() override;
     void update() override;

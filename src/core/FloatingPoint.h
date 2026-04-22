@@ -6,7 +6,8 @@
 
 namespace zelda::engine
 {
-template <typename T> struct FloatingPoint
+template <typename T>
+struct FloatingPoint
 {
     static_assert(std::is_arithmetic_v<T>, "Arithemtic only type allowed");
 

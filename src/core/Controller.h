@@ -13,7 +13,7 @@ class Controller : public Singleton<Controller>
     friend class Singleton<Controller>;
 
 public:
-    void setController(Controllable *controller)
+    void setController(Controllable* controller)
     {
         m_controller = controller;
         if (controller)
@@ -26,11 +26,11 @@ public:
         }
 
         // Clear stack
-        auto emptyStack = std::stack<Controllable *>();
+        auto emptyStack = std::stack<Controllable*>();
         m_stack.swap(emptyStack);
     }
 
-    void pushController(Controllable *controller)
+    void pushController(Controllable* controller)
     {
         // TODO: There must be an existing controller in place
         // assert(m_controller && "No existing controller in place");
@@ -53,7 +53,7 @@ public:
         }
     }
 
-    Controllable *getController() const
+    Controllable* getController() const
     {
         if (m_stack.empty())
         {
@@ -71,8 +71,8 @@ private:
     {
         DEBUG_MACRO(DBG_INFO, "Controller is no-one");
     }
-    Controllable *m_controller;
-    std::stack<Controllable *> m_stack;
+    Controllable* m_controller;
+    std::stack<Controllable*> m_stack;
 };
 
 } // namespace zelda::engine

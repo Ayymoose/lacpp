@@ -37,7 +37,8 @@ public:
     void update() override;
 
     // Returns true whether a rect is visible in the camera region
-    template <typename R> bool visible(const Rect<R> &rectangle) const
+    template <typename R>
+    bool visible(const Rect<R>& rectangle) const
     {
         if (rectangle.x > (m_scrollX + CAMERA_WIDTH) - rectangle.w)
         {

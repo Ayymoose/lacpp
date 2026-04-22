@@ -34,7 +34,7 @@ Dialogue::Dialogue()
     , m_isQuestion(false)
 {}
 
-void Dialogue::message(const std::string &message, float yPos)
+void Dialogue::message(const std::string& message, float yPos)
 {
     // Displays a message on screen to the player
     // Engine is paused while the message is being displayed
@@ -53,7 +53,7 @@ void Dialogue::message(const std::string &message, float yPos)
         Message(message, (yPos > DIALOGUE_HEIGHT + DIALOGUE_POS_Y_HIGH) ? DIALOGUE_POS_Y_HIGH : DIALOGUE_POS_Y_LOW));
 }
 
-void Dialogue::question(const std::string &question, const std::string &choice1, const std::string &choice2, float yPos)
+void Dialogue::question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos)
 {
     // Acceptable characters in the message are only
     // a-z A-Z !?'.,- 0-9 space
@@ -94,7 +94,7 @@ void Dialogue::question(const std::string &question, const std::string &choice1,
                  optionsPadding));
 }
 
-void Dialogue::checkCharacters(const std::string &message)
+void Dialogue::checkCharacters(const std::string& message)
 {
     assert(!message.empty());
 
@@ -227,18 +227,18 @@ void Dialogue::checkForNewMessages(const int currentChar)
     // If there are any messages in the queue, pop them off one by one and display
     if (!m_messages.empty() && currentChar == 0)
     {
-        auto const &item = m_messages.front();
+        auto const& item = m_messages.front();
 
         if (std::holds_alternative<Message>(item))
         {
-            auto const &message = std::get<Message>(item);
+            auto const& message = std::get<Message>(item);
             m_dialogueY = message.y;
             m_message = message.message;
             m_isQuestion = false;
         }
         else
         {
-            auto const &question = std::get<Question>(item);
+            auto const& question = std::get<Question>(item);
             m_dialogueY = question.y;
             m_message = question.question;
             m_isQuestion = true;
