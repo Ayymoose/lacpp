@@ -1,7 +1,7 @@
 #include "TilemapManager.h"
-#include "Renderer.h"
+#include "core/Renderer.h"
 #include "Depth.h"
-#include "Camera.h"
+#include "core/Camera.h"
 
 #include <cassert>
 

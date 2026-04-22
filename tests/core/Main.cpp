@@ -1,0 +1,469 @@
+#define BOOST_TEST_MODULE CoreTests
+#include <boost/test/included/unit_test.hpp>
+
+#include "core/Vector.h"
+#include "core/Rect.h"
+#include "core/FloatingPoint.h"
+
+using namespace zelda::engine;
+
+namespace vector_tests
+{
+BOOST_AUTO_TEST_SUITE(VectorTests)
+
+// -------------------------
+// Addition
+// -------------------------
+BOOST_AUTO_TEST_CASE(AddInt)
+{
+    Vector<int> v1(0, 0);
+    Vector<int> v2(2, 2);
+    v1 += v2;
+    BOOST_TEST(v1 == Vector<int>(2, 2));
+}
+
+BOOST_AUTO_TEST_CASE(AddFloat)
+{
+    Vector<float> v1(0.5f, 0.5f);
+    Vector<float> v2(2.5f, 2.5f);
+    v1 += v2;
+    BOOST_TEST(v1 == Vector<float>(3.0f, 3.0f));
+}
+
+BOOST_AUTO_TEST_CASE(AddDouble)
+{
+    Vector<double> v1(0.5, 0.5);
+    Vector<double> v2(2.5, 2.5);
+    v1 += v2;
+    BOOST_TEST(v1 == Vector<double>(3.0, 3.0));
+}
+
+BOOST_AUTO_TEST_CASE(AddZeroVector)
+{
+    Vector<int> v1(5, 10);
+    v1 += Vector<int>(0, 0);
+    BOOST_TEST(v1 == Vector<int>(5, 10));
+}
+
+BOOST_AUTO_TEST_CASE(AddNegative)
+{
+    Vector<int> v1(5, 10);
+    v1 += Vector<int>(-5, -10);
+    BOOST_TEST(v1 == Vector<int>(0, 0));
+}
+
+// -------------------------
+// Subtraction
+// -------------------------
+
+BOOST_AUTO_TEST_CASE(SubBinaryOperator)
+{
+    Vector<int> v1(5, 10);
+    Vector<int> v2(2, 3);
+    Vector<int> v3 = v1 - v2;
+    BOOST_TEST(v3 == Vector<int>(3, 7));
+}
+
+BOOST_AUTO_TEST_CASE(SubInt)
+{
+    Vector<int> v1(0, 0);
+    Vector<int> v2(2, 2);
+    v1 -= v2;
+    BOOST_TEST(v1 == Vector<int>(-2, -2));
+}
+
+BOOST_AUTO_TEST_CASE(SubFloat)
+{
+    Vector<float> v1(0.5f, 0.5f);
+    Vector<float> v2(2.5f, 2.5f);
+    v1 -= v2;
+    BOOST_TEST(v1 == Vector<float>(-2.0f, -2.0f));
+}
+
+BOOST_AUTO_TEST_CASE(SubDouble)
+{
+    Vector<double> v1(0.5, 0.5);
+    Vector<double> v2(2.5, 2.5);
+    v1 -= v2;
+    BOOST_TEST(v1 == Vector<double>(-2.0, -2.0));
+}
+
+BOOST_AUTO_TEST_CASE(SubSelf)
+{
+    Vector<int> v1(5, 10);
+    const Vector<int> v2 = v1;
+    v1 -= v2;
+    BOOST_TEST(v1 == Vector<int>(0, 0));
+}
+
+// -------------------------
+// Multiplication
+// -------------------------
+BOOST_AUTO_TEST_CASE(MulInt)
+{
+    Vector<int> v1(25, 10);
+    v1 *= 2;
+    BOOST_TEST(v1 == Vector<int>(50, 20));
+}
+
+BOOST_AUTO_TEST_CASE(MulFloat)
+{
+    Vector<float> v1(25.0f, 10.0f);
+    v1 *= 2.5f;
+    BOOST_TEST(v1 == Vector<float>(62.5f, 25.0f));
+}
+
+BOOST_AUTO_TEST_CASE(MulDouble)
+{
+    Vector<double> v1(25.0, 10.0);
+    v1 *= 2.5;
+    BOOST_TEST(v1 == Vector<double>(62.5, 25.0));
+}
+
+BOOST_AUTO_TEST_CASE(MulByZero)
+{
+    Vector<int> v1(25, 10);
+    v1 *= 0;
+    BOOST_TEST(v1 == Vector<int>(0, 0));
+}
+
+BOOST_AUTO_TEST_CASE(MulByOne)
+{
+    Vector<int> v1(25, 10);
+    v1 *= 1;
+    BOOST_TEST(v1 == Vector<int>(25, 10));
+}
+
+// -------------------------
+// Division
+// -------------------------
+BOOST_AUTO_TEST_CASE(DivInt)
+{
+    Vector<int> v1(100, 50);
+    v1 /= 2;
+    BOOST_TEST(v1 == Vector<int>(50, 25));
+}
+
+BOOST_AUTO_TEST_CASE(DivFloat)
+{
+    Vector<float> v1(100.0f, 50.0f);
+    v1 /= 2.5f;
+    BOOST_TEST(v1 == Vector<float>(40.0f, 20.0f));
+}
+
+BOOST_AUTO_TEST_CASE(DivDouble)
+{
+    Vector<double> v1(100.0, 50.0);
+    v1 /= 2.5;
+    BOOST_TEST(v1 == Vector<double>(40.0, 20.0));
+}
+
+BOOST_AUTO_TEST_CASE(DivByOne)
+{
+    Vector<int> v1(25, 10);
+    v1 /= 1;
+    BOOST_TEST(v1 == Vector<int>(25, 10));
+}
+
+// Note: DivByZero is guarded by assert() in Vector so is not tested here.
+// It would terminate the process in Debug builds.
+
+// -------------------------
+// Dot Product
+// -------------------------
+BOOST_AUTO_TEST_CASE(DotInt)
+{
+    BOOST_TEST(Vector<int>::dot(Vector<int>(1, 2), Vector<int>(3, 4)) == 11);
+}
+
+BOOST_AUTO_TEST_CASE(DotFloat)
+{
+    BOOST_TEST(Vector<float>::dot(Vector<float>(1.0f, 2.0f), Vector<float>(3.0f, 4.0f)) == 11.0f);
+}
+
+BOOST_AUTO_TEST_CASE(DotDouble)
+{
+    BOOST_TEST(Vector<double>::dot(Vector<double>(1.0, 2.0), Vector<double>(3.0, 4.0)) == 11.0);
+}
+
+BOOST_AUTO_TEST_CASE(DotPerpendicularVectors)
+{
+    BOOST_TEST(Vector<int>::dot(Vector<int>(1, 0), Vector<int>(0, 1)) == 0);
+}
+
+BOOST_AUTO_TEST_CASE(DotWithZeroVector)
+{
+    BOOST_TEST(Vector<int>::dot(Vector<int>(5, 10), Vector<int>(0, 0)) == 0);
+}
+
+// -------------------------
+// Cross Product
+// -------------------------
+BOOST_AUTO_TEST_CASE(CrossInt)
+{
+    BOOST_TEST(Vector<int>::cross(Vector<int>(1, 2), Vector<int>(3, 4)) == -2);
+}
+
+BOOST_AUTO_TEST_CASE(CrossFloat)
+{
+    BOOST_TEST(Vector<float>::cross(Vector<float>(1.0f, 2.0f), Vector<float>(3.0f, 4.0f)) == -2.0f);
+}
+
+BOOST_AUTO_TEST_CASE(CrossDouble)
+{
+    BOOST_TEST(Vector<double>::cross(Vector<double>(1.0, 2.0), Vector<double>(3.0, 4.0)) == -2.0);
+}
+
+BOOST_AUTO_TEST_CASE(CrossParallelVectors)
+{
+    BOOST_TEST(Vector<int>::cross(Vector<int>(2, 4), Vector<int>(1, 2)) == 0);
+}
+
+BOOST_AUTO_TEST_CASE(CrossAntiCommutativity)
+{
+    Vector<int> v1(1, 2);
+    Vector<int> v2(3, 4);
+    BOOST_TEST(Vector<int>::cross(v1, v2) == -Vector<int>::cross(v2, v1));
+}
+
+// -------------------------
+// Length
+// -------------------------
+BOOST_AUTO_TEST_CASE(LengthInt)
+{
+    BOOST_TEST(Vector<int>(3, 4).length() == 5.0);
+}
+
+BOOST_AUTO_TEST_CASE(LengthFloat)
+{
+    Vector<float> v1(3.5f, 4.5f);
+    const float expected = std::sqrt(3.5f * 3.5f + 4.5f * 4.5f);
+    BOOST_TEST(FloatingPoint<float>::almostEqual(expected, v1.length()));
+}
+
+BOOST_AUTO_TEST_CASE(LengthDouble)
+{
+    Vector<double> v1(3.5, 4.5);
+    const double expected = std::sqrt(3.5 * 3.5 + 4.5 * 4.5);
+    BOOST_TEST(FloatingPoint<double>::almostEqual(expected, v1.length()));
+}
+
+BOOST_AUTO_TEST_CASE(LengthZeroVector)
+{
+    BOOST_TEST(Vector<int>(0, 0).length() == 0.0);
+}
+
+BOOST_AUTO_TEST_CASE(LengthUnitVector)
+{
+    BOOST_TEST(FloatingPoint<double>::almostEqual(1.0, Vector<double>(1.0, 0.0).length()));
+}
+
+// -------------------------
+// Negation
+// -------------------------
+BOOST_AUTO_TEST_CASE(NegateInt)
+{
+    BOOST_TEST(-Vector<int>(3, 4) == Vector<int>(-3, -4));
+}
+
+BOOST_AUTO_TEST_CASE(NegateFloat)
+{
+    BOOST_TEST(-Vector<float>(3.0f, 4.0f) == Vector<float>(-3.0f, -4.0f));
+}
+
+BOOST_AUTO_TEST_CASE(NegateDouble)
+{
+    BOOST_TEST(-Vector<double>(3.0, 4.0) == Vector<double>(-3.0, -4.0));
+}
+
+BOOST_AUTO_TEST_CASE(DoubleNegation)
+{
+    Vector<int> v1(3, 4);
+    BOOST_TEST(-(-v1) == v1);
+}
+
+BOOST_AUTO_TEST_CASE(NegateZeroVector)
+{
+    BOOST_TEST(-Vector<int>(0, 0) == Vector<int>(0, 0));
+}
+
+// -------------------------
+// Distance
+// -------------------------
+BOOST_AUTO_TEST_CASE(DistanceInt)
+{
+    BOOST_TEST(Vector<int>::distanceBetween(Vector<int>(0, 0), Vector<int>(30, 40)) == 50.0);
+}
+
+BOOST_AUTO_TEST_CASE(DistanceFloat)
+{
+    BOOST_TEST(Vector<float>::distanceBetween(Vector<float>(0, 0), Vector<float>(30, 40)) == 50.0f);
+}
+
+BOOST_AUTO_TEST_CASE(DistanceDouble)
+{
+    BOOST_TEST(Vector<double>::distanceBetween(Vector<double>(0, 0), Vector<double>(30, 40)) == 50.0);
+}
+
+BOOST_AUTO_TEST_CASE(DistanceSamePoint)
+{
+    BOOST_TEST(Vector<int>::distanceBetween(Vector<int>(5, 5), Vector<int>(5, 5)) == 0.0);
+}
+
+BOOST_AUTO_TEST_CASE(DistanceIsSymmetric)
+{
+    Vector<double> v1(1.0, 2.0);
+    Vector<double> v2(4.0, 6.0);
+    BOOST_TEST(Vector<double>::distanceBetween(v1, v2) == Vector<double>::distanceBetween(v2, v1));
+}
+
+// -------------------------
+// Normalise
+// -------------------------
+BOOST_AUTO_TEST_CASE(NormalFloat)
+{
+    BOOST_TEST(Vector<float>(30.0f, 40.0f).normal() == Vector<float>(0.6f, 0.8f));
+}
+
+BOOST_AUTO_TEST_CASE(NormalDouble)
+{
+    BOOST_TEST(Vector<double>(30.0, 40.0).normal() == Vector<double>(0.6, 0.8));
+}
+
+BOOST_AUTO_TEST_CASE(NormaliseInPlaceFloat)
+{
+    Vector<float> v1(30.0f, 40.0f);
+    v1.normalise();
+    BOOST_TEST(FloatingPoint<float>::almostEqual(0.6f, v1.x));
+    BOOST_TEST(FloatingPoint<float>::almostEqual(0.8f, v1.y));
+}
+
+BOOST_AUTO_TEST_CASE(NormaliseInPlaceDouble)
+{
+    Vector<double> v1(30.0, 40.0);
+    v1.normalise();
+    BOOST_TEST(FloatingPoint<double>::almostEqual(0.6, v1.x));
+    BOOST_TEST(FloatingPoint<double>::almostEqual(0.8, v1.y));
+}
+
+BOOST_AUTO_TEST_CASE(NormalisedVectorHasLengthOne)
+{
+    BOOST_TEST(FloatingPoint<double>::almostEqual(1.0, Vector<double>(30.0, 40.0).normal().length()));
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+} // namespace vector_tests
+
+namespace rect_tests
+{
+BOOST_AUTO_TEST_SUITE(RectTests)
+
+// -------------------------
+// Equality
+// -------------------------
+BOOST_AUTO_TEST_CASE(EqualInt)
+{
+    BOOST_TEST(Rect<int>(1, 2, 3, 4) == Rect<int>(1, 2, 3, 4));
+}
+
+BOOST_AUTO_TEST_CASE(EqualFloat)
+{
+    BOOST_TEST(Rect<float>(1.0f, 2.0f, 3.0f, 4.0f) == Rect<float>(1.0f, 2.0f, 3.0f, 4.0f));
+}
+
+BOOST_AUTO_TEST_CASE(EqualDouble)
+{
+    BOOST_TEST(Rect<double>(1.0, 2.0, 3.0, 4.0) == Rect<double>(1.0, 2.0, 3.0, 4.0));
+}
+
+BOOST_AUTO_TEST_CASE(EqualDefaultConstructed)
+{
+    BOOST_TEST(Rect<int>() == Rect<int>(0, 0, 0, 0));
+}
+
+// -------------------------
+// Inequality
+// -------------------------
+BOOST_AUTO_TEST_CASE(NotEqualInt)
+{
+    BOOST_TEST(Rect<int>(1, 2, 3, 4) != Rect<int>(40, 30, 20, 10));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualFloat)
+{
+    BOOST_TEST(Rect<float>(1.0f, 2.0f, 3.0f, 4.0f) != Rect<float>(40.0f, 30.0f, 20.0f, 10.0f));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualDouble)
+{
+    BOOST_TEST(Rect<double>(1.0, 2.0, 3.0, 4.0) != Rect<double>(40.0, 30.0, 20.0, 10.0));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualDiffersOnlyInX)
+{
+    BOOST_TEST(Rect<int>(99, 2, 3, 4) != Rect<int>(1, 2, 3, 4));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualDiffersOnlyInY)
+{
+    BOOST_TEST(Rect<int>(1, 99, 3, 4) != Rect<int>(1, 2, 3, 4));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualDiffersOnlyInW)
+{
+    BOOST_TEST(Rect<int>(1, 2, 99, 4) != Rect<int>(1, 2, 3, 4));
+}
+
+BOOST_AUTO_TEST_CASE(NotEqualDiffersOnlyInH)
+{
+    BOOST_TEST(Rect<int>(1, 2, 3, 99) != Rect<int>(1, 2, 3, 4));
+}
+
+// -------------------------
+// rectToSDLRect (integral)
+// -------------------------
+BOOST_AUTO_TEST_CASE(ToSDLRectInt)
+{
+    const Rect<int> r(1, 2, 3, 4);
+    const SDL_Rect sdl = rectToSDLRect(r);
+    BOOST_TEST(sdl.x == 1);
+    BOOST_TEST(sdl.y == 2);
+    BOOST_TEST(sdl.w == 3);
+    BOOST_TEST(sdl.h == 4);
+}
+
+BOOST_AUTO_TEST_CASE(ToSDLRectIntZero)
+{
+    const SDL_Rect sdl = rectToSDLRect(Rect<int>(0, 0, 0, 0));
+    BOOST_TEST(sdl.x == 0);
+    BOOST_TEST(sdl.y == 0);
+    BOOST_TEST(sdl.w == 0);
+    BOOST_TEST(sdl.h == 0);
+}
+
+// -------------------------
+// rectToSDLRect (floating point)
+// -------------------------
+BOOST_AUTO_TEST_CASE(ToSDLFRectFloat)
+{
+    const Rect<float> r(1.5f, 2.5f, 3.5f, 4.5f);
+    const SDL_FRect sdl = rectToSDLRect(r);
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.x, 1.5f));
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.y, 2.5f));
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.w, 3.5f));
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.h, 4.5f));
+}
+
+BOOST_AUTO_TEST_CASE(ToSDLFRectDouble)
+{
+    const Rect<double> r(1.5, 2.5, 3.5, 4.5);
+    const SDL_FRect sdl = rectToSDLRect(r);
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.x, 1.5f));
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.y, 2.5f));
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.w, 3.5f));
+    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.h, 4.5f));
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+} // namespace rect_tests

@@ -2,7 +2,7 @@
 
 #include "IRenderable.h"
 #include "Controllable.h"
-#include "Singleton.h"
+#include "core/Singleton.h"
 #include "zelda_core/Worldmap.h"
 
 namespace zelda::gui

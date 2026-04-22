@@ -3,9 +3,9 @@
 #include "IUpdateable.h"
 #include "Controllable.h"
 #include "IRenderable.h"
-#include "Vector.h"
-#include "Rect.h"
-#include "Camera.h"
+#include "core/Vector.h"
+#include "core/Rect.h"
+#include "core/Camera.h"
 
 #include "zelda_core/Inventory.h"
 

@@ -6,7 +6,7 @@
 #include "IUpdateable.h"
 #include "zelda_gui/Inventory.h"
 #include "zelda_gui/Worldmap.h"
-#include "Vector.h"
+#include "core/Vector.h"
 
 namespace zelda::core
 {
