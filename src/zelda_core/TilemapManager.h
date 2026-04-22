@@ -18,8 +18,8 @@ class TilemapManager : IRenderable
 {
 public:
     // Associates the tilemap data provided with mapName
-    void createTilemap(RoomName mapName, const engine::Sprite &tilemap, const TileIndexArrays &mapEntry,
-                       const Tilemap::TilemapConfig &config);
+    void createTilemap(RoomName mapName, const engine::Sprite& tilemap, const TileIndexArrays& mapEntry,
+                       const Tilemap::TilemapConfig& config);
 
     // Sets the current map to be mapName
     void setCurrentTilemap(RoomName mapName);
@@ -38,7 +38,7 @@ public:
     TilemapManager();
 
 private:
-    void renderTileMap(const engine::Rect<int> &dstRect, const engine::Sprite &srcTexture, const size_t roomIndex);
+    void renderTileMap(const engine::Rect<int>& dstRect, const engine::Sprite& srcTexture, const size_t roomIndex);
 
     int m_roomX;
     int m_roomY;

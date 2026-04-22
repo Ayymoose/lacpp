@@ -21,7 +21,7 @@ class Renderer : public Singleton<Renderer>
 public:
     ~Renderer();
 
-    void createRenderer(const Window &window);
+    void createRenderer(const Window& window);
 
     void clearScreen(const Colour colour) const;
 
@@ -29,11 +29,11 @@ public:
 
     void setRendererScale(const float scaleX, const float scaleY) const;
 
-    bool inRenderSet(IRenderable *renderable) const;
+    bool inRenderSet(IRenderable* renderable) const;
 
-    void addRenderable(IRenderable *renderable);
+    void addRenderable(IRenderable* renderable);
 
-    void removeRenderable(IRenderable *renderable);
+    void removeRenderable(IRenderable* renderable);
 
     auto getRenderer() const
     {
@@ -43,7 +43,7 @@ public:
 
     auto getRenderSet() const { return m_renderables; }
 
-    auto pushRenderingTarget(const Sprite &dstTexture) const
+    auto pushRenderingTarget(const Sprite& dstTexture) const
     {
         assert(m_renderer);
         assert(dstTexture.data());
@@ -52,7 +52,7 @@ public:
         return currentRenderingTarget;
     }
 
-    void popRenderingTarget(SDL_Texture *srcTexture) const;
+    void popRenderingTarget(SDL_Texture* srcTexture) const;
 
 private:
     Renderer()
@@ -60,14 +60,14 @@ private:
     {}
 
     // Global renderer
-    SDL_Renderer *m_renderer;
+    SDL_Renderer* m_renderer;
 
     struct RendererComparator
     {
-        bool operator()(const IRenderable *r1, const IRenderable *r2) const { return r1->depth() < r2->depth(); }
+        bool operator()(const IRenderable* r1, const IRenderable* r2) const { return r1->depth() < r2->depth(); }
     };
 
     // Multiset of Renderable objects that will be drawn
-    std::multiset<IRenderable *, RendererComparator> m_renderables;
+    std::multiset<IRenderable*, RendererComparator> m_renderables;
 };
 } // namespace zelda::engine

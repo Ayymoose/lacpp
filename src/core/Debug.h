@@ -29,7 +29,7 @@ class Debug : public Singleton<Debug>
 
 public:
     // TODO: Timestamp + log level + file name + source
-    void log(DebugMask mask, const std::string &message) const
+    void log(DebugMask mask, const std::string& message) const
     {
         if (!(m_currentMask & mask))
         {

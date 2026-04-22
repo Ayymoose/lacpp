@@ -107,8 +107,8 @@ void RoomManager::setRoomLocation(const int roomLocation)
     m_roomLinkManager.setRoomLocation(roomLocation);
 }
 
-void RoomManager::createRoom(RoomName roomName, const engine::Sprite &tilemap, const TileIndexArrays &tileIndexArrays,
-                             const Tilemap::TilemapConfig &tilemapConfig, const RoomLinkMap &roomLinkMap)
+void RoomManager::createRoom(RoomName roomName, const engine::Sprite& tilemap, const TileIndexArrays& tileIndexArrays,
+                             const Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap)
 {
     m_tilemapManager.createTilemap(roomName, tilemap, tileIndexArrays, tilemapConfig);
     m_roomLinkManager.createRoomLink(roomName, roomLinkMap);

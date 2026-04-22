@@ -141,10 +141,10 @@ void Engine::update() const
         controller->control();
     }
     auto const gameObjects = Renderer::getInstance().getRenderSet();
-    for (const auto &gameObject : gameObjects)
+    for (const auto& gameObject : gameObjects)
     {
         assert(gameObject);
-        auto const updateableGameObject = dynamic_cast<IUpdateable *>(gameObject);
+        auto const updateableGameObject = dynamic_cast<IUpdateable*>(gameObject);
         if (updateableGameObject)
         {
             updateableGameObject->update();
@@ -156,7 +156,7 @@ void Engine::render() const
 {
     Renderer::getInstance().clearScreen(COLOUR_BLACK);
     auto const renderables = Renderer::getInstance().getRenderSet();
-    for (const auto &renderable : renderables)
+    for (const auto& renderable : renderables)
     {
         assert(renderable);
         if (renderable->visible())

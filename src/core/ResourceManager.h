@@ -18,7 +18,7 @@ namespace fs = std::filesystem;
 // Get base path once
 inline fs::path GetBasePath()
 {
-    char *basePath = SDL_GetBasePath();
+    char* basePath = SDL_GetBasePath();
     if (!basePath)
     {
         throw std::runtime_error("Failed to get SDL base path");
@@ -60,7 +60,7 @@ class ResourceManager : public Singleton<ResourceManager>
     friend class Singleton<ResourceManager>;
 
 public:
-    void loadSprite(SpriteResource resource, const std::string &path, const Colour transparencyColour);
+    void loadSprite(SpriteResource resource, const std::string& path, const Colour transparencyColour);
     std::shared_ptr<Sprite> operator[](SpriteResource resource);
 
 private:

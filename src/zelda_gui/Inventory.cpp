@@ -12,11 +12,12 @@
 namespace zelda::gui
 {
 Inventory::Inventory()
-    : IRenderable("Inventory", engine::Sprite(engine::Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
+    : IRenderable("Inventory",
+                  engine::Sprite(engine::Renderer::getInstance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
                   core::ZD_DEPTH_INVENTORY)
     , Controllable(m_name)
-    , m_subscreen(std::make_unique<engine::Sprite>(engine::Renderer::getInstance().getRenderer(), SELECT_SUBSCREEN_WIDTH,
-                                           SELECT_SUBSCREEN_HEIGHT))
+    , m_subscreen(std::make_unique<engine::Sprite>(engine::Renderer::getInstance().getRenderer(),
+                                                   SELECT_SUBSCREEN_WIDTH, SELECT_SUBSCREEN_HEIGHT))
     , m_open(false)
     , m_selectorX(SELECTOR_INITIAL_X)
     , m_selectorY(SELECTOR_INITIAL_Y)
@@ -99,8 +100,10 @@ void Inventory::control()
     }
 
     // If any select keys pressed, reset the flashing animation
-    if (engine::Keyboard::getInstance().keyPushed(BUTTON_RIGHT) || engine::Keyboard::getInstance().keyPushed(BUTTON_LEFT)
-        || engine::Keyboard::getInstance().keyPushed(BUTTON_DOWN) || engine::Keyboard::getInstance().keyPushed(BUTTON_UP))
+    if (engine::Keyboard::getInstance().keyPushed(BUTTON_RIGHT)
+        || engine::Keyboard::getInstance().keyPushed(BUTTON_LEFT)
+        || engine::Keyboard::getInstance().keyPushed(BUTTON_DOWN)
+        || engine::Keyboard::getInstance().keyPushed(BUTTON_UP))
     {
         m_flashSelector = true;
     }
@@ -395,7 +398,8 @@ void Inventory::drawDungeonMap()
             // If we have the compass, show the nightmare and treasure chests
             if (m_inventoryImpl.dungeonItem(core::DungeonItem::DUNGEON_ITEM_COMPASS))
             {
-                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y) == core::DungeonMapItem::DUNGEON_MAP_ITEM_NIGHTMARE_KEY)
+                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y)
+                    == core::DungeonMapItem::DUNGEON_MAP_ITEM_NIGHTMARE_KEY)
                 {
                     // srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
                     // dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
@@ -936,8 +940,8 @@ void Inventory::drawSubscreen() const
 // 320
 
 // TODO: These drawNumber and drawWeaponLevel functions are used in the shop too so must be moved elsewhere
-void Inventory::drawNumber(const engine::Sprite &srcSprite, bool drawLevel, bool useNormalFont, int trailingDigits, int number,
-                           const engine::Rect<int> &dstRect) const
+void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool useNormalFont, int trailingDigits,
+                           int number, const engine::Rect<int>& dstRect) const
 {
     // drawLevel      = Draw the "L-" text next to the number
     // useNormalFont  = Use the normal digit text or text with black background
@@ -1061,7 +1065,8 @@ void Inventory::drawNumber(const engine::Sprite &srcSprite, bool drawLevel, bool
     engine::Renderer::getInstance().popRenderingTarget(currentRenderingTarget);
 }
 
-void Inventory::drawInventoryItemAttribute(const engine::Sprite &srcSprite, const core::InventoryItem &item, const engine::Rect<int> &dstRect)
+void Inventory::drawInventoryItemAttribute(const engine::Sprite& srcSprite, const core::InventoryItem& item,
+                                           const engine::Rect<int>& dstRect)
 {
     switch (item.itemAttribute)
     {
@@ -1172,4 +1177,4 @@ void Inventory::moveSelector(core::Direction direction)
     }
 }
 
-} // namespace zelda
+} // namespace zelda::gui

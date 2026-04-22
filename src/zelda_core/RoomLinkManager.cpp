@@ -3,7 +3,7 @@
 
 namespace zelda::core
 {
-void RoomLinkManager::createRoomLink(RoomName roomLinkName, const RoomLinkMap &roomLinkMap)
+void RoomLinkManager::createRoomLink(RoomName roomLinkName, const RoomLinkMap& roomLinkMap)
 {
     assert(m_roomLinkMap.count(roomLinkName) == 0 && "Invalid roomLinkName");
     m_roomLinkMap[roomLinkName] = roomLinkMap;

@@ -13,7 +13,7 @@ namespace zelda
 class Controllable
 {
 public:
-    Controllable(const std::string &name)
+    Controllable(const std::string& name)
         : m_controllableName(name)
     {}
     Controllable() = default;

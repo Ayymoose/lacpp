@@ -11,8 +11,8 @@ class Dialogue
 {
 public:
     Dialogue();
-    void message(const std::string &message, float yPos);
-    void question(const std::string &question, const std::string &choice1, const std::string &choice2, float yPos);
+    void message(const std::string& message, float yPos);
+    void question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos);
 
     int maxLines() const;
 
@@ -80,7 +80,7 @@ private:
         std::string message;
         int y;
 
-        Message(const std::string &messageName, const float dy)
+        Message(const std::string& messageName, const float dy)
             : message(messageName)
             , y(dy)
         {}
@@ -94,7 +94,7 @@ private:
         std::string choice2;
         int optionPaddingLength;
 
-        Question(const std::string &questionMessage, const int dy, const std::string &first, const std::string &second,
+        Question(const std::string& questionMessage, const int dy, const std::string& first, const std::string& second,
                  const int paddingLength)
             : question(questionMessage)
             , y(dy)
@@ -106,6 +106,6 @@ private:
 
     std::queue<std::variant<Message, Question>> m_messages;
 
-    static void checkCharacters(const std::string &string);
+    static void checkCharacters(const std::string& string);
 };
 } // namespace zelda::core

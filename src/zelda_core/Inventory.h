@@ -93,19 +93,19 @@ struct InventoryItem
     ItemAttribute itemAttribute;
     int value;
 
-    friend std::ostream &operator<<(std::ostream &ostream, const InventoryItem &item)
+    friend std::ostream& operator<<(std::ostream& ostream, const InventoryItem& item)
     {
         ostream << '(' << std::to_underlying(item.usuableItem) << ',' << std::to_underlying(item.itemAttribute) << ','
                 << item.value << ')';
         return ostream;
     }
 
-    bool operator==(const InventoryItem &item) const
+    bool operator==(const InventoryItem& item) const
     {
         return value == item.value && itemAttribute == item.itemAttribute && usuableItem == item.usuableItem;
     }
 
-    bool operator!=(const InventoryItem &item) const { return !operator==(item); }
+    bool operator!=(const InventoryItem& item) const { return !operator==(item); }
 };
 
 // Songs available for Ocarina
@@ -266,10 +266,10 @@ public:
     Inventory();
 
     // Add an inventory weapon
-    void addInventoryItem(const InventoryItem &inventoryItem);
+    void addInventoryItem(const InventoryItem& inventoryItem);
     std::array<InventoryItem, MAX_INVENTORY_ITEMS> inventoryItems() const;
-    void removeInventoryItem(const InventoryItem &inventoryItem);
-    bool inventoryItemExists(const InventoryItem &inventoryItem) const;
+    void removeInventoryItem(const InventoryItem& inventoryItem);
+    bool inventoryItemExists(const InventoryItem& inventoryItem) const;
 
     // Add - When finding the keys
     void addDungeonEntranceKey(DungeonEntranceKey dungeonKey);
@@ -380,21 +380,21 @@ public:
     void swapItemA();
     void swapItemB();
 
-    void setItemA(const InventoryItem &itemA);
-    void setItemB(const InventoryItem &itemB);
+    void setItemA(const InventoryItem& itemA);
+    void setItemB(const InventoryItem& itemB);
 
     void moveInventorySelector(Direction direction);
 
 
     Dungeon dungeon() const;
     void setDungeon(Dungeon dungeon);
-    void setDungeonMapLocationVisited(const engine::Vector<int> &location);
+    void setDungeonMapLocationVisited(const engine::Vector<int>& location);
     bool dungeonMapLocationVisited(const int x, const int y) const;
     int dungeonMapLocationRoomType(const int x, const int y) const;
     DungeonMapItem dungeonMapLocationRoomItem(const int x, const int y) const;
 
 
-    void setPositionInDungeonMap(const engine::Vector<int> &location);
+    void setPositionInDungeonMap(const engine::Vector<int>& location);
     engine::Vector<int> dungeonMapPositionLocation() const;
     void movePositionInDungeonMap(Direction direction);
 
@@ -442,7 +442,8 @@ private:
 
     std::array<InventoryItem, MAX_INVENTORY_ITEMS> m_inventoryItems;
 
-    template <typename Enum, size_t Size> static bool checkItemExists(const std::array<Enum, Size> &array, Enum item);
+    template <typename Enum, size_t Size>
+    static bool checkItemExists(const std::array<Enum, Size>& array, Enum item);
 
     // Instruments
     std::array<Instrument, std::to_underlying(Instrument::INSTRUMENT_COUNT)> m_instruments;
@@ -1257,7 +1258,8 @@ private:
                                         {1, false, DungeonMapItem::DUNGEON_MAP_ITEM_NONE}}}};
 };
 
-template <typename Enum, size_t Size> bool Inventory::checkItemExists(const std::array<Enum, Size> &array, Enum item)
+template <typename Enum, size_t Size>
+bool Inventory::checkItemExists(const std::array<Enum, Size>& array, Enum item)
 {
     return std::any_of(array.cbegin(), array.cend(), [&item](Enum exists) { return item == exists; });
 }

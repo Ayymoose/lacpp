@@ -6,7 +6,7 @@
 namespace zelda::engine
 {
 
-void Renderer::createRenderer(const Window &window)
+void Renderer::createRenderer(const Window& window)
 {
     assert(window.getWindowHandle());
     auto const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE;
@@ -42,15 +42,15 @@ Renderer::~Renderer()
     DEBUG_MACRO(DBG_INFO, "Renderer destroyed");
 }
 
-bool Renderer::inRenderSet(IRenderable *renderable) const
+bool Renderer::inRenderSet(IRenderable* renderable) const
 {
     auto iterator = std::find_if(m_renderables.cbegin(),
                                  m_renderables.cend(),
-                                 [renderable](const IRenderable *r1) { return r1 == renderable; });
+                                 [renderable](const IRenderable* r1) { return r1 == renderable; });
     return iterator != m_renderables.cend();
 }
 
-void Renderer::addRenderable(IRenderable *renderable)
+void Renderer::addRenderable(IRenderable* renderable)
 {
     assert(renderable);
     if (inRenderSet(renderable))
@@ -63,12 +63,12 @@ void Renderer::addRenderable(IRenderable *renderable)
     }
 }
 
-void Renderer::removeRenderable(IRenderable *renderable)
+void Renderer::removeRenderable(IRenderable* renderable)
 {
     assert(renderable);
     auto iterator = std::find_if(m_renderables.cbegin(),
                                  m_renderables.cend(),
-                                 [renderable](const IRenderable *r1) { return r1 == renderable; });
+                                 [renderable](const IRenderable* r1) { return r1 == renderable; });
     if (iterator != m_renderables.cend())
     {
         m_renderables.erase(iterator);
@@ -79,7 +79,7 @@ void Renderer::removeRenderable(IRenderable *renderable)
     }
 }
 
-void Renderer::popRenderingTarget(SDL_Texture *srcTexture) const
+void Renderer::popRenderingTarget(SDL_Texture* srcTexture) const
 {
     assert(m_renderer);
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture));
