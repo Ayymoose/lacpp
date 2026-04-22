@@ -16,7 +16,7 @@ public:
 
 protected:
     BasicCharacter()
-        : m_dir(core::Direction::DIRECTION_NONE)
+        : m_dir(core::Direction::NONE)
         , m_health(0)
         , m_speed(0)
     {}

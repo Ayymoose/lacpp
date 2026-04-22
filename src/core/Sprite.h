@@ -15,9 +15,9 @@ namespace zelda::engine
 
 enum class SpriteFlip
 {
-    FLIP_NONE,
-    FLIP_HORIZONTAL,
-    FLIP_VERTICAL
+    NONE,
+    HORIZONTAL,
+    VERTICAL
 };
 
 class Sprite

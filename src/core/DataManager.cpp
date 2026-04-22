@@ -24,25 +24,25 @@ void DataManager::loadData() const
 void DataManager::loadSprites()
 {
     constexpr Colour TRANSPARENCY_COLOUR = makeRGB(255, 0, 128);
-    ResourceManager::instance().loadSprite(SpriteResource::SPR_DUNGEON_1_TAIL_CAVE,
+    ResourceManager::instance().loadSprite(SpriteResource::TAIL_CAVE,
                                               RESOURCE_DUNGEONS_PATH / "dungeon_tail_cave.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::instance().loadSprite(SpriteResource::SPR_WORLD_MAP,
+    ResourceManager::instance().loadSprite(SpriteResource::WORLD_MAP,
                                               RESOURCE_MISC_PATH / "tm_worldmap.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::instance().loadSprite(SpriteResource::SPR_LINK,
+    ResourceManager::instance().loadSprite(SpriteResource::LINK,
                                               RESOURCE_SPRITE_LINK_PATH / "link.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::instance().loadSprite(SpriteResource::SPR_INVENTORY,
+    ResourceManager::instance().loadSprite(SpriteResource::INVENTORY,
                                               RESOURCE_OBJECT_PATH / "inventory.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::instance().loadSprite(SpriteResource::SPR_WEAPON,
+    ResourceManager::instance().loadSprite(SpriteResource::WEAPON,
                                               RESOURCE_OBJECT_PATH / "weapons.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::instance().loadSprite(SpriteResource::SPR_TEXT,
+    ResourceManager::instance().loadSprite(SpriteResource::TEXT,
                                               RESOURCE_MISC_PATH / "dialogue.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::instance().loadSprite(SpriteResource::SPR_ENEMY,
+    ResourceManager::instance().loadSprite(SpriteResource::ENEMY,
                                               RESOURCE_ENEMY_PATH / "enemy.png",
                                               TRANSPARENCY_COLOUR);
 }
@@ -363,8 +363,8 @@ void DataManager::loadTailCave()
     // TODO: Load collision data
     // TODO: Load enemies/room objects at some point
 
-    core::RoomManager::instance().createRoom(core::RoomName::RM_TAIL_CAVE,
-                                                *ResourceManager::instance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
+    core::RoomManager::instance().createRoom(core::RoomName::TAIL_CAVE,
+                                                *ResourceManager::instance()[SpriteResource::TAIL_CAVE],
                                                 tileIndexArrays,
                                                 tilemapConfig,
                                                 roomLinkMap);
@@ -377,7 +377,7 @@ void DataManager::loadRooms() const
 
     // TODO: Setup initial starting positions somewhere
     // e.g GameManager
-    core::RoomManager::instance().useRoom(core::RoomName::RM_TAIL_CAVE);
+    core::RoomManager::instance().useRoom(core::RoomName::TAIL_CAVE);
     core::RoomManager::instance().setRoomLocation(28);
     // Link::getInstance().setDungeonMarkerLocation(3, 8);
     Controller::instance().setController(&core::Link::instance());

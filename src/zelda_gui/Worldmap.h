@@ -9,14 +9,14 @@ namespace zelda::gui
 {
 enum WorldmapSprites
 {
-    WORLDMAP_AREA_UNVISITED = 0,
-    WORLDMAP_AREA_ARROW,
-    WORLDMAP_AREA_SCOPE,
-    WORLDMAP_AREA_SHOP,
-    WORLDMAP_AREA_UNKNOWN,
-    WORLDMAP_AREA_DUNGEON,
-    WORLDMAP_AREA_OWL,
-    WORLDMAP_AREA_LOCATION
+    UNVISITED = 0,
+    ARROW,
+    SCOPE,
+    SHOP,
+    UNKNOWN,
+    DUNGEON,
+    OWL,
+    LOCATION
 };
 
 
@@ -56,14 +56,14 @@ private:
     core::Worldmap m_worldMapImpl;
 
     engine::Rect<int> m_worldmapSrcSprites[8] = {
-        {110, 162, 7, 7},   // WORLDMAP_AREA_UNVISITED
-        {100, 162, 9, 8},   // WORLDMAP_AREA_ARROW
-        {108, 84, 16, 16},  // WORLDMAP_AREA_SCOPE
-        {140, 130, 30, 30}, // WORLDMAP_AREA_SHOP
-        {170, 130, 30, 30}, // WORLDMAP_AREA_UNKNOWN
-        {200, 130, 30, 30}, // WORLDMAP_AREA_DUNGEON
-        {230, 130, 30, 30}, // WORLDMAP_AREA_OWL
-        {110, 152, 8, 8}    // WORLDMAP_AREA_LOCATION
+        {110, 162, 7, 7},   // UNVISITED
+        {100, 162, 9, 8},   // ARROW
+        {108, 84, 16, 16},  // SCOPE
+        {140, 130, 30, 30}, // SHOP
+        {170, 130, 30, 30}, // UNKNOWN
+        {200, 130, 30, 30}, // DUNGEON
+        {230, 130, 30, 30}, // OWL
+        {110, 152, 8, 8}    // LOCATION
     };
 
     void drawLocationImage() const;

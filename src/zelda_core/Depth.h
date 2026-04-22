@@ -14,18 +14,18 @@ namespace zelda::core
 enum ZOrdering
 {
     // Background tiles
-    ZD_DEPTH_BACKGROUND = 1,
+    BACKGROUND = 1,
     // Background objects
-    ZD_DEPTH_BACKGROUND_OBJECT,
+    BACKGROUND_OBJECT,
     // Enemies
-    ZD_DEPTH_ENEMY,
+    ENEMY,
     // Player
-    ZD_DEPTH_PLAYER,
+    PLAYER,
     // Inventory
-    ZD_DEPTH_INVENTORY,
+    INVENTORY,
     // Worldmap
-    ZD_DEPTH_WORLDMAP,
+    WORLDMAP,
     // Dialogue
-    ZD_DEPTH_DIALOGUE
+    DIALOGUE
 };
 } // namespace zelda::core

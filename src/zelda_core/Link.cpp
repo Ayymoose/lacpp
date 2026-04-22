@@ -21,12 +21,12 @@ Vector<int> Link::dungeonMarkerLocation() const
 }*/
 
 Link::Link()
-    : IRenderable("Link", *engine::ResourceManager::instance()[engine::SpriteResource::SPR_LINK], ZD_DEPTH_PLAYER)
+    : IRenderable("Link", *engine::ResourceManager::instance()[engine::SpriteResource::LINK], PLAYER)
     , Controllable(m_name)
     , m_healthMax(3)
     , m_speedX(0)
     , m_speedY(0)
-    , m_state(LINK_WALK_UP)
+    , m_state(WALK_UP)
 {
     // TODO: m_width/height is for the renderable element only so we do nned it
     m_width = 16;
@@ -37,7 +37,7 @@ Link::Link()
 
     m_health = 3;
     m_speed = 1;
-    m_dir = Direction::DIRECTION_DOWN;
+    m_dir = Direction::DOWN;
 
     // TODO: Superfluous header includes
 
@@ -106,7 +106,7 @@ void Link::render()
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    m_sprite->drawSpriteEx(m_srcRect, m_dstRect, 0, engine::SpriteFlip::FLIP_NONE);
+    m_sprite->drawSpriteEx(m_srcRect, m_dstRect, 0, engine::SpriteFlip::NONE);
 }
 
 
@@ -170,7 +170,7 @@ void Link::attack()
 
 void Link::die()
 {
-    DEBUG_MACRO(engine::DBG_INFO, "Link died");
+    DEBUG_MACRO(engine::INFO, "Link died");
 }
 
 void Link::resetAnimation()
@@ -219,35 +219,35 @@ void Link::move()
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_RIGHT_SMALL_SHIELD;
+                        m_state = BLOCK_RIGHT_SMALL_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                        m_state = WALK_RIGHT_SMALL_SHIELD;
                     }
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_RIGHT_BIG_SHIELD;
+                        m_state = BLOCK_RIGHT_BIG_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                        m_state = WALK_RIGHT_BIG_SHIELD;
                     }
                 }
             }
             else
             {
-                m_state = LINK_WALK_RIGHT;
+                m_state = WALK_RIGHT;
             }*/
-            m_dir = Direction::DIRECTION_RIGHT;
+            m_dir = Direction::RIGHT;
         }
     }
     else
     {
-        if (m_state == LINK_PUSH_RIGHT)
+        if (m_state == PUSH_RIGHT)
         {
             // Show shield equipped sprite
             /*if (m_inventory.shieldEquipped())
@@ -255,18 +255,18 @@ void Link::move()
                 WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                    m_state = WALK_RIGHT_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                    m_state = WALK_RIGHT_BIG_SHIELD;
                 }
             }
             else
             {
-                m_state = LINK_WALK_RIGHT;
+                m_state = WALK_RIGHT;
             }*/
-            m_dir = Direction::DIRECTION_RIGHT;
+            m_dir = Direction::RIGHT;
         }
     }
 
@@ -285,35 +285,35 @@ void Link::move()
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_LEFT_SMALL_SHIELD;
+                        m_state = BLOCK_LEFT_SMALL_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                        m_state = WALK_LEFT_SMALL_SHIELD;
                     }
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_LEFT_BIG_SHIELD;
+                        m_state = BLOCK_LEFT_BIG_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                        m_state = WALK_LEFT_BIG_SHIELD;
                     }
                 }
             }
             else
             {
-                m_state = LINK_WALK_LEFT;
+                m_state = WALK_LEFT;
             }*/
-            m_dir = Direction::DIRECTION_LEFT;
+            m_dir = Direction::LEFT;
         }
     }
     else
     {
-        if (m_state == LINK_PUSH_LEFT)
+        if (m_state == PUSH_LEFT)
         {
             // Show shield equipped sprite
             /*if (m_inventory.shieldEquipped())
@@ -321,18 +321,18 @@ void Link::move()
                 WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                    m_state = WALK_LEFT_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                    m_state = WALK_LEFT_BIG_SHIELD;
                 }
             }
             else
             {
-                m_state = LINK_WALK_LEFT;
+                m_state = WALK_LEFT;
             }*/
-            m_dir = Direction::DIRECTION_LEFT;
+            m_dir = Direction::LEFT;
         }
     }
     if (engine::Keyboard::instance().keyPushed(BUTTON_UP))
@@ -350,35 +350,35 @@ void Link::move()
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_UP_SMALL_SHIELD;
+                        m_state = BLOCK_UP_SMALL_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_UP_SMALL_SHIELD;
+                        m_state = WALK_UP_SMALL_SHIELD;
                     }
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_UP_BIG_SHIELD;
+                        m_state = BLOCK_UP_BIG_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_UP_BIG_SHIELD;
+                        m_state = WALK_UP_BIG_SHIELD;
                     }
                 }
             }
             else
             {
-                m_state = LINK_WALK_UP;
+                m_state = WALK_UP;
             }*/
-            m_dir = Direction::DIRECTION_UP;
+            m_dir = Direction::UP;
         }
     }
     else
     {
-        if (m_state == LINK_PUSH_UP)
+        if (m_state == PUSH_UP)
         {
             // Show shield equipped sprite
             /*if (m_inventory.shieldEquipped())
@@ -386,18 +386,18 @@ void Link::move()
                 WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_UP_SMALL_SHIELD;
+                    m_state = WALK_UP_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_UP_BIG_SHIELD;
+                    m_state = WALK_UP_BIG_SHIELD;
                 }
             }
             else
             {
-                m_state = LINK_WALK_UP;
+                m_state = WALK_UP;
             }*/
-            m_dir = Direction::DIRECTION_UP;
+            m_dir = Direction::UP;
         }
     }
     if (engine::Keyboard::instance().keyPushed(BUTTON_DOWN))
@@ -415,53 +415,53 @@ void Link::move()
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_DOWN_SMALL_SHIELD;
+                        m_state = BLOCK_DOWN_SMALL_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                        m_state = WALK_DOWN_SMALL_SHIELD;
                     }
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
                     if (m_useShield)
                     {
-                        m_state = LINK_BLOCK_DOWN_BIG_SHIELD;
+                        m_state = BLOCK_DOWN_BIG_SHIELD;
                     }
                     else
                     {
-                        m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                        m_state = WALK_DOWN_BIG_SHIELD;
                     }
                 }
             }
             else
             {
-                m_state = LINK_WALK_DOWN;
+                m_state = WALK_DOWN;
             }*/
-            m_dir = Direction::DIRECTION_DOWN;
+            m_dir = Direction::DOWN;
         }
     }
     else
     {
-        if (m_state == LINK_PUSH_DOWN)
+        if (m_state == PUSH_DOWN)
         {
             /*if (m_inventory.shieldEquipped())
             {
                 WeaponLevel shieldLevel = m_inventory.itemLevel(WPN_SHIELD);
                 if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
                 {
-                    m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                    m_state = WALK_DOWN_SMALL_SHIELD;
                 }
                 else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
                 {
-                    m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                    m_state = WALK_DOWN_BIG_SHIELD;
                 }
             }
             else
             {
-                m_state = LINK_WALK_DOWN;
+                m_state = WALK_DOWN;
             }*/
-            m_dir = Direction::DIRECTION_DOWN;
+            m_dir = Direction::DOWN;
         }
     }
 }
@@ -476,181 +476,181 @@ void Link::updateState()
 
     switch (m_state)
     {
-    case LINK_HOOK_DOWN:
-        m_state = LINK_WALK_DOWN;
+    case HOOK_DOWN:
+        m_state = WALK_DOWN;
         break;
 
-    case LINK_HOOK_RIGHT:
-        m_state = LINK_WALK_RIGHT;
+    case HOOK_RIGHT:
+        m_state = WALK_RIGHT;
         break;
 
-    case LINK_HOOK_LEFT:
-        m_state = LINK_WALK_LEFT;
+    case HOOK_LEFT:
+        m_state = WALK_LEFT;
         break;
 
-    case LINK_HOOK_UP:
-        m_state = LINK_WALK_UP;
+    case HOOK_UP:
+        m_state = WALK_UP;
         break;
 
-    case LINK_WALK_DOWN:
+    case WALK_DOWN:
         if (shieldEquipped)
         {
             /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                m_state = WALK_DOWN_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                m_state = WALK_DOWN_BIG_SHIELD;
             }*/
         }
         break;
-    case LINK_WALK_UP:
+    case WALK_UP:
         if (shieldEquipped)
         {
             /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_WALK_UP_SMALL_SHIELD;
+                m_state = WALK_UP_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_WALK_UP_BIG_SHIELD;
+                m_state = WALK_UP_BIG_SHIELD;
             }*/
         }
         break;
-    case LINK_WALK_LEFT:
+    case WALK_LEFT:
         if (shieldEquipped)
         {
             /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+                m_state = WALK_LEFT_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_WALK_LEFT_BIG_SHIELD;
+                m_state = WALK_LEFT_BIG_SHIELD;
             }*/
         }
         break;
-    case LINK_WALK_RIGHT:
+    case WALK_RIGHT:
         if (shieldEquipped)
         {
             /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                m_state = WALK_RIGHT_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                m_state = WALK_RIGHT_BIG_SHIELD;
             }*/
         }
         break;
-    case LINK_WALK_DOWN_BIG_SHIELD:
-    case LINK_WALK_DOWN_SMALL_SHIELD:
+    case WALK_DOWN_BIG_SHIELD:
+    case WALK_DOWN_SMALL_SHIELD:
         if (!shieldEquipped)
         {
-            m_state = LINK_WALK_DOWN;
+            m_state = WALK_DOWN;
         }
         break;
-    case LINK_WALK_UP_BIG_SHIELD:
-    case LINK_WALK_UP_SMALL_SHIELD:
+    case WALK_UP_BIG_SHIELD:
+    case WALK_UP_SMALL_SHIELD:
         if (!shieldEquipped)
         {
-            m_state = LINK_WALK_UP;
+            m_state = WALK_UP;
         }
         break;
-    case LINK_WALK_LEFT_BIG_SHIELD:
-    case LINK_WALK_LEFT_SMALL_SHIELD:
+    case WALK_LEFT_BIG_SHIELD:
+    case WALK_LEFT_SMALL_SHIELD:
         if (!shieldEquipped)
         {
-            m_state = LINK_WALK_LEFT;
+            m_state = WALK_LEFT;
         }
         break;
-    case LINK_WALK_RIGHT_BIG_SHIELD:
-    case LINK_WALK_RIGHT_SMALL_SHIELD:
+    case WALK_RIGHT_BIG_SHIELD:
+    case WALK_RIGHT_SMALL_SHIELD:
         if (!shieldEquipped)
         {
-            m_state = LINK_WALK_RIGHT;
+            m_state = WALK_RIGHT;
         }
         break;
 
-    case LINK_BLOCK_LEFT_SMALL_SHIELD:
-        m_state = LINK_WALK_LEFT_SMALL_SHIELD;
+    case BLOCK_LEFT_SMALL_SHIELD:
+        m_state = WALK_LEFT_SMALL_SHIELD;
         break;
-    case LINK_BLOCK_RIGHT_SMALL_SHIELD:
-        m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+    case BLOCK_RIGHT_SMALL_SHIELD:
+        m_state = WALK_RIGHT_SMALL_SHIELD;
         break;
-    case LINK_BLOCK_UP_SMALL_SHIELD:
-        m_state = LINK_WALK_UP_SMALL_SHIELD;
+    case BLOCK_UP_SMALL_SHIELD:
+        m_state = WALK_UP_SMALL_SHIELD;
         break;
-    case LINK_BLOCK_DOWN_SMALL_SHIELD:
-        m_state = LINK_WALK_DOWN_SMALL_SHIELD;
-        break;
-
-    case LINK_BLOCK_LEFT_BIG_SHIELD:
-        m_state = LINK_WALK_LEFT_BIG_SHIELD;
-        break;
-    case LINK_BLOCK_RIGHT_BIG_SHIELD:
-        m_state = LINK_WALK_RIGHT_BIG_SHIELD;
-        break;
-    case LINK_BLOCK_UP_BIG_SHIELD:
-        m_state = LINK_WALK_UP_BIG_SHIELD;
-        break;
-    case LINK_BLOCK_DOWN_BIG_SHIELD:
-        m_state = LINK_WALK_DOWN_BIG_SHIELD;
+    case BLOCK_DOWN_SMALL_SHIELD:
+        m_state = WALK_DOWN_SMALL_SHIELD;
         break;
 
-    case LINK_SWORD_DOWN:
+    case BLOCK_LEFT_BIG_SHIELD:
+        m_state = WALK_LEFT_BIG_SHIELD;
+        break;
+    case BLOCK_RIGHT_BIG_SHIELD:
+        m_state = WALK_RIGHT_BIG_SHIELD;
+        break;
+    case BLOCK_UP_BIG_SHIELD:
+        m_state = WALK_UP_BIG_SHIELD;
+        break;
+    case BLOCK_DOWN_BIG_SHIELD:
+        m_state = WALK_DOWN_BIG_SHIELD;
+        break;
+
+    case SWORD_DOWN:
         if (shieldEquipped)
         {
             /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_WALK_DOWN_SMALL_SHIELD;
+                m_state = WALK_DOWN_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_WALK_DOWN_BIG_SHIELD;
+                m_state = WALK_DOWN_BIG_SHIELD;
             }*/
         }
         else
         {
-            m_state = LINK_WALK_DOWN;
+            m_state = WALK_DOWN;
         }
         break;
-    case LINK_SWORD_RIGHT:
+    case SWORD_RIGHT:
         if (shieldEquipped)
         {
             /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_WALK_RIGHT_SMALL_SHIELD;
+                m_state = WALK_RIGHT_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_WALK_RIGHT_BIG_SHIELD;
+                m_state = WALK_RIGHT_BIG_SHIELD;
             }*/
         }
         else
         {
-            m_state = LINK_WALK_RIGHT;
+            m_state = WALK_RIGHT;
         }
         break;
-    case LINK_SWORD_LEFT:
-        m_state = LINK_WALK_LEFT;
+    case SWORD_LEFT:
+        m_state = WALK_LEFT;
         break;
-    case LINK_SWORD_UP:
+    case SWORD_UP:
         if (shieldEquipped)
         {
             /*if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_WALK_UP_SMALL_SHIELD;
+                m_state = WALK_UP_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_WALK_UP_BIG_SHIELD;
+                m_state = WALK_UP_BIG_SHIELD;
             }*/
         }
         else
         {
-            m_state = LINK_WALK_UP;
+            m_state = WALK_UP;
         }
         break;
     default:
@@ -686,25 +686,25 @@ void Link::useWeapon(WeaponItem weapon)
 
         switch (m_state)
         {
-        case LINK_WALK_DOWN_BIG_SHIELD:
-        case LINK_WALK_DOWN_SMALL_SHIELD:
-        case LINK_WALK_DOWN:
-            m_state = LINK_SWORD_DOWN;
+        case WALK_DOWN_BIG_SHIELD:
+        case WALK_DOWN_SMALL_SHIELD:
+        case WALK_DOWN:
+            m_state = SWORD_DOWN;
             break;
-        case LINK_WALK_RIGHT_BIG_SHIELD:
-        case LINK_WALK_RIGHT_SMALL_SHIELD:
-        case LINK_WALK_RIGHT:
-            m_state = LINK_SWORD_RIGHT;
+        case WALK_RIGHT_BIG_SHIELD:
+        case WALK_RIGHT_SMALL_SHIELD:
+        case WALK_RIGHT:
+            m_state = SWORD_RIGHT;
             break;
-        case LINK_WALK_LEFT_BIG_SHIELD:
-        case LINK_WALK_LEFT_SMALL_SHIELD:
-        case LINK_WALK_LEFT:
-            m_state = LINK_SWORD_LEFT;
+        case WALK_LEFT_BIG_SHIELD:
+        case WALK_LEFT_SMALL_SHIELD:
+        case WALK_LEFT:
+            m_state = SWORD_LEFT;
             break;
-        case LINK_WALK_UP_BIG_SHIELD:
-        case LINK_WALK_UP_SMALL_SHIELD:
-        case LINK_WALK_UP:
-            m_state = LINK_SWORD_UP;
+        case WALK_UP_BIG_SHIELD:
+        case WALK_UP_SMALL_SHIELD:
+        case WALK_UP:
+            m_state = SWORD_UP;
             break;
         }
 
@@ -713,52 +713,52 @@ void Link::useWeapon(WeaponItem weapon)
     case WPN_SHIELD:
         switch (m_state)
         {
-        case LINK_WALK_LEFT_BIG_SHIELD:
-        case LINK_WALK_LEFT_SMALL_SHIELD:
-        case LINK_WALK_LEFT:
+        case WALK_LEFT_BIG_SHIELD:
+        case WALK_LEFT_SMALL_SHIELD:
+        case WALK_LEFT:
             if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_BLOCK_LEFT_SMALL_SHIELD;
+                m_state = BLOCK_LEFT_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_BLOCK_LEFT_BIG_SHIELD;
+                m_state = BLOCK_LEFT_BIG_SHIELD;
             }
             break;
-        case LINK_WALK_RIGHT_BIG_SHIELD:
-        case LINK_WALK_RIGHT_SMALL_SHIELD:
-        case LINK_WALK_RIGHT:
+        case WALK_RIGHT_BIG_SHIELD:
+        case WALK_RIGHT_SMALL_SHIELD:
+        case WALK_RIGHT:
             if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_BLOCK_RIGHT_SMALL_SHIELD;
+                m_state = BLOCK_RIGHT_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_BLOCK_RIGHT_BIG_SHIELD;
+                m_state = BLOCK_RIGHT_BIG_SHIELD;
             }
             break;
-        case LINK_WALK_UP_BIG_SHIELD:
-        case LINK_WALK_UP_SMALL_SHIELD:
-        case LINK_WALK_UP:
+        case WALK_UP_BIG_SHIELD:
+        case WALK_UP_SMALL_SHIELD:
+        case WALK_UP:
             if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_BLOCK_UP_SMALL_SHIELD;
+                m_state = BLOCK_UP_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_BLOCK_UP_BIG_SHIELD;
+                m_state = BLOCK_UP_BIG_SHIELD;
             }
             break;
-        case LINK_WALK_DOWN_BIG_SHIELD:
-        case LINK_WALK_DOWN_SMALL_SHIELD:
-        case LINK_WALK_DOWN:
+        case WALK_DOWN_BIG_SHIELD:
+        case WALK_DOWN_SMALL_SHIELD:
+        case WALK_DOWN:
             if (shieldLevel == WeaponLevel::WPN_LEVEL_1)
             {
-                m_state = LINK_BLOCK_DOWN_SMALL_SHIELD;
+                m_state = BLOCK_DOWN_SMALL_SHIELD;
             }
             else if (shieldLevel == WeaponLevel::WPN_LEVEL_2)
             {
-                m_state = LINK_BLOCK_DOWN_BIG_SHIELD;
+                m_state = BLOCK_DOWN_BIG_SHIELD;
             }
             break;
         }
@@ -774,25 +774,25 @@ void Link::useWeapon(WeaponItem weapon)
 
         switch (m_state)
         {
-        case LINK_WALK_DOWN_BIG_SHIELD:
-        case LINK_WALK_DOWN_SMALL_SHIELD:
-        case LINK_WALK_DOWN:
-            m_state = LINK_HOOK_DOWN;
+        case WALK_DOWN_BIG_SHIELD:
+        case WALK_DOWN_SMALL_SHIELD:
+        case WALK_DOWN:
+            m_state = HOOK_DOWN;
             break;
-        case LINK_WALK_RIGHT_BIG_SHIELD:
-        case LINK_WALK_RIGHT_SMALL_SHIELD:
-        case LINK_WALK_RIGHT:
-            m_state = LINK_HOOK_RIGHT;
+        case WALK_RIGHT_BIG_SHIELD:
+        case WALK_RIGHT_SMALL_SHIELD:
+        case WALK_RIGHT:
+            m_state = HOOK_RIGHT;
             break;
-        case LINK_WALK_LEFT_BIG_SHIELD:
-        case LINK_WALK_LEFT_SMALL_SHIELD:
-        case LINK_WALK_LEFT:
-            m_state = LINK_HOOK_LEFT;
+        case WALK_LEFT_BIG_SHIELD:
+        case WALK_LEFT_SMALL_SHIELD:
+        case WALK_LEFT:
+            m_state = HOOK_LEFT;
             break;
-        case LINK_WALK_UP_BIG_SHIELD:
-        case LINK_WALK_UP_SMALL_SHIELD:
-        case LINK_WALK_UP:
-            m_state = LINK_HOOK_UP;
+        case WALK_UP_BIG_SHIELD:
+        case WALK_UP_SMALL_SHIELD:
+        case WALK_UP:
+            m_state = HOOK_UP;
             break;
         }
 
@@ -828,25 +828,25 @@ void Link::useWeapon(WeaponItem weapon)
 
         switch (m_state)
         {
-        case LINK_WALK_LEFT_BIG_SHIELD:
-        case LINK_WALK_LEFT_SMALL_SHIELD:
-        case LINK_WALK_LEFT:
-            m_state = LINK_HOOK_LEFT;
+        case WALK_LEFT_BIG_SHIELD:
+        case WALK_LEFT_SMALL_SHIELD:
+        case WALK_LEFT:
+            m_state = HOOK_LEFT;
             break;
-        case LINK_WALK_RIGHT_BIG_SHIELD:
-        case LINK_WALK_RIGHT_SMALL_SHIELD:
-        case LINK_WALK_RIGHT:
-            m_state = LINK_HOOK_RIGHT;
+        case WALK_RIGHT_BIG_SHIELD:
+        case WALK_RIGHT_SMALL_SHIELD:
+        case WALK_RIGHT:
+            m_state = HOOK_RIGHT;
             break;
-        case LINK_WALK_UP_BIG_SHIELD:
-        case LINK_WALK_UP_SMALL_SHIELD:
-        case LINK_WALK_UP:
-            m_state = LINK_HOOK_UP;
+        case WALK_UP_BIG_SHIELD:
+        case WALK_UP_SMALL_SHIELD:
+        case WALK_UP:
+            m_state = HOOK_UP;
             break;
-        case LINK_WALK_DOWN_BIG_SHIELD:
-        case LINK_WALK_DOWN_SMALL_SHIELD:
-        case LINK_WALK_DOWN:
-            m_state = LINK_HOOK_DOWN;
+        case WALK_DOWN_BIG_SHIELD:
+        case WALK_DOWN_SMALL_SHIELD:
+        case WALK_DOWN:
+            m_state = HOOK_DOWN;
             break;
         }
         m_useWeapon = true;
