@@ -88,20 +88,20 @@ void Engine::initControl() const
 
 void Engine::initData() const
 {
-    DataManager::getInstance().loadData();
+    DataManager::instance().loadData();
 }
 
 void Engine::initSingleton() const
 {
-    Debug::getInstance();
-    Renderer::getInstance();
-    ResourceManager::getInstance();
-    Controller::getInstance();
-    Keyboard::getInstance();
-    core::RoomManager::getInstance();
-    Camera::getInstance();
-    DataManager::getInstance();
-    core::Link::getInstance();
+    Debug::instance();
+    Renderer::instance();
+    ResourceManager::instance();
+    Controller::instance();
+    Keyboard::instance();
+    core::RoomManager::instance();
+    Camera::instance();
+    DataManager::instance();
+    core::Link::instance();
 }
 
 void Engine::initWindow()
@@ -110,10 +110,10 @@ void Engine::initWindow()
     m_mainWindow.createWindow(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 
     // Create main hardware renderer
-    Renderer::getInstance().createRenderer(m_mainWindow);
+    Renderer::instance().createRenderer(m_mainWindow);
 
     // Stretch the textures to the window size
-    Renderer::getInstance().setRendererScale(MAIN_WINDOW_WIDTH / static_cast<float>(CAMERA_WIDTH),
+    Renderer::instance().setRendererScale(MAIN_WINDOW_WIDTH / static_cast<float>(CAMERA_WIDTH),
                                              MAIN_WINDOW_HEIGHT / (static_cast<float>(CAMERA_HEIGHT) + HUD_HEIGHT));
 }
 
@@ -128,19 +128,19 @@ void Engine::events()
         }
         else if (eventHandler.type == SDL_KEYDOWN || eventHandler.type == SDL_KEYUP)
         {
-            Keyboard::getInstance().eventHandler(eventHandler);
+            Keyboard::instance().eventHandler(eventHandler);
         }
     }
 }
 
 void Engine::update() const
 {
-    auto const controller = Controller::getInstance().getController();
+    auto const controller = Controller::instance().getController();
     if (controller)
     {
         controller->control();
     }
-    auto const gameObjects = Renderer::getInstance().getRenderSet();
+    auto const gameObjects = Renderer::instance().getRenderSet();
     for (const auto& gameObject : gameObjects)
     {
         assert(gameObject);
@@ -154,8 +154,8 @@ void Engine::update() const
 
 void Engine::render() const
 {
-    Renderer::getInstance().clearScreen(COLOUR_BLACK);
-    auto const renderables = Renderer::getInstance().getRenderSet();
+    Renderer::instance().clearScreen(COLOUR_BLACK);
+    auto const renderables = Renderer::instance().getRenderSet();
     for (const auto& renderable : renderables)
     {
         assert(renderable);
@@ -165,7 +165,7 @@ void Engine::render() const
         }
     }
     renderTestFunction();
-    Renderer::getInstance().renderScreen();
+    Renderer::instance().renderScreen();
 }
 
 } // namespace zelda::engine

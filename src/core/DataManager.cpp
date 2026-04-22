@@ -24,25 +24,25 @@ void DataManager::loadData() const
 void DataManager::loadSprites()
 {
     constexpr Colour TRANSPARENCY_COLOUR = makeRGB(255, 0, 128);
-    ResourceManager::getInstance().loadSprite(SpriteResource::SPR_DUNGEON_1_TAIL_CAVE,
+    ResourceManager::instance().loadSprite(SpriteResource::SPR_DUNGEON_1_TAIL_CAVE,
                                               RESOURCE_DUNGEONS_PATH / "dungeon_tail_cave.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::getInstance().loadSprite(SpriteResource::SPR_WORLD_MAP,
+    ResourceManager::instance().loadSprite(SpriteResource::SPR_WORLD_MAP,
                                               RESOURCE_MISC_PATH / "tm_worldmap.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::getInstance().loadSprite(SpriteResource::SPR_LINK,
+    ResourceManager::instance().loadSprite(SpriteResource::SPR_LINK,
                                               RESOURCE_SPRITE_LINK_PATH / "link.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::getInstance().loadSprite(SpriteResource::SPR_INVENTORY,
+    ResourceManager::instance().loadSprite(SpriteResource::SPR_INVENTORY,
                                               RESOURCE_OBJECT_PATH / "inventory.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::getInstance().loadSprite(SpriteResource::SPR_WEAPON,
+    ResourceManager::instance().loadSprite(SpriteResource::SPR_WEAPON,
                                               RESOURCE_OBJECT_PATH / "weapons.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::getInstance().loadSprite(SpriteResource::SPR_TEXT,
+    ResourceManager::instance().loadSprite(SpriteResource::SPR_TEXT,
                                               RESOURCE_MISC_PATH / "dialogue.png",
                                               TRANSPARENCY_COLOUR);
-    ResourceManager::getInstance().loadSprite(SpriteResource::SPR_ENEMY,
+    ResourceManager::instance().loadSprite(SpriteResource::SPR_ENEMY,
                                               RESOURCE_ENEMY_PATH / "enemy.png",
                                               TRANSPARENCY_COLOUR);
 }
@@ -363,8 +363,8 @@ void DataManager::loadTailCave()
     // TODO: Load collision data
     // TODO: Load enemies/room objects at some point
 
-    core::RoomManager::getInstance().createRoom(core::RoomName::RM_TAIL_CAVE,
-                                                *ResourceManager::getInstance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
+    core::RoomManager::instance().createRoom(core::RoomName::RM_TAIL_CAVE,
+                                                *ResourceManager::instance()[SpriteResource::SPR_DUNGEON_1_TAIL_CAVE],
                                                 tileIndexArrays,
                                                 tilemapConfig,
                                                 roomLinkMap);
@@ -377,11 +377,11 @@ void DataManager::loadRooms() const
 
     // TODO: Setup initial starting positions somewhere
     // e.g GameManager
-    core::RoomManager::getInstance().useRoom(core::RoomName::RM_TAIL_CAVE);
-    core::RoomManager::getInstance().setRoomLocation(28);
+    core::RoomManager::instance().useRoom(core::RoomName::RM_TAIL_CAVE);
+    core::RoomManager::instance().setRoomLocation(28);
     // Link::getInstance().setDungeonMarkerLocation(3, 8);
-    Controller::getInstance().setController(&core::Link::getInstance());
-    Camera::getInstance().setScrollSpeed(CAMERA_SCROLL_SPEED);
+    Controller::instance().setController(&core::Link::instance());
+    Camera::instance().setScrollSpeed(CAMERA_SCROLL_SPEED);
 
 
     // Dialogue::getInstance().question("Our colors are  ""never the same! ""If

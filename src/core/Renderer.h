@@ -16,9 +16,10 @@ namespace zelda::engine
 
 class Renderer : public Singleton<Renderer>
 {
-    friend class Singleton<Renderer>;
-
 public:
+    Renderer()
+        : m_renderer(nullptr)
+    {}
     ~Renderer();
 
     void createRenderer(const Window& window);
@@ -55,10 +56,6 @@ public:
     void popRenderingTarget(SDL_Texture* srcTexture) const;
 
 private:
-    Renderer()
-        : m_renderer(nullptr)
-    {}
-
     // Global renderer
     SDL_Renderer* m_renderer;
 

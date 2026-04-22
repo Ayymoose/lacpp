@@ -32,9 +32,8 @@ constexpr int SCROLL_SPEED = 4;
 
 class Dialogue : public IRenderable, public Controllable, public engine::Singleton<Dialogue>, public IUpdateable
 {
-    friend class Singleton<Dialogue>;
-
 public:
+    Dialogue();
     void message(const std::string& message, float yPos);
     void question(const std::string& question, const std::string& choice1, const std::string& choice2, float yPos);
 
@@ -43,7 +42,6 @@ public:
     void control() override;
 
 private:
-    Dialogue();
 
     core::Dialogue m_dialogueImpl;
 

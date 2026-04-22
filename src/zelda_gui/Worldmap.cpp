@@ -11,7 +11,7 @@
 namespace zelda::gui
 {
 Worldmap::Worldmap()
-    : IRenderable("Worldmap", *engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_WORLD_MAP],
+    : IRenderable("Worldmap", *engine::ResourceManager::instance()[engine::SpriteResource::SPR_WORLD_MAP],
                   core::ZD_DEPTH_WORLDMAP)
     , Controllable(m_name)
     , m_show(false)
@@ -19,47 +19,47 @@ Worldmap::Worldmap()
 {
     m_worldMapImpl.setLocation(WORLDMAP_INITIAL_POS_X, WORLDMAP_INITIAL_POS_Y);
     std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
-    engine::Renderer::getInstance().addRenderable(this);
+    engine::Renderer::instance().addRenderable(this);
 }
 
 void Worldmap::control()
 {
     // TODO: Fix key press overlaps between inventory and worldmap
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_SELECT))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_SELECT))
     {
         close();
-        engine::Controller::getInstance().popController();
-        engine::Engine::getInstance().pause(false);
+        engine::Controller::instance().popController();
+        engine::Engine::instance().pause(false);
         DEBUG_MACRO(engine::DBG_INFO, "Worldmap closed!");
     }
 
     // Move scope around map if the area is visited
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_RIGHT))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
     {
         m_worldMapImpl.moveMarker(core::Direction::DIRECTION_RIGHT);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_LEFT))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
     {
         m_worldMapImpl.moveMarker(core::Direction::DIRECTION_LEFT);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
     {
         m_worldMapImpl.moveMarker(core::Direction::DIRECTION_UP);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_DOWN))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
     {
         m_worldMapImpl.moveMarker(core::Direction::DIRECTION_DOWN);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
 
     // Display location name if any
-    if (engine::Keyboard::getInstance().keyPressed(BUTTON_B))
+    if (engine::Keyboard::instance().keyPressed(BUTTON_B))
     {
         // Display location name above/below scope
-        Dialogue::getInstance().message(m_worldMapImpl.locationName(), (WORLDMAP_START_Y + m_scopeY * 8) - 10);
+        Dialogue::instance().message(m_worldMapImpl.locationName(), (WORLDMAP_START_Y + m_scopeY * 8) - 10);
     }
 }
 
@@ -105,7 +105,7 @@ void Worldmap::close()
 
 void Worldmap::drawUnvisitedLocations() const
 {
-    auto const target = engine::Renderer::getInstance().pushRenderingTarget(*m_sprite);
+    auto const target = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
 
     for (int y = 0; y < core::WORLDMAP_MAX_Y; ++y)
     {
@@ -114,14 +114,14 @@ void Worldmap::drawUnvisitedLocations() const
             // If the location isn't visited then mark it as an unvisited square
             if (!m_worldMapImpl.locationVisited(x, y))
             {
-                engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]
+                engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
                     ->drawSprite(m_worldmapSrcSprites[WORLDMAP_AREA_UNVISITED],
                                  engine::Rect<int>{WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7, 7});
             }
         }
     }
 
-    engine::Renderer::getInstance().popRenderingTarget(target);
+    engine::Renderer::instance().popRenderingTarget(target);
 }
 
 void Worldmap::drawLocationImage() const
@@ -169,14 +169,14 @@ void Worldmap::drawLocationImage() const
             sy = 97;
         }
 
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
             ->drawSprite(srcRectLocation, engine::Rect<int>{sx, sy, 30, 30});
     }
 }
 
 void Worldmap::drawScope() const
 {
-    engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]
+    engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
         ->drawSprite(m_worldmapSrcSprites[WORLDMAP_AREA_SCOPE],
                      engine::Rect<int>{(WORLDMAP_START_X + m_scopeX * 8) - 5,
                                        (WORLDMAP_START_Y + m_scopeY * 8) - 5,
@@ -198,25 +198,25 @@ void Worldmap::drawScope() const
         dstRect.y -= 10;
 
         // Up arrow
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
             ->drawSpriteEx(srcRect, dstRect, 0, engine::SpriteFlip::FLIP_NONE);
 
         // Right arrow
         dstRect.x += 15;
         dstRect.y += 14;
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
             ->drawSpriteEx(srcRect, dstRect, 90, engine::SpriteFlip::FLIP_NONE);
 
         // Down arrow
         dstRect.x -= 15;
         dstRect.y += 15;
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
             ->drawSpriteEx(srcRect, dstRect, 180, engine::SpriteFlip::FLIP_NONE);
 
         // Left arrow
         dstRect.x -= 15;
         dstRect.y -= 15;
-        engine::ResourceManager::getInstance()[engine::SpriteResource::SPR_INVENTORY]
+        engine::ResourceManager::instance()[engine::SpriteResource::SPR_INVENTORY]
             ->drawSpriteEx(srcRect, dstRect, 270, engine::SpriteFlip::FLIP_NONE);
     }
 }

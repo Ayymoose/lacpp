@@ -20,14 +20,15 @@ enum DebugMask
 #define DEBUG_MACRO(MASK, MESSAGE)                                                                                     \
     do                                                                                                                 \
     {                                                                                                                  \
-        zelda::engine::Debug::getInstance().log(MASK, MESSAGE);                                                        \
+        zelda::engine::Debug::instance().log(MASK, MESSAGE);                                                           \
     } while (0);
 
 class Debug : public Singleton<Debug>
 {
-    friend class Singleton<Debug>;
-
 public:
+    Debug()
+        : m_currentMask(0)
+    {}
     // TODO: Timestamp + log level + file name + source
     void log(DebugMask mask, const std::string& message) const
     {
@@ -45,9 +46,6 @@ public:
     uint32_t getDebugMask() const { return m_currentMask; }
 
 private:
-    Debug()
-        : m_currentMask(0)
-    {}
     uint32_t m_currentMask;
 };
 

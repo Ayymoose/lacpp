@@ -2,27 +2,25 @@
 
 namespace zelda::engine
 {
+
 template <typename T>
 class Singleton
 {
 public:
-    static T& getInstance()
+    static T& instance()
     {
         static T m_instance;
         return m_instance;
     }
 
-protected:
-    // No Copying
     Singleton(const Singleton&) = delete;
-    // No assigning
     Singleton& operator=(const Singleton&) = delete;
-    // No moving
     Singleton(Singleton&&) = delete;
-    // No move assigning
     Singleton& operator=(Singleton&&) = delete;
 
+protected:
     Singleton() = default;
-    virtual ~Singleton() = default;
+    ~Singleton() = default;
 };
+
 } // namespace zelda::engine

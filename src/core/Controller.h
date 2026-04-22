@@ -10,9 +10,12 @@ namespace zelda::engine
 
 class Controller : public Singleton<Controller>
 {
-    friend class Singleton<Controller>;
-
 public:
+    Controller()
+        : m_controller(nullptr)
+    {
+        DEBUG_MACRO(DBG_INFO, "Controller is no-one");
+    }
     void setController(Controllable* controller)
     {
         m_controller = controller;
@@ -66,11 +69,6 @@ public:
     }
 
 private:
-    Controller()
-        : m_controller(nullptr)
-    {
-        DEBUG_MACRO(DBG_INFO, "Controller is no-one");
-    }
     Controllable* m_controller;
     std::stack<Controllable*> m_stack;
 };

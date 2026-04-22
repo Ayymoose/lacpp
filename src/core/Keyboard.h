@@ -9,9 +9,8 @@ namespace zelda::engine
 
 class Keyboard : public Singleton<Keyboard>
 {
-    friend class Singleton<Keyboard>;
-
 public:
+    Keyboard();
     void eventHandler(SDL_Event event);
 
     // Returns true if a key is being pushed (held)
@@ -23,7 +22,6 @@ public:
     int operator[](const int key);
 
 private:
-    Keyboard();
     // Updates the internal key state for every key
     void updateKeyStates(const int key, const bool pushed, const bool released);
 

@@ -124,9 +124,9 @@ class Link :
     public engine::Singleton<Link>,
     public IUpdateable
 {
-    friend class Singleton<Link>;
-
 public:
+    Link();
+
     // Renderable overrides
     void render() override;
 
@@ -172,7 +172,6 @@ public:
     Direction direction() const;
 
 private:
-    Link();
     float m_healthMax;
     gui::Inventory m_inventory;
     float m_speedX;
@@ -180,25 +179,16 @@ private:
 
     // void useWeapon(WeaponItem weapon);
 
-    bool m_useShield;
+    bool m_dirLockRight = false;
+    bool m_dirLockUp    = false;
+    bool m_dirLockDown  = false;
+    bool m_dirLockLeft  = false;
 
-    bool m_dirLockRight;
-    bool m_dirLockUp;
-    bool m_dirLockDown;
-    bool m_dirLockLeft;
-
-    bool m_canUseArrow;
-    bool m_usingArrow;
-    bool m_moveable;
-    bool m_moving;
-    bool m_usingSword;
+    bool m_moving = false;
 
     // Link animation state
     PlayerState m_state;
 
-    // Temporary test
-    bool m_useWeapon;
-    bool m_usingWeapon;
     void animate();
 
     const Animation m_animations[LINK_COUNT] = {
