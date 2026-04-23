@@ -77,7 +77,7 @@ void TilemapManager::renderTileMap(const engine::Rect<int>& dstRect, const engin
     m_tilemaps[m_currentTilemapname].tile(engine::Renderer::instance(), srcTexture, roomIndex);
 
     // Finally render the canvas
-    srcTexture.drawSprite(engine::Rect<int>{}, dstRect);
+    srcTexture.draw(engine::Rect<int>{}, dstRect);
 }
 
 TilemapManager::TilemapManager()

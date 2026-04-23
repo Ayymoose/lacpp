@@ -6,6 +6,8 @@
 #include <memory>
 
 #include "SDL_Assert.h"
+#include "core/Sprite.h"
+#include "core/Sprite.h"
 #include "core/Vector.h"
 #include "core/Sprite.h"
 
@@ -71,7 +73,7 @@ public:
         , m_currentFrame(0)
         , m_endFrame(0)
         , m_orientation(0.0f)
-        , m_flip(engine::SpriteFlip::NONE)
+        , m_flip(engine::Sprite::Flip::NONE)
         , m_visible(true)
     {
         assert(depth > 0);
@@ -95,7 +97,7 @@ public:
         , m_currentFrame(0)
         , m_endFrame(0)
         , m_orientation(0.0f)
-        , m_flip(engine::SpriteFlip::NONE)
+        , m_flip(engine::Sprite::Flip::NONE)
         , m_visible(true)
     {
         assert(false && "Method not allowed");
@@ -145,7 +147,7 @@ protected:
                       int startFrame, int frameCount, float fps, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        texture.drawSprite(srcRect, dstRect);
+        texture.draw(srcRect, dstRect);
     }
 
     // Extended animation
@@ -154,7 +156,7 @@ protected:
                         int gap, int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        texture.drawSpriteEx(srcRect, dstRect, angle, engine::SpriteFlip::NONE);
+        texture.draw(srcRect, dstRect, angle, engine::Sprite::Flip::NONE);
     }
 
     // TODO: When the animation finishes, reverse the animation
@@ -179,7 +181,7 @@ protected:
     int m_currentFrame;
     int m_endFrame;
     float m_orientation;
-    engine::SpriteFlip m_flip;
+    engine::Sprite::Flip m_flip;
     bool m_visible;
 
     // Updateable

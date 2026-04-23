@@ -196,7 +196,7 @@ void Dialogue::render()
             // Scrolls the message and continues on to the next
 
             // 1. Hide the top half of the sub texture
-            m_subTexture->colourSprite(engine::Rect<int>{0,
+            m_subTexture->colour(engine::Rect<int>{0,
                                                          0,
                                                          m_dialogueImpl.dialogueWidth(),
                                                          m_dialogueImpl.dialogueHeight() / 2},
@@ -223,13 +223,13 @@ void Dialogue::render()
                     dstRectSubTextureLowerHalf.y = m_dstCharY;
 
                     // 3. Copy to a bottom half of texture to top half
-                    engine::Sprite::copySprite(*m_subTexture,
+                    engine::Sprite::copy(*m_subTexture,
                                                *m_subTexture,
                                                srcRectSubTextureLowerHalf,
                                                dstRectSubTextureLowerHalf);
 
                     // Block out the what used to be the bottom line
-                    m_subTexture->colourSprite(srcRectSubTextureLowerHalf, engine::makeRGB(0, 0, 0));
+                    m_subTexture->colour(srcRectSubTextureLowerHalf, engine::makeRGB(0, 0, 0));
 
                     // Reset to the beginning of the line
                     m_currentLine = m_dialogueImpl.maxLines() - 1;
@@ -258,7 +258,7 @@ void Dialogue::render()
         assert(dstRectChar.x < TEXT_POS_X + m_dialogueImpl.maxCharsPerLine() * m_dialogueImpl.charWidth());
 
         // Make text yellow
-        engine::Sprite::copySprite(*m_text,
+        engine::Sprite::copy(*m_text,
                                    *m_subTexture,
                                    srcRectChar,
                                    dstRectChar,
@@ -266,7 +266,7 @@ void Dialogue::render()
     }
 
     // Copy sub texture to main textbox
-    engine::Sprite::copySprite(*m_subTexture,
+    engine::Sprite::copy(*m_subTexture,
                                *m_sprite,
                                engine::Rect<int>{},
                                engine::Rect<int>{0,
@@ -276,7 +276,7 @@ void Dialogue::render()
 
     // Display the textbox
     // Drawn on top or bottom depending on Link's position
-    m_sprite->drawSprite(engine::Rect<int>{},
+    m_sprite->draw(engine::Rect<int>{},
                          engine::Rect<int>{m_dialoguePosX,
                                            m_dialoguePosY,
                                            m_dialogueImpl.dialogueWidth(),
@@ -371,8 +371,8 @@ Dialogue::Dialogue()
 {
     assert(m_sprite->data());
     assert(m_subTexture->data());
-    m_sprite->colourSprite(engine::Rect<int>{0, 0, m_sprite->width(), m_sprite->height()}, engine::makeRGB(0, 0, 0));
-    m_subTexture->colourSprite(engine::Rect<int>{0, 0, m_sprite->width(), m_sprite->height()},
+    m_sprite->colour(engine::Rect<int>{0, 0, m_sprite->width(), m_sprite->height()}, engine::makeRGB(0, 0, 0));
+    m_subTexture->colour(engine::Rect<int>{0, 0, m_sprite->width(), m_sprite->height()},
                                engine::makeRGB(0, 0, 0));
 }
 
@@ -390,7 +390,7 @@ void Dialogue::reset()
     m_continue = false;
     m_moreText = false;
 
-    m_subTexture->colourSprite(engine::Rect<int>{}, engine::makeRGB(0, 0, 0));
+    m_subTexture->colour(engine::Rect<int>{}, engine::makeRGB(0, 0, 0));
 
     // TODO: Correct text speed
     // TODO: Add special characters (arrows, items etc)
@@ -403,7 +403,7 @@ void Dialogue::drawQuestionMarker() const
     assert(m_questionXPos <= m_dialoguePosX + m_dialogueImpl.dialogueWidth());
     assert(m_questionYPos >= m_dialoguePosY);
     assert(m_questionYPos <= m_dialoguePosY + m_dialogueImpl.dialogueHeight());
-    m_questionMarker->drawSprite(engine::Rect<int>{144, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()},
+    m_questionMarker->draw(engine::Rect<int>{144, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()},
                                  engine::Rect<int>{m_questionXPos,
                                                    m_questionYPos,
                                                    m_dialogueImpl.charWidth(),
@@ -412,7 +412,7 @@ void Dialogue::drawQuestionMarker() const
 
 void Dialogue::drawContinueArrowMarker() const
 {
-    m_redArrow->drawSprite(engine::Rect<int>{136, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()},
+    m_redArrow->draw(engine::Rect<int>{136, 16, m_dialogueImpl.charWidth(), m_dialogueImpl.charHeight()},
                            engine::Rect<int>{m_dialoguePosX + ARROW_POS_X,
                                              m_dialoguePosY + ARROW_POS_Y,
                                              m_dialogueImpl.charWidth(),

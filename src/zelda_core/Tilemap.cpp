@@ -48,7 +48,7 @@ void Tilemap::tile(const engine::Renderer& renderer, const engine::Sprite& tilem
             auto const srcTileY = m_tileHeight * (tileID / m_tilesAcross);
 
             // Paste tile from tilemap
-            m_sprite->drawSprite(engine::Rect<size_t>{srcTileX, srcTileY, m_tileWidth, m_tileHeight},
+            m_sprite->draw(engine::Rect<size_t>{srcTileX, srcTileY, m_tileWidth, m_tileHeight},
                                  engine::Rect<size_t>{tileX * m_tileWidth,
                                                       tileY * m_tileHeight,
                                                       m_tileWidth,

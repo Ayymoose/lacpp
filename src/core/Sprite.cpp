@@ -4,13 +4,13 @@
 namespace zelda::engine
 {
 
-Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
+Sprite::Sprite(SDL_Renderer* renderer, int width, int height)
+    : m_renderer(renderer)
+    , m_sprite(nullptr)
+    , m_blendMode(SDL_BLENDMODE_NONE)
+    , m_width(width)
+    , m_height(height)
 {
-    m_width = width;
-    m_height = height;
-    m_renderer = renderer;
-    m_blendMode = SDL_BLENDMODE_NONE;
-
     if (m_renderer)
     {
         assert(m_width);
@@ -19,22 +19,20 @@ Sprite::Sprite(SDL_Renderer* renderer, const int width, const int height)
         assert(m_sprite);
         SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
     }
-    else
-    {
-        assert(!m_width);
-        assert(!m_height);
-        m_sprite = nullptr;
-    }
 }
 
 Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
+    : m_renderer(renderer)
+    , m_sprite(nullptr)
+    , m_blendMode(SDL_BLENDMODE_BLEND)
+    , m_width(0)
+    , m_height(0)
 {
-    assert(renderer);
-    m_renderer = renderer;
+    assert(m_renderer);
     assert(surface);
 
     // Create a new texture from this surface
-    auto const textureCreatedFromSurface = SDL_CreateTextureFromSurface(m_renderer, surface);
+    const auto textureCreatedFromSurface = SDL_CreateTextureFromSurface(m_renderer, surface);
     SDL_FreeSurface(surface);
 
     // Query dimensions
@@ -47,44 +45,29 @@ Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
     assert(m_sprite);
 
     // Copy texture created from surface to one we can draw on
-    auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
+    const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
     SDL_ASSERT(SDL_RenderCopy(m_renderer, textureCreatedFromSurface, nullptr, nullptr));
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
 
-    // Default is to blend
-    m_blendMode = SDL_BLENDMODE_BLEND;
     SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 
     SDL_DestroyTexture(textureCreatedFromSurface);
 }
 
-SDL_Texture* Sprite::data() const
-{
-    return m_sprite;
-}
-
-SDL_Renderer* Sprite::renderer() const
-{
-    return m_renderer;
-}
-
 Sprite::Sprite(const Sprite& sprite)
+    : m_renderer(sprite.m_renderer)
+    , m_sprite(nullptr)
+    , m_blendMode(sprite.m_blendMode)
+    , m_width(sprite.m_width)
+    , m_height(sprite.m_height)
 {
-    m_width = sprite.m_width;
-    m_height = sprite.m_height;
-    m_renderer = sprite.m_renderer;
-    m_blendMode = sprite.m_blendMode;
-
-    // Free existing texture
-    SDL_DestroyTexture(m_sprite);
-
-    // Create new texture
+    // Create new texture — do NOT call SDL_DestroyTexture here, m_sprite has not been initialised yet
     m_sprite = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
     assert(m_sprite);
 
     // Paste sprite texture onto here
-    auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
+    const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
     SDL_ASSERT(SDL_RenderCopy(m_renderer, sprite.m_sprite, nullptr, nullptr));
     SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
@@ -92,7 +75,17 @@ Sprite::Sprite(const Sprite& sprite)
     SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 }
 
-Sprite& Sprite::operator=(Sprite sprite)
+Sprite& Sprite::operator=(const Sprite& sprite)
+{
+    if (this != &sprite)
+    {
+        Sprite temp(sprite);
+        swap(*this, temp);
+    }
+    return *this;
+}
+
+Sprite& Sprite::operator=(Sprite&& sprite) noexcept
 {
     swap(*this, sprite);
     return *this;
@@ -120,16 +113,26 @@ int Sprite::height() const
     return m_height;
 }
 
-SDL_RendererFlip Sprite::flipToSDLRendererFlip(SpriteFlip flip)
+SDL_Texture* Sprite::data() const
+{
+    return m_sprite;
+}
+
+SDL_Renderer* Sprite::renderer() const
+{
+    return m_renderer;
+}
+
+SDL_RendererFlip Sprite::flipToSDLRendererFlip(Flip flip)
 {
     switch (flip)
     {
-    case SpriteFlip::HORIZONTAL:
-        return SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-    case SpriteFlip::VERTICAL:
-        return SDL_RendererFlip::SDL_FLIP_VERTICAL;
+    case Flip::HORIZONTAL:
+        return SDL_FLIP_HORIZONTAL;
+    case Flip::VERTICAL:
+        return SDL_FLIP_VERTICAL;
     default:
-        return SDL_RendererFlip::SDL_FLIP_NONE;
+        return SDL_FLIP_NONE;
     }
 }
 
