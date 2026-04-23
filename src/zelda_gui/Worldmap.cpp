@@ -83,7 +83,7 @@ void Worldmap::render()
         drawUnvisitedLocations();
 
         // Render the worldmap
-        m_sprite->drawSprite(engine::Rect<int>{}, engine::Rect<int>{});
+        m_sprite->draw(engine::Rect<int>{}, engine::Rect<int>{});
 
         // Draw any location image
         drawLocationImage();
@@ -115,7 +115,7 @@ void Worldmap::drawUnvisitedLocations() const
             if (!m_worldMapImpl.locationVisited(x, y))
             {
                 engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-                    ->drawSprite(m_worldmapSrcSprites[UNVISITED],
+                    ->draw(m_worldmapSrcSprites[UNVISITED],
                                  engine::Rect<int>{WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7, 7});
             }
         }
@@ -170,14 +170,14 @@ void Worldmap::drawLocationImage() const
         }
 
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->drawSprite(srcRectLocation, engine::Rect<int>{sx, sy, 30, 30});
+            ->draw(srcRectLocation, engine::Rect<int>{sx, sy, 30, 30});
     }
 }
 
 void Worldmap::drawScope() const
 {
     engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-        ->drawSprite(m_worldmapSrcSprites[SCOPE],
+        ->draw(m_worldmapSrcSprites[SCOPE],
                      engine::Rect<int>{(WORLDMAP_START_X + m_scopeX * 8) - 5,
                                        (WORLDMAP_START_Y + m_scopeY * 8) - 5,
                                        16,
@@ -199,25 +199,25 @@ void Worldmap::drawScope() const
 
         // Up arrow
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 0, engine::SpriteFlip::NONE);
+            ->draw(srcRect, dstRect, 0, engine::Sprite::Flip::NONE);
 
         // Right arrow
         dstRect.x += 15;
         dstRect.y += 14;
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 90, engine::SpriteFlip::NONE);
+            ->draw(srcRect, dstRect, 90, engine::Sprite::Flip::NONE);
 
         // Down arrow
         dstRect.x -= 15;
         dstRect.y += 15;
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 180, engine::SpriteFlip::NONE);
+            ->draw(srcRect, dstRect, 180, engine::Sprite::Flip::NONE);
 
         // Left arrow
         dstRect.x -= 15;
         dstRect.y -= 15;
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->drawSpriteEx(srcRect, dstRect, 270, engine::SpriteFlip::NONE);
+            ->draw(srcRect, dstRect, 270, engine::Sprite::Flip::NONE);
     }
 }
 

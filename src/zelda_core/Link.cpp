@@ -106,7 +106,7 @@ void Link::render()
     m_animateXPos = m_animations[m_state].x;
     m_animateYPos = m_animations[m_state].y;
 
-    m_sprite->drawSpriteEx(m_srcRect, m_dstRect, 0, engine::SpriteFlip::NONE);
+    m_sprite->draw(m_srcRect, m_dstRect, 0, engine::Sprite::Flip::NONE);
 }
 
 

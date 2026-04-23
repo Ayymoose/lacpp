@@ -5,6 +5,8 @@
 #include "core/Rect.h"
 #include "core/FloatingPoint.h"
 #include "core/Random.h"
+#include "core/Sprite.h"
+#include <SDL.h>
 #include <sstream>
 
 using namespace zelda::engine;
@@ -639,3 +641,166 @@ BOOST_AUTO_TEST_CASE(ChooseSinglePair)
 BOOST_AUTO_TEST_SUITE_END()
 
 } // namespace random_tests
+
+namespace sprite_tests
+{
+
+// Fixture that creates a hidden window and a renderer that supports render
+// targets (required by Sprite's SDL_TEXTUREACCESS_TARGET textures).
+// Falls back to software if hardware acceleration is unavailable.
+struct SDLFixture
+{
+    SDL_Window*   window   = nullptr;
+    SDL_Renderer* renderer = nullptr;
+
+    SDLFixture()
+    {
+        BOOST_REQUIRE_MESSAGE(SDL_Init(SDL_INIT_VIDEO) == 0, SDL_GetError());
+        window = SDL_CreateWindow("SpriteTest", 0, 0, 160, 144, SDL_WINDOW_HIDDEN);
+        BOOST_REQUIRE_MESSAGE(window != nullptr, SDL_GetError());
+
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+        if (!renderer)
+            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE | SDL_RENDERER_TARGETTEXTURE);
+
+        BOOST_REQUIRE_MESSAGE(renderer != nullptr, SDL_GetError());
+    }
+
+    ~SDLFixture()
+    {
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+    }
+};
+
+BOOST_AUTO_TEST_SUITE(SpriteTests)
+
+// -------------------------
+// Null renderer
+// -------------------------
+BOOST_AUTO_TEST_CASE(NullRenderer_WidthIsZero)
+{
+    const Sprite s(nullptr, 0, 0);
+    BOOST_TEST(s.width() == 0);
+    BOOST_TEST(s.height() == 0);
+    BOOST_TEST(s.data() == nullptr);
+}
+// -------------------------
+// Move semantics (null renderer)
+// -------------------------
+BOOST_AUTO_TEST_CASE(MoveConstructor_NullSprite_DestinationIsEmpty)
+{
+    Sprite src(nullptr, 0, 0);
+    const Sprite dst(std::move(src));
+    BOOST_TEST(dst.data() == nullptr);
+    BOOST_TEST(dst.width() == 0);
+    BOOST_TEST(dst.height() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(MoveConstructor_NullSprite_SourceBecomesEmpty)
+{
+    Sprite src(nullptr, 0, 0);
+    Sprite dst(std::move(src));
+    BOOST_TEST(src.data() == nullptr);
+    BOOST_TEST(src.renderer() == nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(MoveAssignment_NullSprites_ExchangesState)
+{
+    Sprite a(nullptr, 0, 0);
+    Sprite b(nullptr, 0, 0);
+    a = std::move(b);
+    BOOST_TEST(a.data() == nullptr);
+    BOOST_TEST(a.renderer() == nullptr);
+}
+
+// -------------------------
+// Swap (null renderer)
+// -------------------------
+BOOST_AUTO_TEST_CASE(Swap_NullSprites_StateUnchanged)
+{
+    Sprite a(nullptr, 0, 0);
+    Sprite b(nullptr, 0, 0);
+    swap(a, b);
+    BOOST_TEST(a.data() == nullptr);
+    BOOST_TEST(b.data() == nullptr);
+}
+// -------------------------
+// Constructor (SDL renderer)
+// -------------------------
+BOOST_FIXTURE_TEST_CASE(Constructor_StoresWidth, SDLFixture)
+{
+    const Sprite s(renderer, 32, 16);
+    BOOST_TEST(s.width() == 32);
+    BOOST_TEST(s.height() == 16);
+    BOOST_TEST(s.data() != nullptr);
+}
+
+// -------------------------
+// Copy constructor (SDL renderer)
+// -------------------------
+BOOST_FIXTURE_TEST_CASE(CopyConstructor_SameWidth, SDLFixture)
+{
+    const Sprite src(renderer, 32, 16);
+    const Sprite dst(src);
+    BOOST_TEST(dst.width() == src.width());
+    BOOST_TEST(dst.height() == src.height());
+    BOOST_TEST(dst.renderer() == src.renderer());
+    BOOST_TEST(dst.data() != src.data());
+}
+// -------------------------
+// Move constructor (SDL renderer)
+// -------------------------
+BOOST_FIXTURE_TEST_CASE(MoveConstructor_NewSpriteHasTexture, SDLFixture)
+{
+    Sprite src(renderer, 32, 16);
+    const Sprite dst(std::move(src));
+    BOOST_TEST(dst.data() != nullptr);
+    BOOST_TEST(dst.width() == 32);
+    BOOST_TEST(dst.height() == 16);
+    BOOST_TEST(src.data() == nullptr);
+    BOOST_TEST(src.width() == 0);
+    BOOST_TEST(src.height() == 0);
+}
+
+// -------------------------
+// Assignment operator (SDL renderer)
+// -------------------------
+BOOST_FIXTURE_TEST_CASE(AssignmentOperator_CopiesDimensions, SDLFixture)
+{
+    const Sprite src(renderer, 32, 16);
+    Sprite dst(renderer, 8, 8);
+    dst = src;
+    BOOST_TEST(dst.width() == 32);
+    BOOST_TEST(dst.height() == 16);
+    BOOST_TEST(dst.data() != src.data());
+}
+
+// -------------------------
+// Move assignment operator (SDL renderer)
+// -------------------------
+BOOST_FIXTURE_TEST_CASE(MoveAssignment_DestinationAcquiresDimensions, SDLFixture)
+{
+    Sprite src(renderer, 32, 16);
+    Sprite dst(renderer, 8, 8);
+    dst = std::move(src);
+    BOOST_TEST(dst.width() == 32);
+    BOOST_TEST(dst.height() == 16);
+    BOOST_TEST(src.data() != dst.data());
+    BOOST_TEST(src.width() == 8);
+    BOOST_TEST(src.height() == 8);
+}
+
+BOOST_FIXTURE_TEST_CASE(MoveAssignment_DestinationAcquiresTexture, SDLFixture)
+{
+    Sprite src(renderer, 32, 16);
+    SDL_Texture* originalTexture = src.data();
+    Sprite dst(renderer, 8, 8);
+    dst = std::move(src);
+    BOOST_TEST(dst.data() == originalTexture);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+} // namespace sprite_tests
