@@ -8,12 +8,12 @@ namespace zelda::engine
 class Window
 {
 public:
-    Window()
-        : m_mainWindow(nullptr) {};
+    Window();
     ~Window();
-    void createWindow(const char* title, const int width, const int height);
 
-    auto getWindowHandle() const { return m_mainWindow; }
+    void create(const char* title, int width, int height);
+
+    auto getHandle() const { return m_mainWindow; }
 
 private:
     SDL_Window* m_mainWindow;
