@@ -3,11 +3,9 @@
 #include "Singleton.h"
 #include "IRenderable.h"
 #include "Sprite.h"
-#include "Logger.h"
 #include "Window.h"
 
 #include <set>
-#include <SDL_image.h>
 
 // Singleton instance of the renderer for the main window
 
@@ -17,36 +15,35 @@ namespace zelda::engine
 class Renderer : public Singleton<Renderer>
 {
 public:
-    Renderer()
-        : m_renderer(nullptr)
-    {}
+    Renderer() = default;
+
     ~Renderer();
 
-    void createRenderer(const Window& window);
+    void create(const Window& window);
 
-    void clearScreen(const Colour colour) const;
+    void clearScreen(Colour colour) const;
 
     void renderScreen() const;
 
-    void setRendererScale(const float scaleX, const float scaleY) const;
+    void setRendererScale(float scaleX, float scaleY) const;
 
-    bool inRenderSet(IRenderable* renderable) const;
+    [[nodiscard]] bool inRenderSet(IRenderable* renderable) const;
 
     void addRenderable(IRenderable* renderable);
 
     void removeRenderable(IRenderable* renderable);
 
-    auto getRenderer() const
+    [[nodiscard]] SDL_Renderer* getRenderer() const
     {
         assert(m_renderer);
         return m_renderer;
     }
 
-    auto getRenderSet() const { return m_renderables; }
+    [[nodiscard]] auto getRenderSet() const { return m_renderables; }
 
 private:
     // Global renderer
-    SDL_Renderer* m_renderer;
+    SDL_Renderer* m_renderer = nullptr;
 
     struct RendererComparator
     {
