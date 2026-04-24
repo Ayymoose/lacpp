@@ -107,7 +107,7 @@ void Engine::initSingleton() const
 void Engine::initWindow()
 {
     // Create the main window
-    m_mainWindow.createWindow(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+    m_mainWindow.create(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 
     // Create main hardware renderer
     Renderer::instance().createRenderer(m_mainWindow);

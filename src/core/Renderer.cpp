@@ -8,9 +8,9 @@ namespace zelda::engine
 
 void Renderer::createRenderer(const Window& window)
 {
-    assert(window.getWindowHandle());
+    assert(window.getHandle());
     auto const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE;
-    m_renderer = SDL_CreateRenderer(window.getWindowHandle(), -1, flags);
+    m_renderer = SDL_CreateRenderer(window.getHandle(), -1, flags);
     assert(m_renderer);
     Logger::instance().log<Logger::Mask::INFO>("Renderer created");
 }
