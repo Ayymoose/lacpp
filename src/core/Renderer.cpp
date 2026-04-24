@@ -1,22 +1,25 @@
 #include "Renderer.h"
 #include "Colour.h"
+#include "SDL_Check.h"
+
+#include <algorithm>
 
 // Singleton instance of the renderer for the main window
 
 namespace zelda::engine
 {
 
-void Renderer::createRenderer(const Window& window)
+void Renderer::create(const Window& window)
 {
     assert(window.getHandle());
-    auto const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE;
-    m_renderer = SDL_CreateRenderer(window.getHandle(), -1, flags);
-    assert(m_renderer);
-    Logger::instance().log<Logger::Mask::INFO>("Renderer created");
+    assert(!m_renderer);
+    m_renderer = SDL_CreateRenderer(window.getHandle(),
+                                    -1,
+                                    SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+    SDL_ASSERT(m_renderer);
 }
 
-// TODO: Const all these parameters
-void Renderer::clearScreen(const Colour colour) const
+void Renderer::clearScreen(Colour colour) const
 {
     assert(m_renderer);
     SDL_CHECK(SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), 0));
@@ -29,7 +32,7 @@ void Renderer::renderScreen() const
     SDL_RenderPresent(m_renderer);
 }
 
-void Renderer::setRendererScale(const float scaleX, const float scaleY) const
+void Renderer::setRendererScale(float scaleX, float scaleY) const
 {
     assert(m_renderer);
     assert(scaleX > 0 && scaleY > 0);
@@ -39,25 +42,18 @@ void Renderer::setRendererScale(const float scaleX, const float scaleY) const
 Renderer::~Renderer()
 {
     SDL_DestroyRenderer(m_renderer);
-    Logger::instance().log<Logger::Mask::INFO>("Renderer destroyed");
+    SDL_CHECK_NO_ERROR();
 }
 
 bool Renderer::inRenderSet(IRenderable* renderable) const
 {
-    auto iterator = std::find_if(m_renderables.cbegin(),
-                                 m_renderables.cend(),
-                                 [renderable](const IRenderable* r1) { return r1 == renderable; });
-    return iterator != m_renderables.cend();
+    return std::ranges::find(m_renderables, renderable) != m_renderables.cend();
 }
 
 void Renderer::addRenderable(IRenderable* renderable)
 {
     assert(renderable);
-    if (inRenderSet(renderable))
-    {
-        assert(false && "Can't add same object to render set");
-    }
-    else
+    if (!inRenderSet(renderable))
     {
         m_renderables.emplace(renderable);
     }
@@ -66,17 +62,9 @@ void Renderer::addRenderable(IRenderable* renderable)
 void Renderer::removeRenderable(IRenderable* renderable)
 {
     assert(renderable);
-    auto iterator = std::find_if(m_renderables.cbegin(),
-                                 m_renderables.cend(),
-                                 [renderable](const IRenderable* r1) { return r1 == renderable; });
-    if (iterator != m_renderables.cend())
-    {
-        m_renderables.erase(iterator);
-    }
-    else
-    {
-        assert(false && "Trying to remove non-existent renderable");
-    }
+    const auto it = std::ranges::find(m_renderables, renderable);
+    assert(it != m_renderables.cend() && "Trying to remove non-existent renderable");
+    m_renderables.erase(it);
 }
 
 } // namespace zelda::engine

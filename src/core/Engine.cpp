@@ -110,7 +110,7 @@ void Engine::initWindow()
     m_mainWindow.create(MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 
     // Create main hardware renderer
-    Renderer::instance().createRenderer(m_mainWindow);
+    Renderer::instance().create(m_mainWindow);
 
     // Stretch the textures to the window size
     Renderer::instance().setRendererScale(MAIN_WINDOW_WIDTH / static_cast<float>(CAMERA_WIDTH),
