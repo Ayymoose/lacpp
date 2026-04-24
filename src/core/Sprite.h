@@ -63,9 +63,9 @@ public:
             if (colourMod)
             {
                 SDL_CHECK(SDL_SetTextureColorMod(source.data(),
-                                                  makeRed(colourMod),
-                                                  makeGreen(colourMod),
-                                                  makeBlue(colourMod)));
+                                                 makeRed(colourMod),
+                                                 makeGreen(colourMod),
+                                                 makeBlue(colourMod)));
             }
 
             SDL_CHECK(SDL_RenderCopy(dest.m_renderer, source.data(), rectSrc, rectDst));
@@ -90,7 +90,7 @@ public:
             assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);
 
             auto sdlRectSrc = rectToSDLRect(srcRect);
-            auto rectSrc = (srcRect != Rect<R>() ? &sdlRectSrc : nullptr);
+            auto rectSrc = srcRect != Rect<R>() ? &sdlRectSrc : nullptr;
 
             SDL_CHECK(SDL_RenderFillRect(m_renderer, rectSrc));
 
@@ -99,41 +99,34 @@ public:
     }
 
     // Draw a sprite on screen
-    template <typename R1, typename R2>
-    void draw(const Rect<R1>& srcRect, const Rect<R2>& dstRect, double angle = 0, Flip flip = Flip::NONE) const
+    template <typename R1, typename R2, Flip F = Flip::NONE>
+    void draw(const Rect<R1>& srcRect, const Rect<R2>& dstRect, double angle = 0) const
     {
-        if (m_renderer)
+        if (m_renderer && m_sprite)
         {
-            assert(m_sprite);
-
             assert(srcRect.x >= 0 && static_cast<long long>(srcRect.x + srcRect.w) <= static_cast<long long>(m_width));
             assert(srcRect.y >= 0 && static_cast<long long>(srcRect.y + srcRect.h) <= static_cast<long long>(m_height));
 
             auto sdlRectSrc = rectToSDLRect(srcRect);
             auto sdlRectDst = rectToSDLRect(dstRect);
 
-            auto rectSrc = (srcRect != Rect<R1>() ? &sdlRectSrc : nullptr);
-            auto rectDst = (dstRect != Rect<R2>() ? &sdlRectDst : nullptr);
+            auto rectSrc = srcRect != Rect<R1>() ? &sdlRectSrc : nullptr;
+            auto rectDst = dstRect != Rect<R2>() ? &sdlRectDst : nullptr;
 
             if constexpr (std::integral<R2>)
             {
-                SDL_CHECK(SDL_RenderCopyEx(m_renderer,
+                SDL_CHECK(
+                    SDL_RenderCopyEx(m_renderer, m_sprite, rectSrc, rectDst, angle, nullptr, flipToSDLRendererFlip<F>()));
+            }
+            else
+            {
+                SDL_CHECK(SDL_RenderCopyExF(m_renderer,
                                             m_sprite,
                                             rectSrc,
                                             rectDst,
                                             angle,
                                             nullptr,
-                                            flipToSDLRendererFlip(flip)));
-            }
-            else
-            {
-                SDL_CHECK(SDL_RenderCopyExF(m_renderer,
-                                             m_sprite,
-                                             rectSrc,
-                                             rectDst,
-                                             angle,
-                                             nullptr,
-                                             flipToSDLRendererFlip(flip)));
+                                            flipToSDLRendererFlip<F>()));
             }
         }
     }
@@ -147,7 +140,16 @@ private:
     int m_width = 0;
     int m_height = 0;
 
-    static SDL_RendererFlip flipToSDLRendererFlip(Flip flip);
+    template <Flip F>
+    static constexpr SDL_RendererFlip flipToSDLRendererFlip()
+    {
+        if constexpr (F == Flip::HORIZONTAL)
+            return SDL_FLIP_HORIZONTAL;
+        else if constexpr (F == Flip::VERTICAL)
+            return SDL_FLIP_VERTICAL;
+        else
+            return SDL_FLIP_NONE;
+    }
 };
 
 

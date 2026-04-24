@@ -156,7 +156,7 @@ protected:
                         int gap, int startFrame, int frameCount, float fps, float angle, bool pause)
     {
         basicAnimateHelper(srcRect, gap, startFrame, frameCount, fps, pause);
-        texture.draw(srcRect, dstRect, angle, engine::Sprite::Flip::NONE);
+        texture.draw(srcRect, dstRect, angle);
     }
 
     // TODO: When the animation finishes, reverse the animation
