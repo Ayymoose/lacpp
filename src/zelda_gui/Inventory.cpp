@@ -7,7 +7,7 @@
 #include "Link.h"
 #include "core/Engine.h"
 #include "core/ResourceManager.h"
-// #include "Toggle.h"
+#include "core/SDL_RenderTarget.h"
 
 namespace zelda::gui
 {
@@ -16,8 +16,8 @@ Inventory::Inventory()
                   engine::Sprite(engine::Renderer::instance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
                   core::INVENTORY)
     , Controllable(m_name)
-    , m_subscreen(std::make_unique<engine::Sprite>(engine::Renderer::instance().getRenderer(),
-                                                   SELECT_SUBSCREEN_WIDTH, SELECT_SUBSCREEN_HEIGHT))
+    , m_subscreen(std::make_unique<engine::Sprite>(engine::Renderer::instance().getRenderer(), SELECT_SUBSCREEN_WIDTH,
+                                                   SELECT_SUBSCREEN_HEIGHT))
     , m_open(false)
     , m_selectorX(SELECTOR_INITIAL_X)
     , m_selectorY(SELECTOR_INITIAL_Y)
@@ -100,10 +100,8 @@ void Inventory::control()
     }
 
     // If any select keys pressed, reset the flashing animation
-    if (engine::Keyboard::instance().keyPushed(BUTTON_RIGHT)
-        || engine::Keyboard::instance().keyPushed(BUTTON_LEFT)
-        || engine::Keyboard::instance().keyPushed(BUTTON_DOWN)
-        || engine::Keyboard::instance().keyPushed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPushed(BUTTON_RIGHT) || engine::Keyboard::instance().keyPushed(BUTTON_LEFT)
+        || engine::Keyboard::instance().keyPushed(BUTTON_DOWN) || engine::Keyboard::instance().keyPushed(BUTTON_UP))
     {
         m_flashSelector = true;
     }
@@ -398,14 +396,12 @@ void Inventory::drawDungeonMap()
             // If we have the compass, show the nightmare and treasure chests
             if (m_inventoryImpl.dungeonItem(core::DungeonItem::COMPASS))
             {
-                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y)
-                    == core::DungeonMapItem::NIGHTMARE_KEY)
+                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y) == core::DungeonMapItem::NIGHTMARE_KEY)
                 {
                     // srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
                     // dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
                 }
-                else if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y)
-                         == core::DungeonMapItem::CHEST_CLOSED)
+                else if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y) == core::DungeonMapItem::CHEST_CLOSED)
                 {
                     // srcRect = m_inventorySpritesSrc[INVENTORY_AREA_TREASURE];
                     // dstRect = m_inventorySpritesDst[INVENTORY_AREA_TREASURE];
@@ -583,12 +579,7 @@ void Inventory::drawDungeonItems()
     dstRect.h = 8;
     dstRect.x += dstRect.w;
     dstRect.y += dstRect.h;
-    drawNumber(*m_sprite,
-               false,
-               true,
-               0,
-               m_inventoryImpl.dungeonItem(core::DungeonItem::LOCKED_DOOR_KEY),
-               dstRect);
+    drawNumber(*m_sprite, false, true, 0, m_inventoryImpl.dungeonItem(core::DungeonItem::LOCKED_DOOR_KEY), dstRect);
 }
 
 void Inventory::drawInstruments()
@@ -697,27 +688,27 @@ void Inventory::drawInventoryWeapons()
     // Instead of creating an object for each item we have
     // We just render the items we have to a single texture
     // and render that instead
-    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
     auto const inventoryItems = m_inventoryImpl.inventoryItems();
-
-    for (int i = 0; i < std::ssize(inventoryItems); ++i)
     {
-        if (inventoryItems[i] != core::InventoryItem{})
-        {
-            // srcRect = inventoryWeaponSpriteSrc(m_weaponItems[i]);
+        engine::RenderTarget target(engine::Renderer::instance().getRenderer(), m_sprite->data());
 
-            // dstRect is the position on the internal inventory lhs
-            // This correctly positions the item
-            dstRect = {INVENTORY_POS_X + ((((i & 1) == 1) ? 1 : 0) * INVENTORY_X_SPACING),
-                       INVENTORY_POS_Y + ((i / 2) * INVENTORY_Y_SPACING),
-                       INVENTORY_SPRITE_WIDTH,
-                       INVENTORY_SPRITE_HEIGHT};
-            // Draw the inventory items onto the internal inventory
-            engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
+        for (int i = 0; i < std::ssize(inventoryItems); ++i)
+        {
+            if (inventoryItems[i] != core::InventoryItem{})
+            {
+                // srcRect = inventoryWeaponSpriteSrc(m_weaponItems[i]);
+
+                // dstRect is the position on the internal inventory lhs
+                // This correctly positions the item
+                dstRect = {INVENTORY_POS_X + ((((i & 1) == 1) ? 1 : 0) * INVENTORY_X_SPACING),
+                           INVENTORY_POS_Y + ((i / 2) * INVENTORY_Y_SPACING),
+                           INVENTORY_SPRITE_WIDTH,
+                           INVENTORY_SPRITE_HEIGHT};
+                // Draw the inventory items onto the internal inventory
+                engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
+            }
         }
     }
-
-    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 
     for (int i = 0; i < std::ssize(inventoryItems); ++i)
     {
@@ -735,8 +726,7 @@ void Inventory::drawInventoryWeapons()
 
 void Inventory::drawSelector()
 {
-    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
-
+    engine::RenderTarget target(engine::Renderer::instance().getRenderer(), m_sprite->data());
     engine::Rect<int> srcRect, dstRect;
     // Render the selector
 
@@ -749,13 +739,12 @@ void Inventory::drawSelector()
         dstRect = {m_selectorX, m_selectorY, srcRect.w, srcRect.h};
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
-    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawInventoryDividers()
 {
     engine::Rect<int> srcRect, dstRect;
-    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
+    engine::RenderTarget target(engine::Renderer::instance().getRenderer(), m_sprite->data());
 
     // srcRect = m_inventorySpritesSrc[INVENTORY_DIVIDER_H];
 
@@ -778,13 +767,11 @@ void Inventory::drawInventoryDividers()
                    INVENTORY_DIVIDER_HEIGHT_V};
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
-
-    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawHUD()
 {
-    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
+    engine::RenderTarget target(engine::Renderer::instance().getRenderer(), m_sprite->data());
     engine::Rect<int> srcRect, dstRect;
 
     // Copy "B"
@@ -841,9 +828,6 @@ void Inventory::drawHUD()
     // Draw current ruppees
     dstRect = {80, 8, 8, 8};
     drawNumber(*m_sprite, false, true, 2, m_inventoryImpl.rupees(), dstRect);
-
-    // Pop rendering target
-    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawInventoryBackground()
@@ -874,7 +858,9 @@ void Inventory::drawSubscreen() const
     engine::Rect<int> dstRect; // = m_inventorySpritesDst[INVENTORY_SUBSCREEN];
     engine::Rect<int> srcRect = {0, 0, dstRect.w, dstRect.h};
     m_subscreen->draw(srcRect, dstRect);
-    auto currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(*m_subscreen);
+
+    // Remember! This resets the drawing target to the screen
+    engine::RenderTarget target(engine::Renderer::instance().getRenderer(), m_sprite->data());
 
     // Tunic
     // srcRect = m_inventorySpritesSrc[INVENTORY_TUNIC];
@@ -927,9 +913,6 @@ void Inventory::drawSubscreen() const
     drawNumber(*m_subscreen, false, false, 1, m_inventoryImpl.photograph(), dstRect);
     dstRect = {48, 23, 8, 8};
     drawNumber(*m_subscreen, false, false, 1, core::MAX_PHOTOGRAPHS, dstRect);
-
-    // Remember! This resets the drawing target to the screen
-    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 // Draw a number or level onto a texture
@@ -952,7 +935,7 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
     assert(dstRect != engine::Rect<int>());
 
     // Save the current renderering target
-    auto const currentRenderingTarget = engine::Renderer::instance().pushRenderingTarget(srcSprite);
+    engine::RenderTarget target(engine::Renderer::instance().getRenderer(), srcSprite.data());
 
     engine::Rect<int> srcRect;
     auto rectDst = dstRect;
@@ -1061,8 +1044,6 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
             rectDst.x += srcRect.w;
         }
     }
-    // Restore "pop" the target backk
-    engine::Renderer::instance().popRenderingTarget(currentRenderingTarget);
 }
 
 void Inventory::drawInventoryItemAttribute(const engine::Sprite& srcSprite, const core::InventoryItem& item,

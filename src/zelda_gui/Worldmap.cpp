@@ -12,8 +12,7 @@
 namespace zelda::gui
 {
 Worldmap::Worldmap()
-    : IRenderable("Worldmap", *engine::ResourceManager::instance()[engine::SpriteResource::WORLD_MAP],
-                  core::WORLDMAP)
+    : IRenderable("Worldmap", *engine::ResourceManager::instance()[engine::SpriteResource::WORLD_MAP], core::WORLDMAP)
     , Controllable(m_name)
     , m_show(false)
     , m_scopeSelect(false)
@@ -106,8 +105,7 @@ void Worldmap::close()
 
 void Worldmap::drawUnvisitedLocations() const
 {
-    auto const target = engine::Renderer::instance().pushRenderingTarget(*m_sprite);
-
+    engine::RenderTarget target(engine::Renderer::instance().getRenderer(), m_sprite->data());
     for (int y = 0; y < core::WORLDMAP_MAX_Y; ++y)
     {
         for (int x = 0; x < core::WORLDMAP_MAX_X; ++x)
@@ -117,12 +115,10 @@ void Worldmap::drawUnvisitedLocations() const
             {
                 engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
                     ->draw(m_worldmapSrcSprites[UNVISITED],
-                                 engine::Rect<int>{WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7, 7});
+                           engine::Rect<int>{WORLDMAP_START_X + x * 8, WORLDMAP_START_Y + y * 8, 7, 7});
             }
         }
     }
-
-    engine::Renderer::instance().popRenderingTarget(target);
 }
 
 void Worldmap::drawLocationImage() const
@@ -170,8 +166,8 @@ void Worldmap::drawLocationImage() const
             sy = 97;
         }
 
-        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRectLocation, engine::Rect<int>{sx, sy, 30, 30});
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRectLocation,
+                                                                                     engine::Rect<int>{sx, sy, 30, 30});
     }
 }
 
@@ -179,10 +175,7 @@ void Worldmap::drawScope() const
 {
     engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
         ->draw(m_worldmapSrcSprites[SCOPE],
-                     engine::Rect<int>{(WORLDMAP_START_X + m_scopeX * 8) - 5,
-                                       (WORLDMAP_START_Y + m_scopeY * 8) - 5,
-                                       16,
-                                       16});
+               engine::Rect<int>{(WORLDMAP_START_X + m_scopeX * 8) - 5, (WORLDMAP_START_Y + m_scopeY * 8) - 5, 16, 16});
 
     // TODO: Animation of scope markers
     // TODO: Check if sea needs to be animated
@@ -199,26 +192,22 @@ void Worldmap::drawScope() const
         dstRect.y -= 10;
 
         // Up arrow
-        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 0);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect, 0);
 
         // Right arrow
         dstRect.x += 15;
         dstRect.y += 14;
-        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 90);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect, 90);
 
         // Down arrow
         dstRect.x -= 15;
         dstRect.y += 15;
-        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 180);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect, 180);
 
         // Left arrow
         dstRect.x -= 15;
         dstRect.y -= 15;
-        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 270);
+        engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect, 270);
     }
 }
 

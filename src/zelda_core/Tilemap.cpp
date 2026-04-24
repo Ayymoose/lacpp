@@ -1,4 +1,5 @@
 #include "Tilemap.h"
+#include "core/SDL_RenderTarget.h"
 
 namespace zelda::core
 {
@@ -33,7 +34,7 @@ void Tilemap::tile(const engine::Renderer& renderer, const engine::Sprite& tilem
     assert(m_tileWidth != 0);
 
     auto const mapEntry = m_mapEntries[mapIndex];
-    auto const target = renderer.pushRenderingTarget(tilemapSprite);
+    engine::RenderTarget target(renderer.getRenderer(), tilemapSprite.data());
 
     // Start painting the canvas with tiles
     for (size_t tileY = 0; tileY < m_tilesDown; ++tileY)
@@ -55,8 +56,6 @@ void Tilemap::tile(const engine::Renderer& renderer, const engine::Sprite& tilem
                                                       m_tileHeight});
         }
     }
-
-    renderer.popRenderingTarget(target);
 }
 
 size_t Tilemap::size() const

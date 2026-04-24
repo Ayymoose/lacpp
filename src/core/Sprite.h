@@ -8,6 +8,7 @@
 #include "SDL_Check.h"
 #include "Rect.h"
 #include "Colour.h"
+#include "core/SDL_RenderTarget.h"
 
 namespace zelda::engine
 {
@@ -48,8 +49,7 @@ public:
         assert(dest.m_renderer == source.m_renderer);
         if (dest.m_renderer)
         {
-            const auto currentRenderingTarget = SDL_GetRenderTarget(dest.m_renderer);
-            SDL_CHECK(SDL_SetRenderTarget(dest.m_renderer, dest.data()));
+            RenderTarget target(dest.m_renderer, dest.data());
 
             assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= source.width());
             assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= source.height());
@@ -57,8 +57,8 @@ public:
             auto sdlRectSrc = rectToSDLRect(srcRect);
             auto sdlRectDst = rectToSDLRect(dstRect);
 
-            auto rectSrc = (srcRect != Rect<R1>() ? &sdlRectSrc : nullptr);
-            auto rectDst = (dstRect != Rect<R2>() ? &sdlRectDst : nullptr);
+            auto rectSrc = srcRect != Rect<R1>() ? &sdlRectSrc : nullptr;
+            auto rectDst = dstRect != Rect<R2>() ? &sdlRectDst : nullptr;
 
             if (colourMod)
             {
@@ -69,8 +69,6 @@ public:
             }
 
             SDL_CHECK(SDL_RenderCopy(dest.m_renderer, source.data(), rectSrc, rectDst));
-
-            SDL_CHECK(SDL_SetRenderTarget(dest.m_renderer, currentRenderingTarget));
         }
     }
 
@@ -80,9 +78,8 @@ public:
     {
         if (m_renderer)
         {
-            const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
+            RenderTarget target(m_renderer, m_sprite);
 
-            SDL_CHECK(SDL_SetRenderTarget(m_renderer, m_sprite));
             SDL_CHECK(
                 SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), opacity));
 
@@ -93,8 +90,6 @@ public:
             auto rectSrc = srcRect != Rect<R>() ? &sdlRectSrc : nullptr;
 
             SDL_CHECK(SDL_RenderFillRect(m_renderer, rectSrc));
-
-            SDL_CHECK(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
         }
     }
 

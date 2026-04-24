@@ -58,6 +58,7 @@ add_library(GAME_CORE STATIC
         core/Sprite.cpp
         core/Toggle.cpp
         core/Window.cpp
+        core/SDL_RenderTarget.cpp
         #
         zelda_core/Dialogue.cpp
         zelda_core/Inventory.cpp
