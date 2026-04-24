@@ -23,7 +23,7 @@ void DataManager::loadData() const
 
 void DataManager::loadSprites()
 {
-    constexpr Colour TRANSPARENCY_COLOUR = makeRGB(255, 0, 128);
+    constexpr Colour::colour TRANSPARENCY_COLOUR = Colour::makeRGB(255, 0, 128);
     ResourceManager::instance().loadSprite(SpriteResource::TAIL_CAVE,
                                               RESOURCE_DUNGEONS_PATH / "dungeon_tail_cave.png",
                                               TRANSPARENCY_COLOUR);

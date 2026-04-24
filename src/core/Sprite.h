@@ -44,7 +44,7 @@ public:
     // The dstRect co-ordinates are relative to the srcRect.
     template <typename R1, typename R2>
     static void copy(const Sprite& source, const Sprite& dest, const Rect<R1>& srcRect, const Rect<R2>& dstRect,
-                     const Colour colourMod = 0)
+                     const Colour::colour colourMod = 0)
     {
         assert(dest.m_renderer == source.m_renderer);
         if (dest.m_renderer)
@@ -63,9 +63,9 @@ public:
             if (colourMod)
             {
                 SDL_CHECK(SDL_SetTextureColorMod(source.data(),
-                                                 makeRed(colourMod),
-                                                 makeGreen(colourMod),
-                                                 makeBlue(colourMod)));
+                                                 Colour::makeRed(colourMod),
+                                                 Colour::makeGreen(colourMod),
+                                                 Colour::makeBlue(colourMod)));
             }
 
             SDL_CHECK(SDL_RenderCopy(dest.m_renderer, source.data(), rectSrc, rectDst));
@@ -74,14 +74,17 @@ public:
 
     // Colours a part of a sprite (or whole use nullptr) with a given colour
     template <typename R>
-    void colour(const Rect<R>& srcRect, Colour colour, const int opacity = 255)
+    void colour(const Rect<R>& srcRect, Colour::colour colour, const int opacity = 255)
     {
         if (m_renderer)
         {
             RenderTarget target(m_renderer, m_sprite);
 
-            SDL_CHECK(
-                SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), opacity));
+            SDL_CHECK(SDL_SetRenderDrawColor(m_renderer,
+                                             Colour::makeRed(colour),
+                                             Colour::makeGreen(colour),
+                                             Colour::makeBlue(colour),
+                                             opacity));
 
             assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
             assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= m_height);

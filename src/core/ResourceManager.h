@@ -60,7 +60,7 @@ class ResourceManager : public Singleton<ResourceManager>
 public:
     ResourceManager() = default;
 
-    void loadSprite(SpriteResource resource, const std::string& path, const Colour transparencyColour);
+    void loadSprite(SpriteResource resource, const std::string& path, Colour::colour transparencyColour);
     std::shared_ptr<Sprite> operator[](SpriteResource resource);
 
 private:
