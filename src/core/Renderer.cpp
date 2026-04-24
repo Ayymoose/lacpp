@@ -79,11 +79,4 @@ void Renderer::removeRenderable(IRenderable* renderable)
     }
 }
 
-void Renderer::popRenderingTarget(SDL_Texture* srcTexture) const
-{
-    assert(m_renderer);
-    SDL_CHECK(SDL_SetRenderTarget(m_renderer, srcTexture));
-}
-
-
 } // namespace zelda::engine

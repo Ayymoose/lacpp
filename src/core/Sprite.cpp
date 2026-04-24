@@ -40,10 +40,10 @@ Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
     SDL_ASSERT(m_sprite);
 
     // Copy texture created from surface to one we can draw on
-    const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-    SDL_CHECK(SDL_SetRenderTarget(m_renderer, m_sprite));
-    SDL_CHECK(SDL_RenderCopy(m_renderer, textureCreatedFromSurface, nullptr, nullptr));
-    SDL_CHECK(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
+    {
+        RenderTarget target(m_renderer, m_sprite);
+        SDL_CHECK(SDL_RenderCopy(m_renderer, textureCreatedFromSurface, nullptr, nullptr));
+    }
 
     SDL_CHECK(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 
@@ -61,10 +61,10 @@ Sprite::Sprite(const Sprite& sprite)
     SDL_ASSERT(m_sprite);
 
     // Paste sprite texture onto here
-    const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-    SDL_CHECK(SDL_SetRenderTarget(m_renderer, m_sprite));
-    SDL_CHECK(SDL_RenderCopy(m_renderer, sprite.m_sprite, nullptr, nullptr));
-    SDL_CHECK(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
+    {
+        RenderTarget target(m_renderer, m_sprite);
+        SDL_CHECK(SDL_RenderCopy(m_renderer, sprite.m_sprite, nullptr, nullptr));
+    }
 
     SDL_CHECK(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 }

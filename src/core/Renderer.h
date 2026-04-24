@@ -44,17 +44,6 @@ public:
 
     auto getRenderSet() const { return m_renderables; }
 
-    auto pushRenderingTarget(const Sprite& dstTexture) const
-    {
-        assert(m_renderer);
-        assert(dstTexture.data());
-        auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-        SDL_CHECK(SDL_SetRenderTarget(m_renderer, dstTexture.data()));
-        return currentRenderingTarget;
-    }
-
-    void popRenderingTarget(SDL_Texture* srcTexture) const;
-
 private:
     // Global renderer
     SDL_Renderer* m_renderer;
