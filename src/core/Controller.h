@@ -2,7 +2,7 @@
 
 #include "Singleton.h"
 #include "Controllable.h"
-#include "Debug.h"
+#include "Logger.h"
 #include <stack>
 
 namespace zelda::engine
@@ -14,18 +14,18 @@ public:
     Controller()
         : m_controller(nullptr)
     {
-        DEBUG_MACRO(INFO, "Controller is no-one");
+        Logger::instance().log<Logger::Mask::INFO>("Controller is no-one");
     }
     void setController(Controllable* controller)
     {
         m_controller = controller;
         if (controller)
         {
-            DEBUG_MACRO(INFO, "Controller is now " + m_controller->name());
+            Logger::instance().log<Logger::Mask::INFO>("Controller is now " + m_controller->name());
         }
         else
         {
-            DEBUG_MACRO(INFO, "No one has control");
+            Logger::instance().log<Logger::Mask::INFO>("No one has control");
         }
 
         // Clear stack
@@ -38,7 +38,7 @@ public:
         // TODO: There must be an existing controller in place
         // assert(m_controller && "No existing controller in place");
         assert(controller);
-        DEBUG_MACRO(INFO, "Controller is now " + controller->name());
+        Logger::instance().log<Logger::Mask::INFO>("Controller is now " + controller->name());
         m_stack.push(controller);
     }
 
@@ -48,11 +48,11 @@ public:
         m_stack.pop();
         if (!m_stack.empty())
         {
-            DEBUG_MACRO(INFO, "Controller is now " + m_stack.top()->name());
+            Logger::instance().log<Logger::Mask::INFO>("Controller is now " + m_stack.top()->name());
         }
         else
         {
-            DEBUG_MACRO(INFO, "No one has control");
+            Logger::instance().log<Logger::Mask::INFO>("No one has control");
         }
     }
 

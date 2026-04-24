@@ -3,7 +3,7 @@
 #include "Singleton.h"
 #include "IRenderable.h"
 #include "Sprite.h"
-#include "Debug.h"
+#include "Logger.h"
 #include "Window.h"
 
 #include <set>

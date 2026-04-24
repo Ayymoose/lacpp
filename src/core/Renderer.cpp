@@ -12,7 +12,7 @@ void Renderer::createRenderer(const Window& window)
     auto const flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE;
     m_renderer = SDL_CreateRenderer(window.getWindowHandle(), -1, flags);
     assert(m_renderer);
-    DEBUG_MACRO(INFO, "Renderer created");
+    Logger::instance().log<Logger::Mask::INFO>("Renderer created");
 }
 
 // TODO: Const all these parameters
@@ -39,7 +39,7 @@ void Renderer::setRendererScale(const float scaleX, const float scaleY) const
 Renderer::~Renderer()
 {
     SDL_DestroyRenderer(m_renderer);
-    DEBUG_MACRO(INFO, "Renderer destroyed");
+    Logger::instance().log<Logger::Mask::INFO>("Renderer destroyed");
 }
 
 bool Renderer::inRenderSet(IRenderable* renderable) const

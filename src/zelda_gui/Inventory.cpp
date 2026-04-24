@@ -68,7 +68,7 @@ void Inventory::control()
         engine::Controller::instance().popController();
         core::Link::instance().updateState();
         engine::Engine::instance().pause(false);
-        DEBUG_MACRO(engine::INFO, "Inventory closed!");
+        Logger::instance().log<Logger::Mask::INFO>("Inventory closed!");
     }
 
     // How we index the inventory
