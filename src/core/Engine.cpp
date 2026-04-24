@@ -23,7 +23,7 @@ void Engine::init()
 
     // m_initialised = true;
 
-    DEBUG_MACRO(INFO, "Engine initialised");
+    Logger::instance().log<Logger::Mask::INFO>("Engine initialised");
 }
 
 void Engine::run()
@@ -47,7 +47,7 @@ void Engine::stop()
 {
     // Cleanup
     assert(m_engineRunning && "Engine is not running");
-    DEBUG_MACRO(INFO, "Engine has stopped running");
+    Logger::instance().log<Logger::Mask::INFO>("Engine has stopped running");
     m_engineRunning = false;
     m_preRenderTestFunction = nullptr;
     m_renderTestFunction = nullptr;
@@ -93,7 +93,7 @@ void Engine::initData() const
 
 void Engine::initSingleton() const
 {
-    Debug::instance();
+    Logger::instance();
     Renderer::instance();
     ResourceManager::instance();
     Controller::instance();

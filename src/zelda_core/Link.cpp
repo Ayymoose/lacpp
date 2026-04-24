@@ -4,6 +4,8 @@
 #include "core/InputControl.h"
 #include "core/Controller.h"
 #include "core/Renderer.h"
+#include "core/Logger.h"
+
 #include <set>
 #include <chrono>
 
@@ -170,7 +172,7 @@ void Link::attack()
 
 void Link::die()
 {
-    DEBUG_MACRO(engine::INFO, "Link died");
+    Logger::instance().log<Logger::Mask::INFO>("Link died");
 }
 
 void Link::resetAnimation()

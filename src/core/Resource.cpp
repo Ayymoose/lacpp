@@ -1,5 +1,5 @@
 #include "Resource.h"
-#include "Debug.h"
+#include "Logger.h"
 #include "Sprite.h"
 #include "SDL_Assert.h"
 
@@ -26,7 +26,7 @@ SDL_Surface* Resource::loadSprite(const std::string& path, const Colour transpar
     auto const loadedSurface = IMG_Load(path.c_str());
     if (!loadedSurface)
     {
-        DEBUG_MACRO(ERROR, IMG_GetError());
+        Logger::instance().log<Logger::Mask::ERROR>(IMG_GetError());
         return nullptr;
     }
     else

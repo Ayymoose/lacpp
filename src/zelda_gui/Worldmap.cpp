@@ -2,6 +2,7 @@
 #include "Dialogue.h"
 #include "core/ResourceManager.h"
 #include "Depth.h"
+#include "core/Logger.h"
 #include "core/Renderer.h"
 #include "core/InputControl.h"
 #include "core/Keyboard.h"
@@ -30,7 +31,7 @@ void Worldmap::control()
         close();
         engine::Controller::instance().popController();
         engine::Engine::instance().pause(false);
-        DEBUG_MACRO(engine::INFO, "Worldmap closed!");
+        Logger::instance().log<Logger::Mask::INFO>("Worldmap closed!");
     }
 
     // Move scope around map if the area is visited
