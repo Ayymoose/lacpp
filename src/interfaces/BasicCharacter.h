@@ -2,7 +2,7 @@
 
 #include "core/Vector.h"
 #include "Depth.h"
-#include "Enum.h"
+#include "../core/Direction.h"
 
 namespace zelda
 {
@@ -16,13 +16,13 @@ public:
 
 protected:
     BasicCharacter()
-        : m_dir(core::Direction::NONE)
+        : m_dir(engine::Direction::NONE)
         , m_health(0)
         , m_speed(0)
     {}
 
     // Character direction
-    core::Direction m_dir;
+    engine::Direction m_dir;
 
     // Character health
     float m_health;

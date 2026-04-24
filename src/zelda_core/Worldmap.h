@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Enum.h"
+#include "../core/Direction.h"
 
 #include <utility>
 #include <string>
@@ -90,7 +90,7 @@ public:
 
     void setLocation(const int x, const int y);
 
-    void moveMarker(Direction direction);
+    void moveMarker(engine::Direction direction);
 
     bool locationVisited(const int x, const int y) const;
 

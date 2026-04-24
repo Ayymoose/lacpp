@@ -36,22 +36,22 @@ void Worldmap::control()
     // Move scope around map if the area is visited
     if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
     {
-        m_worldMapImpl.moveMarker(core::Direction::RIGHT);
+        m_worldMapImpl.moveMarker(engine::Direction::RIGHT);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
     {
-        m_worldMapImpl.moveMarker(core::Direction::LEFT);
+        m_worldMapImpl.moveMarker(engine::Direction::LEFT);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
     {
-        m_worldMapImpl.moveMarker(core::Direction::UP);
+        m_worldMapImpl.moveMarker(engine::Direction::UP);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
     {
-        m_worldMapImpl.moveMarker(core::Direction::DOWN);
+        m_worldMapImpl.moveMarker(engine::Direction::DOWN);
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
 
@@ -63,7 +63,7 @@ void Worldmap::control()
     }
 }
 
-void Worldmap::moveMarker(core::Direction direction)
+void Worldmap::moveMarker(engine::Direction direction)
 {
     m_worldMapImpl.moveMarker(direction);
     std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();

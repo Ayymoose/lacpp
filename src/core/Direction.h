@@ -1,8 +1,6 @@
 #pragma once
 
-// Shared enums
-
-namespace zelda::core
+namespace zelda::engine
 {
 enum class Direction
 {
@@ -12,4 +10,4 @@ enum class Direction
     DOWN,
     UP
 };
-} // namespace zelda::core
+} // namespace zelda::engine

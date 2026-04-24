@@ -41,7 +41,7 @@ public:
     void open();
     void close();
 
-    void moveMarker(core::Direction direction);
+    void moveMarker(engine::Direction direction);
 
     void setLocation(const int x, const int y);
 
