@@ -5,7 +5,7 @@
 #include <concepts>
 #include <cassert>
 
-#include "SDL_Assert.h"
+#include "SDL_Check.h"
 #include "Rect.h"
 #include "Colour.h"
 
@@ -49,7 +49,7 @@ public:
         if (dest.m_renderer)
         {
             const auto currentRenderingTarget = SDL_GetRenderTarget(dest.m_renderer);
-            SDL_ASSERT(SDL_SetRenderTarget(dest.m_renderer, dest.data()));
+            SDL_CHECK(SDL_SetRenderTarget(dest.m_renderer, dest.data()));
 
             assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= source.width());
             assert(srcRect.y >= 0 && srcRect.y + srcRect.h <= source.height());
@@ -62,15 +62,15 @@ public:
 
             if (colourMod)
             {
-                SDL_ASSERT(SDL_SetTextureColorMod(source.data(),
+                SDL_CHECK(SDL_SetTextureColorMod(source.data(),
                                                   makeRed(colourMod),
                                                   makeGreen(colourMod),
                                                   makeBlue(colourMod)));
             }
 
-            SDL_ASSERT(SDL_RenderCopy(dest.m_renderer, source.data(), rectSrc, rectDst));
+            SDL_CHECK(SDL_RenderCopy(dest.m_renderer, source.data(), rectSrc, rectDst));
 
-            SDL_ASSERT(SDL_SetRenderTarget(dest.m_renderer, currentRenderingTarget));
+            SDL_CHECK(SDL_SetRenderTarget(dest.m_renderer, currentRenderingTarget));
         }
     }
 
@@ -82,8 +82,8 @@ public:
         {
             const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
 
-            SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
-            SDL_ASSERT(
+            SDL_CHECK(SDL_SetRenderTarget(m_renderer, m_sprite));
+            SDL_CHECK(
                 SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), opacity));
 
             assert(srcRect.x >= 0 && srcRect.x + srcRect.w <= m_width);
@@ -92,9 +92,9 @@ public:
             auto sdlRectSrc = rectToSDLRect(srcRect);
             auto rectSrc = (srcRect != Rect<R>() ? &sdlRectSrc : nullptr);
 
-            SDL_ASSERT(SDL_RenderFillRect(m_renderer, rectSrc));
+            SDL_CHECK(SDL_RenderFillRect(m_renderer, rectSrc));
 
-            SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
+            SDL_CHECK(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
         }
     }
 
@@ -117,7 +117,7 @@ public:
 
             if constexpr (std::integral<R2>)
             {
-                SDL_ASSERT(SDL_RenderCopyEx(m_renderer,
+                SDL_CHECK(SDL_RenderCopyEx(m_renderer,
                                             m_sprite,
                                             rectSrc,
                                             rectDst,
@@ -127,7 +127,7 @@ public:
             }
             else
             {
-                SDL_ASSERT(SDL_RenderCopyExF(m_renderer,
+                SDL_CHECK(SDL_RenderCopyExF(m_renderer,
                                              m_sprite,
                                              rectSrc,
                                              rectDst,

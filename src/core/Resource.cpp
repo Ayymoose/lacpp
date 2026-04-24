@@ -1,7 +1,7 @@
 #include "Resource.h"
 #include "Logger.h"
 #include "Sprite.h"
-#include "SDL_Assert.h"
+#include "SDL_Check.h"
 
 #include <cassert>
 #include <SDL_image.h>
@@ -32,7 +32,7 @@ SDL_Surface* Resource::loadSprite(const std::string& path, const Colour transpar
     else
     {
         // Set transparency
-        SDL_ASSERT(SDL_SetColorKey(loadedSurface,
+        SDL_CHECK(SDL_SetColorKey(loadedSurface,
                                    SDL_TRUE,
                                    SDL_MapRGB(loadedSurface->format,
                                               makeRed(transparency),
