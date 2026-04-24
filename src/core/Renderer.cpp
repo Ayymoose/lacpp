@@ -19,8 +19,8 @@ void Renderer::createRenderer(const Window& window)
 void Renderer::clearScreen(const Colour colour) const
 {
     assert(m_renderer);
-    SDL_ASSERT(SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), 0));
-    SDL_ASSERT(SDL_RenderClear(m_renderer));
+    SDL_CHECK(SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), 0));
+    SDL_CHECK(SDL_RenderClear(m_renderer));
 }
 
 void Renderer::renderScreen() const
@@ -33,7 +33,7 @@ void Renderer::setRendererScale(const float scaleX, const float scaleY) const
 {
     assert(m_renderer);
     assert(scaleX > 0 && scaleY > 0);
-    SDL_ASSERT(SDL_RenderSetScale(m_renderer, scaleX, scaleY));
+    SDL_CHECK(SDL_RenderSetScale(m_renderer, scaleX, scaleY));
 }
 
 Renderer::~Renderer()
@@ -82,7 +82,7 @@ void Renderer::removeRenderable(IRenderable* renderable)
 void Renderer::popRenderingTarget(SDL_Texture* srcTexture) const
 {
     assert(m_renderer);
-    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, srcTexture));
+    SDL_CHECK(SDL_SetRenderTarget(m_renderer, srcTexture));
 }
 
 

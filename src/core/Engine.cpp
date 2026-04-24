@@ -1,7 +1,7 @@
 #include "Engine.h"
 #include "Keyboard.h"
 #include "zelda_core/Link.h"
-#include "SDL_Assert.h"
+#include "SDL_Check.h"
 #include "zelda_gui/Dialogue.h"
 #include "Controllable.h"
 #include "zelda_core/RoomManager.h"
@@ -73,17 +73,17 @@ Engine::~Engine()
 
 void Engine::initVideo() const
 {
-    SDL_ASSERT(SDL_Init(SDL_INIT_VIDEO));
+    SDL_CHECK(SDL_Init(SDL_INIT_VIDEO));
 }
 
 void Engine::initAudio() const
 {
-    SDL_ASSERT(SDL_Init(SDL_INIT_AUDIO));
+    SDL_CHECK(SDL_Init(SDL_INIT_AUDIO));
 }
 
 void Engine::initControl() const
 {
-    SDL_ASSERT(SDL_Init(SDL_INIT_GAMECONTROLLER));
+    SDL_CHECK(SDL_Init(SDL_INIT_GAMECONTROLLER));
 }
 
 void Engine::initData() const

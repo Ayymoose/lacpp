@@ -17,7 +17,7 @@ Sprite::Sprite(SDL_Renderer* renderer, int width, int height)
         assert(m_height);
         m_sprite = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_TARGET, m_width, m_height);
         assert(m_sprite);
-        SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
+        SDL_CHECK(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
     }
 }
 
@@ -36,7 +36,7 @@ Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
     SDL_FreeSurface(surface);
 
     // Query dimensions
-    SDL_ASSERT(SDL_QueryTexture(textureCreatedFromSurface, nullptr, nullptr, &m_width, &m_height));
+    SDL_CHECK(SDL_QueryTexture(textureCreatedFromSurface, nullptr, nullptr, &m_width, &m_height));
     assert(m_width);
     assert(m_height);
 
@@ -46,11 +46,11 @@ Sprite::Sprite(SDL_Renderer* renderer, SDL_Surface* surface)
 
     // Copy texture created from surface to one we can draw on
     const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
-    SDL_ASSERT(SDL_RenderCopy(m_renderer, textureCreatedFromSurface, nullptr, nullptr));
-    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
+    SDL_CHECK(SDL_SetRenderTarget(m_renderer, m_sprite));
+    SDL_CHECK(SDL_RenderCopy(m_renderer, textureCreatedFromSurface, nullptr, nullptr));
+    SDL_CHECK(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
 
-    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
+    SDL_CHECK(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 
     SDL_DestroyTexture(textureCreatedFromSurface);
 }
@@ -68,11 +68,11 @@ Sprite::Sprite(const Sprite& sprite)
 
     // Paste sprite texture onto here
     const auto currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, m_sprite));
-    SDL_ASSERT(SDL_RenderCopy(m_renderer, sprite.m_sprite, nullptr, nullptr));
-    SDL_ASSERT(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
+    SDL_CHECK(SDL_SetRenderTarget(m_renderer, m_sprite));
+    SDL_CHECK(SDL_RenderCopy(m_renderer, sprite.m_sprite, nullptr, nullptr));
+    SDL_CHECK(SDL_SetRenderTarget(m_renderer, currentRenderingTarget));
 
-    SDL_ASSERT(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
+    SDL_CHECK(SDL_SetTextureBlendMode(m_sprite, m_blendMode));
 }
 
 Sprite& Sprite::operator=(const Sprite& sprite)

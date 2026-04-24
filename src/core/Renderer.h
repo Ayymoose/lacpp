@@ -49,7 +49,7 @@ public:
         assert(m_renderer);
         assert(dstTexture.data());
         auto const currentRenderingTarget = SDL_GetRenderTarget(m_renderer);
-        SDL_ASSERT(SDL_SetRenderTarget(m_renderer, dstTexture.data()));
+        SDL_CHECK(SDL_SetRenderTarget(m_renderer, dstTexture.data()));
         return currentRenderingTarget;
     }
 
