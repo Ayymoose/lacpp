@@ -2,7 +2,7 @@
 
 #include "core/Renderable.h"
 #include "core/Sprite.h"
-#include "Tilemap.h"
+#include "core/Tilemap.h"
 #include "zelda_core/RoomName.h"
 
 #include <unordered_map>
@@ -19,7 +19,7 @@ class TilemapManager : engine::Renderable
 public:
     // Associates the tilemap data provided with mapName
     void createTilemap(RoomName mapName, const engine::Sprite& tilemap, const TileIndexArrays& mapEntry,
-                       const Tilemap::TilemapConfig& config);
+                       const engine::Tilemap::TilemapConfig& config);
 
     // Sets the current map to be mapName
     void setCurrentTilemap(RoomName mapName);
@@ -51,7 +51,7 @@ private:
 
     RoomName m_currentTilemapname;
     engine::Sprite m_swapCanvas;
-    std::unordered_map<RoomName, Tilemap> m_tilemaps;
+    std::unordered_map<RoomName, engine::Tilemap> m_tilemaps;
 };
 
 } // namespace zelda::core

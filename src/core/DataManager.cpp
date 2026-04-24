@@ -50,7 +50,7 @@ void DataManager::loadSprites()
 void DataManager::loadTailCave()
 {
     // TODO: const this (constexpr?)
-    core::Tilemap::TilemapConfig tilemapConfig;
+    Tilemap::TilemapConfig tilemapConfig;
     tilemapConfig.tileHeight = 16;
     tilemapConfig.tileWidth = 16;
     tilemapConfig.tilesAcross = 10;

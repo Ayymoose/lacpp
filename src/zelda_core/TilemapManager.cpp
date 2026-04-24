@@ -9,10 +9,10 @@ namespace zelda::core
 {
 
 void TilemapManager::createTilemap(RoomName mapName, const engine::Sprite& tilemap, const TileIndexArrays& mapEntries,
-                                   const Tilemap::TilemapConfig& config)
+                                   const engine::Tilemap::TilemapConfig& config)
 {
     assert(m_tilemaps.count(mapName) == 0 && "Given mapName already exists");
-    m_tilemaps[mapName] = Tilemap(tilemap, mapEntries, config);
+    m_tilemaps[mapName] = engine::Tilemap(tilemap, mapEntries, config);
 }
 
 void TilemapManager::setCurrentTilemap(RoomName mapName)
