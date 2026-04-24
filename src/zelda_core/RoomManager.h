@@ -34,7 +34,7 @@ public:
     void setRoomLocation(const int roomLocation);
 
     void createRoom(RoomName roomName, const engine::Sprite& tilemap, const TileIndexArrays& tileIndexArrays,
-                    const Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap);
+                    const engine::Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap);
 
     // Load or clear room objects from the current room
     void roomDo(RoomAction action, const size_t roomIndex);
