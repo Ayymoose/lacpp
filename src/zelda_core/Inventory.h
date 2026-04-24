@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Vector.h"
-#include "Enum.h"
+#include "../core/Direction.h"
 
 #include <utility>
 #include <array>
@@ -383,7 +383,7 @@ public:
     void setItemA(const InventoryItem& itemA);
     void setItemB(const InventoryItem& itemB);
 
-    void moveInventorySelector(Direction direction);
+    void moveInventorySelector(engine::Direction direction);
 
 
     Dungeon dungeon() const;
@@ -396,7 +396,7 @@ public:
 
     void setPositionInDungeonMap(const engine::Vector<int>& location);
     engine::Vector<int> dungeonMapPositionLocation() const;
-    void movePositionInDungeonMap(Direction direction);
+    void movePositionInDungeonMap(engine::Direction direction);
 
 
 private:

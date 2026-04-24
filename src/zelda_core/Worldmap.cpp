@@ -17,32 +17,32 @@ void Worldmap::setLocation(const int x, const int y)
     m_worldmapLocation[m_worldX][m_worldY].visited = true;
 }
 
-void Worldmap::moveMarker(Direction direction)
+void Worldmap::moveMarker(engine::Direction direction)
 {
     switch (direction)
     {
-    case Direction::RIGHT:
+    case engine::Direction::RIGHT:
         if (m_worldmapLocation[(m_worldX + 1) % WORLDMAP_MAX_X][m_worldY].visited)
         {
             m_worldX = (m_worldX + 1) % WORLDMAP_MAX_X;
             assert(m_worldX >= 0 && m_worldX < WORLDMAP_MAX_X);
         }
         break;
-    case Direction::LEFT:
+    case engine::Direction::LEFT:
         if (m_worldmapLocation[(m_worldX - 1) % WORLDMAP_MAX_X][m_worldY].visited)
         {
             m_worldX = (m_worldX - 1) % WORLDMAP_MAX_X;
             assert(m_worldX >= 0 && m_worldX < WORLDMAP_MAX_X);
         }
         break;
-    case Direction::UP:
+    case engine::Direction::UP:
         if (m_worldmapLocation[m_worldX][(m_worldY - 1) % WORLDMAP_MAX_Y].visited)
         {
             m_worldY = (m_worldY - 1) % WORLDMAP_MAX_Y;
             assert(m_worldY >= 0 && m_worldY < WORLDMAP_MAX_Y);
         }
         break;
-    case Direction::DOWN:
+    case engine::Direction::DOWN:
         if (m_worldmapLocation[m_worldX][(m_worldY + 1) % WORLDMAP_MAX_Y].visited)
         {
             m_worldY = (m_worldY + 1) % WORLDMAP_MAX_Y;

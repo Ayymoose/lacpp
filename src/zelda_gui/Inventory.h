@@ -86,7 +86,7 @@ public:
     void close();
 
 
-    void moveSelector(core::Direction direction);
+    void moveSelector(engine::Direction direction);
 
 private:
     core::Inventory m_inventoryImpl;

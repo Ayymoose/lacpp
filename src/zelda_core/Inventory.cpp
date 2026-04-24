@@ -71,20 +71,16 @@ bool Inventory::inventoryItemExists(const InventoryItem& inventoryItem) const
 
 void Inventory::addDungeonEntranceKey(DungeonEntranceKey dungeonKey)
 {
-    assert(!(checkItemExists<DungeonEntranceKey,
-                             std::to_underlying(DungeonEntranceKey::COUNT)>(m_dungeonEntraceKeys,
+    assert(!(checkItemExists<DungeonEntranceKey, std::to_underlying(DungeonEntranceKey::COUNT)>(m_dungeonEntraceKeys,
                                                                                                 dungeonKey))
            && "Trying to add dungeon entrance key that already exists");
-    auto nextFreeSpace = std::find(m_dungeonEntraceKeys.begin(),
-                                   m_dungeonEntraceKeys.end(),
-                                   DungeonEntranceKey::NONE);
+    auto nextFreeSpace = std::find(m_dungeonEntraceKeys.begin(), m_dungeonEntraceKeys.end(), DungeonEntranceKey::NONE);
     *nextFreeSpace = dungeonKey;
 }
 
 bool Inventory::dungeonEntranceKey(DungeonEntranceKey dungeonKey) const
 {
-    return checkItemExists<DungeonEntranceKey,
-                           std::to_underlying(DungeonEntranceKey::COUNT)>(m_dungeonEntraceKeys,
+    return checkItemExists<DungeonEntranceKey, std::to_underlying(DungeonEntranceKey::COUNT)>(m_dungeonEntraceKeys,
                                                                                               dungeonKey);
 }
 
@@ -185,13 +181,10 @@ TradeItem Inventory::tradedItem() const
 
 void Inventory::addInventoryMiscItem(InventoryMiscItem inventoryMiscItem)
 {
-    assert(!(checkItemExists<InventoryMiscItem,
-                             std::to_underlying(InventoryMiscItem::COUNT)>(m_inventoryMiscItems,
-                                                                                               inventoryMiscItem))
+    assert(!(checkItemExists<InventoryMiscItem, std::to_underlying(InventoryMiscItem::COUNT)>(m_inventoryMiscItems,
+                                                                                              inventoryMiscItem))
            && "Trying to add item that already exists");
-    auto nextFreeSpace = std::find(m_inventoryMiscItems.begin(),
-                                   m_inventoryMiscItems.end(),
-                                   InventoryMiscItem::NONE);
+    auto nextFreeSpace = std::find(m_inventoryMiscItems.begin(), m_inventoryMiscItems.end(), InventoryMiscItem::NONE);
     *nextFreeSpace = inventoryMiscItem;
 }
 
@@ -315,8 +308,7 @@ int Inventory::magicPowder() const
 
 void Inventory::addOcarinaSong(OcarinaSong ocarinaSong)
 {
-    assert(!(checkItemExists<OcarinaSong, std::to_underlying(OcarinaSong::COUNT)>(m_ocarinaSongs,
-                                                                                               ocarinaSong))
+    assert(!(checkItemExists<OcarinaSong, std::to_underlying(OcarinaSong::COUNT)>(m_ocarinaSongs, ocarinaSong))
            && "Trying to add item that already exists");
     auto nextFreeSpace = std::find(m_ocarinaSongs.begin(), m_ocarinaSongs.end(), OcarinaSong::NONE);
     *nextFreeSpace = ocarinaSong;
@@ -535,20 +527,20 @@ void Inventory::setDungeonMapLocationVisited(const engine::Vector<int>& location
     m_dungeonMaps[std::to_underlying(m_dungeon)][location.y][location.x].visited = true;
 }
 
-void Inventory::movePositionInDungeonMap(Direction direction)
+void Inventory::movePositionInDungeonMap(engine::Direction direction)
 {
     switch (direction)
     {
-    case Direction::DOWN:
+    case engine::Direction::DOWN:
         ++m_positionInDungeonMap.y;
         break;
-    case Direction::UP:
+    case engine::Direction::UP:
         --m_positionInDungeonMap.y;
         break;
-    case Direction::RIGHT:
+    case engine::Direction::RIGHT:
         ++m_positionInDungeonMap.x;
         break;
-    case Direction::LEFT:
+    case engine::Direction::LEFT:
         --m_positionInDungeonMap.x;
         break;
     default:
@@ -556,11 +548,11 @@ void Inventory::movePositionInDungeonMap(Direction direction)
     }
 }
 
-void Inventory::moveInventorySelector(Direction direction)
+void Inventory::moveInventorySelector(engine::Direction direction)
 {
     switch (direction)
     {
-    case Direction::DOWN:
+    case engine::Direction::DOWN:
         if (m_selectorIndex >= MAX_INVENTORY_ITEMS - INVENTORY_COLUMNS)
         {
             m_selectorIndex = 0;
@@ -570,7 +562,7 @@ void Inventory::moveInventorySelector(Direction direction)
             m_selectorIndex += INVENTORY_COLUMNS;
         }
         break;
-    case Direction::UP:
+    case engine::Direction::UP:
         if (m_selectorIndex < INVENTORY_COLUMNS)
         {
             m_selectorIndex = MAX_INVENTORY_ITEMS - 1;
@@ -580,10 +572,10 @@ void Inventory::moveInventorySelector(Direction direction)
             m_selectorIndex -= INVENTORY_COLUMNS;
         }
         break;
-    case Direction::RIGHT:
+    case engine::Direction::RIGHT:
         m_selectorIndex = (m_selectorIndex == MAX_INVENTORY_ITEMS - 1 ? 0 : m_selectorIndex + 1);
         break;
-    case Direction::LEFT:
+    case engine::Direction::LEFT:
         m_selectorIndex = (m_selectorIndex == 0 ? MAX_INVENTORY_ITEMS - 1 : m_selectorIndex - 1);
         break;
     default:

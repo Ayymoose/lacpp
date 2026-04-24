@@ -85,19 +85,19 @@ void Inventory::control()
     // This code controls the selector through arrow keys
     if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
     {
-        moveSelector(core::Direction::RIGHT);
+        moveSelector(engine::Direction::RIGHT);
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
     {
-        moveSelector(core::Direction::LEFT);
+        moveSelector(engine::Direction::LEFT);
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
     {
-        moveSelector(core::Direction::UP);
+        moveSelector(engine::Direction::UP);
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
     {
-        moveSelector(core::Direction::DOWN);
+        moveSelector(engine::Direction::DOWN);
     }
 
     // If any select keys pressed, reset the flashing animation
@@ -1081,13 +1081,13 @@ void Inventory::drawInventoryItemAttribute(const engine::Sprite& srcSprite, cons
     }
 }
 
-void Inventory::moveSelector(core::Direction direction)
+void Inventory::moveSelector(engine::Direction direction)
 {
     m_inventoryImpl.moveInventorySelector(direction);
 
     switch (direction)
     {
-    case core::Direction::DOWN:
+    case engine::Direction::DOWN:
         if (m_selectorY == SELECTOR_INITIAL_Y + (core::INVENTORY_ROWS - 1) * SELECTOR_INCREASE_Y)
         {
             if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
@@ -1102,7 +1102,7 @@ void Inventory::moveSelector(core::Direction direction)
             // Change by 2 because of the way we index the array (see above)
         }
         break;
-    case core::Direction::UP:
+    case engine::Direction::UP:
         if (m_selectorY == SELECTOR_INITIAL_Y)
         {
             if (m_selectorX == SELECTOR_INITIAL_X)
@@ -1116,7 +1116,7 @@ void Inventory::moveSelector(core::Direction direction)
             m_selectorY -= SELECTOR_INCREASE_Y;
         }
         break;
-    case core::Direction::RIGHT:
+    case engine::Direction::RIGHT:
         if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
         {
             m_selectorX = SELECTOR_INITIAL_X;
@@ -1135,7 +1135,7 @@ void Inventory::moveSelector(core::Direction direction)
             m_selectorX += SELECTOR_INCREASE_X;
         }
         break;
-    case core::Direction::LEFT:
+    case engine::Direction::LEFT:
         if (m_selectorX == SELECTOR_INITIAL_X)
         {
             m_selectorX = SELECTOR_INITIAL_X + SELECTOR_INCREASE_X;

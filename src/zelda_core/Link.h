@@ -163,7 +163,7 @@ public:
     void updateState();
 
     bool moving() const;
-    Direction direction() const;
+    engine::Direction direction() const;
 
 private:
     float m_healthMax;

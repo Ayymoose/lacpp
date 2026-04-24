@@ -39,7 +39,7 @@ Link::Link()
 
     m_health = 3;
     m_speed = 1;
-    m_dir = Direction::DOWN;
+    m_dir = engine::Direction::DOWN;
 
     // TODO: Superfluous header includes
 
@@ -244,7 +244,7 @@ void Link::move()
             {
                 m_state = WALK_RIGHT;
             }*/
-            m_dir = Direction::RIGHT;
+            m_dir = engine::Direction::RIGHT;
         }
     }
     else
@@ -268,7 +268,7 @@ void Link::move()
             {
                 m_state = WALK_RIGHT;
             }*/
-            m_dir = Direction::RIGHT;
+            m_dir = engine::Direction::RIGHT;
         }
     }
 
@@ -310,7 +310,7 @@ void Link::move()
             {
                 m_state = WALK_LEFT;
             }*/
-            m_dir = Direction::LEFT;
+            m_dir = engine::Direction::LEFT;
         }
     }
     else
@@ -334,7 +334,7 @@ void Link::move()
             {
                 m_state = WALK_LEFT;
             }*/
-            m_dir = Direction::LEFT;
+            m_dir = engine::Direction::LEFT;
         }
     }
     if (engine::Keyboard::instance().keyPushed(BUTTON_UP))
@@ -375,7 +375,7 @@ void Link::move()
             {
                 m_state = WALK_UP;
             }*/
-            m_dir = Direction::UP;
+            m_dir = engine::Direction::UP;
         }
     }
     else
@@ -399,7 +399,7 @@ void Link::move()
             {
                 m_state = WALK_UP;
             }*/
-            m_dir = Direction::UP;
+            m_dir = engine::Direction::UP;
         }
     }
     if (engine::Keyboard::instance().keyPushed(BUTTON_DOWN))
@@ -440,7 +440,7 @@ void Link::move()
             {
                 m_state = WALK_DOWN;
             }*/
-            m_dir = Direction::DOWN;
+            m_dir = engine::Direction::DOWN;
         }
     }
     else
@@ -463,7 +463,7 @@ void Link::move()
             {
                 m_state = WALK_DOWN;
             }*/
-            m_dir = Direction::DOWN;
+            m_dir = engine::Direction::DOWN;
         }
     }
 }
@@ -665,7 +665,7 @@ bool Link::moving() const
     return m_moving;
 }
 
-Direction Link::direction() const
+engine::Direction Link::direction() const
 {
     return m_dir;
 }
