@@ -1,9 +1,9 @@
 #pragma once
 
 #include "core/Singleton.h"
-#include "IRenderable.h"
-#include "Controllable.h"
-#include "IUpdateable.h"
+#include "core/Renderable.h"
+#include "core/Controllable.h"
+#include "core/Updateable.h"
 #include "core/Toggle.h"
 #include "core/Sprite.h"
 #include "zelda_core/Dialogue.h"
@@ -30,7 +30,11 @@ constexpr int ARROW_POS_Y = 32;
 
 constexpr int SCROLL_SPEED = 4;
 
-class Dialogue : public IRenderable, public Controllable, public engine::Singleton<Dialogue>, public IUpdateable
+class Dialogue :
+    public engine::Renderable,
+    public engine::Controllable,
+    public engine::Singleton<Dialogue>,
+    public engine::Updateable
 {
 public:
     Dialogue();
@@ -42,7 +46,6 @@ public:
     void control() override;
 
 private:
-
     core::Dialogue m_dialogueImpl;
 
     int m_dialoguePosX;

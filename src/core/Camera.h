@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IUpdateable.h"
-#include "IRenderable.h"
+#include "Updateable.h"
+#include "Renderable.h"
 #include "Singleton.h"
 #include "core/Vector.h"
 
@@ -25,7 +25,7 @@ constexpr int SCROLL_DOWN_EDGE = HUD_HEIGHT - 4;
 constexpr int CAMERA_SCROLL_SPEED = 4;
 
 
-class Camera : public IRenderable, public Singleton<Camera>, public IUpdateable
+class Camera : public Renderable, public Singleton<Camera>, public Updateable
 {
 public:
     Camera();

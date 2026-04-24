@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IUpdateable.h"
-#include "Controllable.h"
-#include "IRenderable.h"
+#include "core/Updateable.h"
+#include "core/Controllable.h"
+#include "core/Renderable.h"
 #include "core/Vector.h"
 #include "core/Rect.h"
 #include "core/Camera.h"
@@ -75,7 +75,7 @@ constexpr float INSTRUMENT_FPS = (1.0f / 6.0f);
 constexpr float PUSH_SELECTOR_FPS = (1.0f / 2.0f);
 
 
-class Inventory : public IRenderable, public Controllable, public IUpdateable
+class Inventory : public engine::Renderable, public engine::Controllable, public engine::Updateable
 {
 public:
     Inventory();

@@ -341,10 +341,10 @@ void Dialogue::control()
 }
 
 Dialogue::Dialogue()
-    : IRenderable("Dialogue",
-                  engine::Sprite(engine::Renderer::instance().getRenderer(), core::Dialogue::dialogueWidth(),
-                                 core::Dialogue::dialogueHeight()),
-                  core::DIALOGUE)
+    : Renderable("Dialogue",
+                 engine::Sprite(engine::Renderer::instance().getRenderer(), core::Dialogue::dialogueWidth(),
+                                core::Dialogue::dialogueHeight()),
+                 std::to_underlying(core::ZOrdering::DIALOGUE))
     , Controllable(m_name)
     , m_dialoguePosX(m_dialogueImpl.dialoguePosX())
     , m_dialoguePosY(m_dialogueImpl.dialoguePosYLow())

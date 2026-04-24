@@ -76,7 +76,6 @@ add_library(GAME_CORE STATIC
 
 target_include_directories(GAME_CORE PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/src/interfaces
         ${CMAKE_SOURCE_DIR}/src/zelda_core
         ${CMAKE_SOURCE_DIR}/src/zelda_gui
 )

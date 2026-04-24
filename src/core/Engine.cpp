@@ -9,6 +9,8 @@
 #include "ResourceManager.h"
 #include "Controller.h"
 
+#include <SDL.h>
+
 namespace zelda::engine
 {
 void Engine::init()
@@ -144,7 +146,7 @@ void Engine::update() const
     for (const auto& gameObject : gameObjects)
     {
         assert(gameObject);
-        auto const updateableGameObject = dynamic_cast<IUpdateable*>(gameObject);
+        auto const updateableGameObject = dynamic_cast<Updateable*>(gameObject);
         if (updateableGameObject)
         {
             updateableGameObject->update();
@@ -159,10 +161,7 @@ void Engine::render() const
     for (const auto& renderable : renderables)
     {
         assert(renderable);
-        if (renderable->visible())
-        {
-            renderable->render();
-        }
+        renderable->render();
     }
     renderTestFunction();
     Renderer::instance().renderScreen();

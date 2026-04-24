@@ -1,13 +1,10 @@
 #pragma once
 
-#include "core/Logger.h"
-
 #include <string>
-#include <iostream>
 #include <cassert>
 
 // Allows an object to receive control depending on whether it is the controller or not
-namespace zelda
+namespace zelda::engine
 {
 
 class Controllable
@@ -16,11 +13,12 @@ public:
     Controllable(const std::string& name)
         : m_controllableName(name)
     {}
+
     Controllable() = default;
+
     virtual ~Controllable() = default;
 
     virtual void control() = 0;
-
 
     std::string name() const
     {

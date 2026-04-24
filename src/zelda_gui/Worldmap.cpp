@@ -12,7 +12,8 @@
 namespace zelda::gui
 {
 Worldmap::Worldmap()
-    : IRenderable("Worldmap", *engine::ResourceManager::instance()[engine::SpriteResource::WORLD_MAP], core::WORLDMAP)
+    : Renderable("Worldmap", *engine::ResourceManager::instance()[engine::SpriteResource::WORLD_MAP],
+                 std::to_underlying(core::ZOrdering::WORLDMAP))
     , Controllable(m_name)
     , m_show(false)
     , m_scopeSelect(false)

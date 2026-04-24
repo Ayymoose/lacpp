@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/Direction.h"
+#include "core/Direction.h"
 
 #include <utility>
 #include <string>
