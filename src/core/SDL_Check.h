@@ -17,3 +17,25 @@
             std::terminate();                                                                                          \
         }                                                                                                              \
     } while (0)
+
+#define SDL_ASSERT(expr)                                                                                               \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        if (!(expr))                                                                                                   \
+        {                                                                                                              \
+            zelda::Logger::instance().log<zelda::Logger::Mask::ERROR>(                                                 \
+                std::format("SDL_ASSERT(" #expr ") failed at {}:{}: {}", __FILE__, __LINE__, SDL_GetError()));         \
+            std::terminate();                                                                                          \
+        }                                                                                                              \
+    } while (0)
+
+#define SDL_CHECK_NO_ERROR()                                                                                           \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        if (auto error = std::string_view(SDL_GetError()); !error.empty())                                             \
+        {                                                                                                              \
+            zelda::Logger::instance().log<zelda::Logger::Mask::ERROR>(                                                 \
+                std::format("SDL_CHECK_NO_ERROR() failed at {}:{}: {}", __FILE__, __LINE__, error));                   \
+            std::terminate();                                                                                          \
+        }                                                                                                              \
+    } while (0)

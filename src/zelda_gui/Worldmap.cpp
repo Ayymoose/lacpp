@@ -200,25 +200,25 @@ void Worldmap::drawScope() const
 
         // Up arrow
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 0, engine::Sprite::Flip::NONE);
+            ->draw(srcRect, dstRect, 0);
 
         // Right arrow
         dstRect.x += 15;
         dstRect.y += 14;
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 90, engine::Sprite::Flip::NONE);
+            ->draw(srcRect, dstRect, 90);
 
         // Down arrow
         dstRect.x -= 15;
         dstRect.y += 15;
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 180, engine::Sprite::Flip::NONE);
+            ->draw(srcRect, dstRect, 180);
 
         // Left arrow
         dstRect.x -= 15;
         dstRect.y -= 15;
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]
-            ->draw(srcRect, dstRect, 270, engine::Sprite::Flip::NONE);
+            ->draw(srcRect, dstRect, 270);
     }
 }
 
