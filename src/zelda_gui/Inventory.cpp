@@ -13,9 +13,9 @@
 namespace zelda::gui
 {
 Inventory::Inventory()
-    : IRenderable("Inventory",
-                  engine::Sprite(engine::Renderer::instance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
-                  core::INVENTORY)
+    : Renderable("Inventory",
+                 engine::Sprite(engine::Renderer::instance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
+                 std::to_underlying(core::ZOrdering::INVENTORY))
     , Controllable(m_name)
     , m_subscreen(std::make_unique<engine::Sprite>(engine::Renderer::instance().getRenderer(), SELECT_SUBSCREEN_WIDTH,
                                                    SELECT_SUBSCREEN_HEIGHT))

@@ -11,21 +11,14 @@
 
 namespace zelda::core
 {
-enum ZOrdering
+enum class ZOrdering
 {
-    // Background tiles
     BACKGROUND = 1,
-    // Background objects
     BACKGROUND_OBJECT,
-    // Enemies
     ENEMY,
-    // Player
     PLAYER,
-    // Inventory
     INVENTORY,
-    // Worldmap
     WORLDMAP,
-    // Dialogue
     DIALOGUE
 };
 } // namespace zelda::core

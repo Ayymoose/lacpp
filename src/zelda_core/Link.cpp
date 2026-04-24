@@ -5,9 +5,7 @@
 #include "core/Controller.h"
 #include "core/Renderer.h"
 #include "core/Logger.h"
-
-#include <set>
-#include <chrono>
+#include "zelda_core/Depth.h"
 
 namespace zelda::core
 {
@@ -23,7 +21,8 @@ Vector<int> Link::dungeonMarkerLocation() const
 }*/
 
 Link::Link()
-    : IRenderable("Link", *engine::ResourceManager::instance()[engine::SpriteResource::LINK], PLAYER)
+    : Renderable("Link", *engine::ResourceManager::instance()[engine::SpriteResource::LINK],
+                 std::to_underlying(core::ZOrdering::PLAYER))
     , Controllable(m_name)
     , m_healthMax(3)
     , m_speedX(0)
@@ -91,7 +90,7 @@ void Link::render()
 
     // Get clock, if elapsed, increase frame counter
     // Source rect to pull from sprite sheet
-    m_srcRect = {m_animateXPos + (m_currentFrame * m_width), m_animateYPos, m_width, m_height};
+    // m_srcRect = {m_animateXPos + (m_currentFrame * m_width), m_animateYPos, m_width, m_height};
 
     // Where to draw on screen
     m_dstRect = {// TODO: Create method that returns the destRect in camera
@@ -100,13 +99,6 @@ void Link::render()
                  m_position.y - engine::Camera::instance().getY(),
                  static_cast<float>(m_width),
                  static_cast<float>(m_height)};
-
-    // Max frame controlled by the state
-    m_endFrame = m_animations[m_state].endFrame;
-
-    // Select correct animation
-    m_animateXPos = m_animations[m_state].x;
-    m_animateYPos = m_animations[m_state].y;
 
     m_sprite->draw(m_srcRect, m_dstRect);
 }
@@ -176,9 +168,7 @@ void Link::die()
 }
 
 void Link::resetAnimation()
-{
-    m_currentFrame = m_animations[m_state].startFrame;
-}
+{}
 
 engine::Vector<float> Link::position() const
 {

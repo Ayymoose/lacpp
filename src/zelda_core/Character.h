@@ -1,11 +1,10 @@
 #pragma once
 
-#include "core/Vector.h"
 #include "BasicCharacter.h"
 
 // Defines a base class for which NPC, Boss, enemies inherit from
 
-namespace zelda
+namespace zelda::core
 {
 
 class Character : public BasicCharacter
@@ -26,4 +25,4 @@ protected:
     virtual void move() = 0;
 };
 
-} // namespace zelda
+} // namespace zelda::core

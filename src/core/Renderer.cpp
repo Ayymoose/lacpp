@@ -49,12 +49,12 @@ Renderer::~Renderer()
     SDL_CHECK_NO_ERROR();
 }
 
-bool Renderer::inRenderSet(IRenderable* renderable) const
+bool Renderer::inRenderSet(Renderable* renderable) const
 {
     return std::ranges::find(m_renderables, renderable) != m_renderables.cend();
 }
 
-void Renderer::addRenderable(IRenderable* renderable)
+void Renderer::addRenderable(Renderable* renderable)
 {
     assert(renderable);
     if (!inRenderSet(renderable))
@@ -63,7 +63,7 @@ void Renderer::addRenderable(IRenderable* renderable)
     }
 }
 
-void Renderer::removeRenderable(IRenderable* renderable)
+void Renderer::removeRenderable(Renderable* renderable)
 {
     assert(renderable);
     const auto it = std::ranges::find(m_renderables, renderable);

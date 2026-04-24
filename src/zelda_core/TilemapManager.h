@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IRenderable.h"
+#include "core/Renderable.h"
 #include "core/Sprite.h"
 #include "Tilemap.h"
 #include "zelda_core/RoomName.h"
@@ -14,7 +14,7 @@ using TileIndexArray = std::vector<std::vector<int>>;
 using TileIndexArrays = std::vector<TileIndexArray>;
 // This class is responsible for displaying the two canvas's on which we draw tiles too
 
-class TilemapManager : IRenderable
+class TilemapManager : engine::Renderable
 {
 public:
     // Associates the tilemap data provided with mapName

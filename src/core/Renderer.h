@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Singleton.h"
-#include "IRenderable.h"
+#include "Renderable.h"
 #include "Sprite.h"
 #include "Window.h"
 
@@ -27,11 +27,11 @@ public:
 
     void setRendererScale(float scaleX, float scaleY) const;
 
-    [[nodiscard]] bool inRenderSet(IRenderable* renderable) const;
+    [[nodiscard]] bool inRenderSet(Renderable* renderable) const;
 
-    void addRenderable(IRenderable* renderable);
+    void addRenderable(Renderable* renderable);
 
-    void removeRenderable(IRenderable* renderable);
+    void removeRenderable(Renderable* renderable);
 
     [[nodiscard]] SDL_Renderer* getRenderer() const
     {
@@ -47,10 +47,10 @@ private:
 
     struct RendererComparator
     {
-        bool operator()(const IRenderable* r1, const IRenderable* r2) const { return r1->depth() < r2->depth(); }
+        bool operator()(const Renderable* r1, const Renderable* r2) const { return r1->depth() < r2->depth(); }
     };
 
     // Multiset of Renderable objects that will be drawn
-    std::multiset<IRenderable*, RendererComparator> m_renderables;
+    std::multiset<Renderable*, RendererComparator> m_renderables;
 };
 } // namespace zelda::engine

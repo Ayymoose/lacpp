@@ -1,17 +1,18 @@
 #pragma once
 
 #include "core/Vector.h"
-#include "Depth.h"
-#include "../core/Direction.h"
+#include "core/Direction.h"
 
-namespace zelda
+namespace zelda::core
 {
 
 class BasicCharacter
 {
 public:
     virtual ~BasicCharacter() = default;
+
     virtual float health() const = 0;
+
     virtual engine::Vector<float> position() const = 0;
 
 protected:
@@ -35,4 +36,4 @@ protected:
     engine::Vector<float> m_direction;
 };
 
-} // namespace zelda
+} // namespace zelda::core

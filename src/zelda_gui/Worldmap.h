@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IRenderable.h"
-#include "Controllable.h"
+#include "core/Renderable.h"
+#include "core/Controllable.h"
 #include "core/Singleton.h"
 #include "zelda_core/Worldmap.h"
 
@@ -32,7 +32,7 @@ constexpr float WORLDMAP_SELECTOR_FPS = (1.0f / 4.0f);
 constexpr float WORLDMAP_LOCATION_FPS = (1.0f / 6.0f);
 
 
-class Worldmap : public IRenderable, public Controllable, public engine::Singleton<Worldmap>
+class Worldmap : public engine::Renderable, public engine::Controllable, public engine::Singleton<Worldmap>
 {
 public:
     Worldmap();

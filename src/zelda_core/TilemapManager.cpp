@@ -81,10 +81,10 @@ void TilemapManager::renderTileMap(const engine::Rect<int>& dstRect, const engin
 }
 
 TilemapManager::TilemapManager()
-    : IRenderable("TilemapManager",
-                  engine::Sprite(engine::Renderer::instance().getRenderer(), engine::CAMERA_WIDTH,
-                                 engine::CAMERA_HEIGHT),
-                  BACKGROUND)
+    : Renderable("TilemapManager",
+                 engine::Sprite(engine::Renderer::instance().getRenderer(), engine::CAMERA_WIDTH,
+                                engine::CAMERA_HEIGHT),
+                 std::to_underlying(core::ZOrdering::BACKGROUND))
     , m_roomX(0)
     , m_roomY(0)
     , m_nextRoomX(0)
