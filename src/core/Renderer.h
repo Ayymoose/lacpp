@@ -21,7 +21,7 @@ public:
 
     void create(const Window& window);
 
-    void clearScreen(Colour colour) const;
+    void clearScreen(Colour::colour colour) const;
 
     void renderScreen() const;
 

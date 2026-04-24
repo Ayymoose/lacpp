@@ -5,6 +5,7 @@
 #include "core/InputControl.h"
 #include "core/Controller.h"
 #include "Link.h"
+#include "core/Colour.h"
 #include "core/Engine.h"
 #include "core/ResourceManager.h"
 #include "core/SDL_RenderTarget.h"
@@ -30,7 +31,7 @@ Inventory::Inventory()
     // m_texture is the main texture we draw ontoas
     assert(m_sprite->data());
     engine::Rect<int> srcRect = {0, 0, m_subscreen->width(), m_subscreen->height()};
-    m_subscreen->colour(srcRect, engine::makeRGB(0, 0, 0));
+    m_subscreen->colour(srcRect, engine::Colour::makeRGB(0, 0, 0));
 
     // 7 -> 39 x increases of 32
     // 27 -> 50 y increases by 23
@@ -850,7 +851,7 @@ void Inventory::drawInventoryBackground()
 
     // Render the inventory background
     m_sprite->draw(engine::Rect<int>{}, engine::Rect<int>{0, renderY, m_sprite->width(), m_sprite->height()});
-    m_sprite->colour(engine::Rect<int>{}, engine::makeRGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
+    m_sprite->colour(engine::Rect<int>{}, engine::Colour::makeRGB(INVENTORY_R, INVENTORY_G, INVENTORY_B));
 }
 
 void Inventory::drawSubscreen() const

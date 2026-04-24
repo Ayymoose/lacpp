@@ -11,14 +11,14 @@ namespace zelda::engine
 
 // Load a PNG image to a texture with a RGB colour used for transparency
 std::unique_ptr<Sprite> Resource::loadSprite(const Renderer& renderer, const std::string& path,
-                                             const Colour transparency)
+                                             Colour::colour transparency)
 {
     assert(renderer.getRenderer());
     auto const loadedSurface = loadSprite(path, transparency);
     return std::make_unique<Sprite>(renderer.getRenderer(), loadedSurface);
 }
 
-SDL_Surface* Resource::loadSprite(const std::string& path, const Colour transparency)
+SDL_Surface* Resource::loadSprite(const std::string& path, Colour::colour transparency)
 {
     assert(!path.empty());
     // Load image at specified path
@@ -33,11 +33,11 @@ SDL_Surface* Resource::loadSprite(const std::string& path, const Colour transpar
     {
         // Set transparency
         SDL_CHECK(SDL_SetColorKey(loadedSurface,
-                                   SDL_TRUE,
-                                   SDL_MapRGB(loadedSurface->format,
-                                              makeRed(transparency),
-                                              makeGreen(transparency),
-                                              makeBlue(transparency))));
+                                  SDL_TRUE,
+                                  SDL_MapRGB(loadedSurface->format,
+                                             Colour::makeRed(transparency),
+                                             Colour::makeGreen(transparency),
+                                             Colour::makeBlue(transparency))));
 
         return loadedSurface;
     }

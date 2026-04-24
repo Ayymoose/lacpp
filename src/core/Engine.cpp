@@ -154,7 +154,7 @@ void Engine::update() const
 
 void Engine::render() const
 {
-    Renderer::instance().clearScreen(COLOUR_BLACK);
+    Renderer::instance().clearScreen(Colour::BLACK);
     auto const renderables = Renderer::instance().getRenderSet();
     for (const auto& renderable : renderables)
     {

@@ -6,7 +6,7 @@
 namespace zelda::engine
 {
 
-void ResourceManager::loadSprite(SpriteResource resource, const std::string& path, const Colour transparencyColour)
+void ResourceManager::loadSprite(SpriteResource resource, const std::string& path, Colour::colour transparencyColour)
 {
     // A pinkish colour is used for transpareny
     assert(!path.empty());

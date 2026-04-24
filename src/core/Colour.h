@@ -2,28 +2,21 @@
 
 namespace zelda::engine
 {
-using Colour = uint32_t;
 
-constexpr Colour COLOUR_BLACK = 0;
-
-constexpr inline Colour makeRGB(const Colour r, const Colour g, const Colour b)
+struct Colour
 {
-    return ((r) | ((g) << 8) | ((b) << 16));
-}
+    using colour = uint32_t;
 
-constexpr inline Colour makeRed(const Colour colour)
-{
-    return ((colour) & 0x0000FF);
-}
+    static constexpr colour BLACK = 0;
 
-constexpr inline Colour makeGreen(const Colour colour)
-{
-    return (((colour) >> 8) & 0x0000FF);
-}
+    static constexpr colour makeRGB(const colour r, const colour g, const colour b) { return r | g << 8 | b << 16; }
 
-constexpr inline Colour makeBlue(const Colour colour)
-{
-    return (((colour) >> 16) & 0x0000FF);
-}
+    static constexpr colour makeRed(const colour colour) { return colour & 0x0000FF; }
+
+    static constexpr colour makeGreen(const colour colour) { return colour >> 8 & 0x0000FF; }
+
+    static constexpr colour makeBlue(const colour colour) { return colour >> 16 & 0x0000FF; }
+};
+
 
 } // namespace zelda::engine

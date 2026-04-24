@@ -19,10 +19,14 @@ void Renderer::create(const Window& window)
     SDL_ASSERT(m_renderer);
 }
 
-void Renderer::clearScreen(Colour colour) const
+void Renderer::clearScreen(Colour::colour colour) const
 {
     assert(m_renderer);
-    SDL_CHECK(SDL_SetRenderDrawColor(m_renderer, makeRed(colour), makeGreen(colour), makeBlue(colour), 0));
+    SDL_CHECK(SDL_SetRenderDrawColor(m_renderer,
+                                     Colour::makeRed(colour),
+                                     Colour::makeGreen(colour),
+                                     Colour::makeBlue(colour),
+                                     0));
     SDL_CHECK(SDL_RenderClear(m_renderer));
 }
 
