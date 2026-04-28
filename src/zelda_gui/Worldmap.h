@@ -4,6 +4,7 @@
 #include "core/Controllable.h"
 #include "core/Singleton.h"
 #include "zelda_core/Worldmap.h"
+#include <tuple>
 
 namespace zelda::gui
 {
@@ -41,7 +42,12 @@ public:
     void open();
     void close();
 
-    void moveMarker(engine::Direction direction);
+    template <engine::Direction D>
+    void moveMarker()
+    {
+        m_worldMapImpl.moveMarker<D>();
+        std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
+    }
 
     void setLocation(const int x, const int y);
 
