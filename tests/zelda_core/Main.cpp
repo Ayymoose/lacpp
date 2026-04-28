@@ -750,10 +750,10 @@ BOOST_AUTO_TEST_CASE(MoveRight_WrapsAtEnd)
     Inventory inv;
     // Move right 9 times to reach index 9
     for (int i = 0; i < 9; ++i)
-        inv.moveInventorySelector(Direction::RIGHT);
+        inv.moveInventorySelector(engine::Direction::RIGHT);
     // One more right wraps to 0 - verified indirectly via swapItemA
     inv.addInventoryItem(makeSword());                     // fills slot 0
-    inv.moveInventorySelector(Direction::RIGHT); // should wrap to 0
+    inv.moveInventorySelector(engine::Direction::RIGHT); // should wrap to 0
     inv.setItemA(makeShield());
     inv.swapItemA();
     BOOST_TEST(inv.itemA() == makeSword());
@@ -764,10 +764,10 @@ BOOST_AUTO_TEST_CASE(MoveLeft_WrapsAtStart)
     Inventory inv;
     inv.addInventoryItem(makeSword()); // fills slot 0
     // selector is at 0, moving left should wrap to MAX_INVENTORY_ITEMS-1 = 9
-    inv.moveInventorySelector(Direction::LEFT);
+    inv.moveInventorySelector(engine::Direction::LEFT);
     // Move back right 9 times to get to slot 0
     for (int i = 0; i < 9; ++i)
-        inv.moveInventorySelector(Direction::LEFT);
+        inv.moveInventorySelector(engine::Direction::LEFT);
     inv.setItemA(makeShield());
     inv.swapItemA();
     BOOST_TEST(inv.itemA() == makeSword());
@@ -779,7 +779,7 @@ BOOST_AUTO_TEST_CASE(MoveDown_WrapsAtBottom)
     inv.addInventoryItem(makeSword()); // slot 0
     // Move down past last row (index 8 or 9 -> wraps to 0)
     for (int i = 0; i < 5; ++i)
-        inv.moveInventorySelector(Direction::DOWN);
+        inv.moveInventorySelector(engine::Direction::DOWN);
     inv.setItemA(makeShield());
     inv.swapItemA();
     BOOST_TEST(inv.itemA() == makeSword());
@@ -789,9 +789,9 @@ BOOST_AUTO_TEST_CASE(MoveUp_WrapsAtTop)
 {
     Inventory inv;
     // selector starts at 0 - moving up should wrap to MAX_INVENTORY_ITEMS-1
-    inv.moveInventorySelector(Direction::UP);
+    inv.moveInventorySelector(engine::Direction::UP);
     // Slot 9 is in the last row, so one DOWN wraps back to slot 0
-    inv.moveInventorySelector(Direction::DOWN);
+    inv.moveInventorySelector(engine::Direction::DOWN);
     // Selector should now be at 0; add sword there and confirm swap
     inv.addInventoryItem(makeSword());
     inv.setItemA(makeShield());
@@ -951,7 +951,7 @@ BOOST_AUTO_TEST_CASE(MoveDown_IncrementsY)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({0, 0});
-    inv.movePositionInDungeonMap(Direction::DOWN);
+    inv.movePositionInDungeonMap(engine::Direction::DOWN);
     BOOST_TEST(inv.dungeonMapPositionLocation().y == 1);
 }
 
@@ -959,7 +959,7 @@ BOOST_AUTO_TEST_CASE(MoveUp_DecrementsY)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({0, 2});
-    inv.movePositionInDungeonMap(Direction::UP);
+    inv.movePositionInDungeonMap(engine::Direction::UP);
     BOOST_TEST(inv.dungeonMapPositionLocation().y == 1);
 }
 
@@ -967,7 +967,7 @@ BOOST_AUTO_TEST_CASE(MoveRight_IncrementsX)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({0, 0});
-    inv.movePositionInDungeonMap(Direction::RIGHT);
+    inv.movePositionInDungeonMap(engine::Direction::RIGHT);
     BOOST_TEST(inv.dungeonMapPositionLocation().x == 1);
 }
 
@@ -975,7 +975,7 @@ BOOST_AUTO_TEST_CASE(MoveLeft_DecrementsX)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({3, 0});
-    inv.movePositionInDungeonMap(Direction::LEFT);
+    inv.movePositionInDungeonMap(engine::Direction::LEFT);
     BOOST_TEST(inv.dungeonMapPositionLocation().x == 2);
 }
 
@@ -1428,7 +1428,7 @@ BOOST_AUTO_TEST_CASE(Worldmap_Full_Functionality_Test)
 
     // 3. Test locationType and locationName retrieval
     // Note: m_worldmapLocation[3][13] is Tail Cave in the header
-    BOOST_CHECK_EQUAL(wm.locationType(), LocationType::DUNGEON);
+    BOOST_CHECK_EQUAL(std::to_underlying(wm.locationType()), std::to_underlying(Worldmap::Type::DUNGEON));
     // locationName() returns a formatted string containing the name
     BOOST_CHECK(wm.locationName().find("Tail Cave") != std::string::npos);
 
@@ -1438,12 +1438,12 @@ BOOST_AUTO_TEST_CASE(Worldmap_Full_Functionality_Test)
     wm.setLocation(3, 13); // Move back to (3, 13)
 
     // Now move DOWN from 13 to 14
-    wm.moveMarker(Direction::DOWN);
+    wm.moveMarker<engine::Direction::DOWN>();
     BOOST_CHECK_EQUAL(wm.location().second, 14);
 
     // 5. Test moveMarker (Failure case - unvisited)
     // (3, 15) is false/unvisited by default
-    wm.moveMarker(Direction::DOWN);
+    wm.moveMarker<engine::Direction::DOWN>();
     // Position should NOT change because (3, 15) was never set to visited
     BOOST_CHECK_EQUAL(wm.location().second, 14);
 
@@ -1451,7 +1451,7 @@ BOOST_AUTO_TEST_CASE(Worldmap_Full_Functionality_Test)
     // Set (4, 14) to visited so we can move right
     wm.setLocation(4, 14);
     wm.setLocation(3, 14);
-    wm.moveMarker(Direction::RIGHT);
+    wm.moveMarker<engine::Direction::RIGHT>();
     BOOST_CHECK_EQUAL(wm.location().first, 4);
 
     // 7. Test various Location Names for code coverage

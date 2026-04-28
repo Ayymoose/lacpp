@@ -37,22 +37,22 @@ void Worldmap::control()
     // Move scope around map if the area is visited
     if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
     {
-        m_worldMapImpl.moveMarker(engine::Direction::RIGHT);
+        m_worldMapImpl.moveMarker<engine::Direction::RIGHT>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
     {
-        m_worldMapImpl.moveMarker(engine::Direction::LEFT);
+        m_worldMapImpl.moveMarker<engine::Direction::LEFT>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
     {
-        m_worldMapImpl.moveMarker(engine::Direction::UP);
+        m_worldMapImpl.moveMarker<engine::Direction::UP>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
     if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
     {
-        m_worldMapImpl.moveMarker(engine::Direction::DOWN);
+        m_worldMapImpl.moveMarker<engine::Direction::DOWN>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
 
@@ -64,11 +64,6 @@ void Worldmap::control()
     }
 }
 
-void Worldmap::moveMarker(engine::Direction direction)
-{
-    m_worldMapImpl.moveMarker(direction);
-    std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
-}
 
 void Worldmap::setLocation(const int x, const int y)
 {
@@ -107,9 +102,9 @@ void Worldmap::close()
 void Worldmap::drawUnvisitedLocations() const
 {
     engine::RenderTarget target(engine::Renderer::instance().getRenderer(), m_sprite->data());
-    for (int y = 0; y < core::WORLDMAP_MAX_Y; ++y)
+    for (int y = 0; y < core::Worldmap::MAX_Y; ++y)
     {
-        for (int x = 0; x < core::WORLDMAP_MAX_X; ++x)
+        for (int x = 0; x < core::Worldmap::MAX_X; ++x)
         {
             // If the location isn't visited then mark it as an unvisited square
             if (!m_worldMapImpl.locationVisited(x, y))
@@ -125,21 +120,21 @@ void Worldmap::drawUnvisitedLocations() const
 void Worldmap::drawLocationImage() const
 {
     // Draw the location if we hit upon one
-    if (m_worldMapImpl.locationType() != core::NONE)
+    if (m_worldMapImpl.locationType() != core::Worldmap::Type::NONE)
     {
         engine::Rect<int> srcRectLocation;
         switch (m_worldMapImpl.locationType())
         {
-        case core::SHOP:
+        case core::Worldmap::Type::SHOP:
             srcRectLocation = m_worldmapSrcSprites[SHOP];
             break;
-        case core::UNKNOWN:
+        case core::Worldmap::Type::UNKNOWN:
             srcRectLocation = m_worldmapSrcSprites[UNKNOWN];
             break;
-        case core::DUNGEON:
+        case core::Worldmap::Type::DUNGEON:
             srcRectLocation = m_worldmapSrcSprites[DUNGEON];
             break;
-        case core::OWL:
+        case core::Worldmap::Type::OWL:
             srcRectLocation = m_worldmapSrcSprites[OWL];
             break;
         default:
