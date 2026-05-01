@@ -124,7 +124,7 @@ void Inventory::render()
         drawInventoryDividers();
         drawInventoryWeapons();
         drawSelector();
-        if (m_inventoryImpl.getInDungeon())
+        if (m_inventoryImpl.inDungeon())
         {
             drawDungeonItems();
         }
@@ -222,7 +222,8 @@ void Inventory::drawDungeonMap()
     */
 
 
-    engine::Rect<int> srcRect, dstRect;
+    engine::Rect<int> srcRect;
+    engine::Rect<int> dstRect;
 
     // Draw current location grid arrow
     // auto srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP_ENTRANCE_ARROW];
@@ -230,24 +231,24 @@ void Inventory::drawDungeonMap()
 
     switch (m_inventoryImpl.dungeon())
     {
-    case core::Dungeon::COLOUR_DUNGEON:
+    case core::Inventory::Dungeon::Name::COLOUR_DUNGEON:
         break;
-    case core::Dungeon::TAIL_CAVE:
+    case core::Inventory::Dungeon::Name::TAIL_CAVE:
         dstRect.x = 112;
         break;
-    case core::Dungeon::BOTTLE_GROTTO:
+    case core::Inventory::Dungeon::Name::BOTTLE_GROTTO:
         break;
-    case core::Dungeon::KEY_CAVERN:
+    case core::Inventory::Dungeon::Name::KEY_CAVERN:
         break;
-    case core::Dungeon::ANGLER_TUNNEL:
+    case core::Inventory::Dungeon::Name::ANGLER_TUNNEL:
         break;
-    case core::Dungeon::CATFISH_MAW:
+    case core::Inventory::Dungeon::Name::CATFISH_MAW:
         break;
-    case core::Dungeon::FACE_SHRINE:
+    case core::Inventory::Dungeon::Name::FACE_SHRINE:
         break;
-    case core::Dungeon::EAGLE_TOWER:
+    case core::Inventory::Dungeon::Name::EAGLE_TOWER:
         break;
-    case core::Dungeon::TURTLE_ROCK:
+    case core::Inventory::Dungeon::Name::TURTLE_ROCK:
         break;
     default:
         assert(false);
@@ -263,12 +264,12 @@ void Inventory::drawDungeonMap()
 
     // Without a map, all the paths are not drawn
     // Unvisited areas are marked with a grey block
-    for (int x = 0; x < core::DUNGEON_MAX_BLOCKS_X; ++x)
+    for (int x = 0; x < core::Inventory::MAX_DUNGEON_BLOCKS_X; ++x)
     {
-        for (int y = 0; y < core::DUNGEON_MAX_BLOCKS_Y; ++y)
+        for (int y = 0; y < core::Inventory::MAX_DUNGEON_BLOCKS_Y; ++y)
         {
             // Don't display anything if dungeon map not present
-            if (m_inventoryImpl.dungeonItem(core::DungeonItem::MAP))
+            if (m_inventoryImpl.dungeonItem(core::Inventory::Dungeon::Item::MAP))
             {
                 // Show the room in the map if we visited it already
                 if (m_inventoryImpl.dungeonMapLocationVisited(x, y))
@@ -395,14 +396,16 @@ void Inventory::drawDungeonMap()
             }
 
             // If we have the compass, show the nightmare and treasure chests
-            if (m_inventoryImpl.dungeonItem(core::DungeonItem::COMPASS))
+            if (m_inventoryImpl.dungeonItem(core::Inventory::Dungeon::Item::COMPASS))
             {
-                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y) == core::DungeonMapItem::NIGHTMARE_KEY)
+                if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y)
+                    == core::Inventory::Dungeon::MapItem::NIGHTMARE_KEY)
                 {
                     // srcRect = m_inventorySpritesSrc[INVENTORY_AREA_NIGHTMARE];
                     // dstRect = m_inventorySpritesDst[INVENTORY_AREA_NIGHTMARE];
                 }
-                else if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y) == core::DungeonMapItem::CHEST_CLOSED)
+                else if (m_inventoryImpl.dungeonMapLocationRoomItem(x, y)
+                         == core::Inventory::Dungeon::MapItem::CHEST_CLOSED)
                 {
                     // srcRect = m_inventorySpritesSrc[INVENTORY_AREA_TREASURE];
                     // dstRect = m_inventorySpritesDst[INVENTORY_AREA_TREASURE];
@@ -456,14 +459,14 @@ void Inventory::drawMiscItems()
 {
     engine::Rect<int> srcRect, dstRect;
 
-    if (m_inventoryImpl.miscItemExists(core::InventoryMiscItem::FLIPPERS))
+    if (m_inventoryImpl.miscItemExists(core::Inventory::MiscItem::FLIPPERS))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_FLIPPERS];
         // dstRect = m_inventorySpritesDst[INVENTORY_FLIPPERS];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.miscItemExists(core::InventoryMiscItem::RED_POTION))
+    if (m_inventoryImpl.miscItemExists(core::Inventory::MiscItem::RED_POTION))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_POTION];
         // dstRect = m_inventorySpritesDst[INVENTORY_POTION];
@@ -482,7 +485,7 @@ void Inventory::drawMiscItems()
     drawNumber(*m_sprite, false, true, 1, m_inventoryImpl.secretSeaShells(), dstRect);
 
     // Draw currently traded item (if any)
-    if (m_inventoryImpl.tradedItem() != core::TradeItem::NONE)
+    if (m_inventoryImpl.tradedItem() != core::Inventory::TradeItem::NONE)
     {
         // srcRect = m_inventorySpritesSrc[TRADE_ITEM_SPRITE(m_tradeItem)];
         // dstRect = m_inventorySpritesDst[TRADE_ITEM_SPRITE(m_tradeItem)];
@@ -498,35 +501,35 @@ void Inventory::drawInventoryItems()
     engine::Rect<int> srcRect, dstRect;
 
     // Draw any keys we have
-    if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::TAIL))
+    if (m_inventoryImpl.dungeonEntranceKey(core::Inventory::Dungeon::EntranceKey::TAIL))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_TAIL_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_TAIL_KEY];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::SLIME))
+    if (m_inventoryImpl.dungeonEntranceKey(core::Inventory::Dungeon::EntranceKey::SLIME))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_SLIME_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_SLIME_KEY];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::ANGLER))
+    if (m_inventoryImpl.dungeonEntranceKey(core::Inventory::Dungeon::EntranceKey::ANGLER))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_ANGLER_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_ANGLER_KEY];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::FACE))
+    if (m_inventoryImpl.dungeonEntranceKey(core::Inventory::Dungeon::EntranceKey::FACE))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_FACE_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_FACE_KEY];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.dungeonEntranceKey(core::DungeonEntranceKey::BIRD))
+    if (m_inventoryImpl.dungeonEntranceKey(core::Inventory::Dungeon::EntranceKey::BIRD))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_BIRD_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_BIRD_KEY];
@@ -540,28 +543,28 @@ void Inventory::drawDungeonItems()
 {
     engine::Rect<int> srcRect, dstRect;
 
-    if (m_inventoryImpl.dungeonItem(core::DungeonItem::COMPASS))
+    if (m_inventoryImpl.dungeonItem(core::Inventory::Dungeon::Item::COMPASS))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_COMPASS];
         // dstRect = m_inventorySpritesDst[INVENTORY_COMPASS];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.dungeonItem(core::DungeonItem::NIGHTMARE_KEY))
+    if (m_inventoryImpl.dungeonItem(core::Inventory::Dungeon::Item::NIGHTMARE_KEY))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_NIGHTMARE_KEY];
         // dstRect = m_inventorySpritesDst[INVENTORY_NIGHTMARE_KEY];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.dungeonItem(core::DungeonItem::OWL_BEAK))
+    if (m_inventoryImpl.dungeonItem(core::Inventory::Dungeon::Item::OWL_BEAK))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_OWL_BEAK];
         // dstRect = m_inventorySpritesDst[INVENTORY_OWL_BEAK];
         engine::ResourceManager::instance()[engine::SpriteResource::INVENTORY]->draw(srcRect, dstRect);
     }
 
-    if (m_inventoryImpl.dungeonItem(core::DungeonItem::MAP))
+    if (m_inventoryImpl.dungeonItem(core::Inventory::Dungeon::Item::MAP))
     {
         // srcRect = m_inventorySpritesSrc[INVENTORY_DUNGEON_MAP];
         // dstRect = m_inventorySpritesDst[INVENTORY_DUNGEON_MAP];
@@ -580,7 +583,12 @@ void Inventory::drawDungeonItems()
     dstRect.h = 8;
     dstRect.x += dstRect.w;
     dstRect.y += dstRect.h;
-    drawNumber(*m_sprite, false, true, 0, m_inventoryImpl.dungeonItem(core::DungeonItem::LOCKED_DOOR_KEY), dstRect);
+    drawNumber(*m_sprite,
+               false,
+               true,
+               0,
+               m_inventoryImpl.dungeonItem(core::Inventory::Dungeon::Item::LOCKED_DOOR_KEY),
+               dstRect);
 }
 
 void Inventory::drawInstruments()
@@ -695,7 +703,7 @@ void Inventory::drawInventoryWeapons()
 
         for (int i = 0; i < std::ssize(inventoryItems); ++i)
         {
-            if (inventoryItems[i] != core::InventoryItem{})
+            if (inventoryItems[i] != core::Inventory::Item{})
             {
                 // srcRect = inventoryWeaponSpriteSrc(m_weaponItems[i]);
 
@@ -713,7 +721,7 @@ void Inventory::drawInventoryWeapons()
 
     for (int i = 0; i < std::ssize(inventoryItems); ++i)
     {
-        if (inventoryItems[i] != core::InventoryItem{})
+        if (inventoryItems[i] != core::Inventory::Item{})
         {
             dstRect = {WEAPON_LEVEL_X + ((((i & 1) == 1) ? 1 : 0) * WEAPON_LEVEL_SPACING_X),
                        WEAPON_LEVEL_Y + ((i / 2) * WEAPON_LEVEL_SPACING_Y),
@@ -803,7 +811,7 @@ void Inventory::drawHUD()
     drawHealth();
 
     // Draw weapon A
-    if (m_inventoryImpl.itemA() != core::InventoryItem{})
+    if (m_inventoryImpl.itemA() != core::Inventory::Item{})
     {
         // Draw the actual weapon
         // srcRect = inventoryWeaponSpriteSrc(m_weaponA);
@@ -816,7 +824,7 @@ void Inventory::drawHUD()
     }
 
     // Draw weapon B
-    if (m_inventoryImpl.itemB() != core::InventoryItem{})
+    if (m_inventoryImpl.itemB() != core::Inventory::Item{})
     {
         // srcRect = inventoryWeaponSpriteSrc(m_weaponB);
         dstRect = {8, 0, srcRect.w, srcRect.h};
@@ -867,12 +875,12 @@ void Inventory::drawSubscreen() const
     // srcRect = m_inventorySpritesSrc[INVENTORY_TUNIC];
     switch (m_inventoryImpl.tunic())
     {
-    case core::Tunic::GREEN:
+    case core::Inventory::Tunic::GREEN:
         break;
-    case core::Tunic::BLUE:
+    case core::Inventory::Tunic::BLUE:
         srcRect.x += srcRect.w + 2;
         break;
-    case core::Tunic::RED:
+    case core::Inventory::Tunic::RED:
         srcRect.x = 2 * (srcRect.w + 2);
         break;
     default:
@@ -911,9 +919,9 @@ void Inventory::drawSubscreen() const
 
     // Draw number of photographs
     dstRect = {24, 23, 8, 8};
-    drawNumber(*m_subscreen, false, false, 1, m_inventoryImpl.photograph(), dstRect);
+    drawNumber(*m_subscreen, false, false, 1, m_inventoryImpl.numberOfPhotographs(), dstRect);
     dstRect = {48, 23, 8, 8};
-    drawNumber(*m_subscreen, false, false, 1, core::MAX_PHOTOGRAPHS, dstRect);
+    drawNumber(*m_subscreen, false, false, 1, core::Inventory::MAX_PHOTOGRAPHS, dstRect);
 }
 
 // Draw a number or level onto a texture
@@ -1047,29 +1055,29 @@ void Inventory::drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool
     }
 }
 
-void Inventory::drawInventoryItemAttribute(const engine::Sprite& srcSprite, const core::InventoryItem& item,
+void Inventory::drawInventoryItemAttribute(const engine::Sprite& srcSprite, const core::Inventory::Item& item,
                                            const engine::Rect<int>& dstRect)
 {
     switch (item.itemAttribute)
     {
-    case core::ItemAttribute::LEVEL:
-        switch (item.usuableItem)
+    case core::Inventory::Item::Attribute::LEVEL:
+        switch (item.usableItem)
         {
-        case core::UsableItem::SHIELD:
-        case core::UsableItem::SWORD:
-        case core::UsableItem::POWER_BRACELET:
+        case core::Inventory::Item::Type::SHIELD:
+        case core::Inventory::Item::Type::SWORD:
+        case core::Inventory::Item::Type::POWER_BRACELET:
             drawNumber(srcSprite, true, true, 0, item.value, dstRect);
             break;
-        case core::UsableItem::BOMBS:
+        case core::Inventory::Item::Type::BOMBS:
             drawNumber(srcSprite, false, true, 1, m_inventoryImpl.bombs(), dstRect);
             break;
-        case core::UsableItem::BOW:
+        case core::Inventory::Item::Type::BOW:
             drawNumber(srcSprite, false, true, 1, m_inventoryImpl.arrows(), dstRect);
             break;
-        case core::UsableItem::MAGIC_POWDER:
+        case core::Inventory::Item::Type::MAGIC_POWDER:
             drawNumber(srcSprite, false, true, 1, m_inventoryImpl.magicPowder(), dstRect);
             break;
-        case core::UsableItem::OCARINA:
+        case core::Inventory::Item::Type::OCARINA:
             drawNumber(srcSprite, false, true, 0, m_inventoryImpl.ocarinaSongs().size(), dstRect);
             break;
         default:
@@ -1083,12 +1091,19 @@ void Inventory::drawInventoryItemAttribute(const engine::Sprite& srcSprite, cons
 
 void Inventory::moveSelector(engine::Direction direction)
 {
-    m_inventoryImpl.moveInventorySelector(direction);
+    switch (direction)
+    {
+    case engine::Direction::DOWN:  m_inventoryImpl.moveInventorySelector<engine::Direction::DOWN>();  break;
+    case engine::Direction::UP:    m_inventoryImpl.moveInventorySelector<engine::Direction::UP>();    break;
+    case engine::Direction::RIGHT: m_inventoryImpl.moveInventorySelector<engine::Direction::RIGHT>(); break;
+    case engine::Direction::LEFT:  m_inventoryImpl.moveInventorySelector<engine::Direction::LEFT>();  break;
+    default: std::unreachable();
+    }
 
     switch (direction)
     {
     case engine::Direction::DOWN:
-        if (m_selectorY == SELECTOR_INITIAL_Y + (core::INVENTORY_ROWS - 1) * SELECTOR_INCREASE_Y)
+        if (m_selectorY == SELECTOR_INITIAL_Y + (core::Inventory::MAX_ROWS - 1) * SELECTOR_INCREASE_Y)
         {
             if (m_selectorX == SELECTOR_INITIAL_X + SELECTOR_INCREASE_X)
             {
@@ -1109,7 +1124,7 @@ void Inventory::moveSelector(engine::Direction direction)
             {
                 m_selectorX += SELECTOR_INCREASE_X;
             }
-            m_selectorY = SELECTOR_INITIAL_Y + (core::INVENTORY_ROWS - 1) * SELECTOR_INCREASE_Y;
+            m_selectorY = SELECTOR_INITIAL_Y + (core::Inventory::MAX_ROWS - 1) * SELECTOR_INCREASE_Y;
         }
         else
         {
@@ -1121,7 +1136,7 @@ void Inventory::moveSelector(engine::Direction direction)
         {
             m_selectorX = SELECTOR_INITIAL_X;
             // If not the bottom right of the inventory
-            if (m_selectorY != SELECTOR_INITIAL_Y + (core::INVENTORY_ROWS - 1) * SELECTOR_INCREASE_Y)
+            if (m_selectorY != SELECTOR_INITIAL_Y + (core::Inventory::MAX_ROWS - 1) * SELECTOR_INCREASE_Y)
             {
                 m_selectorY += SELECTOR_INCREASE_Y;
             }
@@ -1146,7 +1161,7 @@ void Inventory::moveSelector(engine::Direction direction)
             }
             else
             {
-                m_selectorY = SELECTOR_INITIAL_Y + (core::INVENTORY_ROWS - 1) * SELECTOR_INCREASE_Y;
+                m_selectorY = SELECTOR_INITIAL_Y + (core::Inventory::MAX_ROWS - 1) * SELECTOR_INCREASE_Y;
             }
         }
         else

@@ -26,13 +26,13 @@ struct QuestionChoices
     bool empty() const { return question.empty() && choice1.empty() && choice2.empty(); }
 };
 
-static std::string rtrim(const std::string &s)
+static std::string rtrim(const std::string& s)
 {
     auto view = s | std::views::reverse | std::views::drop_while([](char c) { return c == ' '; }) | std::views::reverse;
     return std::string(view.begin(), view.end());
 }
 
-static QuestionChoices findQuestionChoices(const std::string &str)
+static QuestionChoices findQuestionChoices(const std::string& str)
 {
     if (str.length() < 16)
     {
@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(FindQuestionChoices_ChoicesOnNewLine)
 BOOST_AUTO_TEST_CASE(AllGameMessagesAreValid)
 {
     Dialogue d;
-    BOOST_CHECK_NO_THROW(for (const auto &msg : ALL_GAME_MESSAGES) {
+    BOOST_CHECK_NO_THROW(for (const auto& msg : ALL_GAME_MESSAGES) {
         if (const auto result = findQuestionChoices(msg); !result.empty())
         {
             d.question(result.question, result.choice1, result.choice2, 0);
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE(AllGameMessagesQueuedCorrectly)
 {
     Dialogue d;
 
-    for (const auto &msg : ALL_GAME_MESSAGES)
+    for (const auto& msg : ALL_GAME_MESSAGES)
     {
         if (const auto result = findQuestionChoices(msg); !result.empty())
         {
@@ -602,17 +602,17 @@ BOOST_AUTO_TEST_SUITE_END()
 namespace inventory_tests
 {
 // A few convenient InventoryItem factories
-static InventoryItem makeSword()
+static Inventory::Item makeSword()
 {
-    return InventoryItem{UsableItem::SWORD, ItemAttribute::LEVEL, 1};
+    return Inventory::Item{Inventory::Item::Type::SWORD, Inventory::Item::Attribute::LEVEL, 1};
 }
-static InventoryItem makeShield()
+static Inventory::Item makeShield()
 {
-    return InventoryItem{UsableItem::SHIELD, ItemAttribute::LEVEL, 1};
+    return Inventory::Item{Inventory::Item::Type::SHIELD, Inventory::Item::Attribute::LEVEL, 1};
 }
-static InventoryItem makeBow()
+static Inventory::Item makeBow()
 {
-    return InventoryItem{UsableItem::BOW, ItemAttribute::QUANTITY, 5};
+    return Inventory::Item{Inventory::Item::Type::BOW, Inventory::Item::Attribute::QUANTITY, 5};
 }
 
 BOOST_AUTO_TEST_SUITE(InventoryTests)
@@ -630,20 +630,20 @@ BOOST_AUTO_TEST_CASE(DefaultState)
     BOOST_TEST(inv.maxHeartPieces() == 0.0f);
     BOOST_TEST(inv.goldenLeaves() == 0);
     BOOST_TEST(inv.secretSeaShells() == 0);
-    BOOST_TEST(inv.photograph() == 0);
+    BOOST_TEST(inv.numberOfPhotographs() == 0);
     BOOST_TEST(inv.getInDungeon() == false);
-    BOOST_TEST(std::to_underlying(inv.dungeon()) == std::to_underlying(Dungeon::NONE));
-    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Tunic::GREEN));
-    BOOST_TEST(std::to_underlying(inv.tradedItem()) == std::to_underlying(TradeItem::NONE));
-    BOOST_TEST(std::to_underlying(inv.ocarinaSong()) == std::to_underlying(OcarinaSong::NONE));
+    BOOST_TEST(std::to_underlying(inv.dungeon()) == std::to_underlying(Inventory::Dungeon::Name::NONE));
+    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Inventory::Tunic::GREEN));
+    BOOST_TEST(std::to_underlying(inv.tradedItem()) == std::to_underlying(Inventory::TradeItem::NONE));
+    BOOST_TEST(std::to_underlying(inv.ocarinaSong()) == std::to_underlying(Inventory::OcarinaSong::NONE));
 
     // itemA / itemB should be default (NONE) items
-    BOOST_TEST(inv.itemA() == InventoryItem{});
-    BOOST_TEST(inv.itemB() == InventoryItem{});
+    BOOST_TEST(inv.itemA() == Inventory::Item{});
+    BOOST_TEST(inv.itemB() == Inventory::Item{});
 
     // All inventory slots empty
-    for (const auto &item : inv.inventoryItems())
-        BOOST_TEST(item == InventoryItem{});
+    for (const auto& item : inv.inventoryItems())
+        BOOST_TEST(item == Inventory::Item{});
 }
 
 BOOST_AUTO_TEST_CASE(AddAndExistsItem)
@@ -703,7 +703,7 @@ BOOST_AUTO_TEST_CASE(InventoryItemsArrayReturnsCorrectContent)
     inv.addInventoryItem(makeSword());
     auto items = inv.inventoryItems();
     bool found = false;
-    for (const auto &item : items)
+    for (const auto& item : items)
         if (item == makeSword())
             found = true;
     BOOST_TEST(found);
@@ -750,10 +750,10 @@ BOOST_AUTO_TEST_CASE(MoveRight_WrapsAtEnd)
     Inventory inv;
     // Move right 9 times to reach index 9
     for (int i = 0; i < 9; ++i)
-        inv.moveInventorySelector(engine::Direction::RIGHT);
+        inv.moveInventorySelector<engine::Direction::RIGHT>();
     // One more right wraps to 0 - verified indirectly via swapItemA
-    inv.addInventoryItem(makeSword());                     // fills slot 0
-    inv.moveInventorySelector(engine::Direction::RIGHT); // should wrap to 0
+    inv.addInventoryItem(makeSword());                    // fills slot 0
+    inv.moveInventorySelector<engine::Direction::RIGHT>(); // should wrap to 0
     inv.setItemA(makeShield());
     inv.swapItemA();
     BOOST_TEST(inv.itemA() == makeSword());
@@ -764,10 +764,10 @@ BOOST_AUTO_TEST_CASE(MoveLeft_WrapsAtStart)
     Inventory inv;
     inv.addInventoryItem(makeSword()); // fills slot 0
     // selector is at 0, moving left should wrap to MAX_INVENTORY_ITEMS-1 = 9
-    inv.moveInventorySelector(engine::Direction::LEFT);
+    inv.moveInventorySelector<engine::Direction::LEFT>();
     // Move back right 9 times to get to slot 0
     for (int i = 0; i < 9; ++i)
-        inv.moveInventorySelector(engine::Direction::LEFT);
+        inv.moveInventorySelector<engine::Direction::LEFT>();
     inv.setItemA(makeShield());
     inv.swapItemA();
     BOOST_TEST(inv.itemA() == makeSword());
@@ -779,7 +779,7 @@ BOOST_AUTO_TEST_CASE(MoveDown_WrapsAtBottom)
     inv.addInventoryItem(makeSword()); // slot 0
     // Move down past last row (index 8 or 9 -> wraps to 0)
     for (int i = 0; i < 5; ++i)
-        inv.moveInventorySelector(engine::Direction::DOWN);
+        inv.moveInventorySelector<engine::Direction::DOWN>();
     inv.setItemA(makeShield());
     inv.swapItemA();
     BOOST_TEST(inv.itemA() == makeSword());
@@ -789,9 +789,9 @@ BOOST_AUTO_TEST_CASE(MoveUp_WrapsAtTop)
 {
     Inventory inv;
     // selector starts at 0 - moving up should wrap to MAX_INVENTORY_ITEMS-1
-    inv.moveInventorySelector(engine::Direction::UP);
+    inv.moveInventorySelector<engine::Direction::UP>();
     // Slot 9 is in the last row, so one DOWN wraps back to slot 0
-    inv.moveInventorySelector(engine::Direction::DOWN);
+    inv.moveInventorySelector<engine::Direction::DOWN>();
     // Selector should now be at 0; add sword there and confirm swap
     inv.addInventoryItem(makeSword());
     inv.setItemA(makeShield());
@@ -802,28 +802,28 @@ BOOST_AUTO_TEST_CASE(MoveUp_WrapsAtTop)
 BOOST_AUTO_TEST_CASE(AddAndCheckKey)
 {
     Inventory inv;
-    inv.addDungeonEntranceKey(DungeonEntranceKey::TAIL);
-    BOOST_TEST(inv.dungeonEntranceKey(DungeonEntranceKey::TAIL));
+    inv.addDungeonEntranceKey(Inventory::Dungeon::EntranceKey::TAIL);
+    BOOST_TEST(inv.dungeonEntranceKey(Inventory::Dungeon::EntranceKey::TAIL));
 }
 
 BOOST_AUTO_TEST_CASE(UnaddedKeyNotPresent)
 {
     Inventory inv;
-    BOOST_TEST(!inv.dungeonEntranceKey(DungeonEntranceKey::ANGLER));
+    BOOST_TEST(!inv.dungeonEntranceKey(Inventory::Dungeon::EntranceKey::ANGLER));
 }
 
 BOOST_AUTO_TEST_CASE(AddAllKeys)
 {
     Inventory inv;
-    inv.addDungeonEntranceKey(DungeonEntranceKey::TAIL);
-    inv.addDungeonEntranceKey(DungeonEntranceKey::SLIME);
-    inv.addDungeonEntranceKey(DungeonEntranceKey::ANGLER);
-    inv.addDungeonEntranceKey(DungeonEntranceKey::FACE);
-    inv.addDungeonEntranceKey(DungeonEntranceKey::BIRD);
-    BOOST_TEST(inv.dungeonEntranceKey(DungeonEntranceKey::BIRD));
+    inv.addDungeonEntranceKey(Inventory::Dungeon::EntranceKey::TAIL);
+    inv.addDungeonEntranceKey(Inventory::Dungeon::EntranceKey::SLIME);
+    inv.addDungeonEntranceKey(Inventory::Dungeon::EntranceKey::ANGLER);
+    inv.addDungeonEntranceKey(Inventory::Dungeon::EntranceKey::FACE);
+    inv.addDungeonEntranceKey(Inventory::Dungeon::EntranceKey::BIRD);
+    BOOST_TEST(inv.dungeonEntranceKey(Inventory::Dungeon::EntranceKey::BIRD));
 }
 
-static void enterDungeon(Inventory &inv, Dungeon d = Dungeon::TAIL_CAVE)
+static void enterDungeon(Inventory& inv, Inventory::Dungeon::Name d = Inventory::Dungeon::Name::TAIL_CAVE)
 {
     inv.setInDungeon(true);
     inv.setDungeon(d);
@@ -833,60 +833,60 @@ BOOST_AUTO_TEST_CASE(AddLockedDoorKey_Increments)
 {
     Inventory inv;
     enterDungeon(inv);
-    inv.addDungeonItem(DungeonItem::LOCKED_DOOR_KEY);
-    inv.addDungeonItem(DungeonItem::LOCKED_DOOR_KEY);
-    BOOST_TEST(inv.dungeonItem(DungeonItem::LOCKED_DOOR_KEY) == 2);
+    inv.addDungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY);
+    inv.addDungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY);
+    BOOST_TEST(inv.dungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY) == 2);
 }
 
 BOOST_AUTO_TEST_CASE(UseLockedDoorKey_Decrements)
 {
     Inventory inv;
     enterDungeon(inv);
-    inv.addDungeonItem(DungeonItem::LOCKED_DOOR_KEY);
-    inv.useDungeonItem(DungeonItem::LOCKED_DOOR_KEY);
-    BOOST_TEST(inv.dungeonItem(DungeonItem::LOCKED_DOOR_KEY) == 0);
+    inv.addDungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY);
+    inv.useDungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY);
+    BOOST_TEST(inv.dungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(AddCompass)
 {
     Inventory inv;
     enterDungeon(inv);
-    inv.addDungeonItem(DungeonItem::COMPASS);
-    BOOST_TEST(inv.dungeonItem(DungeonItem::COMPASS) == 1);
+    inv.addDungeonItem(Inventory::Dungeon::Item::COMPASS);
+    BOOST_TEST(inv.dungeonItem(Inventory::Dungeon::Item::COMPASS) == 1);
 }
 
 BOOST_AUTO_TEST_CASE(AddMap)
 {
     Inventory inv;
     enterDungeon(inv);
-    inv.addDungeonItem(DungeonItem::MAP);
-    BOOST_TEST(inv.dungeonItem(DungeonItem::MAP) == 1);
+    inv.addDungeonItem(Inventory::Dungeon::Item::MAP);
+    BOOST_TEST(inv.dungeonItem(Inventory::Dungeon::Item::MAP) == 1);
 }
 
 BOOST_AUTO_TEST_CASE(AddNightmareKey)
 {
     Inventory inv;
     enterDungeon(inv);
-    inv.addDungeonItem(DungeonItem::NIGHTMARE_KEY);
-    BOOST_TEST(inv.dungeonItem(DungeonItem::NIGHTMARE_KEY) == 1);
+    inv.addDungeonItem(Inventory::Dungeon::Item::NIGHTMARE_KEY);
+    BOOST_TEST(inv.dungeonItem(Inventory::Dungeon::Item::NIGHTMARE_KEY) == 1);
 }
 
 BOOST_AUTO_TEST_CASE(AddOwlBeak)
 {
     Inventory inv;
     enterDungeon(inv);
-    inv.addDungeonItem(DungeonItem::OWL_BEAK);
-    BOOST_TEST(inv.dungeonItem(DungeonItem::OWL_BEAK) == 1);
+    inv.addDungeonItem(Inventory::Dungeon::Item::OWL_BEAK);
+    BOOST_TEST(inv.dungeonItem(Inventory::Dungeon::Item::OWL_BEAK) == 1);
 }
 
 BOOST_AUTO_TEST_CASE(DungeonItemsArePerDungeon)
 {
     Inventory inv;
-    enterDungeon(inv, Dungeon::TAIL_CAVE);
-    inv.addDungeonItem(DungeonItem::LOCKED_DOOR_KEY);
+    enterDungeon(inv, Inventory::Dungeon::Name::TAIL_CAVE);
+    inv.addDungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY);
 
-    inv.setDungeon(Dungeon::BOTTLE_GROTTO);
-    BOOST_TEST(inv.dungeonItem(DungeonItem::LOCKED_DOOR_KEY) == 0);
+    inv.setDungeon(Inventory::Dungeon::Name::BOTTLE_GROTTO);
+    BOOST_TEST(inv.dungeonItem(Inventory::Dungeon::Item::LOCKED_DOOR_KEY) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(SetAndGetInDungeon)
@@ -901,21 +901,21 @@ BOOST_AUTO_TEST_CASE(SetAndGetInDungeon)
 BOOST_AUTO_TEST_CASE(SetAndGetDungeon)
 {
     Inventory inv;
-    inv.setDungeon(Dungeon::EAGLE_TOWER);
-    BOOST_TEST(std::to_underlying(inv.dungeon()) == std::to_underlying(Dungeon::EAGLE_TOWER));
+    inv.setDungeon(Inventory::Dungeon::Name::EAGLE_TOWER);
+    BOOST_TEST(std::to_underlying(inv.dungeon()) == std::to_underlying(Inventory::Dungeon::Name::EAGLE_TOWER));
 }
 
 BOOST_AUTO_TEST_CASE(VisitedDefaultsFalse)
 {
     Inventory inv;
-    inv.setDungeon(Dungeon::TAIL_CAVE);
+    inv.setDungeon(Inventory::Dungeon::Name::TAIL_CAVE);
     BOOST_TEST(!inv.dungeonMapLocationVisited(0, 0));
 }
 
 BOOST_AUTO_TEST_CASE(SetVisitedReturnsTrue)
 {
     Inventory inv;
-    inv.setDungeon(Dungeon::TAIL_CAVE);
+    inv.setDungeon(Inventory::Dungeon::Name::TAIL_CAVE);
     engine::Vector<int> loc{2, 3};
     inv.setDungeonMapLocationVisited(loc);
     BOOST_TEST(inv.dungeonMapLocationVisited(2, 3));
@@ -924,7 +924,7 @@ BOOST_AUTO_TEST_CASE(SetVisitedReturnsTrue)
 BOOST_AUTO_TEST_CASE(RoomTypeIsReadable)
 {
     Inventory inv;
-    inv.setDungeon(Dungeon::COLOUR_DUNGEON);
+    inv.setDungeon(Inventory::Dungeon::Name::COLOUR_DUNGEON);
     // Colour Dungeon row 0 is all 1s according to the initialiser
     BOOST_TEST(inv.dungeonMapLocationRoomType(0, 0) == 1);
 }
@@ -932,10 +932,10 @@ BOOST_AUTO_TEST_CASE(RoomTypeIsReadable)
 BOOST_AUTO_TEST_CASE(RoomItemIsReadable)
 {
     Inventory inv;
-    inv.setDungeon(Dungeon::COLOUR_DUNGEON);
+    inv.setDungeon(Inventory::Dungeon::Name::COLOUR_DUNGEON);
     // row 4, col 6 (x=6,y=4) has DUNGEON_MAP_ITEM_NIGHTMARE_KEY in colour dungeon
     BOOST_TEST(std::to_underlying(inv.dungeonMapLocationRoomItem(6, 4))
-               == std::to_underlying(DungeonMapItem::NIGHTMARE_KEY));
+               == std::to_underlying(Inventory::Dungeon::MapItem::NIGHTMARE_KEY));
 }
 
 BOOST_AUTO_TEST_CASE(SetAndGetPosition)
@@ -951,7 +951,7 @@ BOOST_AUTO_TEST_CASE(MoveDown_IncrementsY)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({0, 0});
-    inv.movePositionInDungeonMap(engine::Direction::DOWN);
+    inv.movePositionInDungeonMap<engine::Direction::DOWN>();
     BOOST_TEST(inv.dungeonMapPositionLocation().y == 1);
 }
 
@@ -959,7 +959,7 @@ BOOST_AUTO_TEST_CASE(MoveUp_DecrementsY)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({0, 2});
-    inv.movePositionInDungeonMap(engine::Direction::UP);
+    inv.movePositionInDungeonMap<engine::Direction::UP>();
     BOOST_TEST(inv.dungeonMapPositionLocation().y == 1);
 }
 
@@ -967,7 +967,7 @@ BOOST_AUTO_TEST_CASE(MoveRight_IncrementsX)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({0, 0});
-    inv.movePositionInDungeonMap(engine::Direction::RIGHT);
+    inv.movePositionInDungeonMap<engine::Direction::RIGHT>();
     BOOST_TEST(inv.dungeonMapPositionLocation().x == 1);
 }
 
@@ -975,87 +975,87 @@ BOOST_AUTO_TEST_CASE(MoveLeft_DecrementsX)
 {
     Inventory inv;
     inv.setPositionInDungeonMap({3, 0});
-    inv.movePositionInDungeonMap(engine::Direction::LEFT);
+    inv.movePositionInDungeonMap<engine::Direction::LEFT>();
     BOOST_TEST(inv.dungeonMapPositionLocation().x == 2);
 }
 
 BOOST_AUTO_TEST_CASE(TradeItem_SetsCurrentTradeItem)
 {
     Inventory inv;
-    inv.tradeItem(TradeItem::YOSHI_DOLL);
-    BOOST_TEST(std::to_underlying(inv.tradedItem()) == std::to_underlying(TradeItem::YOSHI_DOLL));
+    inv.tradeItem(Inventory::TradeItem::YOSHI_DOLL);
+    BOOST_TEST(std::to_underlying(inv.tradedItem()) == std::to_underlying(Inventory::TradeItem::YOSHI_DOLL));
 }
 
 BOOST_AUTO_TEST_CASE(SetTradeItem)
 {
     Inventory inv;
-    inv.setTradeItem(TradeItem::RIBBON);
-    BOOST_TEST(std::to_underlying(inv.tradedItem()) == std::to_underlying(TradeItem::RIBBON));
+    inv.setTradeItem(Inventory::TradeItem::RIBBON);
+    BOOST_TEST(std::to_underlying(inv.tradedItem()) == std::to_underlying(Inventory::TradeItem::RIBBON));
 }
 
 BOOST_AUTO_TEST_CASE(AddAndCheckRedPotion)
 {
     Inventory inv;
-    inv.addInventoryMiscItem(InventoryMiscItem::RED_POTION);
-    BOOST_TEST(inv.miscItemExists(InventoryMiscItem::RED_POTION));
+    inv.addMiscItem(Inventory::MiscItem::RED_POTION);
+    BOOST_TEST(inv.miscItemExists(Inventory::MiscItem::RED_POTION));
 }
 
 BOOST_AUTO_TEST_CASE(UseRedPotion_RemovesIt)
 {
     Inventory inv;
-    inv.addInventoryMiscItem(InventoryMiscItem::RED_POTION);
-    inv.useInventoryMiscItem(InventoryMiscItem::RED_POTION);
-    BOOST_TEST(!inv.miscItemExists(InventoryMiscItem::RED_POTION));
+    inv.addMiscItem(Inventory::MiscItem::RED_POTION);
+    inv.useMiscItem(Inventory::MiscItem::RED_POTION);
+    BOOST_TEST(!inv.miscItemExists(Inventory::MiscItem::RED_POTION));
 }
 
 BOOST_AUTO_TEST_CASE(AddFlippers)
 {
     Inventory inv;
-    inv.addInventoryMiscItem(InventoryMiscItem::FLIPPERS);
-    BOOST_TEST(inv.miscItemExists(InventoryMiscItem::FLIPPERS));
+    inv.addMiscItem(Inventory::MiscItem::FLIPPERS);
+    BOOST_TEST(inv.miscItemExists(Inventory::MiscItem::FLIPPERS));
 }
 
 BOOST_AUTO_TEST_CASE(MiscItemAbsentByDefault)
 {
     Inventory inv;
-    BOOST_TEST(!inv.miscItemExists(InventoryMiscItem::RED_POTION));
+    BOOST_TEST(!inv.miscItemExists(Inventory::MiscItem::RED_POTION));
 }
 
 BOOST_AUTO_TEST_CASE(AddAndCheckInstrument)
 {
     Inventory inv;
-    inv.addInstrument(Instrument::FULL_MOON_CELLO);
-    BOOST_TEST(inv.instrumentExists(Instrument::FULL_MOON_CELLO));
+    inv.addInstrument(Inventory::Instrument::FULL_MOON_CELLO);
+    BOOST_TEST(inv.instrumentExists(Inventory::Instrument::FULL_MOON_CELLO));
 }
 
 BOOST_AUTO_TEST_CASE(UnaddedInstrumentNotPresent)
 {
     Inventory inv;
-    BOOST_TEST(!inv.instrumentExists(Instrument::THUNDER_DRUM));
+    BOOST_TEST(!inv.instrumentExists(Inventory::Instrument::THUNDER_DRUM));
 }
 
 BOOST_AUTO_TEST_CASE(AddAllInstruments)
 {
     Inventory inv;
-    inv.addInstrument(Instrument::FULL_MOON_CELLO);
-    inv.addInstrument(Instrument::CONCH_HORN);
-    inv.addInstrument(Instrument::SEA_LILY_BELL);
-    inv.addInstrument(Instrument::SURF_HARP);
-    inv.addInstrument(Instrument::WIND_MARIMBA);
-    inv.addInstrument(Instrument::CORAL_TRIANGLE);
-    inv.addInstrument(Instrument::ORGAN_OF_EVENING_CALM);
-    inv.addInstrument(Instrument::THUNDER_DRUM);
-    BOOST_TEST(inv.instrumentExists(Instrument::THUNDER_DRUM));
+    inv.addInstrument(Inventory::Instrument::FULL_MOON_CELLO);
+    inv.addInstrument(Inventory::Instrument::CONCH_HORN);
+    inv.addInstrument(Inventory::Instrument::SEA_LILY_BELL);
+    inv.addInstrument(Inventory::Instrument::SURF_HARP);
+    inv.addInstrument(Inventory::Instrument::WIND_MARIMBA);
+    inv.addInstrument(Inventory::Instrument::CORAL_TRIANGLE);
+    inv.addInstrument(Inventory::Instrument::ORGAN_OF_EVENING_CALM);
+    inv.addInstrument(Inventory::Instrument::THUNDER_DRUM);
+    BOOST_TEST(inv.instrumentExists(Inventory::Instrument::THUNDER_DRUM));
 }
 
 BOOST_AUTO_TEST_CASE(InstrumentsArrayReflectsAdded)
 {
     Inventory inv;
-    inv.addInstrument(Instrument::SURF_HARP);
+    inv.addInstrument(Inventory::Instrument::SURF_HARP);
     auto arr = inv.instruments();
     bool found = false;
     for (auto i : arr)
-        if (i == Instrument::SURF_HARP)
+        if (i == Inventory::Instrument::SURF_HARP)
             found = true;
     BOOST_TEST(found);
 }
@@ -1092,22 +1092,22 @@ BOOST_AUTO_TEST_CASE(SetRupees)
 BOOST_AUTO_TEST_CASE(SetRupees_CapsAtMax)
 {
     Inventory inv;
-    inv.setRupees(MAX_RUPEES + 100);
-    BOOST_TEST(inv.rupees() == MAX_RUPEES);
+    inv.setRupees(Inventory::MAX_RUPEES + 100);
+    BOOST_TEST(inv.rupees() == Inventory::MAX_RUPEES);
 }
 
 BOOST_AUTO_TEST_CASE(AddRupee_CapsAtMax)
 {
     Inventory inv;
-    inv.setRupees(MAX_RUPEES);
+    inv.setRupees(Inventory::MAX_RUPEES);
     inv.addRupee();
-    BOOST_TEST(inv.rupees() == MAX_RUPEES);
+    BOOST_TEST(inv.rupees() == Inventory::MAX_RUPEES);
 }
 
 BOOST_AUTO_TEST_CASE(SetAndGetBombs)
 {
     Inventory inv;
-    inv.setBombLimit(MAX_BOMBS_1);
+    inv.setMaxBombs(Inventory::MAX_BOMBS_1);
     inv.setBombs(10);
     BOOST_TEST(inv.bombs() == 10);
 }
@@ -1115,15 +1115,15 @@ BOOST_AUTO_TEST_CASE(SetAndGetBombs)
 BOOST_AUTO_TEST_CASE(SetBombs_CapsAtLimit)
 {
     Inventory inv;
-    inv.setBombLimit(MAX_BOMBS_1);
-    inv.setBombs(MAX_BOMBS_1 + 5);
-    BOOST_TEST(inv.bombs() == MAX_BOMBS_1);
+    inv.setMaxBombs(Inventory::MAX_BOMBS_1);
+    inv.setBombs(Inventory::MAX_BOMBS_1 + 5);
+    BOOST_TEST(inv.bombs() == Inventory::MAX_BOMBS_1);
 }
 
 BOOST_AUTO_TEST_CASE(UseBomb_Decrements)
 {
     Inventory inv;
-    inv.setBombLimit(MAX_BOMBS_1);
+    inv.setMaxBombs(Inventory::MAX_BOMBS_1);
     inv.setBombs(5);
     inv.useBomb();
     BOOST_TEST(inv.bombs() == 4);
@@ -1132,7 +1132,7 @@ BOOST_AUTO_TEST_CASE(UseBomb_Decrements)
 BOOST_AUTO_TEST_CASE(UseBomb_DoesNotGoBelowZero)
 {
     Inventory inv;
-    inv.setBombLimit(MAX_BOMBS_1);
+    inv.setMaxBombs(Inventory::MAX_BOMBS_1);
     inv.setBombs(0);
     inv.useBomb();
     BOOST_TEST(inv.bombs() == 0);
@@ -1141,17 +1141,17 @@ BOOST_AUTO_TEST_CASE(UseBomb_DoesNotGoBelowZero)
 BOOST_AUTO_TEST_CASE(SetBombLimit_UpgradesCapacity)
 {
     Inventory inv;
-    inv.setBombLimit(MAX_BOMBS_1);
-    inv.setBombs(MAX_BOMBS_1);
-    inv.setBombLimit(MAX_BOMBS_2);
-    inv.setBombs(MAX_BOMBS_2);
-    BOOST_TEST(inv.bombs() == MAX_BOMBS_2);
+    inv.setMaxBombs(Inventory::MAX_BOMBS_1);
+    inv.setBombs(Inventory::MAX_BOMBS_1);
+    inv.setMaxBombs(Inventory::MAX_BOMBS_2);
+    inv.setBombs(Inventory::MAX_BOMBS_2);
+    BOOST_TEST(inv.bombs() == Inventory::MAX_BOMBS_2);
 }
 
 BOOST_AUTO_TEST_CASE(SetAndGetArrows)
 {
     Inventory inv;
-    inv.setArrowLimit(MAX_ARROWS_1);
+    inv.setMaxArrows(Inventory::MAX_ARROWS_1);
     inv.setArrows(15);
     BOOST_TEST(inv.arrows() == 15);
 }
@@ -1159,15 +1159,15 @@ BOOST_AUTO_TEST_CASE(SetAndGetArrows)
 BOOST_AUTO_TEST_CASE(SetArrows_CapsAtLimit)
 {
     Inventory inv;
-    inv.setArrowLimit(MAX_ARROWS_1);
-    inv.setArrows(MAX_ARROWS_1 + 10);
-    BOOST_TEST(inv.arrows() == MAX_ARROWS_1);
+    inv.setMaxArrows(Inventory::MAX_ARROWS_1);
+    inv.setArrows(Inventory::MAX_ARROWS_1 + 10);
+    BOOST_TEST(inv.arrows() == Inventory::MAX_ARROWS_1);
 }
 
 BOOST_AUTO_TEST_CASE(UseArrow_Decrements)
 {
     Inventory inv;
-    inv.setArrowLimit(MAX_ARROWS_1);
+    inv.setMaxArrows(Inventory::MAX_ARROWS_1);
     inv.setArrows(3);
     inv.useArrow();
     BOOST_TEST(inv.arrows() == 2);
@@ -1176,7 +1176,7 @@ BOOST_AUTO_TEST_CASE(UseArrow_Decrements)
 BOOST_AUTO_TEST_CASE(UseArrow_DoesNotGoBelowZero)
 {
     Inventory inv;
-    inv.setArrowLimit(MAX_ARROWS_1);
+    inv.setMaxArrows(Inventory::MAX_ARROWS_1);
     inv.setArrows(0);
     inv.useArrow();
     BOOST_TEST(inv.arrows() == 0);
@@ -1185,7 +1185,7 @@ BOOST_AUTO_TEST_CASE(UseArrow_DoesNotGoBelowZero)
 BOOST_AUTO_TEST_CASE(SetAndGetMagicPowder)
 {
     Inventory inv;
-    inv.setMagicPowderLimit(MAX_MAGIC_POWDER_1);
+    inv.setMaxMagicPowder(Inventory::MAX_MAGIC_POWDER_1);
     inv.setMagicPowder(10);
     BOOST_TEST(inv.magicPowder() == 10);
 }
@@ -1193,15 +1193,15 @@ BOOST_AUTO_TEST_CASE(SetAndGetMagicPowder)
 BOOST_AUTO_TEST_CASE(SetMagicPowder_CapsAtLimit)
 {
     Inventory inv;
-    inv.setMagicPowderLimit(MAX_MAGIC_POWDER_1);
-    inv.setMagicPowder(MAX_MAGIC_POWDER_1 + 5);
-    BOOST_TEST(inv.magicPowder() == MAX_MAGIC_POWDER_1);
+    inv.setMaxMagicPowder(Inventory::MAX_MAGIC_POWDER_1);
+    inv.setMagicPowder(Inventory::MAX_MAGIC_POWDER_1 + 5);
+    BOOST_TEST(inv.magicPowder() == Inventory::MAX_MAGIC_POWDER_1);
 }
 
 BOOST_AUTO_TEST_CASE(UseMagicPowder_Decrements)
 {
     Inventory inv;
-    inv.setMagicPowderLimit(MAX_MAGIC_POWDER_1);
+    inv.setMaxMagicPowder(Inventory::MAX_MAGIC_POWDER_1);
     inv.setMagicPowder(5);
     inv.useMagicPowder();
     BOOST_TEST(inv.magicPowder() == 4);
@@ -1210,7 +1210,7 @@ BOOST_AUTO_TEST_CASE(UseMagicPowder_Decrements)
 BOOST_AUTO_TEST_CASE(UseMagicPowder_DoesNotGoBelowZero)
 {
     Inventory inv;
-    inv.setMagicPowderLimit(MAX_MAGIC_POWDER_1);
+    inv.setMaxMagicPowder(Inventory::MAX_MAGIC_POWDER_1);
     inv.setMagicPowder(0);
     inv.useMagicPowder();
     BOOST_TEST(inv.magicPowder() == 0);
@@ -1219,11 +1219,11 @@ BOOST_AUTO_TEST_CASE(UseMagicPowder_DoesNotGoBelowZero)
 BOOST_AUTO_TEST_CASE(AddAndRetrieveOcarinaSong)
 {
     Inventory inv;
-    inv.addOcarinaSong(OcarinaSong::MARIN);
+    inv.addOcarinaSong(Inventory::OcarinaSong::MARIN);
     auto songs = inv.ocarinaSongs();
     bool found = false;
     for (auto s : songs)
-        if (s == OcarinaSong::MARIN)
+        if (s == Inventory::OcarinaSong::MARIN)
             found = true;
     BOOST_TEST(found);
 }
@@ -1231,20 +1231,20 @@ BOOST_AUTO_TEST_CASE(AddAndRetrieveOcarinaSong)
 BOOST_AUTO_TEST_CASE(SetSelectedOcarinaSong)
 {
     Inventory inv;
-    inv.setOcarinaSong(OcarinaSong::FROG);
-    BOOST_TEST(std::to_underlying(inv.ocarinaSong()) == std::to_underlying(OcarinaSong::FROG));
+    inv.setOcarinaSong(Inventory::OcarinaSong::FROG);
+    BOOST_TEST(std::to_underlying(inv.ocarinaSong()) == std::to_underlying(Inventory::OcarinaSong::FROG));
 }
 
 BOOST_AUTO_TEST_CASE(AddAllThreeSongs)
 {
     Inventory inv;
-    inv.addOcarinaSong(OcarinaSong::MARIN);
-    inv.addOcarinaSong(OcarinaSong::FROG);
-    inv.addOcarinaSong(OcarinaSong::FISH);
+    inv.addOcarinaSong(Inventory::OcarinaSong::MARIN);
+    inv.addOcarinaSong(Inventory::OcarinaSong::FROG);
+    inv.addOcarinaSong(Inventory::OcarinaSong::FISH);
     auto songs = inv.ocarinaSongs();
     int count = 0;
     for (auto s : songs)
-        if (s != OcarinaSong::NONE)
+        if (s != Inventory::OcarinaSong::NONE)
             ++count;
     BOOST_TEST(count == 3);
 }
@@ -1252,21 +1252,21 @@ BOOST_AUTO_TEST_CASE(AddAllThreeSongs)
 BOOST_AUTO_TEST_CASE(DefaultTunicIsGreen)
 {
     Inventory inv;
-    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Tunic::GREEN));
+    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Inventory::Tunic::GREEN));
 }
 
 BOOST_AUTO_TEST_CASE(AddTunic_ChangesTunic)
 {
     Inventory inv;
-    inv.addTunic(Tunic::RED);
-    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Tunic::RED));
+    inv.addTunic(Inventory::Tunic::RED);
+    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Inventory::Tunic::RED));
 }
 
 BOOST_AUTO_TEST_CASE(SetTunic)
 {
     Inventory inv;
-    inv.setTunic(Tunic::BLUE);
-    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Tunic::BLUE));
+    inv.setTunic(Inventory::Tunic::BLUE);
+    BOOST_TEST(std::to_underlying(inv.tunic()) == std::to_underlying(Inventory::Tunic::BLUE));
 }
 
 BOOST_AUTO_TEST_CASE(AddHeartContainerPiece_Increments)
@@ -1279,9 +1279,9 @@ BOOST_AUTO_TEST_CASE(AddHeartContainerPiece_Increments)
 BOOST_AUTO_TEST_CASE(AddHeartContainerPiece_CapsAtMax)
 {
     Inventory inv;
-    for (int i = 0; i < HEARTS_PIECE_MAX + 2; ++i)
+    for (int i = 0; i < Inventory::MAX_HEART_PIECES + 2; ++i)
         inv.addHeartContainerPiece();
-    BOOST_TEST(inv.heartContainerPieces() == HEARTS_PIECE_MAX);
+    BOOST_TEST(inv.heartContainerPieces() == Inventory::MAX_HEART_PIECES);
 }
 
 BOOST_AUTO_TEST_CASE(SetHeartContainerPieces)
@@ -1334,26 +1334,26 @@ BOOST_AUTO_TEST_CASE(SetMaxHeartPieces)
 BOOST_AUTO_TEST_CASE(AddPhotograph_CountIncreases)
 {
     Inventory inv;
-    inv.addPhotograph(Photograph::OCEAN_VIEW);
-    BOOST_TEST(inv.photograph() == 1);
+    inv.addPhotograph(Inventory::Photograph::OCEAN_VIEW);
+    BOOST_TEST(inv.numberOfPhotographs() == 1);
 }
 
 BOOST_AUTO_TEST_CASE(AddMultiplePhotographs)
 {
     Inventory inv;
-    inv.addPhotograph(Photograph::OCEAN_VIEW);
-    inv.addPhotograph(Photograph::GAME_OVER);
-    BOOST_TEST(inv.photograph() == 2);
+    inv.addPhotograph(Inventory::Photograph::OCEAN_VIEW);
+    inv.addPhotograph(Inventory::Photograph::GAME_OVER);
+    BOOST_TEST(inv.numberOfPhotographs() == 2);
 }
 
 BOOST_AUTO_TEST_CASE(PhotographsArrayContainsAdded)
 {
     Inventory inv;
-    inv.addPhotograph(Photograph::THIEF);
+    inv.addPhotograph(Inventory::Photograph::THIEF);
     auto arr = inv.photographs();
     bool found = false;
     for (auto p : arr)
-        if (p == Photograph::THIEF)
+        if (p == Inventory::Photograph::THIEF)
             found = true;
     BOOST_TEST(found);
 }
@@ -1368,9 +1368,9 @@ BOOST_AUTO_TEST_CASE(AddGoldenLeaf_Increments)
 BOOST_AUTO_TEST_CASE(AddGoldenLeaf_CapsAtMax)
 {
     Inventory inv;
-    for (int i = 0; i < MAX_GOLDEN_LEAVES + 2; ++i)
+    for (int i = 0; i < Inventory::MAX_GOLDEN_LEAVES + 2; ++i)
         inv.addGoldenLeaf();
-    BOOST_TEST(inv.goldenLeaves() == MAX_GOLDEN_LEAVES);
+    BOOST_TEST(inv.goldenLeaves() == Inventory::MAX_GOLDEN_LEAVES);
 }
 
 BOOST_AUTO_TEST_CASE(SetGoldenLeaves)
@@ -1390,9 +1390,9 @@ BOOST_AUTO_TEST_CASE(AddSecretSeaShell_Increments)
 BOOST_AUTO_TEST_CASE(AddSecretSeaShell_CapsAtMax)
 {
     Inventory inv;
-    for (int i = 0; i < MAX_SECRET_SEASHELLS + 5; ++i)
+    for (int i = 0; i < Inventory::MAX_SECRET_SEASHELLS + 5; ++i)
         inv.addSecretSeaShell();
-    BOOST_TEST(inv.secretSeaShells() == MAX_SECRET_SEASHELLS);
+    BOOST_TEST(inv.secretSeaShells() == Inventory::MAX_SECRET_SEASHELLS);
 }
 
 BOOST_AUTO_TEST_CASE(SetSecretSeaShells)
