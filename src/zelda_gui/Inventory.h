@@ -107,7 +107,7 @@ private:
 
     void drawNumber(const engine::Sprite& srcSprite, bool drawLevel, bool useNormalFont, int trailingDigits, int number,
                     const engine::Rect<int>& dstRect) const;
-    void drawInventoryItemAttribute(const engine::Sprite& srcSprite, const core::InventoryItem& item,
+    void drawInventoryItemAttribute(const engine::Sprite& srcSprite, const core::Inventory::Item& item,
                                     const engine::Rect<int>& dstRect);
 
     std::unique_ptr<engine::Sprite> m_subscreen; // The select status at the bottom of the screen
