@@ -94,23 +94,17 @@ RoomManager::RoomManager()
 
 void RoomManager::useRoom(RoomName room)
 {
-    m_tilemapManager.setCurrentTilemap(room);
-    m_tilemapManager.setRoomLocation(0);
-
     m_roomLinkManager.useRoomLink(room);
     m_roomLinkManager.setRoomLocation(0);
 }
 
 void RoomManager::setRoomLocation(const int roomLocation)
 {
-    m_tilemapManager.setRoomLocation(roomLocation);
     m_roomLinkManager.setRoomLocation(roomLocation);
 }
 
-void RoomManager::createRoom(RoomName roomName, const engine::Sprite& tilemap, const TileIndexArrays& tileIndexArrays,
-                             const engine::Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap)
+void RoomManager::createRoom(RoomName roomName, const RoomLinkMap& roomLinkMap)
 {
-    m_tilemapManager.createTilemap(roomName, tilemap, tileIndexArrays, tilemapConfig);
     m_roomLinkManager.createRoomLink(roomName, roomLinkMap);
 }
 
@@ -175,26 +169,21 @@ void RoomManager::updateNextRoomLocation(RoomDirection direction)
     }
     else
     {
-        m_tilemapManager.setNextRoomLocation(nextRoomIndex);
         m_roomLinkManager.setRoomLocation(nextRoomIndex);
     }
 }
 
-void RoomManager::updateCurrentRoomPosition(const int x, const int y)
+void RoomManager::updateCurrentRoomPosition(const int, const int)
 {
-    m_tilemapManager.setRoomPosition(x, y);
 }
 
-void RoomManager::updateNextRoomPosition(const int x, const int y)
+void RoomManager::updateNextRoomPosition(const int, const int)
 {
-    m_tilemapManager.setNextRoomPosition(x, y);
 }
 
 void RoomManager::updateCurrentRoomLocation()
 {
     // Update room information
-    auto const currentRoomIndex = m_roomLinkManager.currentRoom();
-    m_tilemapManager.setRoomLocation(currentRoomIndex);
 }
 
 RoomManager::~RoomManager()
