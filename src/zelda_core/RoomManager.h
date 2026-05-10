@@ -3,7 +3,6 @@
 #include "core/Singleton.h"
 #include "RoomName.h"
 #include "RoomLinkManager.h"
-#include "TilemapManager.h"
 
 namespace zelda::core
 {
@@ -33,8 +32,7 @@ public:
     void useRoom(RoomName roomName);
     void setRoomLocation(const int roomLocation);
 
-    void createRoom(RoomName roomName, const engine::Sprite& tilemap, const TileIndexArrays& tileIndexArrays,
-                    const engine::Tilemap::TilemapConfig& tilemapConfig, const RoomLinkMap& roomLinkMap);
+    void createRoom(RoomName roomName, const RoomLinkMap& roomLinkMap);
 
     // Load or clear room objects from the current room
     void roomDo(RoomAction action, const size_t roomIndex);
@@ -50,7 +48,6 @@ public:
 private:
 
     RoomLinkManager m_roomLinkManager;
-    TilemapManager m_tilemapManager;
 
     // [RoomName][Room][std::vector<Rendereable*>]
 

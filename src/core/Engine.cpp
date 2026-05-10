@@ -8,6 +8,7 @@
 #include "DataManager.h"
 #include "ResourceManager.h"
 #include "Controller.h"
+#include "Renderer.h"
 
 #include <SDL.h>
 
