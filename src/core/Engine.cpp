@@ -126,14 +126,7 @@ void Engine::events()
     SDL_Event eventHandler;
     if (SDL_PollEvent(&eventHandler))
     {
-        if (eventHandler.type == SDL_QUIT)
-        {
-            stop();
-        }
-        else if (eventHandler.type == SDL_KEYDOWN || eventHandler.type == SDL_KEYUP)
-        {
-            Keyboard::instance().eventHandler(eventHandler);
-        }
+        Keyboard::instance().eventHandler(eventHandler);
     }
 }
 

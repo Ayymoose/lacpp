@@ -2,7 +2,7 @@
 #include "core/Renderer.h"
 #include "Depth.h"
 #include "core/Keyboard.h"
-#include "core/InputControl.h"
+#include "core/Keys.h"
 #include "core/Controller.h"
 #include "Link.h"
 #include "core/Colour.h"
@@ -43,27 +43,27 @@ Inventory::Inventory()
 
 void Inventory::control()
 {
-    if (engine::Keyboard::instance().keyPressed(BUTTON_A))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_A))
     {
         m_inventoryImpl.swapItemA();
     }
-    if (engine::Keyboard::instance().keyPressed(BUTTON_B))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_B))
     {
         m_inventoryImpl.swapItemB();
     }
 
     // Show the subscreen only when the select key is pushed
     // TODO: Transition it in
-    if (engine::Keyboard::instance().keyPushed(BUTTON_SELECT))
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_SELECT))
     {
         m_selectPressed = true;
     }
-    else if (engine::Keyboard::instance().keyReleased(BUTTON_SELECT))
+    else if (engine::Keyboard::instance().keyReleased(engine::BUTTON_SELECT))
     {
         m_selectPressed = false;
     }
 
-    if (engine::Keyboard::instance().keyPressed(BUTTON_START))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_START))
     {
         close();
         engine::Controller::instance().popController();
@@ -83,31 +83,31 @@ void Inventory::control()
     // If it was pressed and hadn't been released yet,
 
     // This code controls the selector through arrow keys
-    if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_RIGHT))
     {
         moveSelector(engine::Direction::RIGHT);
     }
-    if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_LEFT))
     {
         moveSelector(engine::Direction::LEFT);
     }
-    if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_UP))
     {
         moveSelector(engine::Direction::UP);
     }
-    if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_DOWN))
     {
         moveSelector(engine::Direction::DOWN);
     }
 
     // If any select keys pressed, reset the flashing animation
-    if (engine::Keyboard::instance().keyPushed(BUTTON_RIGHT) || engine::Keyboard::instance().keyPushed(BUTTON_LEFT)
-        || engine::Keyboard::instance().keyPushed(BUTTON_DOWN) || engine::Keyboard::instance().keyPushed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_RIGHT) || engine::Keyboard::instance().keyPushed(engine::BUTTON_LEFT)
+        || engine::Keyboard::instance().keyPushed(engine::BUTTON_DOWN) || engine::Keyboard::instance().keyPushed(engine::BUTTON_UP))
     {
         m_flashSelector = true;
     }
 
-    if (engine::Keyboard::instance().keyReleased(BUTTON_SELECT))
+    if (engine::Keyboard::instance().keyReleased(engine::BUTTON_SELECT))
     {
         m_selectPressed = true;
     }

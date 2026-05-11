@@ -5,7 +5,7 @@
 #include "core/Engine.h"
 #include "core/Controller.h"
 #include "core/Keyboard.h"
-#include "core/InputControl.h"
+#include "core/Keys.h"
 #include "core/Random.h"
 #include "core/Toggle.h"
 
@@ -298,14 +298,14 @@ void Dialogue::update()
 
 void Dialogue::control()
 {
-    if (m_continue && engine::Keyboard::instance().keyPressed(BUTTON_B))
+    if (m_continue && engine::Keyboard::instance().keyPressed(engine::BUTTON_B))
     {
         m_scrollMessage = true;
         m_continue = false;
         m_scrolledLines = m_dialogueImpl.maxLines() - 1;
         m_toggleArrow.reset();
     }
-    else if ((m_currentChar == m_dialogueImpl.message().length()) && engine::Keyboard::instance().keyPressed(BUTTON_B))
+    else if ((m_currentChar == m_dialogueImpl.message().length()) && engine::Keyboard::instance().keyPressed(engine::BUTTON_B))
     {
         reset();
 
@@ -321,7 +321,7 @@ void Dialogue::control()
     }
     else if (m_dialogueImpl.isQuestion() && m_currentChar == m_dialogueImpl.message().length())
     {
-        if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT)
+        if (engine::Keyboard::instance().keyPressed(engine::BUTTON_RIGHT)
             && m_dialogueImpl.choice() != m_dialogueImpl.choice2())
         {
             m_questionXPos += (m_dialogueImpl.choice().length() + 2) * m_dialogueImpl.charWidth();
@@ -329,7 +329,7 @@ void Dialogue::control()
             // If pressed right once
             // Choice is 2
         }
-        else if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT)
+        else if (engine::Keyboard::instance().keyPressed(engine::BUTTON_LEFT)
                  && m_dialogueImpl.choice() != m_dialogueImpl.choice1())
         {
             // If pressed left once
