@@ -1,7 +1,7 @@
 #include "Link.h"
 #include "core/ResourceManager.h"
 #include "core/Keyboard.h"
-#include "core/InputControl.h"
+#include "core/Keys.h"
 #include "core/Controller.h"
 #include "core/Renderer.h"
 #include "core/Logger.h"
@@ -108,7 +108,21 @@ void Link::render()
 
 void Link::control()
 {
-    if (engine::Keyboard::instance().keyPushed(BUTTON_LEFT))
+    //if (engine::Keyboard::instance().keyPushed(BUTTON_LEFT))
+    {
+
+    }
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_LEFT))
+    {
+
+    }
+    if (engine::Keyboard::instance().keyReleased(engine::BUTTON_LEFT))
+    {
+
+    }
+
+
+    /*if (engine::Keyboard::instance().keyPushed(BUTTON_LEFT))
     {
         m_position.x -= 1;
     }
@@ -131,22 +145,22 @@ void Link::control()
         m_inventory.open();
         // Controller::getInstance().setController();
         engine::Controller::instance().pushController(&m_inventory);
-    }
+    }*/
 }
 
 void Link::attack()
 {
-    if (engine::Keyboard::instance()[BUTTON_A])
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_A))
     {
         // useWeapon(m_inventory.weaponA().first);
     }
-    if (engine::Keyboard::instance()[BUTTON_B])
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_B))
     {
         // useWeapon(m_inventory.weaponB().first);
     }
 
 
-    if (engine::Keyboard::instance().keyReleased(BUTTON_A))
+    if (engine::Keyboard::instance().keyReleased(engine::BUTTON_A))
     {
         /*if (m_inventory.weaponA().first == WPN_SHIELD)
         {
@@ -154,7 +168,7 @@ void Link::attack()
             updateState();
         }*/
     }
-    if (engine::Keyboard::instance().keyReleased(BUTTON_B))
+    if (engine::Keyboard::instance().keyReleased(engine::BUTTON_B))
     {
         /*if (m_inventory.weaponB().first == WPN_SHIELD)
         {
@@ -197,7 +211,7 @@ void Link::replenish(float hearts)
 // Link control
 void Link::move()
 {
-    if (engine::Keyboard::instance().keyPushed(BUTTON_RIGHT))
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_RIGHT))
     {
         // TODO: Diagonal speed lock
         m_speedX = m_speed;
@@ -264,7 +278,7 @@ void Link::move()
         }
     }
 
-    if (engine::Keyboard::instance().keyPushed(BUTTON_LEFT))
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_LEFT))
     {
         m_speedX = -m_speed;
 
@@ -329,7 +343,7 @@ void Link::move()
             m_dir = engine::Direction::LEFT;
         }
     }
-    if (engine::Keyboard::instance().keyPushed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_UP))
     {
         m_speedY = -m_speed;
 
@@ -394,7 +408,7 @@ void Link::move()
             m_dir = engine::Direction::UP;
         }
     }
-    if (engine::Keyboard::instance().keyPushed(BUTTON_DOWN))
+    if (engine::Keyboard::instance().keyPushed(engine::BUTTON_DOWN))
     {
         m_speedY = m_speed;
 

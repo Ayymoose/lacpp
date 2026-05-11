@@ -4,7 +4,7 @@
 #include "Depth.h"
 #include "core/Logger.h"
 #include "core/Renderer.h"
-#include "core/InputControl.h"
+#include "core/Keys.h"
 #include "core/Keyboard.h"
 #include "core/Controller.h"
 #include "core/Engine.h"
@@ -26,7 +26,7 @@ Worldmap::Worldmap()
 void Worldmap::control()
 {
     // TODO: Fix key press overlaps between inventory and worldmap
-    if (engine::Keyboard::instance().keyPressed(BUTTON_SELECT))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_SELECT))
     {
         close();
         engine::Controller::instance().popController();
@@ -35,29 +35,29 @@ void Worldmap::control()
     }
 
     // Move scope around map if the area is visited
-    if (engine::Keyboard::instance().keyPressed(BUTTON_RIGHT))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_RIGHT))
     {
         m_worldMapImpl.moveMarker<engine::Direction::RIGHT>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
-    if (engine::Keyboard::instance().keyPressed(BUTTON_LEFT))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_LEFT))
     {
         m_worldMapImpl.moveMarker<engine::Direction::LEFT>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
-    if (engine::Keyboard::instance().keyPressed(BUTTON_UP))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_UP))
     {
         m_worldMapImpl.moveMarker<engine::Direction::UP>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
-    if (engine::Keyboard::instance().keyPressed(BUTTON_DOWN))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_DOWN))
     {
         m_worldMapImpl.moveMarker<engine::Direction::DOWN>();
         std::tie(m_scopeX, m_scopeY) = m_worldMapImpl.location();
     }
 
     // Display location name if any
-    if (engine::Keyboard::instance().keyPressed(BUTTON_B))
+    if (engine::Keyboard::instance().keyPressed(engine::BUTTON_B))
     {
         // Display location name above/below scope
         Dialogue::instance().message(m_worldMapImpl.locationName(), (WORLDMAP_START_Y + m_scopeY * 8) - 10);

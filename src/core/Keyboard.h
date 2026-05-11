@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Singleton.h"
-#include <SDL_scancode.h>
+#include "Keys.h"
+
 #include <SDL_events.h>
+#include <array>
 
 namespace zelda::engine
 {
@@ -10,25 +12,28 @@ namespace zelda::engine
 class Keyboard : public Singleton<Keyboard>
 {
 public:
-    Keyboard();
     void eventHandler(SDL_Event event);
 
-    // Returns true if a key is being pushed (held)
-    bool keyPushed(const int key) const;
+    [[nodiscard]] bool keyPushed(Key key) const;
+    [[nodiscard]] bool keyPressed(Key key);
+    [[nodiscard]] bool keyReleased(Key key);
 
-    bool keyPressed(const int key);
-
-    bool keyReleased(const int key);
-    int operator[](const int key);
+    void clearStates();
 
 private:
-    // Updates the internal key state for every key
-    void updateKeyStates(const int key, const bool pushed, const bool released);
+    template <bool Pushed, bool Released>
+    void updateKeyStates(Key key);
 
-    bool m_keyStatePushed[SDL_NUM_SCANCODES];
-    bool m_keyStatePressed[SDL_NUM_SCANCODES];
-    bool m_keyStatePressedRecord[SDL_NUM_SCANCODES];
-    bool m_keyStateReleased[SDL_NUM_SCANCODES];
+    struct KeyState
+    {
+        bool pushed = false;   // held down this frame
+        bool pressed = false;  // single-fire: true for one query after first press
+        bool record = false;   // latch: prevents pressed re-triggering while held
+        bool released = false; // true for one query after key-up
+    };
+
+    static constexpr int NUM_KEYS = 512; // SDL_NUM_SCANCODES
+    std::array<KeyState, NUM_KEYS> m_keys{};
 };
 
 } // namespace zelda::engine

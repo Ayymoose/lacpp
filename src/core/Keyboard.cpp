@@ -1,100 +1,88 @@
 #include "Keyboard.h"
-#include "Logger.h"
-#include <iostream>
+
 #include <cassert>
+#include <utility>
 
 namespace zelda::engine
 {
-
-Keyboard::Keyboard()
-{
-    for (int i = 0; i < SDL_NUM_SCANCODES; i++)
-    {
-        m_keyStatePushed[i] = false;
-        m_keyStateReleased[i] = false;
-        m_keyStatePressed[i] = false;
-        m_keyStatePressedRecord[i] = false;
-    }
-}
 
 void Keyboard::eventHandler(SDL_Event event)
 {
     switch (event.type)
     {
     case SDL_KEYDOWN:
-        Keyboard::instance().updateKeyStates(event.key.keysym.scancode, true, false);
-        // If key was released in the next frame, set it to not released now
+        updateKeyStates<true, false>(static_cast<Key>(event.key.keysym.scancode));
         break;
     case SDL_KEYUP:
-        Keyboard::instance().updateKeyStates(event.key.keysym.scancode, false, true);
-        // Set key released to true on this frame
+        updateKeyStates<false, true>(static_cast<Key>(event.key.keysym.scancode));
+        break;
+    default:
         break;
     }
 }
 
-// Updates the internal key state every frame
-void Keyboard::updateKeyStates(const int key, const bool pushed, const bool released)
+template <bool pushed, bool released>
+void Keyboard::updateKeyStates(Key key)
 {
-    assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
-    m_keyStatePushed[key] = pushed;
-    m_keyStateReleased[key] = released;
+    const auto idx = std::to_underlying(key);
+    assert(idx > 0 && idx < NUM_KEYS);
+    auto& state = m_keys[idx];
 
-    // If a key is pressed (true), record it pressed on this round and return true
-    if (pushed && m_keyStatePressedRecord[key] == false)
+    if constexpr (pushed)
     {
-        m_keyStatePressed[key] = true;
-        m_keyStatePressedRecord[key] = true;
+        state.pushed = true;
+        if (!state.record)
+        {
+            state.pressed = true;
+            state.record = true;
+        }
     }
-    else if (released)
+    else if constexpr (released)
     {
-        // Only when released can it be pressed again
-        m_keyStatePressedRecord[key] = false;
-        m_keyStatePressed[key] = false;
+        state.pushed = false;
+        state.released = true;
+        // Key must be released before pressed can fire again
+        state.record = false;
+        state.pressed = false;
     }
 }
 
-bool Keyboard::keyPushed(const int key) const
+bool Keyboard::keyPushed(Key key) const
 {
-    assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
-    return m_keyStatePushed[key];
+    const auto idx = std::to_underlying(key);
+    assert(idx > 0 && idx < NUM_KEYS);
+    return m_keys[idx].pushed;
 }
 
-// TODO: Bug in this code where this event is only fired once when pressing a key repeatedly
-bool Keyboard::keyPressed(const int key)
+bool Keyboard::keyPressed(Key key)
 {
-    assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
-    // Next round, if the key we recorded pressed was still pressed, return
-    // false until it is released When it gets released, clear both states
-
-    // If it's true now, return true then make it false
-    if (m_keyStatePressed[key])
+    const auto idx = std::to_underlying(key);
+    assert(idx > 0 && idx < NUM_KEYS);
+    auto& state = m_keys[idx];
+    if (state.pressed)
     {
-        Logger::instance().log<Logger::Mask::INFO>(std::to_string(key) + " was pressed");
-        m_keyStatePressed[key] = false;
+        state.pressed = false;
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
-bool Keyboard::keyReleased(const int key)
+bool Keyboard::keyReleased(Key key)
 {
-    assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
-    if (m_keyStateReleased[key])
+    const auto idx = std::to_underlying(key);
+    assert(idx > 0 && idx < NUM_KEYS);
+    auto& state = m_keys[idx];
+    if (state.released)
     {
-        Logger::instance().log<Logger::Mask::INFO>(std::to_string(key) + " was released");
-        m_keyStateReleased[key] = false;
+        state.released = false;
         return true;
     }
-    return m_keyStateReleased[key];
+    return false;
 }
 
-int Keyboard::operator[](const int key)
+void Keyboard::clearStates()
 {
-    assert(key > SDL_SCANCODE_UNKNOWN && key < SDL_NUM_SCANCODES);
-    return m_keyStatePushed[key];
+    m_keys = {};
 }
 
 } // namespace zelda::engine
