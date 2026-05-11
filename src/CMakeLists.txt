@@ -48,7 +48,6 @@ set_target_properties(${APP_NAME} PROPERTIES
 )
 
 add_library(GAME_CORE STATIC
-        core/Camera.cpp
         core/DataManager.cpp
         core/Engine.cpp
         core/Keyboard.cpp

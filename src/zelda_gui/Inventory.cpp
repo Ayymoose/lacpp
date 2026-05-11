@@ -854,7 +854,7 @@ void Inventory::drawInventoryBackground()
     }
     else
     {
-        renderY = engine::CAMERA_HEIGHT;
+        renderY = 160; //engine::CAMERA_HEIGHT;
     }
 
     // Render the inventory background
