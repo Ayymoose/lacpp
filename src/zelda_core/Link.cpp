@@ -92,11 +92,13 @@ void Link::render()
     // Source rect to pull from sprite sheet
     // m_srcRect = {m_animateXPos + (m_currentFrame * m_width), m_animateYPos, m_width, m_height};
 
+    auto cameraPosition =  engine::Camera<float>::instance().toCoordinates(m_position);
+
     // Where to draw on screen
     m_dstRect = {// TODO: Create method that returns the destRect in camera
                  // co-ordinates e.g cameraCoordinate()
-                 m_position.x - engine::Camera::instance().getX(),
-                 m_position.y - engine::Camera::instance().getY(),
+                 cameraPosition.x,
+                 cameraPosition.y,
                  static_cast<float>(m_width),
                  static_cast<float>(m_height)};
 

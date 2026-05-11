@@ -102,7 +102,7 @@ void Engine::initSingleton() const
     Controller::instance();
     Keyboard::instance();
     core::RoomManager::instance();
-    Camera::instance();
+    Camera<float>::instance();
     DataManager::instance();
     core::Link::instance();
 }
@@ -116,8 +116,9 @@ void Engine::initWindow()
     Renderer::instance().create(m_mainWindow);
 
     // Stretch the textures to the window size
-    Renderer::instance().setRendererScale(MAIN_WINDOW_WIDTH / static_cast<float>(CAMERA_WIDTH),
-                                             MAIN_WINDOW_HEIGHT / (static_cast<float>(CAMERA_HEIGHT) + HUD_HEIGHT));
+    Renderer::instance().setRendererScale(MAIN_WINDOW_WIDTH / static_cast<float>(160 /*CAMERA_WIDTH*/),
+                                          MAIN_WINDOW_HEIGHT
+                                              / (static_cast<float>(128 /*CAMERA_HEIGHT*/) + 16 /*HUD_HEIGHT*/));
 }
 
 void Engine::events()

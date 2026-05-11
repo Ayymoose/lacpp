@@ -20,9 +20,9 @@ constexpr int SELECTOR_INCREASE_Y = 23;
 // The entire inventory
 constexpr int INVENTORY_INTERNAL_X = 0;
 constexpr int INVENTORY_INTERNAL_Y = 21;
-constexpr int INVENTORY_WIDTH = engine::CAMERA_WIDTH;
+constexpr int INVENTORY_WIDTH = 160; // engine::CAMERA_WIDTH;
 constexpr int INVENTORY_HEIGHT =
-    engine::CAMERA_WIDTH - engine::HUD_HEIGHT; // Because of the HUD being at the top of the screen
+    128 - 16; // engine::CAMERA_WIDTH - engine::HUD_HEIGHT; // Because of the HUD being at the top of the screen
 
 // Inventory dividers horizontal/vertical
 constexpr int INVENTORY_DIVIDER_XH = 0;

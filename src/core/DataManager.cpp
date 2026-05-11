@@ -76,7 +76,7 @@ void DataManager::loadRooms() const
     core::RoomManager::instance().setRoomLocation(28);
     // Link::getInstance().setDungeonMarkerLocation(3, 8);
     Controller::instance().setController(&core::Link::instance());
-    Camera::instance().setScrollSpeed(CAMERA_SCROLL_SPEED);
+    Camera<float>::instance().setScrollSpeed(4/*CAMERA_SCROLL_SPEED*/);
 
 
     // Dialogue::getInstance().question("Our colors are  ""never the same! ""If
