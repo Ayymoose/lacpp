@@ -62,7 +62,6 @@ add_library(GAME_CORE STATIC
         zelda_core/Dialogue.cpp
         zelda_core/Inventory.cpp
         zelda_core/Link.cpp
-        zelda_core/RoomLinkManager.cpp
         zelda_core/RoomManager.cpp
         zelda_core/Worldmap.cpp
         #
