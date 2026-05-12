@@ -2,69 +2,116 @@
 
 #include "core/Singleton.h"
 #include "RoomName.h"
-#include "RoomLinkManager.h"
+#include "core/Direction.h"
+#include "core/Renderable.h"
+#include "core/Renderer.h"
+
+#include <cassert>
+#include <vector>
 
 namespace zelda::core
 {
-// using RoomObjects = std::vector<Renderable*>;
-// using Room = std::vector<RoomObjects>;
-
-enum class RoomAction
-{
-    LOAD,
-    CLEAR
-};
-
-enum class RoomDirection
-{
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
-};
 
 class RoomManager : public engine::Singleton<RoomManager>
 {
 public:
     RoomManager();
-    ~RoomManager();
+
+    enum class Action
+    {
+        LOAD,
+        CLEAR
+    };
+
+    struct RoomLink
+    {
+        // -1 is a hard error - no room in that direction
+        int left{-1};
+        int right{-1};
+        int up{-1};
+        int down{-1};
+    };
+
+    struct RoomArea
+    {
+        RoomLink link;
+        std::vector<engine::Renderable*> objects;
+    };
+
+    struct Room
+    {
+        RoomName name{RoomName::NONE};
+        std::vector<RoomArea> areas;
+    };
+
+
     // Sets the room to use
-    void useRoom(RoomName roomName);
-    void setRoomLocation(const int roomLocation);
+    void setRoom(RoomName name);
 
-    void createRoom(RoomName roomName, const RoomLinkMap& roomLinkMap);
+    // And the room area within that room
+    void setRoomArea(int index);
 
-    // Load or clear room objects from the current room
-    void roomDo(RoomAction action, const size_t roomIndex);
-    void transitionObjects(size_t roomIndex, const int xTransition, const int yTransition);
+    int getRoomArea() const;
 
+    // Add a room
+    void addRoom(RoomName name, const std::vector<RoomArea>& areas);
 
-    // Room transition related functions
-    void updateCurrentRoomLocation();
-    void updateNextRoomLocation(RoomDirection direction);
-    void updateCurrentRoomPosition(const int x, const int y);
-    void updateNextRoomPosition(const int x, const int y);
+    // Load or clear room objects from the current room area
+    template <Action action>
+    void roomDo(size_t roomIndex)
+    {
+        assert(m_currentRoom != RoomName::NONE);
+        const auto& areas = m_rooms[std::to_underlying(m_currentRoom)].areas;
+
+        assert(roomIndex < areas.size());
+        for (const auto object : areas[roomIndex].objects)
+        {
+            if constexpr (action == Action::LOAD)
+            {
+                engine::Renderer::instance().addRenderable(object);
+            }
+            else if constexpr (action == Action::CLEAR)
+            {
+                engine::Renderer::instance().removeRenderable(object);
+            }
+        }
+    }
+
+    template <engine::Direction direction>
+    [[nodiscard]] int moveRoomArea()
+    {
+        // When moving room areas, we need to load the next room area first
+        int oldRoomArea = m_currentRoomArea;
+        const auto& link = m_rooms[std::to_underlying(m_currentRoom)].areas[m_currentRoomArea].link;
+        if constexpr (direction == engine::Direction::LEFT)
+        {
+            assert(link.left != -1);
+            m_currentRoomArea = link.left;
+        }
+        else if constexpr (direction == engine::Direction::RIGHT)
+        {
+            assert(link.right != -1);
+            m_currentRoomArea = link.right;
+        }
+        else if constexpr (direction == engine::Direction::UP)
+        {
+            assert(link.up != -1);
+            m_currentRoomArea = link.up;
+        }
+        else if constexpr (direction == engine::Direction::DOWN)
+        {
+            assert(link.down != -1);
+            m_currentRoomArea = link.down;
+        }
+        // Then clear the old one
+        return oldRoomArea;
+    }
 
 private:
+    RoomName m_currentRoom;
 
-    RoomLinkManager m_roomLinkManager;
+    int m_currentRoomArea;
 
-    // [RoomName][Room][std::vector<Rendereable*>]
-
-    // Loads animated tiles
-    // Room objects (Enemies, Objects, NPC etc)
-
-    // 10 tiles across of animated water starting at (32,32) rotated 90 degrees
-    // AnimatedObject(LIGHT_WATER, 32, 32, 10, ROTATE_90)
-
-    // One object with list of positions of this object
-    // OR
-    // Many objects with different positions
-
-    // When a room is loaded, add objects to the render set
-    // Remove them from the render set when new room is loaded
-
-    // Room m_currentRoom;
-    // std::unordered_map<RoomName, Room> m_rooms;
+    std::vector<Room> m_rooms;
 };
 } // namespace zelda::core
