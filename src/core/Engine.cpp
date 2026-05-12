@@ -16,54 +16,41 @@ namespace zelda::engine
 {
 void Engine::init()
 {
-    // Initialise everything
     initVideo();
     initAudio();
     initControl();
     initWindow();
     initData();
     initSingleton();
-
-    // m_initialised = true;
-
-    Logger::instance().log<Logger::Mask::INFO>("Engine initialised");
+    m_initialised = true;
 }
 
 void Engine::run()
 {
-    // assert(m_initialised && "Engine is not initialised");
-    assert(m_engineRunning == false && "Engine already running");
-
-    m_engineRunning = true;
-
-    // Main game loop
-    while (m_engineRunning)
+    assert(!m_running);
+    m_running = true;
+    while (m_running)
     {
-        events();
+        input();
         update();
-        preRenderTestFunction();
         render();
     }
 }
 
 void Engine::stop()
 {
-    // Cleanup
-    assert(m_engineRunning && "Engine is not running");
-    Logger::instance().log<Logger::Mask::INFO>("Engine has stopped running");
-    m_engineRunning = false;
-    m_preRenderTestFunction = nullptr;
-    m_renderTestFunction = nullptr;
+    assert(m_running);
+    m_running = false;
 }
 
 void Engine::pause(bool pause)
 {
-    m_enginePaused = pause;
+    m_paused = pause;
 }
 
 bool Engine::paused() const
 {
-    return m_enginePaused;
+    return m_paused;
 }
 
 Engine::~Engine()
@@ -121,30 +108,34 @@ void Engine::initWindow()
                                               / (static_cast<float>(128 /*CAMERA_HEIGHT*/) + 16 /*HUD_HEIGHT*/));
 }
 
-void Engine::events()
+void Engine::input()
 {
     SDL_Event eventHandler;
     if (SDL_PollEvent(&eventHandler))
     {
-        Keyboard::instance().eventHandler(eventHandler);
+        if (eventHandler.type == SDL_QUIT)
+        {
+            stop();
+        }
+        else
+        {
+            Keyboard::instance().eventHandler(eventHandler);
+        }
     }
 }
 
 void Engine::update() const
 {
-    auto const controller = Controller::instance().getController();
-    if (controller)
+    if (const auto controller = Controller::instance().getController(); controller)
     {
         controller->control();
     }
-    auto const gameObjects = Renderer::instance().getRenderSet();
-    for (const auto& gameObject : gameObjects)
+    for (const auto& object : Renderer::instance().getRenderSet())
     {
-        assert(gameObject);
-        auto const updateableGameObject = dynamic_cast<Updateable*>(gameObject);
-        if (updateableGameObject)
+        assert(object);
+        if (const auto updateable = dynamic_cast<Updateable*>(object); updateable)
         {
-            updateableGameObject->update();
+            updateable->update();
         }
     }
 }
@@ -152,13 +143,11 @@ void Engine::update() const
 void Engine::render() const
 {
     Renderer::instance().clearScreen(Colour::BLACK);
-    auto const renderables = Renderer::instance().getRenderSet();
-    for (const auto& renderable : renderables)
+    for (const auto& renderable : Renderer::instance().getRenderSet())
     {
         assert(renderable);
         renderable->render();
     }
-    renderTestFunction();
     Renderer::instance().renderScreen();
 }
 
