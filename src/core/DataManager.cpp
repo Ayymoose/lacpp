@@ -1,8 +1,6 @@
 #include "ResourceManager.h"
 #include "DataManager.h"
-#include "zelda_core/RoomLinkManager.h"
 #include "Colour.h"
-
 #include "zelda_core/RoomManager.h"
 
 
@@ -48,7 +46,7 @@ void DataManager::loadSprites()
 
 void DataManager::loadTailCave()
 {
-    core::RoomLinkMap roomLinkMap = {
+    /*core::RoomLinkMap roomLinkMap = {
         {0, {-1, 1, -1, 6}},    {1, {0, 2, -1, 7}},     {2, {1, -1, -1, 8}},    {3, {-1, 4, -1, -1}},
         {4, {3, 5, -1, 10}},    {5, {4, 6, -1, 11}},    {6, {5, 7, 0, 12}},     {7, {6, 8, 1, 13}},
         {8, {7, -1, 2, 14}},    {9, {-1, -1, -1, 15}},  {10, {-1, 11, 4, 17}},  {11, {10, 12, 5, 18}},
@@ -57,7 +55,7 @@ void DataManager::loadTailCave()
         {20, {19, 21, 13, -1}}, {21, {20, -1, 14, -1}}, {22, {-1, -1, 15, -1}}, {23, {-1, 24, 17, 27}},
         {24, {23, 25, 18, 28}}, {25, {24, -1, 19, -1}}, {26, {-1, 27, -1, -1}}, {27, {26, 28, 23, -1}},
         {28, {27, -1, 24, -1}},
-    };
+    };*/
 
     // TODO: Load collision data
     // TODO: Load enemies/room objects at some point
