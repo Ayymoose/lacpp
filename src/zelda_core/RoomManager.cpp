@@ -1,205 +1,36 @@
 #include "RoomManager.h"
-
-#include <cassert>
-
+#include "RoomName.h"
 
 namespace zelda::core
 {
 
 RoomManager::RoomManager()
+    : m_currentRoom(RoomName::NONE)
+    , m_currentRoomArea(-1)
 {
-    // Tail Cave room objects
-    /*Room tc =
-
-    {
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {
-            // TODO: Create EnemyFactory class
-           // new AnimatedObject(AnimatedClass::AN_TORCH,144,32,0,90),
-           // new AnimatedObject(AnimatedClass::AN_TORCH,144,80,0,90),
-        },
-        {
-           // new ShyGuy(64,64),
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
-        },
-        {
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,48,16,0,0),
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,96,16,0,0),
-        },
-        {},
-        {},
-        {},
-        {
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,80,16,0,0),
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
-           // new AnimatedObject(AnimatedClass::AN_CANDLE,80,96,0,0),
-        },
-        {
-           // new Gibdo(32,32),
-           // new Gibdo(64,32),
-           // new AnimatedObject(AnimatedClass::AN_TORCH,0,32,0,-90),
-           // new AnimatedObject(AnimatedClass::AN_TORCH,0,80,0,-90)
-        },
-        {   // Starting room Tail Cave
-            // Better yet, one allocation with variable arguments of positions
-            new AnimatedObject(AnimatedClass::AN_CANDLE,16,16,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,128,16,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,16,96,0,0),
-            new AnimatedObject(AnimatedClass::AN_CANDLE,128,96,0,0),
-            new Octorok(EnemyType::Basic,80,80),
-            new IronMask(64,64),
-            new PigWarrior(EnemyType::Basic, 48,32),
-            new Moblin(EnemyType::Basic, 48,32),
-            new Darknut(EnemyType::Basic, 64,64),
-            new ShroudedStalfos(EnemyType::Basic, 64,64),
-        },
-        {},
-        {},
-        {}
-    };
-
-    m_rooms[RM_TAIL_CAVE] = tc;*/
+    m_rooms.resize(std::to_underlying(RoomName::COUNT));
 }
 
-void RoomManager::useRoom(RoomName room)
+void RoomManager::setRoom(RoomName room)
 {
-    m_roomLinkManager.useRoomLink(room);
-    m_roomLinkManager.setRoomLocation(0);
+    m_currentRoom = room;
 }
 
-void RoomManager::setRoomLocation(const int roomLocation)
+void RoomManager::setRoomArea(int index)
 {
-    m_roomLinkManager.setRoomLocation(roomLocation);
+    m_currentRoomArea = index;
 }
 
-void RoomManager::createRoom(RoomName roomName, const RoomLinkMap& roomLinkMap)
+int RoomManager::getRoomArea() const
 {
-    m_roomLinkManager.createRoomLink(roomName, roomLinkMap);
+    return m_currentRoomArea;
 }
 
-// Loads the room objects for the current room at roomIndex
-void RoomManager::roomDo(RoomAction, size_t)
+void RoomManager::addRoom(RoomName name, const std::vector<RoomArea>& areas)
 {
-    // Check we have a room
-    /*assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");
-
-    // Add or remove objects depending on action
-    for (auto const& roomObject : m_currentRoom[roomIndex])
-    {
-        assert(roomObject);
-        if (action == RoomAction::ROOM_LOAD)
-        {
-            Renderer::getInstance().addRenderable(roomObject);
-        }
-        else
-        {
-            Renderer::getInstance().removeRenderable(roomObject);
-        }
-    }*/
-}
-
-void RoomManager::transitionObjects(const size_t, const int, const int)
-{
-    // Check we have a room
-    /*assert(m_currentRoom.size() && roomIndex < m_currentRoom.size() && "Invalid room access");
-
-    // Add or remove objects depending on action
-    for (auto const& roomObject : m_currentRoom[roomIndex])
-    {
-        assert(roomObject);
-        roomObject->transition(xTransition, yTransition);
-    }*/
-}
-
-void RoomManager::updateNextRoomLocation(RoomDirection direction)
-{
-    int nextRoomIndex;
-    switch (direction)
-    {
-    case RoomDirection::LEFT:
-        nextRoomIndex = m_roomLinkManager.roomLink().left;
-        break;
-    case RoomDirection::RIGHT:
-        nextRoomIndex = m_roomLinkManager.roomLink().right;
-        break;
-    case RoomDirection::UP:
-        nextRoomIndex = m_roomLinkManager.roomLink().up;
-        break;
-    case RoomDirection::DOWN:
-        nextRoomIndex = m_roomLinkManager.roomLink().down;
-        break;
-    default:
-        nextRoomIndex = -1;
-        assert(false);
-    }
-    if (nextRoomIndex == -1)
-    {
-        assert(false && "Invalid next room index");
-    }
-    else
-    {
-        m_roomLinkManager.setRoomLocation(nextRoomIndex);
-    }
-}
-
-void RoomManager::updateCurrentRoomPosition(const int, const int)
-{
-}
-
-void RoomManager::updateNextRoomPosition(const int, const int)
-{
-}
-
-void RoomManager::updateCurrentRoomLocation()
-{
-    // Update room information
-}
-
-RoomManager::~RoomManager()
-{
-    // Free all newed objects in each room
-    /* for (auto const& [roomName, room] : m_rooms)
-     {
-         for (auto const& roomObjects : room)
-         {
-             for (auto const& roomObject : roomObjects)
-             {
-                 delete roomObject;
-             }
-         }
-     }*/
-    // m_currentRoom is now dangling!
+    const auto index = std::to_underlying(name);
+    m_rooms[index].name = name;
+    m_rooms[index].areas = areas;
 }
 
 } // namespace zelda::core

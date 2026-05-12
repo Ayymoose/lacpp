@@ -62,7 +62,7 @@ void DataManager::loadTailCave()
     // TODO: Load collision data
     // TODO: Load enemies/room objects at some point
 
-    core::RoomManager::instance().createRoom(core::RoomName::TAIL_CAVE, roomLinkMap);
+    //core::RoomManager::instance().addRoom(core::RoomName::TAIL_CAVE, roomLinkMap);
 }
 
 void DataManager::loadRooms() const
@@ -72,8 +72,8 @@ void DataManager::loadRooms() const
 
     // TODO: Setup initial starting positions somewhere
     // e.g GameManager
-    core::RoomManager::instance().useRoom(core::RoomName::TAIL_CAVE);
-    core::RoomManager::instance().setRoomLocation(28);
+    core::RoomManager::instance().setRoom(core::RoomName::TAIL_CAVE);
+    core::RoomManager::instance().setRoomArea(28);
     // Link::getInstance().setDungeonMarkerLocation(3, 8);
     Controller::instance().setController(&core::Link::instance());
     Camera<float>::instance().setScrollSpeed(4/*CAMERA_SCROLL_SPEED*/);
