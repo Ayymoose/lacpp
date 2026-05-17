@@ -1,4 +1,5 @@
 #include "zelda_core/Inventory.h"
+#include "zelda_gui/Inventory.h"
 #include "core/Renderer.h"
 #include "Depth.h"
 #include "core/Keyboard.h"
@@ -12,6 +13,7 @@
 
 namespace zelda::gui
 {
+
 Inventory::Inventory()
     : Renderable("Inventory",
                  engine::Sprite(engine::Renderer::instance().getRenderer(), INVENTORY_WIDTH, INVENTORY_HEIGHT),
@@ -67,7 +69,6 @@ void Inventory::control()
     {
         close();
         engine::Controller::instance().popController();
-        core::Link::instance().updateState();
         engine::Engine::instance().pause(false);
         Logger::instance().log<Logger::Mask::INFO>("Inventory closed!");
     }

@@ -2,6 +2,7 @@
 #include "DataManager.h"
 #include "Colour.h"
 #include "zelda_core/RoomManager.h"
+#include "core/Camera.h"
 
 
 // TODO: Remove when defaults are set
