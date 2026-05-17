@@ -1,28 +1,38 @@
 #pragma once
 
-#include "BasicCharacter.h"
-
-// Defines a base class for which NPC, Boss, enemies inherit from
+#include "core/Vector.h"
+#include "core/Direction.h"
 
 namespace zelda::core
 {
-
-class Character : public BasicCharacter
+class Character
 {
 public:
     virtual ~Character() = default;
 
-protected:
     Character() = default;
 
-    // Attack
-    virtual void attack() = 0;
+protected:
+    engine::Vector<float> position() const
+    {
+        return m_position;
+    }
 
-    // Die
-    virtual void die() = 0;
+    engine::Direction direction() const
+    {
+        return m_direction;
+    }
 
-    // Move
-    virtual void move() = 0;
+    float health() const
+    {
+        return m_health;
+    }
+
+    float m_health{0};
+
+    engine::Vector<float> m_position;
+
+    engine::Direction m_direction{engine::Direction::NONE};
 };
 
 } // namespace zelda::core
