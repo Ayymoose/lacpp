@@ -4,13 +4,11 @@
 
 #include <SDL_rect.h>
 #include <concepts>
-#include <iostream>
 
 namespace zelda::engine
 {
 
-template <typename T>
-    requires std::is_arithmetic_v<T>
+template <typename T> requires std::is_arithmetic_v<T>
 struct Rect
 {
     T x{};
@@ -35,8 +33,8 @@ struct Rect
 
     [[nodiscard]] constexpr bool operator==(const Rect& other) const
     {
-        return FloatingPoint<T>::almostEqual(other.x, x) && FloatingPoint<T>::almostEqual(other.y, y)
-               && FloatingPoint<T>::almostEqual(other.w, w) && FloatingPoint<T>::almostEqual(other.h, h);
+        return FloatingPoint<T>::equal(other.x, x) && FloatingPoint<T>::equal(other.y, y)
+               && FloatingPoint<T>::equal(other.w, w) && FloatingPoint<T>::equal(other.h, h);
     }
 };
 

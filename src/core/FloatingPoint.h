@@ -6,12 +6,10 @@
 
 namespace zelda::engine
 {
-template <typename T>
+template <typename T> requires std::is_arithmetic_v<T>
 struct FloatingPoint
 {
-    static_assert(std::is_arithmetic_v<T>, "Arithemtic only type allowed");
-
-    constexpr static bool almostEqual(T a, T b)
+    constexpr static bool equal(T a, T b)
     {
         if constexpr (std::is_floating_point_v<T>)
         {

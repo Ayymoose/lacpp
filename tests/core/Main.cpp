@@ -242,14 +242,14 @@ BOOST_AUTO_TEST_CASE(LengthFloat)
 {
     Vector<float> v1(3.5f, 4.5f);
     const float expected = std::sqrt(3.5f * 3.5f + 4.5f * 4.5f);
-    BOOST_TEST(FloatingPoint<float>::almostEqual(expected, v1.length()));
+    BOOST_TEST(FloatingPoint<float>::equal(expected, v1.length()));
 }
 
 BOOST_AUTO_TEST_CASE(LengthDouble)
 {
     Vector<double> v1(3.5, 4.5);
     const double expected = std::sqrt(3.5 * 3.5 + 4.5 * 4.5);
-    BOOST_TEST(FloatingPoint<double>::almostEqual(expected, v1.length()));
+    BOOST_TEST(FloatingPoint<double>::equal(expected, v1.length()));
 }
 
 BOOST_AUTO_TEST_CASE(LengthZeroVector)
@@ -259,7 +259,7 @@ BOOST_AUTO_TEST_CASE(LengthZeroVector)
 
 BOOST_AUTO_TEST_CASE(LengthUnitVector)
 {
-    BOOST_TEST(FloatingPoint<double>::almostEqual(1.0, Vector<double>(1.0, 0.0).length()));
+    BOOST_TEST(FloatingPoint<double>::equal(1.0, Vector<double>(1.0, 0.0).length()));
 }
 
 // -------------------------
@@ -338,21 +338,21 @@ BOOST_AUTO_TEST_CASE(NormaliseInPlaceFloat)
 {
     Vector<float> v1(30.0f, 40.0f);
     v1.normalise();
-    BOOST_TEST(FloatingPoint<float>::almostEqual(0.6f, v1.x));
-    BOOST_TEST(FloatingPoint<float>::almostEqual(0.8f, v1.y));
+    BOOST_TEST(FloatingPoint<float>::equal(0.6f, v1.x));
+    BOOST_TEST(FloatingPoint<float>::equal(0.8f, v1.y));
 }
 
 BOOST_AUTO_TEST_CASE(NormaliseInPlaceDouble)
 {
     Vector<double> v1(30.0, 40.0);
     v1.normalise();
-    BOOST_TEST(FloatingPoint<double>::almostEqual(0.6, v1.x));
-    BOOST_TEST(FloatingPoint<double>::almostEqual(0.8, v1.y));
+    BOOST_TEST(FloatingPoint<double>::equal(0.6, v1.x));
+    BOOST_TEST(FloatingPoint<double>::equal(0.8, v1.y));
 }
 
 BOOST_AUTO_TEST_CASE(NormalisedVectorHasLengthOne)
 {
-    BOOST_TEST(FloatingPoint<double>::almostEqual(1.0, Vector<double>(30.0, 40.0).normal().length()));
+    BOOST_TEST(FloatingPoint<double>::equal(1.0, Vector<double>(30.0, 40.0).normal().length()));
 }
 
 // -------------------------
@@ -572,20 +572,20 @@ BOOST_AUTO_TEST_CASE(ToSDLFRectFloat)
 {
     const Rect<float> r(1.5f, 2.5f, 3.5f, 4.5f);
     const SDL_FRect sdl = rectToSDLRect(r);
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.x, 1.5f));
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.y, 2.5f));
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.w, 3.5f));
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.h, 4.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.x, 1.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.y, 2.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.w, 3.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.h, 4.5f));
 }
 
 BOOST_AUTO_TEST_CASE(ToSDLFRectDouble)
 {
     const Rect<double> r(1.5, 2.5, 3.5, 4.5);
     const SDL_FRect sdl = rectToSDLRect(r);
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.x, 1.5f));
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.y, 2.5f));
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.w, 3.5f));
-    BOOST_TEST(FloatingPoint<float>::almostEqual(sdl.h, 4.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.x, 1.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.y, 2.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.w, 3.5f));
+    BOOST_TEST(FloatingPoint<float>::equal(sdl.h, 4.5f));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
