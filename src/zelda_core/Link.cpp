@@ -13,8 +13,6 @@ Link::Link()
                  std::to_underlying(core::ZOrdering::PLAYER))
     , Controllable(m_name)
     , m_maxHealth(3)
-    , m_health(3)
-    , m_direction{engine::Direction::NONE}
 {
     m_width = 16;
     m_height = 16;
@@ -25,13 +23,9 @@ Link::Link()
     engine::Renderer::instance().addRenderable(this);
 }
 
-float Link::health() const
-{
-    return m_health;
-}
-
 void Link::update()
-{}
+{
+}
 
 void Link::render()
 {
@@ -72,20 +66,10 @@ float Link::maxHealth() const
     return m_maxHealth;
 }
 
-engine::Vector<float> Link::position() const
-{
-    return m_position;
-}
-
 void Link::setPosition(float x, float y)
 {
     m_position.x = x;
     m_position.y = y;
-}
-
-engine::Direction Link::direction() const
-{
-    return m_direction;
 }
 
 } // namespace zelda::core

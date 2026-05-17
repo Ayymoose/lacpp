@@ -4,12 +4,13 @@
 #include "core/Controllable.h"
 #include "core/Updateable.h"
 #include "zelda_gui/Worldmap.h"
-#include "core/Vector.h"
+#include "zelda_core/Character.h"
 
 namespace zelda::core
 {
 
 class Link :
+    public Character,
     public engine::Renderable,
     public engine::Controllable,
     public engine::Singleton<Link>,
@@ -32,23 +33,8 @@ public:
 
     float maxHealth() const;
 
-    // Overrides
-    float health() const;
-
-    engine::Direction direction() const;
-
-    engine::Vector<float> position() const;
-
 private:
     float m_maxHealth;
-
-    //
-
-    float m_health;
-
-    engine::Vector<float> m_position;
-
-    engine::Direction m_direction;
 };
 
 } // namespace zelda::core
