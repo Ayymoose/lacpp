@@ -13,7 +13,7 @@ struct Random
     // Generate a random int/float between start and end inclusive
     template <typename T>
         requires std::is_arithmetic_v<T>
-    [[nodiscard]] static T random(const int start, const int end)
+    [[nodiscard]] static T random(T start, T end)
     {
         assert(start <= end);
         if constexpr (std::integral<T>)
