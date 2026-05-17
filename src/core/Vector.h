@@ -81,7 +81,7 @@ struct Vector
 
     [[nodiscard]] constexpr bool operator==(const Vector& other) const
     {
-        return FloatingPoint<T>::almostEqual(x, other.x) && FloatingPoint<T>::almostEqual(y, other.y);
+        return FloatingPoint<T>::equal(x, other.x) && FloatingPoint<T>::equal(y, other.y);
     }
 
     // Distance between two vectors
