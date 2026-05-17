@@ -9,6 +9,7 @@
 #include "ResourceManager.h"
 #include "Controller.h"
 #include "Renderer.h"
+#include "core/Camera.h"
 
 #include <SDL.h>
 
